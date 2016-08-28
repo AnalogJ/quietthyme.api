@@ -1,0 +1,118 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    v1.docs.serverless.com
+#
+# Happy Coding!
+
+service: quietthyme-api # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  memorySize: 128
+
+# you can overwrite defaults here
+defaults:
+  stage: dev
+  region: us-east-1
+
+# you can add packaging information here
+package:
+  # only the following paths will be included in the resulting artifact which will be uploaded. Without specific include everything in the current folder will be included
+  include:
+    - lib
+    - functions
+  # The following paths will be excluded from the resulting artifact. If both include and exclude are defined we first apply the include, then the exclude so files are guaranteed to be excluded
+  exclude:
+    - tmp
+    - .git
+
+functions:
+  test:
+    handler: controller_test.test
+    events:
+      - http: GET test
+
+# OAUTH connect & callback endpoints
+
+  connect:
+    handler: controller_link.connect
+    events:
+      - http: GET connect/{serviceType}
+  callback:
+    handler: controller_link.callback
+    events:
+      - http: GET callback/{serviceType}
+      - http: POST callback/{serviceType}
+
+# Authenticated API Methods
+  user:
+    handler: controller_user.info
+    events:
+      - http: GET user
+
+  bookcreate:
+    handler: controller_book.create
+    events:
+      - http: POST book
+
+  bookfind:
+    handler: controller_book.find
+    events:
+      - http: GET book
+
+  bookdestroy:
+    handler: controller_book.destroy
+    events:
+      - http: DELETE book/{id}
+
+  storagestatus:
+    handler: controller_storage.status
+    events:
+      - http: GET storage/status
+
+  storageupload:
+    handler: controller_storage.upload
+    events:
+      - http: POST storage/upload
+
+  storagethumbupload:
+    handler: handler.storage.thumb_upload
+    events:
+      - http: POST storage/thumb/upload
+
+  storagelink:
+    handler: handler.storage.link
+    events:
+      - http: GET storage/{id}
+
+#   you can add any of the following events
+#   events:
+#     - http:
+#         path: users/create
+#         method: get
+#     - s3: ${bucket}
+#     - schedule: rate(10 minutes)
+#     - sns: greeter-topic
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
+resources:
+  Resources:
+    $ref: ./cloudformation-resources.json
