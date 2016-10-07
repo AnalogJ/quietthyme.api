@@ -11,8 +11,9 @@ dependencies:
   override:
     - npm install -g serverless@v1.0.0-rc.2
     - npm install knex -g
+    - npm install
 
 test:
   override:
-    - NODE_ENV=production knex migrate:latest
+#    - NODE_ENV=production knex migrate:latest
     - serverless deploy -v
