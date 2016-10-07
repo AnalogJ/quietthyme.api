@@ -1,0 +1,29 @@
+{
+  "name": "quietthyme.api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serverless.yml",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnalogJ/quietthyme.api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnalogJ/quietthyme.api/issues"
+  },
+  "homepage": "https://github.com/AnalogJ/quietthyme.api#readme",
+  "dependencies": {
+    "aws-sdk": "^2.5.3",
+    "cloudrail-si": "^2.7.0",
+    "dotenv": "^2.0.0",
+    "knex": "^0.11.10",
+    "node-uuid": "^1.4.7",
+    "pg": "^6.1.0",
+    "q": "^1.4.1",
+    "serverless-plugin-write-env-vars": "^1.0.1"
+  }
+}

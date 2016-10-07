@@ -15,13 +15,28 @@ service: quietthyme-api # NOTE: update this with your service name
 
 provider:
   name: aws
+  stage: dev
+  region: us-east-1
+  timeout: 20 # optional, default is 6
   runtime: nodejs4.3
   memorySize: 128
 
-# you can overwrite defaults here
-defaults:
-  stage: dev
-  region: us-east-1
+custom:
+  writeEnvVars:
+    DOMAIN: api.quietthyme.com
+    ENCRYPTION_PASSPHRASE: ${env:ENCRYPTION_PASSPHRASE}
+    ENCRYPTION_PASSPHRENCRYPTION_JWT_PASSPHRASEASE: ${env:ENCRYPTION_JWT_PASSPHRASE}
+    DEPLOY_SHA: ${env.CIRCLE_SHA1}
+    OAUTH_BOX_CLIENT_KEY: ${env.OAUTH_BOX_CLIENT_KEY}
+    OAUTH_BOX_CLIENT_SECRET: ${env.OAUTH_BOX_CLIENT_SECRET}
+    OAUTH_DROPBOX_CLIENT_KEY: ${env.OAUTH_DROPBOX_CLIENT_KEY}
+    OAUTH_DROPBOX_CLIENT_SECRET: ${env.OAUTH_DROPBOX_CLIENT_SECRET}
+    OAUTH_GOOGLE_CLIENT_KEY: ${env.OAUTH_GOOGLE_CLIENT_KEY}
+    OAUTH_GOOGLE_CLIENT_SECRET: ${env.OAUTH_GOOGLE_CLIENT_SECRET}
+    OAUTH_SKYDRIVE_CLIENT_KEY: ${env.OAUTH_SKYDRIVE_CLIENT_KEY}
+    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env.OAUTH_SKYDRIVE_CLIENT_SECRET}
+    PG_CONNECTION_STRING: ${env.PG_CONNECTION_STRING}
+
 
 # you can add packaging information here
 package:
@@ -36,60 +51,60 @@ package:
 
 functions:
   test:
-    handler: controller_test.test
+    handler: handler.test
     events:
       - http: GET test
 
 # OAUTH connect & callback endpoints
 
   connect:
-    handler: controller_link.connect
+    handler: handler.link_connect
     events:
       - http: GET connect/{serviceType}
   callback:
-    handler: controller_link.callback
+    handler: handler.link_callback
     events:
       - http: GET callback/{serviceType}
       - http: POST callback/{serviceType}
 
 # Authenticated API Methods
   user:
-    handler: controller_user.info
+    handler: handler.user_info
     events:
       - http: GET user
 
   bookcreate:
-    handler: controller_book.create
+    handler: handler.book_create
     events:
       - http: POST book
 
   bookfind:
-    handler: controller_book.find
+    handler: handler.book_find
     events:
       - http: GET book
 
   bookdestroy:
-    handler: controller_book.destroy
+    handler: handler.book_destroy
     events:
       - http: DELETE book/{id}
 
   storagestatus:
-    handler: controller_storage.status
+    handler: handler.storage_status
     events:
       - http: GET storage/status
 
   storageupload:
-    handler: controller_storage.upload
+    handler: handler.storage_upload
     events:
       - http: POST storage/upload
 
   storagethumbupload:
-    handler: handler.storage.thumb_upload
+    handler: handler.storage_thumb_upload
     events:
       - http: POST storage/thumb/upload
 
   storagelink:
-    handler: handler.storage.link
+    handler: handler.storage_link
     events:
       - http: GET storage/{id}
 
@@ -116,3 +131,6 @@ functions:
 resources:
   Resources:
     $ref: ./cloudformation-resources.json
+
+plugins:
+   - serverless-plugin-write-env-vars
