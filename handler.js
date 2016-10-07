@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-var db  = require('./server/db');
+//var db  = require('./server/db');
 
 var book_controller = require("./lib/controllers/book");
 var link_controller = require("./lib/controllers/link");
