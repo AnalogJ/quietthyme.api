@@ -12,6 +12,7 @@ dependencies:
     - npm install -g serverless@v1.0.0-rc.2
     - npm install knex -g
     - npm install
+    - npm ls
 
 test:
   override:
