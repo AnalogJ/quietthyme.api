@@ -23,6 +23,9 @@ provider:
   vpc:
     securityGroupIds:
       - sg-bbb818c3
+    subnetIds:
+      - subnet-afea3085
+      - subnet-297de85f
 
 custom:
   writeEnvVars:
