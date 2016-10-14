@@ -18,10 +18,12 @@
   "homepage": "https://github.com/AnalogJ/quietthyme.api#readme",
   "dependencies": {
     "aws-sdk": "^2.5.3",
+    "bcrypt": "^0.8.7",
     "cloudrail-si": "^2.7.0",
     "dotenv": "^2.0.0",
     "knex": "^0.11.10",
     "node-uuid": "^1.4.7",
+    "oauth": "^0.9.14",
     "pg": "^6.1.0",
     "q": "^1.4.1",
     "serverless-plugin-write-env-vars": "^1.0.1"
