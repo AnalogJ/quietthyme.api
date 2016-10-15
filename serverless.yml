@@ -77,10 +77,10 @@ functions:
       - http: POST callback/{serviceType}
 
 # Authenticated API Methods
-  user:
-    handler: handler.user_info
+  auth:
+    handler: handler.auth_status
     events:
-      - http: GET user
+      - http: GET auth/status
 
   bookcreate:
     handler: handler.book_create

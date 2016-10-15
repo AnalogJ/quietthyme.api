@@ -4,7 +4,7 @@ var book_controller = require("./lib/controllers/book");
 var link_controller = require("./lib/controllers/link");
 var storage_controller = require("./lib/controllers/storage");
 var test_controller = require("./lib/controllers/test");
-var user_controller = require("./lib/controllers/user");
+var auth_controller = require("./lib/controllers/auth");
 module.exports = {
 
     link_connect: link_controller.connect,
@@ -22,5 +22,5 @@ module.exports = {
 
     test: test_controller.test,
 
-    user_status: user_controller.info
+    auth_status: auth_controller.status
 }
