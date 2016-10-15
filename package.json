@@ -21,6 +21,7 @@
     "bcrypt": "^0.8.7",
     "cloudrail-si": "^2.7.0",
     "dotenv": "^2.0.0",
+    "jsonwebtoken": "^7.1.9",
     "knex": "^0.11.10",
     "node-uuid": "^1.4.7",
     "oauth": "^0.9.14",
