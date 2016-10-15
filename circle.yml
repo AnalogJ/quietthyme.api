@@ -16,5 +16,5 @@ dependencies:
 
 test:
   override:
-    - NODE_ENV=production knex migrate:latest
+#    - NODE_ENV=production knex migrate:latest
     - serverless deploy -v
