@@ -21,7 +21,7 @@ analogj/lexicon /srv/dehydrated/dehydrated \
 --hook /srv/dehydrated/dehydrated.default.sh \
 --challenge dns-01
 
-# register certificate with AWS
+# creae AWS domain name & register certificates
 DIST_DOMAIN_NAME=`aws apigateway create-domain-name \
 --domain-name "$DOMAIN" \
 --certificate-name "lexicon-$(date +"%d-%m-%Y")" \
@@ -35,6 +35,9 @@ lexicon cloudflare create $DOMAIN CNAME \
 --name="$DOMAIN" \
 --content="$DIST_DOMAIN_NAME"
 
+# create API Mapping for apigateway
+aws apigateway create-base-path-mapping \
+--domain-name $DOMAIN --rest-api-id lx38a9n6oh
 
 #cleanup
 rm -f dehydrated_config.txt
