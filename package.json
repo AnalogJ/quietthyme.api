@@ -19,7 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.5.3",
     "bcrypt": "^0.8.7",
-    "cloudrail-si": "^2.7.0",
+    "cloudrail-si": "^2.9.1",
     "dotenv": "^2.0.0",
     "jsonwebtoken": "^7.1.9",
     "knex": "^0.11.10",
