@@ -21,6 +21,7 @@ module.exports = {
     storage_link: storage_controller.link,
 
     test: test_controller.test,
+    test_bluebird: test_controller.test_bluebird,
 
     auth_register: auth_controller.register,
     auth_login: auth_controller.login,
