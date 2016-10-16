@@ -89,7 +89,7 @@ functions:
     handler: handler.auth_calibre
     events:
       - http: GET auth/calibre
-      
+
 # Authenticated API Methods
   authstatus:
     handler: handler.auth_status

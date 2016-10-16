@@ -10,4 +10,8 @@ curl -i https://api.quietthyme.com/dev/test \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNDc2NTczODM3LCJleHAiOjE0NzY1ODQ2Mzd9.5RvK3d1mdxD7xXOOAfEpZENdU68fk0dDqb0DMP4VzWo"
 
 curl -i https://api.quietthyme.com/dev/book \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNDc2NTczODM3LCJleHAiOjE0NzY1ODQ2Mzd9.5RvK3d1mdxD7xXOOAfEpZENdU68fk0dDqb0DMP4VzWo"
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNDc2NTg1Mjc2LCJleHAiOjE0NzY1OTYwNzZ9.u-FcKHQiwgRGlbf2ORbVboAJsRAqSEG8Q5M4DiHjIyY"
+
+
+curl -i https://api.quietthyme.com/dev/auth/calibre?library_uuid=12345 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNDc2NTg1Mjc2LCJleHAiOjE0NzY1OTYwNzZ9.u-FcKHQiwgRGlbf2ORbVboAJsRAqSEG8Q5M4DiHjIyY"
