@@ -4,6 +4,13 @@ exports.up = function(knex, Promise) {
 
         knex.schema.createTable('users', function(table) {
             table.increments('uid').primary();
+            table.string('username');
+            table.string('password');
+
+            table.string('library_uuid');
+
+            table.string('catalog_token');
+
             table.timestamps();
         }),
 
@@ -25,39 +32,49 @@ exports.up = function(knex, Promise) {
             table.integer('user_id')
                 .references('uid')
                 .inTable('users');
-            table.integer('credential_id')
-                .references('id')
-                .inTable('credentials');
+            // table.integer('credential_id')
+            //     .references('id')
+            //     .inTable('credentials');
 
             table.string('title');
-            table.string('series_name');
-            table.integer('series_number');
-            table.string('isbn');
-            table.string('isbn10');
-            table.integer('num_pages');
             table.float('average_rating');
-            table.integer('ratings_count');
+            table.string('short_summary');
             table.string('publisher');
             table.date('published_date');
-            //tags should be an array
             table.json('tags');
-            table.string('short_summary');
+            table.json('authors');
+            table.date('last_modified');
+
+            table.json('user_categories');
+            table.json('user_metadata');
+
+            table.string('series_name');
+            table.integer('series_number');
+
+            // isbn & isbn13 identifiers
+            table.string('isbn');
+            table.string('isbn10');
+
             table.string('drm_type');
 
-            //object:
-            // name
-            // alias
-            // goodreads_id
-            // ffiction_id
-            // amazon_id
-            // google_id
-            // barnesnobel_id
-            table.json('authors');
+            //identifiers
+            table.string('calibre_id');
+            table.string('amazon_id');
+            table.string('google_id');
+            table.string('goodreads_id');
+            table.string('ffiction_id');
+            table.string('barnesnoble_id');
 
             // cover art urls
             table.string('cover');
             table.string('thumb');
 
+            table.timestamps();
+        }),
+
+        knex.schema.createTable('login_sessions', function(table) {
+            table.string('id').primary();
+            table.text('auth_data');
             table.timestamps();
         })
     ])
@@ -67,6 +84,7 @@ exports.down = function(knex, Promise) {
     return Promise.all([
         knex.schema.dropTable('books'),
         knex.schema.dropTable('credentials'),
-        knex.schema.dropTable('users')
+        knex.schema.dropTable('users'),
+        knex.schema.dropTable('login_sessions')
     ])
 };
