@@ -72,6 +72,7 @@ functions:
       - http: GET connect/{serviceType}
   callback:
     handler: handler.link_callback
+    timeout: 120
     events:
       - http: GET callback/{serviceType}
       - http: POST callback/{serviceType}
