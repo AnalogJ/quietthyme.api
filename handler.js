@@ -22,5 +22,8 @@ module.exports = {
 
     test: test_controller.test,
 
+    auth_register: auth_controller.register,
+    auth_login: auth_controller.login,
+    auth_calibre: auth_controller.calibre,
     auth_status: auth_controller.status
 }

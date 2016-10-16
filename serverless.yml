@@ -76,8 +76,22 @@ functions:
       - http: GET callback/{serviceType}
       - http: POST callback/{serviceType}
 
+# auth methods (login/register/calibre)
+  authregister:
+    handler: handler.auth_register
+    events:
+      - http: GET auth/register
+  authlogin:
+    handler: handler.auth_login
+    events:
+      - http: GET auth/login
+  authcalibre:
+    handler: handler.auth_calibre
+    events:
+      - http: GET auth/calibre
+      
 # Authenticated API Methods
-  auth:
+  authstatus:
     handler: handler.auth_status
     events:
       - http: GET auth/status
