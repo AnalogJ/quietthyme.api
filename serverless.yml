@@ -73,6 +73,7 @@ functions:
   callback:
     handler: handler.link_callback
     timeout: 120
+    memorySize: 512
     events:
       - http: GET callback/{serviceType}
       - http: POST callback/{serviceType}
