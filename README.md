@@ -15,3 +15,6 @@ curl -i https://api.quietthyme.com/dev/book \
 
 curl -i https://api.quietthyme.com/dev/auth/calibre?library_uuid=12345 \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNDc2NTg1Mjc2LCJleHAiOjE0NzY1OTYwNzZ9.u-FcKHQiwgRGlbf2ORbVboAJsRAqSEG8Q5M4DiHjIyY"
+
+
+aws logs get-log-events --log-group-name "/aws/lambda/quietthyme-api-dev-test" --log-stream-name "2016/11/06/[\$LATEST]b83938961fcf4042993da2ee80bdc0a4" --output text > a.log
