@@ -15,7 +15,7 @@ service: quietthyme-api # NOTE: update this with your service name
 
 provider:
   name: aws
-  stage: dev
+  stage: 'beta'
   region: us-east-1
   timeout: 40 # optional, default is 6
   runtime: nodejs4.3
