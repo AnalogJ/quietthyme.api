@@ -36,7 +36,7 @@ custom:
       cleanup_enabled: true
     beta:
       cleanup_enabled: false
-    DOMAIN: api.capsulecd.com
+    DOMAIN: api.quietthyme.com
     DEPLOY_SHA: ${env:CIRCLE_SHA1}
     STAGE: ${opt:stage, self:provider.stage}
     ENCRYPTION_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_PASSPHRASE, env:ENCRYPTION_PASSPHRASE}
