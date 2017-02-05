@@ -33,6 +33,7 @@ provider:
         - "ec2:DescribeNetworkInterfaces"
         - "ec2:DetachNetworkInterface"
         - "ec2:DeleteNetworkInterface"
+      Resource: "*"
   vpc:
     securityGroupIds:
       - sg-bbb818c3
