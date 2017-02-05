@@ -91,10 +91,6 @@ functions:
     handler: handler.test
     events:
       - http: GET test
-  testbluebird:
-    handler: handler.test_bluebird
-    events:
-      - http: GET test/bluebird
 
 # OAUTH connect & callback endpoints
 
