@@ -26,6 +26,13 @@ provider:
   #in prod, this will be specified dynamically via cloudformation.
   # because of issues like: https://github.com/serverless/serverless/issues/2780 on first deploy make sure to comment out
   # the vpc section, and uncomment it after a successful deploy.
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DetachNetworkInterface"
+        - "ec2:DeleteNetworkInterface"
   vpc:
     securityGroupIds:
       - sg-bbb818c3
