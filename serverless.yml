@@ -26,12 +26,12 @@ provider:
   #in prod, this will be specified dynamically via cloudformation.
   # because of issues like: https://github.com/serverless/serverless/issues/2780 on first deploy make sure to comment out
   # the vpc section, and uncomment it after a successful deploy.
-#  vpc:
-#    securityGroupIds:
-#      - sg-bbb818c3
-#    subnetIds:
-#      - subnet-afea3085
-#      - subnet-297de85f
+  vpc:
+    securityGroupIds:
+      - sg-bbb818c3
+    subnetIds:
+      - subnet-afea3085
+      - subnet-297de85f
 
 custom:
   variables:
