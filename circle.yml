@@ -6,10 +6,11 @@ general:
   branches:
     only:
       - master
+      - beta
 
 dependencies:
   override:
-    - npm install -g serverless@v1.0.0-rc.2
+    - npm install -g serverless
     - npm install knex -g
     - npm install
     - npm ls
@@ -18,3 +19,14 @@ test:
   override:
 #    - NODE_ENV=production knex migrate:latest
     - serverless deploy -v
+
+test:
+  override:
+    - echo "skipping, no tests"
+
+deployment:
+  deploy:
+    branch: [beta, master]
+    commands:
+#      - NODE_ENV=production knex migrate:latest
+      - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1

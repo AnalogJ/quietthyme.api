@@ -2,6 +2,7 @@
 import subprocess, os
 import sys, json, datetime
 import glob
+import datetime
 
 cust_env = os.environ.copy()
 cust_env['DOMAIN'] = cust_env.get('DOMAIN','api.quietthyme.com')
@@ -53,6 +54,7 @@ subprocess.call([
   '-v', '{0}/dehydrated_config.txt:/srv/dehydrated/config'.format(os.getcwd()),
   '--rm',
   'analogj/lexicon', '/srv/dehydrated/dehydrated',
+  '--accept-terms',
   '--domain', cust_env['DOMAIN'],
   '--cron',
   '--hook', '/srv/dehydrated/dehydrated.default.sh',
@@ -80,7 +82,7 @@ except:
     dist_domain_name_cmd = [
       'aws', 'apigateway', 'create-domain-name',
       '--domain-name', cust_env['DOMAIN'],
-      '--certificate-name', "lexicon-{0}".format(date.isoformat()),
+      '--certificate-name', "lexicon-{0}".format(datetime.date.today().isoformat()),
       '--certificate-body', cert_file.read(),
       '--certificate-private-key', privkey_file.read(),
       '--certificate-chain', chain_file.read(),
