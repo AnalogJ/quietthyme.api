@@ -1,6 +1,7 @@
-var JWTokenService = require('../services/JWTokenService'),
-    DBService = require('../services/DBService'),
-    HttpError = require('../errors/HttpError')
+require('dotenv').config();
+var JWTokenService = require('./services/JWTokenService'),
+    DBService = require('./services/DBService'),
+    HttpError = require('./common/HttpError')
 module.exports = {
     create: function (event, context, cb) {
 

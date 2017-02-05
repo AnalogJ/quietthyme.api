@@ -1,5 +1,7 @@
+require('dotenv').config();
 var cloudrail = require("cloudrail-si");
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
+
 var callback_url = "http://localhost:3000/link/callback/";
 
 module.exports = {

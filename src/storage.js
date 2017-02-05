@@ -1,4 +1,5 @@
-var StorageService = require('../services/StorageService');
+require('dotenv').config();
+var StorageService = require('./services/StorageService');
 var q = require('q');
 
 module.exports = {

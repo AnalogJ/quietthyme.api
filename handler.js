@@ -1,15 +1,10 @@
 require('dotenv').config();
 
 var book_controller = require("./lib/controllers/book");
-var link_controller = require("./lib/controllers/link");
 var storage_controller = require("./lib/controllers/storage");
 var test_controller = require("./lib/controllers/test");
 var auth_controller = require("./lib/controllers/auth");
 module.exports = {
-
-    link_connect: link_controller.connect,
-    link_callback: link_controller.callback,
-
 
     book_create: book_controller.create,
     book_find: book_controller.find,

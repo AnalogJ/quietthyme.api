@@ -9,7 +9,7 @@
 
 var jwt = require('jsonwebtoken'),
     q = require('q'),
-    HttpError = require('../errors/HttpError'),
+    HttpError = require('../common/HttpError'),
     tokenSecret = process.env.ENCRYPTION_JWT_PASSPHRASE;
 
 // Generates a token from supplied payload
