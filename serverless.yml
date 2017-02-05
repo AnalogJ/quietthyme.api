@@ -139,56 +139,56 @@ functions:
 
 # auth methods (login/register/calibre)
   authregister:
-    handler: handler.auth_register
+    handler: src/auth.register
     events:
       - http: GET auth/register
   authlogin:
-    handler: handler.auth_login
+    handler: src/auth.login
     events:
       - http: GET auth/login
   authcalibre:
-    handler: handler.auth_calibre
+    handler: src/auth.calibre
     events:
       - http: GET auth/calibre
 
 # Authenticated API Methods
   authstatus:
-    handler: handler.auth_status
+    handler: src/auth.status
     events:
       - http: GET auth/status
 
   bookcreate:
-    handler: handler.book_create
+    handler: src/book.create
     events:
       - http: POST book
 
   bookfind:
-    handler: handler.book_find
+    handler: src/book.find
     events:
       - http: GET book
 
   bookdestroy:
-    handler: handler.book_destroy
+    handler: src/book.destroy
     events:
       - http: DELETE book/{id}
 
   storagestatus:
-    handler: handler.storage_status
+    handler: src/storage.status
     events:
       - http: GET storage/status
 
   storageupload:
-    handler: handler.storage_upload
+    handler: src/storage.upload
     events:
       - http: POST storage/upload
 
   storagethumbupload:
-    handler: handler.storage_thumb_upload
+    handler: src/storage.thumb_upload
     events:
       - http: POST storage/thumb/upload
 
   storagelink:
-    handler: handler.storage_link
+    handler: src/storage.link
     events:
       - http: GET storage/{id}
 
