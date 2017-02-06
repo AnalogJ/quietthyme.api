@@ -114,6 +114,8 @@ functions:
 
   callback:
     handler: src/link.callback
+    timeout: 120
+    memorySize: 512
     events:
       - http:
           path: callback/{serviceType}
@@ -128,6 +130,8 @@ functions:
 
   connect:
     handler: src/link.connect
+    timeout: 120
+    memorySize: 512
     events:
       - http:
           path: connect/{serviceType}
