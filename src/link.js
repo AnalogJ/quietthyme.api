@@ -49,7 +49,7 @@ module.exports = {
             })
         };
         let service = makeService(serviceName, redirectReceiver, "state"); // You can change the last parameter if you need to identify incoming redirects
-        return service.login(); // Start login. Won't complete since the redirectReceiver never calls its callback
+        return service.getUserLogin(); // Start login. Won't complete since the redirectReceiver never calls its callback
     },
     callback:function(event, context, callback){
 
