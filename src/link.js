@@ -1,3 +1,4 @@
+'use strict';
 require('dotenv').config();
 var cloudrail = require("cloudrail-si");
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
@@ -51,7 +52,7 @@ module.exports = {
         return service.login(); // Start login. Won't complete since the redirectReceiver never calls its callback
     },
     callback:function(event, context, callback){
-        
+
         return callback(null, {
             'test':'teststring',
             event: event
