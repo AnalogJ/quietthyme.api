@@ -2,11 +2,11 @@
 require('dotenv').config();
 var cloudrail = require("cloudrail-si");
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
-var q = require('q');
-var uuid = require('node-uuid');
+// var q = require('q');
+// var uuid = require('node-uuid');
 var callback_url = "https://api.quietthyme.com/beta/callback/";
-var DBService = require('./services/DBService.js');
-var Constants = require('./common/constants');
+// var DBService = require('./services/DBService.js');
+// var Constants = require('./common/constants');
 
 
 function makeService(name, redirectReceiver, state) {
