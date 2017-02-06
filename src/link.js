@@ -44,7 +44,7 @@ module.exports = {
         let serviceName = event.path.serviceType;
         let redirectReceiver = (url, state, callback) => {
             console.log(url)
-            cb(null, {
+            context.done(null, {
                 url: url
             })
         };
