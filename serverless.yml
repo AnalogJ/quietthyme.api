@@ -153,6 +153,7 @@ functions:
           cors: true
   authlogin:
     handler: src/auth.login
+    events:
       - http:
           path: auth/login
           method: POST
