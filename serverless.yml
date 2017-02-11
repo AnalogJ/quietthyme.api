@@ -145,11 +145,11 @@ functions:
   authregister:
     handler: src/auth.register
     events:
-      - http: GET auth/register
+      - http: POST auth/register
   authlogin:
     handler: src/auth.login
     events:
-      - http: GET auth/login
+      - http: POST auth/login
   authcalibre:
     handler: src/auth.calibre
     events:
