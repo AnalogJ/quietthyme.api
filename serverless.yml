@@ -42,6 +42,67 @@ provider:
       - subnet-297de85f
 
 custom:
+
+  # overridden from https://github.com/serverless/serverless/blob/03cc50b246c656183110669126a632735ea46b15/lib/plugins/aws/deploy/compile/events/apiGateway/lib/method/integration.js#L106-L140
+  authRequestTemplate: >-
+    #define( $loop )
+      {
+      #foreach($key in $map.keySet())
+          #set( $k = $util.escapeJavaScript($key) )
+          #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll("\\\\'", "'") )
+          "$k":
+            "$v"
+            #if( $foreach.hasNext ) , #end
+      #end
+      }
+    #end
+    {
+      "body": $input.json("$"),
+      "method": "$context.httpMethod",
+      "principalId": "$context.authorizer.principalId",
+      "stage": "$context.stage",
+      #set( $map = $input.params().header )
+      "headers": $loop,
+      #set( $map = $input.params().querystring )
+      "query": $loop,
+      #set( $map = $input.params().path )
+      "path": $loop,
+      #set( $map = $context.identity )
+      "identity": $loop,
+      #set( $map = $stageVariables )
+      "stageVariables": $loop,
+
+      "httpMethod": "$context.httpMethod",
+      "token": "$input.params().header.get('Authorization').split(' ')[1]"
+    }
+  standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
+  errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
+
+  authRequests:
+    template:
+      application/json: ${self:custom.authRequestTemplate}
+  standardResponses:
+    headers:
+      Content-Type: "'application/json'"
+    template: ${self:custom.standardResponseTemplate}
+    statusCodes:
+      200:
+        pattern: ''
+        template:
+          application/json: ${self:custom.standardResponseTemplate}
+      400:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[400\].*'
+      404:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[404\].*'
+      500:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[500\].*'
+
   variables:
     master:
       cleanup_enabled: true
@@ -63,10 +124,6 @@ custom:
 
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
     CLOUDRAIL_API_KEY: ${env:${opt:stage, self:provider.stage}_CLOUDRAIL_API_KEY, env:CLOUDRAIL_API_KEY}
-
-  standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
-  errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
-
 
   writeEnvVars:
     DOMAIN: ${self:custom.variables.DOMAIN}
