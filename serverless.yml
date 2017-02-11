@@ -145,15 +145,29 @@ functions:
   authregister:
     handler: src/auth.register
     events:
-      - http: POST auth/register
+      - http:
+          path: auth/register
+          method: POST
+#          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
   authlogin:
     handler: src/auth.login
-    events:
-      - http: POST auth/login
+      - http:
+          path: auth/login
+          method: POST
+#          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
   authcalibre:
     handler: src/auth.calibre
     events:
-      - http: GET auth/calibre
+      - http:
+          path: auth/calibre
+          method: POST
+#          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
 # Authenticated API Methods
   authstatus:
