@@ -9,14 +9,29 @@ var SecurityService = require('./SecurityService');
 
 var authService = exports;
 
+authService.createEmailUser = function(db_client, email, password){
+    return q.spread([SecurityService.generate_catalog_token(), SecurityService.hash_password(password)],
+        function(catalog_token, password_hash){
+            console.log('creating user');
+            return db_client('users')
+                .insert({
+                    "email": email,
+                    "password_hash": password_hash,
+                    "catalog_token": catalog_token
+                })
+        })
+}
 
-authService.createCalibreUser = function(db_client, event){
+
+
+
+authService.createCalibreUser = function(db_client, library_uuid){
     return SecurityService.generate_catalog_token()
         .then(function(catalog_token){
             console.log('creating user');
             return db_client('users')
                 .insert({
-                    "library_uuid": event.query.library_uuid,
+                    "library_uuid": library_uuid,
                     "catalog_token": catalog_token
                 })
         })

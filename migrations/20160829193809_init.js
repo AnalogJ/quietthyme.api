@@ -4,12 +4,14 @@ exports.up = function(knex, Promise) {
 
         knex.schema.createTable('users', function(table) {
             table.increments('uid').primary();
-            table.string('username');
-            table.string('password');
+            table.string('email').nullable().unique();
+            table.string('password_hash').nullable(); //salt is automatically included
 
-            table.string('library_uuid');
+            table.enum('plan',['basic','reader','library']).notNullable().defaultTo('basic');
 
-            table.string('catalog_token');
+            table.string('library_uuid').nullable().unique();
+
+            table.string('catalog_token').nullable().unique();
 
             table.timestamps();
         }),
@@ -32,9 +34,9 @@ exports.up = function(knex, Promise) {
             table.integer('user_id')
                 .references('uid')
                 .inTable('users');
-            // table.integer('credential_id')
-            //     .references('id')
-            //     .inTable('credentials');
+            table.integer('credential_id')
+                .references('id')
+                .inTable('credentials');
 
             table.string('title');
             table.float('average_rating');

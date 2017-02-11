@@ -7,12 +7,45 @@ var q = require('q'),
 
 module.exports = {
     register: function(event, context, cb){
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+
+        //this function should check if an existing user with registered email already exists.
+        return DBService.get()
+            .then(function(db_client) {
+                var user_query = db_client.first()
+                    .from('users')
+                    .where('email', event.body.email)
+
+                return user_query
+                    .then(function(user){
+                        if(user){
+                            console.log('user already exists, cant re-register');
+                            throw 'User already exists'
+                        }
+                        else{
+                            return AuthService.createEmailUser(db_client, event.body.email, event.body.password)
+                        }
+                    })
+            })
+
+            .then(function(user){
+                console.log(">>>>> DESTROYING DB")
+                DBService.destroy().then(function(){
+                    console.dir(user)
+
+                    return cb(null, {
+                        user: user,
+                        token: JWTokenService.issue({id: user.id })
+                    })
+                })
+            })
+            .fail(function(err){
+                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
+                console.log('failed to login via calibre library')
+                console.log(err.toString())
+                cb(null, err.toString())
+            })
+            .done()
+
     },
     login: function(event, context, cb) {
         cb(null,

@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 var cloudrail = require("cloudrail-si");
+var blocked = require('blocked')
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
 // var q = require('q');
 // var uuid = require('node-uuid');
@@ -40,11 +41,13 @@ module.exports = {
 
     connect: function(event, context, cb){
         context.callbackWaitsForEmptyEventLoop = false; //this is because service.exit doesn't actually complete.
+        var timer = blocked(fn, options);
+
         console.log(event.path.serviceType)
         let serviceName = event.path.serviceType;
         let redirectReceiver = (url, state, callback) => {
             console.log(url)
-            context.done(null, {
+            cb(null, {
                 url: url
             })
         };

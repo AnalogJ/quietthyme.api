@@ -17,7 +17,6 @@ dependencies:
 
 test:
   override:
-#    - NODE_ENV=production knex migrate:latest
     - serverless deploy -v
 
 test:
@@ -28,5 +27,6 @@ deployment:
   deploy:
     branch: [beta, master]
     commands:
-#      - NODE_ENV=production knex migrate:latest
+    # knex migrations can only occur from within AWS, due to security group restrictions.
+#      - NODE_ENV=$CIRCLE_BRANCH knex migrate:latest
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
