@@ -22,7 +22,7 @@ module.exports = {
                             throw 'User already exists'
                         }
                         else{
-                            return AuthService.createEmailUser(db_client, event.body.email, event.body.password)
+                            return AuthService.createEmailUser(db_client, event.body.name, event.body.email, event.body.password)
                         }
                     })
             })

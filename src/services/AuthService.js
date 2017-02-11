@@ -9,12 +9,13 @@ var SecurityService = require('./SecurityService');
 
 var authService = exports;
 
-authService.createEmailUser = function(db_client, email, password){
+authService.createEmailUser = function(db_client, name, email, password){
     return q.spread([SecurityService.generate_catalog_token(), SecurityService.hash_password(password)],
         function(catalog_token, password_hash){
             console.log('creating user');
             return db_client('users')
                 .insert({
+                    "name": name,
                     "email": email,
                     "password_hash": password_hash,
                     "catalog_token": catalog_token

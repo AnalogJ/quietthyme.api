@@ -4,6 +4,8 @@ exports.up = function(knex, Promise) {
 
         knex.schema.createTable('users', function(table) {
             table.increments('uid').primary();
+
+            table.string('name').nullable();
             table.string('email').nullable().unique();
             table.string('password_hash').nullable(); //salt is automatically included
 
