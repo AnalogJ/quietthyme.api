@@ -3,7 +3,8 @@ var q = require('q'),
     HttpError = require('./common/HttpError'),
     DBService = require('./services/DBService'),
     AuthService = require('./services/AuthService'),
-    JWTokenService = require('./services/JWTokenService')
+    JWTokenService = require('./services/JWTokenService'),
+    SecurityService = require('./services/SecurityService');
 
 module.exports = {
     register: function(event, context, cb){
@@ -33,7 +34,6 @@ module.exports = {
                     console.dir(user)
 
                     return cb(null, {
-                        user: user,
                         token: JWTokenService.issue({id: user.id })
                     })
                 })
@@ -48,12 +48,50 @@ module.exports = {
 
     },
     login: function(event, context, cb) {
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+        //this function should check if an existing user with registered email already exists.
+        return DBService.get()
+            .then(function(db_client) {
+                var user_query = db_client.first()
+                    .from('users')
+                    .where('email', event.body.email)
+
+                return user_query
+                    .then(function(user){
+                        if(user){
+                            return SecurityService.compare_password(event.body.password, user.password_hash)
+                                .then(function(matched){
+                                    if(matched){
+                                        return user
+                                    }
+                                    else{
+                                        throw new Error("Email or Password is incorrect")
+                                    }
+                                })
+                        }
+                        else{
+                            throw new Error("Email or Password is incorrect")
+                        }
+                    })
+            })
+
+
+            .then(function(user){
+                console.log(">>>>> DESTROYING DB")
+                DBService.destroy().then(function(){
+                    console.dir(user)
+
+                    return cb(null, {
+                        token: JWTokenService.issue({id: user.id })
+                    })
+                })
+            })
+            .fail(function(err){
+                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
+                console.log('failed to login via calibre library')
+                console.log(err.toString())
+                cb(null, err.toString())
+            })
+            .done()
     },
 
     //to authenticate to QuietThyme all you need is a calibre library id.

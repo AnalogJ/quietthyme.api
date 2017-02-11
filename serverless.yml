@@ -63,6 +63,11 @@ custom:
 
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
     CLOUDRAIL_API_KEY: ${env:${opt:stage, self:provider.stage}_CLOUDRAIL_API_KEY, env:CLOUDRAIL_API_KEY}
+
+  standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
+  errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
+
+
   writeEnvVars:
     DOMAIN: ${self:custom.variables.DOMAIN}
     DEPLOY_SHA: ${self:custom.variables.DEPLOY_SHA}
@@ -120,7 +125,7 @@ functions:
       - http:
           path: callback/{serviceType}
           method: get
-#          response: ${self:custom.standardResponses}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
           request:
@@ -136,7 +141,7 @@ functions:
       - http:
           path: connect/{serviceType}
           method: get
-#          response: ${self:custom.standardResponses}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
 
@@ -148,7 +153,7 @@ functions:
       - http:
           path: auth/register
           method: POST
-#          response: ${self:custom.standardResponses}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
   authlogin:
@@ -157,7 +162,7 @@ functions:
       - http:
           path: auth/login
           method: POST
-#          response: ${self:custom.standardResponses}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
   authcalibre:
@@ -166,7 +171,7 @@ functions:
       - http:
           path: auth/calibre
           method: POST
-#          response: ${self:custom.standardResponses}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
 
@@ -174,42 +179,83 @@ functions:
   authstatus:
     handler: src/auth.status
     events:
-      - http: GET auth/status
+      - http:
+          path: auth/status
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   bookcreate:
     handler: src/book.create
     events:
-      - http: POST book
+      - http:
+          path: book
+          method: POST
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   bookfind:
     handler: src/book.find
     events:
-      - http: GET book
+      - http:
+          path: book
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   bookdestroy:
     handler: src/book.destroy
     events:
-      - http: DELETE book/{id}
+      - http:
+          path: book/{id}
+          method: DELETE
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   storagestatus:
     handler: src/storage.status
     events:
-      - http: GET storage/status
+      - http:
+          path: storage/status
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   storageupload:
     handler: src/storage.upload
     events:
-      - http: POST storage/upload
+      - http:
+          path: storage/upload
+          method: POST
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
   storagethumbupload:
     handler: src/storage.thumb_upload
     events:
-      - http: POST storage/thumb/upload
+      - http:
+          path: storage/thumb/upload
+          method: POST
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
+
 
   storagelink:
     handler: src/storage.link
     events:
-      - http: GET storage/{id}
+      - http:
+          path: storage/{id}
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
 
 #   you can add any of the following events
 #   events:
