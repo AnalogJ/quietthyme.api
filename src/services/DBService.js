@@ -8,7 +8,7 @@ var knex        = null;
 
 module.exports = {
     get: function(){
-        knex = require('knex')(knex_config[process.env.NODE_ENV]);
+        knex = require('knex')(knex_config[process.env.STAGE]);
         knex.client.initializePool(knex.client.config);
         return q(knex)
     },
