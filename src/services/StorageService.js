@@ -24,25 +24,26 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
             return db_client.select()
                 .from('credentials')
                 .where('user_id', auth.uid)
-            })
-            .then(function(credentials){
-                console.log("Found credentials for user", auth.uid, credentials.length);
-                var storage_info_promises = credentials.map(function(cred){
-                    var deferred = q.defer();
+                .then(function(credentials){
+                    console.log("Found credentials for user", auth.uid, credentials.length);
+                    var storage_info_promises = credentials.map(function(cred){
+                        var deferred = q.defer();
 
-                    console.log("Requesting Quota", cred.service_type, cred.service_id);
-                    kloudless.accounts.get({account_id: cred.service_id, retrieve_full: true}, function(err, cred_info){
-                        if(err) return deferred.reject(err);
+                        console.log("Requesting Quota", cred.service_type, cred.service_id);
+                        kloudless.accounts.get({account_id: cred.service_id, retrieve_full: true}, function(err, cred_info){
+                            if(err) return deferred.reject(err);
 
-                        console.log("Credential info:", cred_info)
-                        deferred.resolve(quota_transform_callback(cred, cred_info));
+                            console.log("Credential info:", cred_info)
+                            deferred.resolve(quota_transform_callback(cred, cred_info));
+                        });
+
+                        return deferred.promise
                     });
+                    return q.all(storage_info_promises)
 
-                    return deferred.promise
-                });
-                return q.all(storage_info_promises)
+                })
+        })
 
-            })
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
