@@ -93,7 +93,7 @@ module.exports = {
                             'prefix': 'quietthyme://',
                             'storage_type': 'quietthyme',
                             'location_code': 'main',
-                            'last_library_uuid': req.query.library_uuid,
+                            'last_library_uuid': event.query.library_uuid,
                             'free_space': 0,
                             'total_space': 1000000,
                             'calibre_version': '2.6.0',
