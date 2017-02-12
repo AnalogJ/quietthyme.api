@@ -5,7 +5,7 @@ var q = require('q');
 
 module.exports = {
 
-    callback: function(event, context, cb) {
+    link: function(event, context, cb) {
         // // TODO: VALIDATE the token before saving. https://developers.kloudless.com/docs/v1/authentication
 
         q.spread([JWTokenService.verify(event.token), DBService.get()],
@@ -144,14 +144,6 @@ module.exports = {
         );
     },
     thumb_upload: function (event, context, cb) {
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
-    },
-    link: function (event, context, cb) {
         cb(null,
             {
                 message: 'Go Serverless v1.0! Your function executed successfully!',

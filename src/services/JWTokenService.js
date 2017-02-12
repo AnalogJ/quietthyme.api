@@ -25,43 +25,14 @@ module.exports.issue = function(payload) {
 };
 
 // Verifies token on a request
-module.exports.verify = function(event) {
+module.exports.verify = function(token) {
     var deferred = q.defer();
-    var token;
-
-    if (event.headers && event.headers.Authorization) {
-        var parts = event.headers.Authorization.split(' ');
-        if (parts.length == 2) {
-            var scheme = parts[0],
-                credentials = parts[1];
-
-            if (/^Bearer$/i.test(scheme)) {
-                token = credentials;
-            }
-        } else {
-            deferred.reject(new HttpError('Format is Authorization: Bearer [token]', 401));
+    jwt.verify(token, tokenSecret, function(err, decoded) {
+        if (err) {
+            err.code = 401
+            return deferred.reject(err);
         }
-    } else if (event.path.token) {
-        token = event.path.token;
-    }
-
-    if(!token){
-        deferred.reject(new HttpError( 'No Authorization header was found', 401));
-    }
-    else{
-        jwt.verify(
-            token, // The token to be verified
-            tokenSecret, // Same token we used to sign
-            {}, // No Option, for more see https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback
-            function(err, decrypted_token){
-                if (err) {
-                    deferred.reject(new HttpError('Invalid Token!', 401));
-                }
-                console.log('Verified JWT, ', decrypted_token);
-                deferred.resolve(decrypted_token) // This is the decrypted token or the payload you provided
-            }
-        );
-    }
-
+        return deferred.resolve(decoded);
+    });
     return deferred.promise
 };

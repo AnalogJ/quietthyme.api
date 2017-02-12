@@ -279,11 +279,11 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
-  storagecallback:
-    handler: src/storage.callback
+  storagelink:
+    handler: src/storage.link
     events:
       - http:
-          path: storage/callback
+          path: storage/link
           method: POST
           response: ${self:custom.standardResponses}
           integration: lambda
@@ -323,17 +323,6 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
-
-  storagelink:
-    handler: src/storage.link
-    events:
-      - http:
-          path: storage/{id}
-          method: GET
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-          request: ${self:custom.authRequests}
 
 #   you can add any of the following events
 #   events:
