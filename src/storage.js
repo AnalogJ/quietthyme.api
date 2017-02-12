@@ -69,9 +69,9 @@ module.exports = {
 
         var credential_quota_promises = StorageService.get_storage_quotas(event.token, function(cred, quota_info){
             return {
-                'device_name': cred.get('service_type'),
-                'prefix': cred.get('service_type') +'://',
-                'storage_type': cred.get('service_type'),
+                'device_name': cred.service_type,
+                'prefix': cred.service_type +'://',
+                'storage_type': cred.service_type,
                 'last_library_uuid': event.query.library_uuid,
                 'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
                 'total_space': 1000000, //quota_info.total_bytes,
