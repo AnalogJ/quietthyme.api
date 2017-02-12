@@ -67,7 +67,7 @@ module.exports = {
         //    user_calibre_id_promise = User.update(req.user.id, {calibre_id:req.query.library_uuid})
         //}
 
-        var credential_quota_promises = StorageService.get_storage_quotas(event.token, function(cred, quota_info){
+        StorageService.get_storage_quotas(event.token, function(cred, quota_info){
             return {
                 'device_name': cred.service_type,
                 'prefix': cred.service_type +'://',
@@ -78,11 +78,9 @@ module.exports = {
                 'calibre_version': '2.6.0'
             }
 
-        });
-
-        return q.spread([user_calibre_id_promise,credential_quota_promises],
-            function(updated_user, credential_quotas){
-                console.log("USER AND CREDENTIALS",updated_user, credential_quotas)
+        })
+            .then(function(credential_quotas){
+                console.log("USER AND CREDENTIALS", credential_quotas)
                 //calculate the amount of space free.
 
                 var status_obj = {

@@ -25,7 +25,7 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
                 .from('credentials')
                 .where('user_id', auth.uid)
                 .then(function(credentials){
-                    console.log("Found credentials for user", auth.uid, credentials.length);
+                    console.log("Found credentials for user", auth.uid, credentials);
                     var storage_info_promises = credentials.map(function(cred){
                         var deferred = q.defer();
 
