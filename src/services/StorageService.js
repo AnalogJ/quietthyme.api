@@ -19,15 +19,13 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
 
     return q.spread([JWTokenService.verify(token), DBService.get()],
         function(auth, db_client){
-            db_client.select()
+            return db_client.select()
                 .from('credentials')
                 .where('user_id', auth.uid)
 
                 .then(function(credentials){
                     console.log("Found credentials for user", auth.uid, credentials.length);
                     var storage_info_promises = credentials.map(function(cred){
-
-
                         var deferred = q.defer();
 
                         console.log("Requesting Quota", cred.service_type, cred.service_id);

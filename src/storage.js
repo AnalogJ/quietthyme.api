@@ -80,7 +80,7 @@ module.exports = {
 
         });
 
-        q.spread([user_calibre_id_promise,credential_quota_promises],
+        return q.spread([user_calibre_id_promise,credential_quota_promises],
             function(updated_user, credential_quotas){
                 console.log("USER AND CREDENTIALS",updated_user, credential_quotas)
                 //calculate the amount of space free.
@@ -129,7 +129,7 @@ module.exports = {
                 return status_obj
             })
             .then(function(status_obj){
-                console.log(">>>>> DESTROYING DB")
+                console.log(">>>>> DESTROYING DB", status_obj)
                 DBService.destroy().then(function(){
                     return cb(null, status_obj)
                 })
