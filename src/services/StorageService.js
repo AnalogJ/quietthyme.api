@@ -1,7 +1,8 @@
 require('dotenv').config();
 var q = require('q'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
-    JWTokenService = require('./JWTokenService');
+    JWTokenService = require('./JWTokenService'),
+    DBService = require('./DBService')
 
 
 
@@ -35,7 +36,7 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
 
                             console.log("Credential info:", cred_info)
                             deferred.resolve(quota_transform_callback(cred, cred_info));
-                        })
+                        });
 
                         return deferred.promise
                     });
