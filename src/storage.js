@@ -86,23 +86,20 @@ module.exports = {
                 //calculate the amount of space free.
 
                 var status_obj = {
-                    'success': true,
-                    'data': {
-                        'settings': {
-                            'main': {
-                                'device_store_uuid': '113a769a-cade-11e4-8731-1681e6b88ec1',
-                                'device_name': 'QuietThyme '+ process.env.NODE_ENV,
-                                'prefix': 'quietthyme://',
-                                'storage_type': 'quietthyme',
-                                'location_code': 'main',
-                                'last_library_uuid': req.query.library_uuid,
-                                'free_space': 0,
-                                'total_space': 1000000,
-                                'calibre_version': '2.6.0',
-                                'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
-                            }
-                            //'B': None, not stored
+                    'settings': {
+                        'main': {
+                            'device_store_uuid': '113a769a-cade-11e4-8731-1681e6b88ec1',
+                            'device_name': 'QuietThyme '+ process.env.NODE_ENV,
+                            'prefix': 'quietthyme://',
+                            'storage_type': 'quietthyme',
+                            'location_code': 'main',
+                            'last_library_uuid': req.query.library_uuid,
+                            'free_space': 0,
+                            'total_space': 1000000,
+                            'calibre_version': '2.6.0',
+                            'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
                         }
+                        //'B': None, not stored
                     }
                 };
                 var location_codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -112,7 +109,7 @@ module.exports = {
                     var location_settings = credential_quotas[ndx];
                     location_settings['location_code'] = location_code;
                     location_settings['date_last_connected'] = '2014-12-18T16:24:59.541905+00:00'
-                    status_obj.data.settings[location_code] = location_settings;
+                    status_obj.settings[location_code] = location_settings;
                 }
                 /*
                  'A': {
