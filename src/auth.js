@@ -100,7 +100,7 @@ module.exports = {
         console.log('calibre auth ');
         // if no library_uuid is present, throw an error.
         if(!event.query.library_uuid) {
-            console.debug('No calibre library_uuid present', event.query.library_uuid)
+            console.log('No calibre library_uuid present', event.query.library_uuid)
             return new HttpError('No calibre library_uuid present', 500)
         }
 

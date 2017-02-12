@@ -45,12 +45,12 @@ module.exports = {
     },
 
     status: function (event, context, cb) {
-        console.debug("STATUS============================QUERY")
-        console.debug(event.query)
-        console.debug("STATUS============================PARAMS")
-        console.debug(event.path)
-        console.debug("STATUS============================HEADERS")
-        console.debug(event.headers)
+        console.log("STATUS============================QUERY")
+        console.log(event.query)
+        console.log("STATUS============================PARAMS")
+        console.log(event.path)
+        console.log("STATUS============================HEADERS")
+        console.log(event.headers)
         //res.setHeader('Cache-Control', 'public, max-age=31557600');
         var user_calibre_id_promise = q({})
         //TODO: this code was commented out because the library_uuid can be None. so we need to write code to handle this later.

@@ -16,7 +16,7 @@ module.exports = {
                 console.log(event.body)
 
                 if(!event.query.source){
-                    console.debug('No source present, dont know where this book is from', event.query.source)
+                    console.log('No source present, dont know where this book is from', event.query.source)
                     throw new HttpError('No source present, dont know where this book is from. Should always be calibre', 500)
                 }
 
