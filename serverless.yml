@@ -292,6 +292,8 @@ functions:
 
   storagestatus:
     handler: src/storage.status
+    timeout: 120
+    memorySize: 512
     events:
       - http:
           path: storage/status
