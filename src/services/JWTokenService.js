@@ -25,7 +25,7 @@ module.exports.issue = function(payload) {
 };
 
 // Verifies token on a request
-module.exports.verify = function(event, callback) {
+module.exports.verify = function(event) {
     var deferred = q.defer();
     var token;
 

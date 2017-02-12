@@ -1,8 +1,45 @@
 require('dotenv').config();
 var StorageService = require('./services/StorageService');
+var JWTokenService = require('./services/JWTokenService');
 var q = require('q');
 
 module.exports = {
+
+    callback: function(event, context, cb) {
+        // // TODO: VALIDATE the token before saving. https://developers.kloudless.com/docs/v1/authentication
+
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client){
+                return db_client('credentials')
+                    .insert({
+                        "user_id": auth.id,
+                        "service_type": event.body.account.service,
+                        "service_id": event.body.account.id,
+                        "email": event.body.account.account,
+                        "oauth": event.body
+
+                    })
+            })
+            .then(function(user){
+                console.log(">>>>> DESTROYING DB")
+                DBService.destroy().then(function(){
+                    return cb(null, {
+                        service_type: event.body.account.service
+                    })
+
+                })
+
+
+            })
+            .fail(function(err){
+                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
+                console.log('failed to login via calibre library')
+                console.log(err.toString())
+                cb(null, err.toString())
+            })
+            .done()
+    },
+
     status: function (event, context, cb) {
         console.debug("STATUS============================QUERY")
         console.debug(event.query)

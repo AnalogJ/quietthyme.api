@@ -28,6 +28,9 @@ exports.up = function(knex, Promise) {
             table.string('name');
             table.string('email');
             table.json('oauth');
+
+            table.unique(['service_type', 'service_id']);
+
             table.timestamps();
         }),
 

@@ -213,6 +213,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+
   authlogin:
     handler: src/auth.login
     events:
@@ -222,6 +223,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+
   authcalibre:
     handler: src/auth.calibre
     events:
@@ -242,6 +244,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
   bookcreate:
     handler: src/book.create
@@ -252,6 +255,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
   bookfind:
     handler: src/book.find
@@ -262,6 +266,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
   bookdestroy:
     handler: src/book.destroy
@@ -272,6 +277,18 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
+
+  storagecallback:
+    handler: src/storage.callback
+    events:
+      - http:
+          path: storage/callback
+          method: POST
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
+          request: ${self:custom.authRequests}
 
   storagestatus:
     handler: src/storage.status
@@ -282,6 +299,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
   storageupload:
     handler: src/storage.upload
@@ -292,6 +310,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
   storagethumbupload:
     handler: src/storage.thumb_upload
@@ -302,6 +321,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
 
   storagelink:
@@ -313,6 +333,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+          request: ${self:custom.authRequests}
 
 #   you can add any of the following events
 #   events:
