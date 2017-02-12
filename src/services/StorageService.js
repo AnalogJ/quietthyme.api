@@ -21,9 +21,9 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
     return q.spread([JWTokenService.verify(token), DBService.get()],
         function(auth, db_client){
             console.log(auth)
-            return db_client.select()
+            return q(db_client.select()
                 .from('credentials')
-                .where('user_id', auth.uid)
+                .where('user_id', auth.uid))
                 .then(function(credentials){
                     console.log("Found credentials for user", auth.uid, credentials);
                     var storage_info_promises = credentials.map(function(cred){
