@@ -11,9 +11,11 @@ module.exports = {
 
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
+
+                console.log("AUTH DATA", auth)
                 return db_client('credentials')
                     .insert({
-                        "user_id": auth.id,
+                        "user_id": auth.uid,
                         "service_type": event.body.account.service,
                         "service_id": event.body.account.id,
                         "email": event.body.account.account,

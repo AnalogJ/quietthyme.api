@@ -34,7 +34,7 @@ module.exports = {
                     console.dir(user)
 
                     return cb(null, {
-                        token: JWTokenService.issue({id: user.id })
+                        token: JWTokenService.issue({uid: user.uid })
                     })
                 })
             })
@@ -81,7 +81,7 @@ module.exports = {
                     console.dir(user)
 
                     return cb(null, {
-                        token: JWTokenService.issue({id: user.id })
+                        token: JWTokenService.issue({uid: user.uid })
                     })
                 })
             })
@@ -130,7 +130,7 @@ module.exports = {
 
                     return cb(null, {
                         user: user,
-                        token: JWTokenService.issue({id: user.id })
+                        token: JWTokenService.issue({uid: user.uid })
                     })
 
                 })
