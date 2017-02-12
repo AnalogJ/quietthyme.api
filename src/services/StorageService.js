@@ -1,76 +1,49 @@
-var q = require('q');
+require('dotenv').config();
+var q = require('q'),
+    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Filefog releated storage methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//list of storage_types that are enabled.
-module.exports.storage_types = ['dropbox','google','box','skydrive'];
-
-module.exports.get_storage_client = function(storage_type,user_id,credential){
-    var genericProvider = sails.config.filefog.provider(storage_type);
-    var genericClient = null;
-    if(genericProvider.getConfig().interfaces.indexOf("oauth") != -1){
-
-        var credential_promise = q(credential);
-        if(!credential){
-            var query = new sails.config.Parse.Query('Credential');
-            query.equalTo('user', ParseService.pointer('_User',user_id));
-            query.equalTo('service_type',storage_type);
-            credential_promise = query.first({ useMasterKey: true })
-        }
-        genericClient = credential_promise
-            .then(function(credential){
-                if(SecurityService.is_oauth_token_expired(credential)){
-                    sails.log.verbose("credential exipred, refreshing")
-                    return genericProvider.oAuthRefreshAccessToken(credential.get('oauth_data'))
-                        .then(function(refreshed_oauth_data){
-                            credential.set('oauth_data',refreshed_oauth_data);
-                            return credential.save(null,{ useMasterKey: true });
-                        })
-                        .then(function(refreshed_credential){
-                            return genericProvider.getClient(refreshed_credential.get('oauth_data'), refreshed_credential.get('options') || {})
-                        })
-                }
-                else{
-                    return genericProvider.getClient(credential.get('oauth_data'), credential.get('options') || {})
-                }
-            });
-    }
-
-    return genericClient;
-}
-
-
-module.exports.get_storage_quotas = function(user_id, quota_transform_callback){
+module.exports.get_storage_quotas = function(token, quota_transform_callback){
     if(!quota_transform_callback){
         quota_transform_callback = function(storage_type, quota_info){
             return [storage_type, quota_info]
         }
     }
 
-    var credential_query = new sails.config.Parse.Query('Credential');
-    credential_query.equalTo('user', ParseService.pointer('_User',user_id));
-    return q(credential_query.find({ useMasterKey: true }))
-        .then(function(credentials){
-            console.log("Found credentials for user", user_id, credentials.length);
-            var storage_info_promises = credentials.map(function(cred){
-                return StorageService.get_storage_client(cred.get('service_type'), user_id, cred)
-                    .then(function(client){
-                        sails.log.debug('Request Quota', cred.get('service_type'));
-                        return client.checkQuota()
-                    })
-                    .then(function(quota_info){
-                        sails.log.debug('GOT QUOTA',cred.get('service_type'), quota_info);
+    return q.spread([JWTokenService.verify(token), DBService.get()],
+        function(auth, db_client){
+            db_client.select()
+                .from('credentials')
+                .where('user_id', auth.uid)
 
-                        return quota_transform_callback(cred, quota_info);
+                .then(function(credentials){
+                    console.log("Found credentials for user", auth.uid, credentials.length);
+                    var storage_info_promises = credentials.map(function(cred){
 
-                    })
-            });
-            return q.all(storage_info_promises)
+
+                        var deferred = q.defer();
+
+                        console.log("Requesting Quota", cred.service_type, cred.service_id);
+                        kloudless.accounts.get({account_id: cred.service_id, retrieve_full: true}, function(err, cred_info){
+                            if(err) return deferred.reject(err);
+
+                            console.log("Credential info:", cred_info)
+                            deferred.resolve(quota_transform_callback(cred, cred_info));
+                        })
+
+                        return deferred.promise
+                    });
+                    return q.all(storage_info_promises)
+
+            })
         })
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper/Shared private methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

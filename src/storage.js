@@ -6,6 +6,7 @@ var q = require('q');
 
 module.exports = {
 
+    //this function will store credentials created by kloudless on the front-end.
     link: function(event, context, cb) {
         // // TODO: VALIDATE the token before saving. https://developers.kloudless.com/docs/v1/authentication
 
@@ -66,14 +67,14 @@ module.exports = {
         //    user_calibre_id_promise = User.update(req.user.id, {calibre_id:req.query.library_uuid})
         //}
 
-        var credential_quota_promises = StorageService.get_storage_quotas(req.token.id, function(cred, quota_info){
+        var credential_quota_promises = StorageService.get_storage_quotas(event.token, function(cred, quota_info){
             return {
                 'device_name': cred.get('service_type'),
                 'prefix': cred.get('service_type') +'://',
                 'storage_type': cred.get('service_type'),
-                'last_library_uuid': req.query.library_uuid,
-                'free_space': quota_info.total_bytes - quota_info.used_bytes,
-                'total_space': quota_info.total_bytes,
+                'last_library_uuid': event.query.library_uuid,
+                'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
+                'total_space': 1000000, //quota_info.total_bytes,
                 'calibre_version': '2.6.0'
             }
 
@@ -81,7 +82,7 @@ module.exports = {
 
         q.spread([user_calibre_id_promise,credential_quota_promises],
             function(updated_user, credential_quotas){
-                sails.log.debug("USER AND CREDENTIALS",updated_user, credential_quotas)
+                console.log("USER AND CREDENTIALS",updated_user, credential_quotas)
                 //calculate the amount of space free.
 
                 var status_obj = {
@@ -127,16 +128,21 @@ module.exports = {
                  'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
                  }
                  * */
-                sails.log.debug("RESPONSE STATUS", status_obj)
-                return res.json(status_obj)
+                console.log("RESPONSE STATUS", status_obj)
+                return status_obj
             })
-            .fail(function(err){
-                sails.log.debug("ERROR RETRIEVING STORAGE STATUS", err, err.stack)
-                return res.status(500).json({
-                    'success': false,
-                    error_msg: "Something when wrong while retrieving status"
+            .then(function(status_obj){
+                console.log(">>>>> DESTROYING DB")
+                DBService.destroy().then(function(){
+                    return cb(null, status_obj)
                 })
             })
+            .fail(function(err){
+                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
+                console.log(err.toString())
+                cb(null, err.toString())
+            })
+            .done()
     },
     upload: function (event, context, cb) {
         cb(null,

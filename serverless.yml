@@ -123,7 +123,7 @@ custom:
     OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
 
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
-    CLOUDRAIL_API_KEY: ${env:${opt:stage, self:provider.stage}_CLOUDRAIL_API_KEY, env:CLOUDRAIL_API_KEY}
+    KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
 
   writeEnvVars:
     DOMAIN: ${self:custom.variables.DOMAIN}
@@ -142,7 +142,7 @@ custom:
     OAUTH_SKYDRIVE_CLIENT_SECRET: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_SECRET}
 
     PG_CONNECTION_STRING: ${self:custom.variables.PG_CONNECTION_STRING}
-    CLOUDRAIL_API_KEY: ${self:custom.variables.CLOUDRAIL_API_KEY}
+    KLOUDLESS_API_KEY: ${self:custom.variables.KLOUDLESS_API_KEY}
     DEBUG: knex:*,pool2
     NODE_ENV: production
 

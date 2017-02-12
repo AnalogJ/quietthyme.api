@@ -4,7 +4,8 @@ var q = require('q'),
     DBService = require('./services/DBService'),
     AuthService = require('./services/AuthService'),
     JWTokenService = require('./services/JWTokenService'),
-    SecurityService = require('./services/SecurityService');
+    SecurityService = require('./services/SecurityService'),
+    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
 
 module.exports = {
     register: function(event, context, cb){
@@ -146,6 +147,7 @@ module.exports = {
             .done()
     },
 
+    //this function should check the status of a JWT Token for validity
     status: function (event, context, cb) {
         cb(null,
             {
