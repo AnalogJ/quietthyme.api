@@ -67,18 +67,21 @@ module.exports = {
         //    user_calibre_id_promise = User.update(req.user.id, {calibre_id:req.query.library_uuid})
         //}
 
-        StorageService.get_storage_quotas(event.token, function(cred, quota_info){
-            return {
-                'device_name': cred.service_type,
-                'prefix': cred.service_type +'://',
-                'storage_type': cred.service_type,
-                'last_library_uuid': event.query.library_uuid,
-                'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
-                'total_space': 1000000, //quota_info.total_bytes,
-                'calibre_version': '2.6.0'
-            }
-
-        })
+        //TODO: due to issues with kloudless library, we're not actually getting quota info yet.
+        StorageService.get_storage_quotas(event.token)
+            .then(function(credentials){
+                return credentials.map(function(cred){
+                    return {
+                        'device_name': cred.service_type,
+                        'prefix': cred.service_type +'://',
+                        'storage_type': cred.service_type,
+                        'last_library_uuid': event.query.library_uuid,
+                        'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
+                        'total_space': 1000000, //quota_info.total_bytes,
+                        'calibre_version': '2.6.0'
+                    }
+                })
+            })
             .then(function(credential_quotas){
                 console.log("USER AND CREDENTIALS", credential_quotas)
                 //calculate the amount of space free.
