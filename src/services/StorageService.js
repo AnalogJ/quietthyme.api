@@ -30,6 +30,7 @@ module.exports.get_storage_quotas = function(token, quota_transform_callback){
                         var deferred = q.defer();
 
                         console.log("Requesting Quota", cred.service_type, cred.service_id);
+                        console.log(process.env.KLOUDLESS_API_KEY);
                         kloudless.accounts.get({account_id: cred.service_id}, function(err, cred_info){
                             if(err) return deferred.reject(err);
 
