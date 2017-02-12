@@ -1,6 +1,7 @@
 require('dotenv').config();
 var q = require('q'),
-    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
+    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
+    JWTokenService = require('./JWTokenService');
 
 
 
