@@ -1,5 +1,6 @@
 require('dotenv').config();
 var StorageService = require('./services/StorageService');
+var DBService = require('./services/DBService');
 var JWTokenService = require('./services/JWTokenService');
 var q = require('q');
 
