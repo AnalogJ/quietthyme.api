@@ -5,7 +5,7 @@ module.exports = {
     successHandler: function(cb){
         var _cb = cb;
         return function(resp_data){
-            console.log("DESTROYING DB")
+            console.log("Returning Successful data:", resp_data)
             DBService.destroy().then(function(){
                 return _cb(null, resp_data)
             })
@@ -33,7 +33,7 @@ module.exports = {
                 //do nothing for now.
             }
 
-            if(!err.status){
+            if(!err.status && !err.code){
                 err.code = 400;
             }
 

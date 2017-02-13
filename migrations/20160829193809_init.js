@@ -21,10 +21,11 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('credentials', function(table) {
             table.increments('id').primary();
             table.integer('user_id')
+                .notNullable()
                 .references('uid')
                 .inTable('users');
-            table.string('service_type');
-            table.string('service_id');
+            table.string('service_type').notNullable();
+            table.string('service_id').notNullable();
             table.string('name');
             table.string('email');
             table.json('oauth');
@@ -37,6 +38,7 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('books', function(table){
             table.increments('id').primary();
             table.integer('user_id')
+                .notNullable()
                 .references('uid')
                 .inTable('users');
             table.integer('credential_id')
@@ -78,12 +80,6 @@ exports.up = function(knex, Promise) {
             table.string('thumb');
 
             table.timestamps();
-        }),
-
-        knex.schema.createTable('login_sessions', function(table) {
-            table.string('id').primary();
-            table.text('auth_data');
-            table.timestamps();
         })
     ])
 };
@@ -93,6 +89,5 @@ exports.down = function(knex, Promise) {
         knex.schema.dropTable('books'),
         knex.schema.dropTable('credentials'),
         knex.schema.dropTable('users'),
-        knex.schema.dropTable('login_sessions')
     ])
 };
