@@ -13,7 +13,12 @@ module.exports = {
         return q(knex)
     },
     destroy: function(){
-        return knex.destroy()
+        if(knex){
+            return knex.destroy()
+        }
+        else{
+            return q({})
+        }
     }
 };
 
