@@ -288,6 +288,7 @@ functions:
 
   storagelink:
     handler: src/storage.link
+    timeout: 300 #TODO, this should be returned back to default. 
     events:
       - http:
           path: storage/link
