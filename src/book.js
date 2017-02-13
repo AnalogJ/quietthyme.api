@@ -30,10 +30,10 @@ module.exports = {
 
                         //make sure we cleanup arrays (tags & authors) before inserting
                         if(Array.isArray(book_data['tags'])){
-                            book_data['tags'] = JSON.stringify(book_data['tags'])
+                            book_data['tags'] = "ARRAY" + JSON.stringify(book_data['tags'])
                         }
                         if(Array.isArray(book_data['authors'])){
-                            book_data['authors'] = JSON.stringify(book_data['authors'])
+                            book_data['authors'] = "ARRAY" + JSON.stringify(book_data['authors'])
                         }
 
                         return db_client('books')
