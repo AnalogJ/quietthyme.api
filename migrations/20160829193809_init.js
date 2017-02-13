@@ -15,7 +15,8 @@ exports.up = function(knex, Promise) {
 
             table.string('catalog_token').nullable().unique();
 
-            table.timestamps();
+            table.timestamp('created_at').defaultTo(knex.fn.now());
+            table.timestamp('updated_at').defaultTo(knex.fn.now());
         }),
 
         knex.schema.createTable('credentials', function(table) {
@@ -32,7 +33,8 @@ exports.up = function(knex, Promise) {
 
             table.unique(['service_type', 'service_id']);
 
-            table.timestamps();
+            table.timestamp('created_at').defaultTo(knex.fn.now());
+            table.timestamp('updated_at').defaultTo(knex.fn.now());
         }),
 
         knex.schema.createTable('books', function(table){
@@ -79,7 +81,8 @@ exports.up = function(knex, Promise) {
             table.string('cover');
             table.string('thumb');
 
-            table.timestamps();
+            table.timestamp('created_at').defaultTo(knex.fn.now());
+            table.timestamp('updated_at').defaultTo(knex.fn.now());
         })
     ])
 };

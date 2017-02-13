@@ -26,13 +26,14 @@ module.exports = {
                     .then(function (db_client) {
                         var book_data = event.body;
                         book_data.user_id = token.uid;
-                        
+
                         return db_client('books')
+                            .returning('id')
                             .insert(book_data)
                     })
             })
-            .then(function(book){
-                return book.id
+            .then(function(book_id){
+                return {id: book_id}
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
