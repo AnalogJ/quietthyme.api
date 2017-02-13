@@ -26,6 +26,16 @@ module.exports = {
                     .then(function (db_client) {
                         var book_data = event.body;
                         book_data.user_id = token.uid;
+
+
+                        //make sure we cleanup arrays (tags & authors) before inserting
+                        if(Array.isArray(book_data['tags'])){
+                            book_data['tags'] = JSON.stringify(book_data['tags'])
+                        }
+                        if(Array.isArray(book_data['authors'])){
+                            book_data['authors'] = JSON.stringify(book_data['authors'])
+                        }
+
                         return db_client('books')
                             .insert(book_data)
                     })
