@@ -47,11 +47,11 @@ exports.up = function(knex, Promise) {
 
             table.string('title');
             table.float('average_rating');
-            table.string('short_summary');
+            table.text('short_summary');
             table.string('publisher');
             table.date('published_date');
-            table.specificType('tags', 'jsonb[]');
-            table.specificType('authors', 'jsonb[]');
+            table.specificType('tags', 'text[]');
+            table.specificType('authors', 'text[]');
             table.date('last_modified');
 
             table.json('user_categories');
