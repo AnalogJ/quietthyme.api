@@ -2,13 +2,13 @@
   "QuietThymeContentBucket": {
     "Type" : "AWS::S3::Bucket",
     "Properties": {
-      "BucketName" : "${opt:stage, self:provider.stage}-${self:service}-content"
+      "BucketName" : "${self:service}-${opt:stage, self:provider.stage}-content"
     }
   },
   "QuietThymeUploadBucket": {
     "Type" : "AWS::S3::Bucket",
     "Properties": {
-      "BucketName" : "${opt:stage, self:provider.stage}-${self:service}-upload"
+      "BucketName" : "${self:service}-${opt:stage, self:provider.stage}-upload"
     }
   }
 }
