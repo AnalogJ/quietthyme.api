@@ -21,7 +21,6 @@ module.exports = {
 
                 console.log("AUTH DATA", auth)
                 return db_client('credentials')
-                    .returning(['id', 'service_id','service_type'])
                     .insert({
                         "user_id": auth.uid,
                         "service_type": event.body.account.service,
@@ -32,21 +31,21 @@ module.exports = {
                     })
                     .then(function(new_cred){
                         //now we have to create the required QuietThyme folders.
-
-                        return KloudlessService.folderCreate(new_cred.service_id,'QuietThyme','root')
+                        console.log("CREATED CRED", new_cred)
+                        return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
                             .then(function(root_folder){
                                 console.log("ROOT FOLDER", root_folder)
                                 return[
                                     q(root_folder),
-                                    KloudlessService.folderCreate(new_cred.service_id,'library',root_folder.id),
-                                    KloudlessService.folderCreate(new_cred.service_id,'blackhole',root_folder.id)
+                                    KloudlessService.folderCreate(event.body.account.id,'library',root_folder.id),
+                                    KloudlessService.folderCreate(event.body.account.id,'blackhole',root_folder.id)
                                 ]
                             })
                             .spread(function(root_folder, library_folder, blackhole_folder){
                                 console.log(root_folder, library_folder, blackhole_folder)
 
                                 return db_client('credentials')
-                                    .where('id', '=', new_cred.id)
+                                    .where('id', '=', new_cred[0])
                                     .update({
                                         'root_folder_id': root_folder.id, //this is the service specific "QuietThyme" folder that all sub folders are created in.
                                         'library_folder_id': library_folder.id, //this is "library" folder that all author folders are created in.
