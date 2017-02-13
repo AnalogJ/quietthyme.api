@@ -5,6 +5,7 @@ var q = require('q'),
     AuthService = require('./services/AuthService'),
     JWTokenService = require('./services/JWTokenService'),
     SecurityService = require('./services/SecurityService'),
+    Helpers = require('./common/helpers'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
 
 module.exports = {
@@ -30,21 +31,12 @@ module.exports = {
             })
 
             .then(function(user){
-                console.log(">>>>> DESTROYING DB")
-                DBService.destroy().then(function(){
-                    console.dir(user)
-
-                    return cb(null, {
-                        token: JWTokenService.issue({uid: user.uid })
-                    })
-                })
+                return {
+                    token: JWTokenService.issue({uid: user.uid })
+                }
             })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log('failed to login via calibre library')
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
 
     },
@@ -74,24 +66,13 @@ module.exports = {
                         }
                     })
             })
-
-
             .then(function(user){
-                console.log(">>>>> DESTROYING DB")
-                DBService.destroy().then(function(){
-                    console.dir(user)
-
-                    return cb(null, {
-                        token: JWTokenService.issue({uid: user.uid })
-                    })
-                })
+                return {
+                    token: JWTokenService.issue({uid: user.uid })
+                }
             })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log('failed to login via calibre library')
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
     },
 

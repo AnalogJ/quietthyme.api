@@ -1,7 +1,8 @@
 require('dotenv').config();
 var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
-    HttpError = require('./common/HttpError')
+    HttpError = require('./common/HttpError'),
+    Helpers = require('./common/helpers')
 module.exports = {
     create: function (event, context, cb) {
 
@@ -30,21 +31,10 @@ module.exports = {
                     })
             })
             .then(function(book){
-                console.log(">>>>> DESTROYING DB")
-                DBService.destroy().then(function(){
-                    console.dir(book)
-
-                    return cb(null, book.id)
-
-                })
-
-
+                return book.id
             })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
     },
     find: function (event, context, cb) {
@@ -85,22 +75,8 @@ module.exports = {
                     // })
                     // .done()
             })
-            .then(function(books){
-                console.log(">>>>> DESTROYING DB")
-                DBService.destroy().then(function(){
-                    console.dir(books)
-
-                    return cb(null, books)
-
-                })
-
-
-            })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
     },
     destroy: function (event, context, cb) {

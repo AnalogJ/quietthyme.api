@@ -2,6 +2,7 @@ require('dotenv').config();
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var JWTokenService = require('./services/JWTokenService');
+var Helpers = require('./common/helpers')
 var q = require('q');
 
 module.exports = {
@@ -25,22 +26,12 @@ module.exports = {
                     })
             })
             .then(function(user){
-                console.log(">>>>> DESTROYING DB")
-                DBService.destroy().then(function(){
-                    return cb(null, {
-                        service_type: event.body.account.service
-                    })
-
-                })
-
-
+                return {
+                    service_type: event.body.account.service
+                }
             })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log('failed to login via calibre library')
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
     },
 
@@ -129,17 +120,8 @@ module.exports = {
                 console.log("RESPONSE STATUS", status_obj)
                 return status_obj
             })
-            .then(function(status_obj){
-                console.log(">>>>> DESTROYING DB", status_obj)
-                DBService.destroy().then(function(){
-                    return cb(null, status_obj)
-                })
-            })
-            .fail(function(err){
-                console.log(">>>> FINISHED DB TRANSACTION WITH ERROR")
-                console.log(err.toString())
-                cb(null, err.toString())
-            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
             .done()
     },
     upload: function (event, context, cb) {
