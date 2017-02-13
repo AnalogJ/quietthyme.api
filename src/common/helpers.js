@@ -1,3 +1,4 @@
+var DBService = require('../services/DBService')
 module.exports = {
 
 
