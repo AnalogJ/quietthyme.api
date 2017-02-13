@@ -5,7 +5,7 @@ var JWTokenService = require('./services/JWTokenService'),
 module.exports = {
     create: function (event, context, cb) {
 
-        JWTokenService.verify(event)
+        JWTokenService.verify(event.token)
             .then(function(token) {
 
                 console.log("CREATE BOOK ============================PARAMS")
@@ -24,7 +24,7 @@ module.exports = {
                 return DBService.get()
                     .then(function (db_client) {
                         var book_data = event.body;
-                        book_data.user_id = token.id;
+                        book_data.user_id = token.uid;
                         return db_client('books')
                             .insert(book_data)
                     })
@@ -48,7 +48,7 @@ module.exports = {
             .done()
     },
     find: function (event, context, cb) {
-        JWTokenService.verify(event)
+        JWTokenService.verify(event.token)
             .then(function(token){
                 if(!event.query.storage_type) {
                     console.warn('No storage_type present, returning books from all storage providers.', event.query.service_type)
@@ -58,10 +58,10 @@ module.exports = {
                     .then(function(db_client){
                         var book_query = db_client.select()
                             .from('books')
-                            .where('user_id', token.id)
+                            .where('user_id', token.uid)
 
                         if(event.query.storage_type){
-                            book_query.where('owner', event.query.storage_type);
+                            book_query.where('storage_type', event.query.storage_type);
                         }
 
 

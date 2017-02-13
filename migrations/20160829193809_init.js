@@ -73,6 +73,7 @@ exports.up = function(knex, Promise) {
             table.string('barnesnoble_id');
 
             // cover art urls
+            table.string('storage_type');
             table.string('cover');
             table.string('thumb');
 
