@@ -50,8 +50,8 @@ exports.up = function(knex, Promise) {
             table.string('short_summary');
             table.string('publisher');
             table.date('published_date');
-            table.json('tags');
-            table.json('authors');
+            table.specificType('tags', 'jsonb[]');
+            table.specificType('authors', 'jsonb[]');
             table.date('last_modified');
 
             table.json('user_categories');

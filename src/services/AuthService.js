@@ -14,6 +14,7 @@ authService.createEmailUser = function(db_client, name, email, password){
         function(catalog_token, password_hash){
             console.log('creating user');
             return db_client('users')
+                .returning(['uid', 'catalog_token','email'])
                 .insert({
                     "name": name,
                     "email": email,
