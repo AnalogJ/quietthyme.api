@@ -24,9 +24,6 @@ authService.createEmailUser = function(db_client, name, email, password){
         })
 }
 
-
-
-
 authService.createCalibreUser = function(db_client, library_uuid){
     return SecurityService.generate_catalog_token()
         .then(function(catalog_token){
