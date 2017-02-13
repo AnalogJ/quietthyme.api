@@ -146,6 +146,13 @@ custom:
     DEBUG: knex:*,pool2
     NODE_ENV: production
 
+    # content bucket contains thumbnails and files that will be served directly from S3.
+    QUIETTHYME_CONTENT_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-content
+
+    # upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
+    # - files manually uploaded via WebUI
+    QUIETTHYME_UPLOAD_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-upload
+
 
 # you can add packaging information here
 package:
@@ -303,22 +310,49 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
-  storageupload:
-    handler: src/storage.upload
+  storagepreparebook:
+    handler: src/storage.prepare_book
+    timeout: 120
+    memorySize: 128
     events:
       - http:
-          path: storage/upload
+          path: storage/prepare/book
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
+          request: ${self:custom.authRequests}
+
+  storagepreparethumb:
+    handler: src/storage.prepare_thumb
+    timeout: 120
+    memorySize: 128
+    events:
+      - http:
+          path: storage/prepare/thumb
+          method: GET
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
+          request: ${self:custom.authRequests}
+
+
+  storageuploadbook:
+    handler: src/storage.upload_book
+    events:
+      - http:
+          path: storage/upload/book
           method: POST
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
           request: ${self:custom.authRequests}
 
-  storagethumbupload:
-    handler: src/storage.thumb_upload
+  storageuploadthumb:
+    handler: src/storage.upload_thumb
     events:
       - http:
-          path: storage/thumb/upload
+          path: storage/upload/thumb
           method: POST
           response: ${self:custom.standardResponses}
           integration: lambda

@@ -2,8 +2,13 @@ require('dotenv').config();
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var JWTokenService = require('./services/JWTokenService');
+var KloudlessService = require('./services/KloudlessService');
 var Helpers = require('./common/helpers')
 var q = require('q');
+
+
+var AWS = require('aws-sdk');
+var s3 = new AWS.S3({apiVersion: '2006-03-01'})
 
 module.exports = {
 
@@ -16,12 +21,38 @@ module.exports = {
 
                 console.log("AUTH DATA", auth)
                 return db_client('credentials')
+                    .returning(['id', 'service_id','service_type'])
                     .insert({
                         "user_id": auth.uid,
                         "service_type": event.body.account.service,
                         "service_id": event.body.account.id,
                         "email": event.body.account.account,
                         "oauth": event.body
+
+                    })
+                    .then(function(new_cred){
+                        //now we have to create the required QuietThyme folders.
+
+                        return KloudlessService.folderCreate(new_cred.service_id,'QuietThyme','root')
+                            .then(function(root_folder){
+                                console.log("ROOT FOLDER", root_folder)
+                                return[
+                                    q(root_folder),
+                                    KloudlessService.folderCreate(new_cred.service_id,'library',root_folder.id),
+                                    KloudlessService.folderCreate(new_cred.service_id,'blackhole',root_folder.id)
+                                ]
+                            })
+                            .spread(function(root_folder, library_folder, blackhole_folder){
+                                console.log(root_folder, library_folder, blackhole_folder)
+
+                                return db_client('credentials')
+                                    .where('id', '=', new_cred.id)
+                                    .update({
+                                        'root_folder_id': root_folder.id, //this is the service specific "QuietThyme" folder that all sub folders are created in.
+                                        'library_folder_id': library_folder.id, //this is "library" folder that all author folders are created in.
+                                        'blackhole_folder_id': blackhole_folder.id
+                                    })
+                            })
 
                     })
             })
@@ -124,7 +155,13 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     },
-    upload: function (event, context, cb) {
+
+    prepare_book: function (event, context, cb) {
+        // this function will create the Author folder for this book, in storage_type specfied
+
+        var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: 'key', Expires: 60};
+        var url = s3.getSignedUrl('getObject', params);
+        console.log('The URL is', url); // expires in 60 seconds
         cb(null,
             {
                 message: 'Go Serverless v1.0! Your function executed successfully!',
@@ -132,7 +169,26 @@ module.exports = {
             }
         );
     },
-    thumb_upload: function (event, context, cb) {
+
+    prepare_thumb: function (event, context, cb) {
+        cb(null,
+            {
+                message: 'Go Serverless v1.0! Your function executed successfully!',
+                event: event
+            }
+        );
+    },
+
+
+    upload_book: function (event, context, cb) {
+        cb(null,
+            {
+                message: 'Go Serverless v1.0! Your function executed successfully!',
+                event: event
+            }
+        );
+    },
+    upload_thumb: function (event, context, cb) {
         cb(null,
             {
                 message: 'Go Serverless v1.0! Your function executed successfully!',
