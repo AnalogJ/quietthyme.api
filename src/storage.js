@@ -178,7 +178,7 @@ module.exports = {
                 ]
             })
             .spread(function(credential, book){
-                var key = credential.id + '/' + book.id + '/' + event.body.filename + '.' + event.body.format
+                var key = credential.id + '/' + book.id + '/' + event.body.filename  + event.body.format;
 
                 var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: key, Expires: 60};
                 console.log("PARAMS", params)
