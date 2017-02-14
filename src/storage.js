@@ -90,15 +90,15 @@ module.exports = {
             .then(function(credentials){
 
                 console.log("FOUND CREDENTIALS", credentials)
-                return credentials.map(function(cred){
+                return credentials.map(function(credential_storage_info){
                     return {
-                        'device_name': cred.service_type,
-                        'prefix': cred.service_type +'://',
-                        'storage_type': cred.service_type,
-                        'storage_id': cred.service_id,
+                        'device_name': credential_storage_info.credential.service_type,
+                        'prefix': credential_storage_info.credential.service_type +'://',
+                        'storage_type': credential_storage_info.credential.service_type,
+                        'storage_id': credential_storage_info.credential.id,
                         'last_library_uuid': event.query.library_uuid,
-                        'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
-                        'total_space': 1000000, //quota_info.total_bytes,
+                        'free_space': 0, //credential_storage_info.storage_info.quota.total - credential_storage_info.storage_info.quota.used,  quota_info.total_bytes - quota_info.used_bytes,
+                        'total_space': 1000000, //credential_storage_info.storage_info.quota.total,
                         'calibre_version': '2.6.0'
                     }
                 })

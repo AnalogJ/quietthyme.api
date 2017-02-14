@@ -29,11 +29,11 @@ module.exports.get_storage_quotas = function(token){
                         kloudless.accounts.get({account_id: cred.service_id,
                             queryParams: {
                                 retrieve_full: true
-                            }}, function(err, cred_info){
+                            }}, function(err, service_info){
                             if(err) return deferred.reject(err);
 
-                            console.log("Credential info:", cred_info)
-                            deferred.resolve(cred_info);
+                            console.log("Credential info:", service_info)
+                            deferred.resolve({credential: cred, service_info: service_info});
                         });
 
                         return deferred.promise
