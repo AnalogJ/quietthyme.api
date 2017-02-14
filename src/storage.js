@@ -170,7 +170,7 @@ module.exports = {
                         id: event.body.storage_id
                     }),
                     db_client.first()
-                        .from('book')
+                        .from('books')
                         .where({
                             user_id: auth.uid,
                             id: event.body.book_id
