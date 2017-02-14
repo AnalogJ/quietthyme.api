@@ -37,7 +37,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource: "*"
+      Resource: "arn:aws:s3:::${self:service}-${opt:stage, self:provider.stage}-*"
 #  vpc:
 #    securityGroupIds:
 #      - sg-bbb818c3
