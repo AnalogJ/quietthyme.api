@@ -158,19 +158,27 @@ module.exports = {
 
     prepare_book: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
-
+        // TODO: this function shoulc check if the book file already exists.
 
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
-                return db_client.first()
+                return [
+                    db_client.first()
                     .from('credentials')
                     .where({
                         user_id: auth.uid,
                         id: event.body.storage_id
-                    })
+                    }),
+                    db_client.first()
+                        .from('book')
+                        .where({
+                            user_id: auth.uid,
+                            id: event.body.book_id
+                        }),
+                ]
             })
-            .then(function(credential){
-                var key = credential.id + '/' + event.body.filename + '.' + event.body.format
+            .spread(function(credential, book){
+                var key = credential.id + '/' + book.id + '/' + event.body.filename + '.' + event.body.format
 
                 var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: 'key', Expires: 60};
                 console.log("PARAMS", params)
