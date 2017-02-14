@@ -34,12 +34,12 @@ provider:
         - "ec2:DetachNetworkInterface"
         - "ec2:DeleteNetworkInterface"
       Resource: "*"
-  vpc:
-    securityGroupIds:
-      - sg-bbb818c3
-    subnetIds:
-      - subnet-afea3085
-      - subnet-297de85f
+#  vpc:
+#    securityGroupIds:
+#      - sg-bbb818c3
+#    subnetIds:
+#      - subnet-afea3085
+#      - subnet-297de85f
 
 custom:
 
