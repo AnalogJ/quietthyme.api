@@ -45,7 +45,7 @@ module.exports = {
                                 console.log(root_folder, library_folder, blackhole_folder)
 
                                 return db_client('credentials')
-                                    .where('id', '=', new_cred.id)
+                                    .where('id', '=', new_cred[0].id)
                                     .update({
                                         'root_folder_id': root_folder.id, //this is the service specific "QuietThyme" folder that all sub folders are created in.
                                         'library_folder_id': library_folder.id, //this is "library" folder that all author folders are created in.
