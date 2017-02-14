@@ -28,10 +28,10 @@ module.exports = {
                         "email": event.body.account.account,
                         "oauth": event.body
 
-                    })
+                    },['id', 'service_type'])
                     .then(function(new_cred){
                         //now we have to create the required QuietThyme folders.
-                        console.log("CREATED CRED", new_cred[0])
+                        console.log("CREATED CRED", new_cred.id)
                         return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
                             .then(function(root_folder){
                                 console.log("ROOT FOLDER", root_folder)
@@ -45,7 +45,7 @@ module.exports = {
                                 console.log(root_folder, library_folder, blackhole_folder)
 
                                 return db_client('credentials')
-                                    .where('id', '=', new_cred[0])
+                                    .where('id', '=', new_cred.id)
                                     .update({
                                         'root_folder_id': root_folder.id, //this is the service specific "QuietThyme" folder that all sub folders are created in.
                                         'library_folder_id': library_folder.id, //this is "library" folder that all author folders are created in.
