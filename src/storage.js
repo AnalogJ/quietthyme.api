@@ -31,7 +31,7 @@ module.exports = {
                     },['id', 'service_type'])
                     .then(function(new_cred){
                         //now we have to create the required QuietThyme folders.
-                        console.log("CREATED CRED", new_cred.id)
+                        console.log("CREATED CRED", new_cred)
                         return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
                             .then(function(root_folder){
                                 console.log("ROOT FOLDER", root_folder)
