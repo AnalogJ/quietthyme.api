@@ -34,6 +34,10 @@ provider:
         - "ec2:DetachNetworkInterface"
         - "ec2:DeleteNetworkInterface"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "*"
 #  vpc:
 #    securityGroupIds:
 #      - sg-bbb818c3
