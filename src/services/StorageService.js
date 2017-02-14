@@ -19,25 +19,28 @@ module.exports.get_storage_quotas = function(token){
             return q(db_client.select()
                 .from('credentials')
                 .where('user_id', auth.uid))
-                // .then(function(credentials){
-                //     console.log("Found credentials for user", auth.uid, credentials);
-                //     var credential_info_promises = credentials.map(function(cred){
-                //         var deferred = q.defer();
-                //
-                //         console.log("Requesting Quota", cred.service_type, cred.service_id);
-                //         console.log(process.env.KLOUDLESS_API_KEY);
-                //         kloudless.accounts.get({account_id: cred.service_id}, function(err, cred_info){
-                //             if(err) return deferred.reject(err);
-                //
-                //             console.log("Credential info:", cred_info)
-                //             deferred.resolve(cred_info);
-                //         });
-                //
-                //         return deferred.promise
-                //     });
-                //
-                //     return q.all(credential_info_promises)
-                // })
+                .then(function(credentials){
+                    console.log("Found credentials for user", auth.uid, credentials);
+                    var credential_info_promises = credentials.map(function(cred){
+                        var deferred = q.defer();
+
+                        console.log("Requesting Quota", cred.service_type, cred.service_id);
+                        console.log(process.env.KLOUDLESS_API_KEY);
+                        kloudless.accounts.get({account_id: cred.service_id,
+                            queryParams: {
+                                retrieve_full: true
+                            }}, function(err, cred_info){
+                            if(err) return deferred.reject(err);
+
+                            console.log("Credential info:", cred_info)
+                            deferred.resolve(cred_info);
+                        });
+
+                        return deferred.promise
+                    });
+
+                    return q.all(credential_info_promises)
+                })
         })
 
 }

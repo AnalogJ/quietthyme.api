@@ -88,11 +88,14 @@ module.exports = {
         //TODO: due to issues with kloudless library, we're not actually getting quota info yet.
         StorageService.get_storage_quotas(event.token)
             .then(function(credentials){
+
+                console.log("FOUND CREDENTIALS", credentials)
                 return credentials.map(function(cred){
                     return {
                         'device_name': cred.service_type,
                         'prefix': cred.service_type +'://',
                         'storage_type': cred.service_type,
+                        'storage_id': cred.service_id,
                         'last_library_uuid': event.query.library_uuid,
                         'free_space': 0, //quota_info.total_bytes - quota_info.used_bytes,
                         'total_space': 1000000, //quota_info.total_bytes,
@@ -111,6 +114,7 @@ module.exports = {
                             'device_name': 'QuietThyme '+ process.env.NODE_ENV,
                             'prefix': 'quietthyme://',
                             'storage_type': 'quietthyme',
+                            'storage_id': 0,
                             'location_code': 'main',
                             'last_library_uuid': event.query.library_uuid,
                             'free_space': 0,
