@@ -10,7 +10,7 @@ var q = require('q'),
 // Kloudless related storage methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module.exports.get_storage_quotas = function(token){
+module.exports.get_user_storage = function(token){
 
     console.log("GET STORAGE QUTOAS")
     return q.spread([JWTokenService.verify(token), DBService.get()],

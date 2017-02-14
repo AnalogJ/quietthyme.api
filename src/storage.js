@@ -86,7 +86,7 @@ module.exports = {
         //}
 
         //TODO: due to issues with kloudless library, we're not actually getting quota info yet.
-        StorageService.get_storage_quotas(event.token)
+        StorageService.get_user_storage(event.token)
             .then(function(credentials){
 
                 console.log("FOUND CREDENTIALS", credentials)
@@ -159,15 +159,29 @@ module.exports = {
     prepare_book: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
 
-        var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: 'key', Expires: 60};
-        var url = s3.getSignedUrl('getObject', params);
-        console.log('The URL is', url); // expires in 60 seconds
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client){
+                return db_client.first()
+                    .from('credentials')
+                    .where({
+                        user_id: auth.uid,
+                        id: event.body.storage_id
+                    })
+            })
+            .then(function(credential){
+                var key = credential.id + '/' + event.body.filename + '.' + event.body.format
+
+                var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: 'key', Expires: 60};
+                console.log("PARAMS", params)
+                var payload = {upload_url: s3.getSignedUrl('putObject', params)}
+                console.log(payload)
+                return payload
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+
     },
 
     prepare_thumb: function (event, context, cb) {

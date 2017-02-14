@@ -318,7 +318,7 @@ functions:
     events:
       - http:
           path: storage/prepare/book
-          method: GET
+          method: POST
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
@@ -331,7 +331,7 @@ functions:
     events:
       - http:
           path: storage/prepare/thumb
-          method: GET
+          method: POST
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
