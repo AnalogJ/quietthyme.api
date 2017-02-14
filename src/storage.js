@@ -19,7 +19,6 @@ module.exports = {
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
 
-                console.log("AUTH DATA", auth)
                 return db_client('credentials')
                     .insert({
                         "user_id": auth.uid,
@@ -31,10 +30,8 @@ module.exports = {
                     },['id', 'service_type'])
                     .then(function(new_cred){
                         //now we have to create the required QuietThyme folders.
-                        console.log("CREATED CRED", new_cred)
                         return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
                             .then(function(root_folder){
-                                console.log("ROOT FOLDER", root_folder)
                                 return[
                                     q(root_folder),
                                     KloudlessService.folderCreate(event.body.account.id,'library',root_folder.id),

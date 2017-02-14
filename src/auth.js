@@ -33,7 +33,7 @@ module.exports = {
             .then(function(user){
                 console.log("NEWLY CREATED USER:",user);
                 return {
-                    token: JWTokenService.issue({uid: user.uid })
+                    token: JWTokenService.issue({uid: user[0].uid })
                 }
             })
             .then(Helpers.successHandler(cb))
