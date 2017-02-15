@@ -1,5 +1,5 @@
 {
-  "S3Bucket${self:service}-${opt:stage, self:provider.stage}-content": {
+  "QuietThymeContentBucket": {
     "Type" : "AWS::S3::Bucket",
     "Properties": {
       "BucketName" : "${self:service}-${opt:stage, self:provider.stage}-content"
@@ -16,15 +16,15 @@
             "Effect":"Allow",
             "Principal": "*",
             "Action":["s3:GetObject"],
-            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "S3Bucket${self:service}-${opt:stage, self:provider.stage}-content"}, "/*" ]]}
+            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "QuietThymeContentBucket"}, "/*" ]]}
           }
         ]
       },
-      "Bucket" : {"Ref" : "S3Bucket${self:service}-${opt:stage, self:provider.stage}-content"}
+      "Bucket" : {"Ref" : "QuietThymeContentBucket"}
     }
   },
 
-  "S3Bucket${self:service}-${opt:stage, self:provider.stage}-upload": {
+  "QuietThymeUploadBucket": {
     "Type" : "AWS::S3::Bucket",
     "Properties": {
       "BucketName" : "${self:service}-${opt:stage, self:provider.stage}-upload"
@@ -41,11 +41,11 @@
             "Effect":"Allow",
             "Principal": "*",
             "Action":["s3:GetObject"],
-            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "S3Bucket${self:service}-${opt:stage, self:provider.stage}-upload"}, "/*" ]]}
+            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "QuietThymeUploadBucket"}, "/*" ]]}
           }
         ]
       },
-      "Bucket" : {"Ref" : "S3Bucket${self:service}-${opt:stage, self:provider.stage}-upload"}
+      "Bucket" : {"Ref" : "QuietThymeUploadBucket"}
     }
   }
 }

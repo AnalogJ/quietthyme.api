@@ -1,0 +1,54 @@
+---
+
+
+# serverless has issues if we create a bucket in CF and reference it as an event.
+# so we're going to let serverless create the bucket, and only reference it in CF policy
+# https://github.com/serverless/serverless/issues/2967
+QuietThymeContentBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: "${self:service}-${opt:stage, self:provider.stage}-content"
+QuietThymeUploadBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: "${self:service}-${opt:stage, self:provider.stage}-upload"
+
+QuietThymeContentBucketPolicy:
+  Type: AWS::S3::BucketPolicy
+  Properties:
+    PolicyDocument:
+      Id: Grant read-only access to public users
+      Statement:
+      - Sid: PublicReadPerms
+        Effect: Allow
+        Principal: "*"
+        Action:
+        - s3:GetObject
+        Resource:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:s3:::'
+            - Ref: QuietThymeContentBucket
+            - "/*"
+    Bucket:
+      Ref: QuietThymeContentBucket
+
+QuietThymeUploadBucketPolicy:
+  Type: AWS::S3::BucketPolicy
+  Properties:
+    PolicyDocument:
+      Id: Grant access readonly access to public users
+      Statement:
+      - Sid: PublicReadPerms
+        Effect: Allow
+        Principal: "*"
+        Action:
+        - s3:GetObject
+        Resource:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:s3:::'
+            - Ref: QuietThymeUploadBucket
+            - "/*"
+    Bucket:
+      Ref: QuietThymeUploadBucket
