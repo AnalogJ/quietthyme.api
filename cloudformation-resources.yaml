@@ -1,17 +1,9 @@
 ---
 
-
-# serverless has issues if we create a bucket in CF and reference it as an event.
-# so we're going to let serverless create the bucket, and only reference it in CF policy
-# https://github.com/serverless/serverless/issues/2967
 QuietThymeContentBucket:
   Type: AWS::S3::Bucket
   Properties:
     BucketName: "${self:service}-${opt:stage, self:provider.stage}-content"
-QuietThymeUploadBucket:
-  Type: AWS::S3::Bucket
-  Properties:
-    BucketName: "${self:service}-${opt:stage, self:provider.stage}-upload"
 
 QuietThymeContentBucketPolicy:
   Type: AWS::S3::BucketPolicy
@@ -28,10 +20,21 @@ QuietThymeContentBucketPolicy:
           Fn::Join:
           - ''
           - - 'arn:aws:s3:::'
-            - Ref: QuietThymeContentBucket
+            - Ref: "QuietThymeContentBucket"
             - "/*"
     Bucket:
-      Ref: QuietThymeContentBucket
+      Ref: "QuietThymeContentBucket"
+
+# serverless has issues if we create a bucket in CF and reference it as an event.
+# so we're going to let serverless create the bucket, and only reference it in CF policy
+# https://github.com/serverless/serverless/issues/2967
+# https://serverless.com/framework/docs/providers/aws/guide/resources/#aws-cloudformation-resource-reference
+
+#QuietThymeUploadBucket:
+#  Type: AWS::S3::Bucket
+#  Properties:
+#    BucketName: "${self:service}-${opt:stage, self:provider.stage}-upload"
+
 
 QuietThymeUploadBucketPolicy:
   Type: AWS::S3::BucketPolicy
@@ -48,7 +51,7 @@ QuietThymeUploadBucketPolicy:
           Fn::Join:
           - ''
           - - 'arn:aws:s3:::'
-            - Ref: QuietThymeUploadBucket
+            - Ref: "S3BucketQuietthymeapi${opt:stage, self:provider.stage}upload"
             - "/*"
     Bucket:
-      Ref: QuietThymeUploadBucket
+      Ref: "S3BucketQuietthymeapi${opt:stage, self:provider.stage}upload"
