@@ -12,11 +12,11 @@
         "Id"           : "Grant access to all account users",
         "Statement":[
           {
-            "Sid":"AddPerm",
+            "Sid":"PublicReadPerms",
             "Effect":"Allow",
             "Principal": "*",
             "Action":["s3:GetObject"],
-            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "QuietThymeContentBucket"} ]]}
+            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "QuietThymeContentBucket"}, "/*" ]]}
           }
         ]
       },
