@@ -2,12 +2,13 @@ require('dotenv').config();
 var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),
-    Helpers = require('./common/helpers')
+    Helpers = require('./common/helpers'),
+    q = require('q')
 module.exports = {
     create: function (event, context, cb) {
 
-        JWTokenService.verify(event.token)
-            .then(function(token) {
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client) {
 
                 console.log("CREATE BOOK ============================PARAMS")
                 console.log(event.path)
@@ -22,15 +23,12 @@ module.exports = {
                 }
 
                 ///TODO: validate that the book properties match the database columns.
-                return DBService.get()
-                    .then(function (db_client) {
-                        var book_data = event.body;
-                        book_data.user_id = token.uid;
+                var book_data = event.body;
+                book_data.user_id = auth.uid;
 
-                        return db_client('books')
-                            .returning('id')
-                            .insert(book_data)
-                    })
+                return db_client('books')
+                    .returning('id')
+                    .insert(book_data)
             })
             .then(function(book_result){
                 return {id: book_result[0]}
@@ -40,54 +38,67 @@ module.exports = {
             .done()
     },
     find: function (event, context, cb) {
-        JWTokenService.verify(event.token)
-            .then(function(token){
-                if(!event.query.storage_type) {
-                    console.warn('No storage_type present, returning books from all storage providers.', event.query.service_type)
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client) {
+
+                if(!event.query.storage_id) {
+                    console.warn('No storage_id present, returning books from all storage providers.', event.query.storage_id)
                 }
 
-                return DBService.get()
-                    .then(function(db_client){
+                var condition = {'user_id': auth.uid}
+                if(event.query.storage_id){
+                    condition['credential_id'] = event.query.storage_id;
+                }
 
-                        var condition = {'user_id': token.uid}
-                        if(event.query.storage_id){
-                            condition['credential_id'] = event.query.storage_id;
-                        }
+                var book_query = db_client.select()
+                    .from('books')
+                    .where(condition)
 
-                        var book_query = db_client.select()
-                            .from('books')
-                            .where(condition)
-
-                        if(event.query.page || event.query.page === 0){
-                            book_query.limit(50);
-                            book_query.offset(event.query.page * 50)
-                        }
-                        else{
-                            //no pagination. force max limit
-                            book_query.limit(1000)
-                        }
-                        return book_query
-                    })
-                    // .then(function(books){
-                    //     //todo: possibly filter out books that dont have a bookstorage.
-                    //     return res.json({success:true, data:books});
-                    // })
-                    // .fail(function(err){
-                    //     sails.log.error("An error occured while retrieving books.", err, err.stack);
-                    //     return res.status(500).json({success:false, error_msg:err})
-                    // })
-                    // .done()
+                if(event.query.page || event.query.page === 0){
+                    book_query.limit(50);
+                    book_query.offset(event.query.page * 50)
+                }
+                else{
+                    //no pagination. force max limit
+                    book_query.limit(1000)
+                }
+                return book_query
+                // .then(function(books){
+                //     //todo: possibly filter out books that dont have a bookstorage.
+                //     return res.json({success:true, data:books});
+                // })
+                // .fail(function(err){
+                //     sails.log.error("An error occured while retrieving books.", err, err.stack);
+                //     return res.status(500).json({success:false, error_msg:err})
+                // })
+                // .done()
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
     },
     destroy: function (event, context, cb) {
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client) {
+
+                if(!event.path.id){
+                    console.log('No book specified', event.path.id)
+                    throw new HttpError('No book specified', 500)
+                }
+
+                var book_data = event.body;
+                book_data.user_id = auth.uid;
+
+                return db_client('books')
+                    .where({
+                        user_id: auth.uid,
+                        id: event.path.id
+                    })
+                    .del()
+
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
     }
 }
