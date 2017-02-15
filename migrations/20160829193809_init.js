@@ -52,6 +52,14 @@ exports.up = function(knex, Promise) {
                 .references('id')
                 .inTable('credentials');
 
+            //these storage_* entries + credential_id will be loaded on initial creation.
+            table.string('storage_type'); //this is duplicated in the credential_id, but allows us to create nice urls.
+            table.integer('storage_size'); //size in bytes.
+            table.string('storage_identifier');
+            table.string('storage_file_name'); //just used to generate a nice looking file path.
+            table.string('storage_format');
+
+
             table.string('title');
             table.float('average_rating');
             table.text('short_summary');
@@ -83,7 +91,7 @@ exports.up = function(knex, Promise) {
 
             // cover art urls
             table.string('cover');
-            table.string('thumb');
+            table.string('thumb'); // for future use. should always be null.
 
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.timestamp('updated_at').defaultTo(knex.fn.now());

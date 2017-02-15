@@ -48,14 +48,15 @@ module.exports = {
 
                 return DBService.get()
                     .then(function(db_client){
-                        var book_query = db_client.select()
-                            .from('books')
-                            .where('user_id', token.uid)
 
-                        if(event.query.storage_type){
-                            book_query.where('storage_type', event.query.storage_type);
+                        var condition = {'user_id': token.uid}
+                        if(event.query.storage_id){
+                            condition['credential_id'] = event.query.storage_id;
                         }
 
+                        var book_query = db_client.select()
+                            .from('books')
+                            .where(condition)
 
                         if(event.query.page || event.query.page === 0){
                             book_query.limit(50);

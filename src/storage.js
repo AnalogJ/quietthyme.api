@@ -162,7 +162,7 @@ module.exports = {
         // TODO: this function should handle quietthyme storage creds
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
-                return [
+                return q.spread([
                     db_client.first()
                     .from('credentials')
                     .where({
@@ -175,16 +175,31 @@ module.exports = {
                             user_id: auth.uid,
                             id: event.body.book_id
                         }),
-                ]
-            })
-            .spread(function(credential, book){
-                var key = credential.id + '/' + book.id + '/' + event.body.filename  + event.body.format;
+                ], function(credential, book){
+                    var key = credential.id + '/' + book.id + '/' + event.body.storage_filename  + event.body.format;
 
-                var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: key, Expires: 60};
-                console.log("PARAMS", params)
-                var payload = {upload_url: s3.getSignedUrl('putObject', params)}
-                console.log(payload)
-                return payload
+                    var book_data = {
+                        'storage_type': 'quietthyme',
+                        'storage_identifier': key, //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                        'storage_size': event.body.storage_size,
+                        'storage_filename': event.body.storage_filename,
+                        'storage_format': event.body.format
+                    }
+
+                    return db_client('books')
+                        .where('id', '=', book.id)
+                        .update(book_data)
+                        .then(function(){
+                            var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: key, Expires: 60};
+                            console.log("PARAMS", params)
+                            var payload = {
+                                book_data: book_data,
+                                upload_url: s3.getSignedUrl('putObject', params)
+                            }
+                            console.log(payload)
+                            return payload
+                        })
+                })
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
@@ -207,20 +222,20 @@ module.exports = {
                         var key = StorageService.create_user_content_identifier(auth.uid) + '/' +
                             StorageService.create_storage_identifier_from_filename(event.body.filename, 'image')  + event.body.format;
 
+                        var book_data = {
+                            'cover': key
+                        }
+
                         return db_client('books')
                             .where('id', '=', book.id)
-                            .update({
-                                'cover': key, //this is the service specific "QuietThyme" folder that all sub folders are created in.
-                            })
+                            .update(book_data)
                             .then(function(){
                                 var params = {Bucket: process.env.QUIETTHYME_CONTENT_BUCKET, Key: key, Expires: 60};
                                 console.log("PARAMS", params)
-                                var payload = {upload_url: s3.getSignedUrl('putObject', params)}
+                                var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)}
                                 console.log(payload)
                                 return payload
                             })
-
-
                     })
             })
 
