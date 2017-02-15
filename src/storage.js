@@ -244,6 +244,79 @@ module.exports = {
             .done()
     },
 
+    download: function(req, res){
+
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client){
+                return db_client.first()
+                    .from('books')
+                    .where({
+                        user_id: auth.uid,
+                        id: event.body.id
+                    })
+                    .then(function(book){
+                        var payload = {
+                            statusCode: 302,
+                            headers: {
+                                "Location": null
+                            },
+                            body: ""
+                        };
+                        //check if the book storage_type is populated, if not, then we need to return
+                        if(!book.storage_type || !book.storage_identifier){
+                            return q.reject(new Error('Could not find storage'))
+                        }
+                        else if(book.storage_type == 'quietthyme'){
+                            //book is stored in S3, lets get it from there.
+                            //storage_identifier for s3 is bucket/key
+                            var identifier_parts = book.storage_identifier.split('/');
+                            var bucket = identifier_parts.shift();
+                            var key = identifier_parts.join('/')
+
+                            var params = {Bucket: bucket, Key: key, Expires: 60};
+                            console.log("PARAMS", params)
+                            payload.headers.Location = s3.getSignedUrl('getObject', params)
+                            console.log(payload)
+                        }
+
+
+                        return payload
+
+                    })
+            })
+
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+
+
+
+        var query = new sails.config.Parse.Query('Book');
+        return query.get(req.params.id,{ useMasterKey: true })
+            .then(function(book){
+
+                if(!book){
+                    sails.log.error('Book not found:', req.params.id);
+                    throw new Error('Book not found');
+                }
+                res.setHeader("Content-Type", sails.config.constants.file_extensions[book.get('storage_format')].mimetype);
+                res.setHeader("Content-Disposition","attachment; filename=" + book.get('storage_file_name') + '.'+ book.get('storage_format'));
+                return StorageService.get_storage_client(book.get('storage_type'),req.token.id)
+                    .then(function(client){
+
+                        return client.downloadFile(book.get('storage_identifier'))
+                    })
+            })
+            .then(function(bookstorage_data){
+                sails.log.info("SUCCESS")
+                return res.send(bookstorage_data.data);
+            })
+            .fail(function(err){
+                sails.log.info("ERROR",err);
+                return res.serverError(err);
+            })
+    },
+
 
     upload_book: function (event, context, cb) {
         cb(null,

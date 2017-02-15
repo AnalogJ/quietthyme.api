@@ -37,6 +37,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
+        - "s3:GetObject"
       Resource: "arn:aws:s3:::${self:service}-${opt:stage, self:provider.stage}-*"
 #  vpc:
 #    securityGroupIds:
@@ -341,6 +342,17 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
+  storagedownload:
+    handler: src/storage.download
+    timeout: 120
+    memorySize: 128
+    events:
+      - http:
+          path: storage/{id}
+          method: GET
+          integration: lambda
+          cors: true
+          request: ${self:custom.authRequests}
 
   storageuploadbook:
     handler: src/storage.upload_book
