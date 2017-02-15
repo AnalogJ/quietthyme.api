@@ -179,6 +179,7 @@ custom:
 
     # upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
     # - files manually uploaded via WebUI
+    # - files uploaded by Calibre client
     QUIETTHYME_UPLOAD_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-upload
 
 
@@ -378,27 +379,16 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
-  storageuploadbook:
-    handler: src/storage.upload_book
+  # this process runs whenever a book is added to upload bucket.
+  # it will then look up the book data in DB and migrate it to the correct
+  # storage provider.
+  storageprocessbook:
+    handler: src/storage.process_book
     events:
-      - http:
-          path: storage/upload/book
-          method: POST
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-          request: ${self:custom.authRequests}
+      - s3:
+          bucket: ${self:service}-${opt:stage, self:provider.stage}-upload
+          event: s3:ObjectCreated:*
 
-  storageuploadthumb:
-    handler: src/storage.upload_thumb
-    events:
-      - http:
-          path: storage/upload/thumb
-          method: POST
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-          request: ${self:custom.authRequests}
 
 
 #   you can add any of the following events

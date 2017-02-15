@@ -93,6 +93,13 @@ exports.up = function(knex, Promise) {
             table.string('cover'); //Image is always stored on AWS, identifier does not have leading '/', and is made up of 'bucket_name/s3_key'
             table.string('thumb'); // for future use. should always be null.
 
+
+            //sources determines when and how book_data_sets update the actual book.
+            //each field in the book has a source (where the data came from).
+            //If the data is manually entered, it is assumed to be of the highest calibre, otherwise it can be overriden
+
+            table.json('sources');
+
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.timestamp('updated_at').defaultTo(knex.fn.now());
         })

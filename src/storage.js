@@ -283,44 +283,11 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
 
-
-
-        // var query = new sails.config.Parse.Query('Book');
-        // return query.get(req.params.id,{ useMasterKey: true })
-        //     .then(function(book){
-        //
-        //         if(!book){
-        //             sails.log.error('Book not found:', req.params.id);
-        //             throw new Error('Book not found');
-        //         }
-        //         res.setHeader("Content-Type", sails.config.constants.file_extensions[book.get('storage_format')].mimetype);
-        //         res.setHeader("Content-Disposition","attachment; filename=" + book.get('storage_file_name') + '.'+ book.get('storage_format'));
-        //         return StorageService.get_storage_client(book.get('storage_type'),req.token.id)
-        //             .then(function(client){
-        //
-        //                 return client.downloadFile(book.get('storage_identifier'))
-        //             })
-        //     })
-        //     .then(function(bookstorage_data){
-        //         sails.log.info("SUCCESS")
-        //         return res.send(bookstorage_data.data);
-        //     })
-        //     .fail(function(err){
-        //         sails.log.info("ERROR",err);
-        //         return res.serverError(err);
-        //     })
     },
 
 
-    upload_book: function (event, context, cb) {
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
-    },
-    upload_thumb: function (event, context, cb) {
+    process_book: function (event, context, cb) {
+        console.log(event)
         cb(null,
             {
                 message: 'Go Serverless v1.0! Your function executed successfully!',

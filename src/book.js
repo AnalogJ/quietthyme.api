@@ -77,7 +77,9 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     },
+
     destroy: function (event, context, cb) {
+        //TODO: we should destroy book storage as well.
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client) {
 
