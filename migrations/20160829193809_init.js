@@ -55,7 +55,7 @@ exports.up = function(knex, Promise) {
             //these storage_* entries + credential_id will be loaded on initial creation.
             table.string('storage_type'); //this is duplicated in the credential_id, but allows us to create nice urls.
             table.integer('storage_size'); //size in bytes.
-            table.string('storage_identifier');
+            table.string('storage_identifier'); // if this is quietthyme storage, storage path will be 'bucket_name/s3_key'
             table.string('storage_filename'); //just used to generate a nice looking file path.
             table.string('storage_format');
 

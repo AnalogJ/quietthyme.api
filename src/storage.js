@@ -269,13 +269,8 @@ module.exports = {
                         else if(book.storage_type == 'quietthyme'){
                             //book is stored in S3, lets get it from there.
                             //storage_identifier for s3 is bucket/key
-                            var identifier_parts = book.storage_identifier.split('/');
-                            var bucket = identifier_parts.shift();
-                            var key = identifier_parts.join('/')
 
-                            var params = {Bucket: bucket, Key: key, Expires: 60};
-                            console.log("PARAMS", params)
-                            payload.headers.Location = s3.getSignedUrl('getObject', params)
+                            payload.headers.Location = "https://s3.amazonaws.com/" + encodeURI(book.storage_identifier)
                             console.log(payload)
                         }
 
@@ -291,30 +286,30 @@ module.exports = {
 
 
 
-        var query = new sails.config.Parse.Query('Book');
-        return query.get(req.params.id,{ useMasterKey: true })
-            .then(function(book){
-
-                if(!book){
-                    sails.log.error('Book not found:', req.params.id);
-                    throw new Error('Book not found');
-                }
-                res.setHeader("Content-Type", sails.config.constants.file_extensions[book.get('storage_format')].mimetype);
-                res.setHeader("Content-Disposition","attachment; filename=" + book.get('storage_file_name') + '.'+ book.get('storage_format'));
-                return StorageService.get_storage_client(book.get('storage_type'),req.token.id)
-                    .then(function(client){
-
-                        return client.downloadFile(book.get('storage_identifier'))
-                    })
-            })
-            .then(function(bookstorage_data){
-                sails.log.info("SUCCESS")
-                return res.send(bookstorage_data.data);
-            })
-            .fail(function(err){
-                sails.log.info("ERROR",err);
-                return res.serverError(err);
-            })
+        // var query = new sails.config.Parse.Query('Book');
+        // return query.get(req.params.id,{ useMasterKey: true })
+        //     .then(function(book){
+        //
+        //         if(!book){
+        //             sails.log.error('Book not found:', req.params.id);
+        //             throw new Error('Book not found');
+        //         }
+        //         res.setHeader("Content-Type", sails.config.constants.file_extensions[book.get('storage_format')].mimetype);
+        //         res.setHeader("Content-Disposition","attachment; filename=" + book.get('storage_file_name') + '.'+ book.get('storage_format'));
+        //         return StorageService.get_storage_client(book.get('storage_type'),req.token.id)
+        //             .then(function(client){
+        //
+        //                 return client.downloadFile(book.get('storage_identifier'))
+        //             })
+        //     })
+        //     .then(function(bookstorage_data){
+        //         sails.log.info("SUCCESS")
+        //         return res.send(bookstorage_data.data);
+        //     })
+        //     .fail(function(err){
+        //         sails.log.info("ERROR",err);
+        //         return res.serverError(err);
+        //     })
     },
 
 
