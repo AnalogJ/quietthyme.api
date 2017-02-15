@@ -244,7 +244,7 @@ module.exports = {
             .done()
     },
 
-    download: function(req, res){
+    download: function(event, context, cb){
 
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
