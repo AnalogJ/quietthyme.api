@@ -176,7 +176,7 @@ module.exports = {
                             id: event.body.book_id
                         }),
                 ], function(credential, book){
-                    var key = credential.id + '/' + book.id + '/' + event.body.storage_filename  + event.body.format;
+                    var key = credential.id + '/' + book.id + '/' + event.body.storage_filename  + event.body.storage_format;
 
                     var book_data = {
                         'storage_type': 'quietthyme',
@@ -256,11 +256,9 @@ module.exports = {
                     })
                     .then(function(book){
                         var payload = {
-                            statusCode: 302,
                             headers: {
                                 "Location": null
-                            },
-                            body: ""
+                            }
                         };
                         //check if the book storage_type is populated, if not, then we need to return
                         if(!book.storage_type || !book.storage_identifier){

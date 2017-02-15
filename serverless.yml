@@ -108,6 +108,29 @@ custom:
           application/json: ${self:custom.errorResponseTemplate}
         pattern: '.*\[500\].*'
 
+  redirectResponse:
+    headers:
+      Location: "integration.response.body.headers.Location"
+      Content-Type: "'application/json'"
+    template: ${self:custom.standardResponseTemplate}
+    statusCodes:
+      302:
+        pattern: ''
+        template:
+          application/json: "{}"
+      400:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[400\].*'
+      404:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[404\].*'
+      500:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[500\].*'
+
   variables:
     master:
       cleanup_enabled: true
@@ -350,6 +373,7 @@ functions:
       - http:
           path: storage/{id}
           method: GET
+          response: ${self:custom.redirectResponse}
           integration: lambda
           cors: true
           request: ${self:custom.authRequests}
