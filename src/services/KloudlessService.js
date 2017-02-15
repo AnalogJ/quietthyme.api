@@ -23,7 +23,7 @@ kloudlessService.fileUpload = function(account_id, filename, parent_id, filestre
     kloudless.files.upload({
         account_id: account_id,
         parent_id: parent_id || 'root',
-        name: name,
+        name: filename,
         file: filestream
     }, function(err, res) {
         if (err) return deferred.reject(err);
