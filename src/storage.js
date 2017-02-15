@@ -252,7 +252,7 @@ module.exports = {
                     .from('books')
                     .where({
                         user_id: auth.uid,
-                        id: event.body.id
+                        id: event.path.id
                     })
                     .then(function(book){
                         var payload = {
