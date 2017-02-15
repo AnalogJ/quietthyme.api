@@ -29,4 +29,5 @@ kloudlessService.fileUpload = function(account_id, filename, parent_id, filestre
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
     });
+    return deferred.promise;
 }
