@@ -183,7 +183,7 @@ module.exports = {
                         'storage_identifier': key, //this is the temporary file path in s3, it will almost immediately be stored in s3.
                         'storage_size': event.body.storage_size,
                         'storage_filename': event.body.storage_filename,
-                        'storage_format': event.body.format
+                        'storage_format': event.body.storage_format
                     }
 
                     return db_client('books')
