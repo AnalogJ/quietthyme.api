@@ -1,8 +1,9 @@
 var xkcdPassword = require('xkcd-password');
 var q = require('q');
-
 var bcrypt = require('bcrypt');
 
+
+// These methods are related to verifying users and hashing passwords.
 module.exports.hash_password = function(password) {
     var deferred = q.defer();
     bcrypt.genSalt(10, function(err, salt) {
@@ -26,11 +27,6 @@ module.exports.compare_password = function(attempted_password, existing_hash) {
     });
 
     return deferred.promise;
-};
-
-
-module.exports.is_oauth_token_expired = function(credential){
-    return (credential.get('oauth_data').expires_on && ((new Date()).getTime() > (new Date(credential.get('oauth_data').expires_on)).getTime())) || false;
 };
 
 module.exports.generate_catalog_token = function(){

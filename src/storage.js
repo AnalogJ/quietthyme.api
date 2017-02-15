@@ -159,7 +159,7 @@ module.exports = {
     prepare_book: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
         // TODO: this function shoulc check if the book file already exists.
-
+        // TODO: this function should handle quietthyme storage creds
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
                 return [
@@ -192,13 +192,41 @@ module.exports = {
 
     },
 
-    prepare_thumb: function (event, context, cb) {
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+    prepare_cover: function (event, context, cb) {
+        // this function will create the Author folder for this book, in storage_type specfied
+        // TODO: this function should handle quietthyme storage creds
+        q.spread([JWTokenService.verify(event.token), DBService.get()],
+            function(auth, db_client){
+                return db_client.first()
+                    .from('books')
+                    .where({
+                        user_id: auth.uid,
+                        id: event.body.book_id
+                    })
+                    .then(function(book){
+                        var key = StorageService.create_user_content_identifier(auth.uid) + '/' +
+                            StorageService.create_storage_identifier_from_filename(event.body.filename, 'image')  + event.body.format;
+
+                        return db_client('books')
+                            .where('id', '=', book.id)
+                            .update({
+                                'cover': key, //this is the service specific "QuietThyme" folder that all sub folders are created in.
+                            })
+                            .then(function(){
+                                var params = {Bucket: process.env.QUIETTHYME_CONTENT_BUCKET, Key: key, Expires: 60};
+                                console.log("PARAMS", params)
+                                var payload = {upload_url: s3.getSignedUrl('putObject', params)}
+                                console.log(payload)
+                                return payload
+                            })
+
+
+                    })
+            })
+
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
     },
 
 

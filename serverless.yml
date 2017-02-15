@@ -115,7 +115,7 @@ custom:
     DOMAIN: api.quietthyme.com
     DEPLOY_SHA: ${env:CIRCLE_SHA1}
     STAGE: ${opt:stage, self:provider.stage}
-    ENCRYPTION_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_PASSPHRASE, env:ENCRYPTION_PASSPHRASE}
+    STORAGE_SALT: ${env:${opt:stage, self:provider.stage}_STORAGE_SALT, env:STORAGE_SALT}
     ENCRYPTION_JWT_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_JWT_PASSPHRASE, env:ENCRYPTION_JWT_PASSPHRASE}
     OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
     OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
@@ -133,7 +133,7 @@ custom:
     DOMAIN: ${self:custom.variables.DOMAIN}
     DEPLOY_SHA: ${self:custom.variables.DEPLOY_SHA}
     STAGE: ${self:custom.variables.STAGE}
-    ENCRYPTION_PASSPHRASE: ${self:custom.variables.ENCRYPTION_PASSPHRASE}
+    STORAGE_SALT: ${self:custom.variables.STORAGE_SALT}
     ENCRYPTION_JWT_PASSPHRASE: ${self:custom.variables.ENCRYPTION_JWT_PASSPHRASE}
 
     OAUTH_BOX_CLIENT_KEY: ${self:custom.variables.OAUTH_BOX_CLIENT_KEY}
@@ -328,13 +328,13 @@ functions:
           cors: true
           request: ${self:custom.authRequests}
 
-  storagepreparethumb:
-    handler: src/storage.prepare_thumb
+  storagepreparecover:
+    handler: src/storage.prepare_cover
     timeout: 120
     memorySize: 128
     events:
       - http:
-          path: storage/prepare/thumb
+          path: storage/prepare/cover
           method: POST
           response: ${self:custom.standardResponses}
           integration: lambda

@@ -49,13 +49,19 @@ module.exports.get_user_storage = function(token){
 // Helper/Shared private methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+//this method takes a user_id (1, 2, etc) and hash's it so it can be used to serve publically accessible content in a
+//semi-secure way.
+module.exports.create_user_content_identifier = function(user_id){
+    var data = user_id + process.env.STORAGE_SALT;
+    var crypto = require('crypto');
+    return crypto.createHash('md5').update(data).digest("hex")
+}
 
 module.exports.create_storage_identifier_from_filename = function(filename, type){
     if(type == 'image'){
         return 'images/' + filename;
     }
-    return "files/"+ filename;
+    return "library/"+ filename;
 };
 //
 ////TODO:download the file to adata buffer?
