@@ -360,6 +360,7 @@ module.exports = {
                                 'storage_filename': clean_filename
                             })
                     })
+                //TODO mark the file as can be deleted.
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
@@ -367,5 +368,3 @@ module.exports = {
 
     }
 };
-
-o
