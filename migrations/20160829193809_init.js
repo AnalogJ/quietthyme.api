@@ -90,7 +90,7 @@ exports.up = function(knex, Promise) {
             table.string('barnesnoble_id');
 
             // cover art urls
-            table.string('cover');
+            table.string('cover'); //Image is always stored on AWS, identifier does not have leading '/', and is made up of 'bucket_name/s3_key'
             table.string('thumb'); // for future use. should always be null.
 
             table.timestamp('created_at').defaultTo(knex.fn.now());

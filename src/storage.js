@@ -223,7 +223,7 @@ module.exports = {
                             StorageService.create_storage_identifier_from_filename(event.body.filename, 'image')  + event.body.format;
 
                         var book_data = {
-                            'cover': "https://s3.amazonaws.com/quietthyme-api-beta-content/" + encodeURI(key)
+                            'cover': process.env.QUIETTHYME_CONTENT_BUCKET + '/' + encodeURI(key)
                         }
 
                         return db_client('books')
