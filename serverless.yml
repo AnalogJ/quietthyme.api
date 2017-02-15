@@ -384,6 +384,10 @@ functions:
   # storage provider.
   storageprocessbook:
     handler: src/storage.process_book
+
+    # we should be able to sepecify the s3 event here, but thats broken.
+    # so this configuration is now in the cloudformation-resources.json. sigh.
+    # https://github.com/serverless/serverless/issues/2967
     events:
       - s3:
           bucket: ${self:service}-${opt:stage, self:provider.stage}-upload
