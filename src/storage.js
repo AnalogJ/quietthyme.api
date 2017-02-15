@@ -180,7 +180,7 @@ module.exports = {
 
                     var book_data = {
                         'storage_type': 'quietthyme',
-                        'storage_identifier': key, //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                        'storage_identifier': process.env.QUIETTHYME_UPLOAD_BUCKET + '/' + key, //this is the temporary file path in s3, it will almost immediately be stored in s3.
                         'storage_size': event.body.storage_size,
                         'storage_filename': event.body.storage_filename,
                         'storage_format': event.body.storage_format
