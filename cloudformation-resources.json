@@ -5,6 +5,25 @@
       "BucketName" : "${self:service}-${opt:stage, self:provider.stage}-content"
     }
   },
+  "QuietThymeContentBucketPolicy" : {
+    "Type" : "AWS::S3::BucketPolicy",
+    "Properties" : {
+      "PolicyDocument": {
+        "Id"           : "Grant access to all account users",
+        "Statement":[
+          {
+            "Sid":"AddPerm",
+            "Effect":"Allow",
+            "Principal": "*",
+            "Action":["s3:GetObject"],
+            "Resource":{ "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "QuietThymeContentBucket"} ]]}
+          }
+        ]
+      },
+      "Bucket" : {"Ref" : "QuietThymeContentBucket"}
+    }
+  },
+
   "QuietThymeUploadBucket": {
     "Type" : "AWS::S3::Bucket",
     "Properties": {
