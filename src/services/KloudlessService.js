@@ -17,3 +17,16 @@ kloudlessService.folderCreate = function(account_id, name, parent_id){
     })
     return deferred.promise;
 }
+
+kloudlessService.fileUpload = function(account_id, filename, parent_id, filestream){
+    var deferred = q.defer();
+    kloudless.files.upload({
+        account_id: account_id,
+        parent_id: parent_id || 'root',
+        name: name,
+        file: filestream
+    }, function(err, res) {
+        if (err) return deferred.reject(err);
+        return deferred.resolve(res)
+    });
+}

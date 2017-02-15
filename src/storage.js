@@ -176,12 +176,12 @@ module.exports = {
                             id: event.body.book_id
                         }),
                 ], function(credential, book){
-                    var key = credential.id + '/' + book.id + '/' + event.body.storage_filename  + event.body.storage_format;
+                    var key = StorageService.create_upload_identifier(auth.uid, credential.id, book.id, event.body.storage_filename, event.body.storage_format);
 
                     var book_data = {
                         'credential_id': credential.id, //this will be the correct 'eventual' storage location, after processing
                         'storage_type': 'quietthyme',
-                        'storage_identifier': process.env.QUIETTHYME_UPLOAD_BUCKET + '/' + key, //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                        'storage_identifier': process.env.QUIETTHYME_UPLOAD_BUCKET + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
                         'storage_size': event.body.storage_size,
                         'storage_filename': event.body.storage_filename,
                         'storage_format': event.body.storage_format
@@ -220,8 +220,7 @@ module.exports = {
                         id: event.body.book_id
                     })
                     .then(function(book){
-                        var key = StorageService.create_user_content_identifier(auth.uid) + '/' +
-                            StorageService.create_storage_identifier_from_filename(event.body.filename, 'image')  + event.body.format;
+                        var key = StorageService.create_content_identifier('image', auth.uid, event.body.filename, event.body.format);
 
                         var book_data = {
                             'cover': process.env.QUIETTHYME_CONTENT_BUCKET + '/' + encodeURI(key)
@@ -285,14 +284,88 @@ module.exports = {
 
     },
 
+    //must handle 2 types of events:
+    // - books uploaded via webui to bucketname/USERHASH/user_id/cred_id/NEW/filename
+    // - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
 
+    // if its a new book, we need to process it, if its a calibre book we just need to move it to correct location
     process_book: function (event, context, cb) {
-        console.log(event)
-        cb(null,
-            {
-                message: 'Go Serverless v1.0! Your function executed successfully!',
-                event: event
-            }
-        );
+        var upload_key = event.Records[0].s3.object.key
+        var upload_bucket = event.Records[0].s3.bucket.name
+
+        var upload_key_parts = upload_key.split('/');
+        //ignore the userhash.
+        var user_id = upload_key_parts[1];
+        var cred_id = upload_key_parts[2];
+        var book_id = upload_key_parts[3];
+        var dirty_filename = upload_key_parts[4];
+
+
+        //check if the book is a new book a book
+        var is_new_book = (book_id == 'NEW');
+
+        //check if the book lives on quietthyme storage
+        var is_quietthyme_storage = (cred_id == '0');
+
+
+        if(is_new_book){
+            return cb(new Error("Not Implemented. New books cannot be processed yet."), null)
+        }
+
+        if(is_quietthyme_storage){
+            return cb(new Error("Not Implemented. New quietthyme storage cannot be processed yet."), null)
+        }
+
+        DBService.get()
+            .then(function(db_client){
+                return [db_client.first()
+                    .from('books')
+                    .where({
+                        user_id: user_id,
+                        id: book_id,
+                        credential_id: cred_id
+                    }),
+                    db_client.first()
+                        .from('credentials')
+                        .where({
+                            user_id: user_id,
+                            id: cred_id
+                        }),
+                    db_client
+                    ]
+            })
+            .spread(function(book, credential, db_client){
+                //now we have book information and credential info, lets generate the new book filename.
+                var clean_filename = book.authors[0]
+                if(book.series){
+                    clean_filename += ' - ' + book.series
+                }
+                if(book.series_number){
+                    clean_filename += ' - ' + book.series_number
+                }
+                clean_filename += ' - ' + book.title
+
+                return KloudlessService.fileUpload(
+                        credential.service_id,
+                        clean_filename + book.storage_format,
+                        credential.library_folder_id,
+                        s3.getObject({Bucket:upload_bucket, Key: upload_key}).createReadStream()
+                    )
+                    .then(function(kloudless_upload_resp){
+                        return db_client('book')
+                            .where('id', '=', book.id)
+                            .update({
+                                'storage_type':credential.service_type,
+                                'storage_identifier': kloudless_upload_resp['id'],
+                                'storage_filename': clean_filename
+                            })
+                    })
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+
     }
-}
+};
+
+o

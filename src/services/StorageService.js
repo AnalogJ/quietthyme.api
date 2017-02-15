@@ -42,8 +42,26 @@ module.exports.get_user_storage = function(token){
                     return q.all(credential_info_promises)
                 })
         })
-
 }
+
+
+//content identifiers are publically readable.
+// eg. HASH1234/image/cover/bookname.png
+// HASH1234/library/bookname.epub
+module.exports.create_content_identifier = function(file_type, user_id, filename, extension){
+    return storage_user_hash(user_id) + '/' + storage_identifier_from_filename(filename, file_type) + extension
+}
+
+
+//upload identifiers are for temporary file storage, before the files are processed and moved to content bucket or storage
+//provider
+
+//eg. HASH1234/cred_id/book_id/bookname.epub
+//eg. HASH1234/cred_id/NEW/bookname.epub #bookid NEW is reserved for books which have to be processed/parsed first
+module.exports.create_upload_identifier = function(user_id, cred_id, book_id, filename, extension){
+    return storage_user_hash(user_id) + '/' + user_id + '/' + cred_id + '/' + (book_id || 'NEW') + '/' + filename + extension
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper/Shared private methods
@@ -51,13 +69,13 @@ module.exports.get_user_storage = function(token){
 
 //this method takes a user_id (1, 2, etc) and hash's it so it can be used to serve publically accessible content in a
 //semi-secure way.
-module.exports.create_user_content_identifier = function(user_id){
+function storage_user_hash(user_id){
     var data = user_id + process.env.STORAGE_SALT;
     var crypto = require('crypto');
     return crypto.createHash('md5').update(data).digest("hex")
 }
 
-module.exports.create_storage_identifier_from_filename = function(filename, type){
+function storage_identifier_from_filename(filename, type){
     if(type == 'image'){
         return 'images/' + filename;
     }
