@@ -19,7 +19,6 @@
   "dependencies": {
     "aws-sdk": "^2.5.3",
     "bcrypt": "^0.8.7",
-    "bluebird": "^3.4.6",
     "dotenv": "^2.0.0",
     "jsonwebtoken": "^7.1.9",
     "kloudless": "git://github.com/Kloudless/kloudless-node.git",
@@ -28,6 +27,7 @@
     "oauth": "^0.9.14",
     "pg": "^6.1.0",
     "q": "^1.4.1",
+    "request": "^2.79.0",
     "serverless-plugin-write-env-vars": "^1.0.1",
     "xkcd-password": "^1.2.0"
   }

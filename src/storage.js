@@ -345,11 +345,14 @@ module.exports = {
                 }
                 clean_filename += ' - ' + book.title
 
+
+                //(bearer_token, account_id, filename, parent_id, storage_identifier){
                 return KloudlessService.fileUpload(
+                        credential.oauth.access_token,
                         credential.service_id,
                         clean_filename + book.storage_format,
                         credential.library_folder_id,
-                        s3.getObject({Bucket:upload_bucket, Key: upload_key}).createReadStream()
+                        book.storage_identifier
                     )
                     .then(function(kloudless_upload_resp){
                         return db_client('book')
