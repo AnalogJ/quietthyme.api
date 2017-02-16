@@ -105,8 +105,8 @@ module.exports = {
                         'storage_type': credential_storage_info.credential.service_type,
                         'storage_id': credential_storage_info.credential.id,
                         'last_library_uuid': event.query.library_uuid,
-                        'free_space': credential_storage_info.storage_info.quota.total - credential_storage_info.storage_info.quota.used,  //quota_info.total_bytes - quota_info.used_bytes,
-                        'total_space': credential_storage_info.storage_info.quota.total,
+                        'free_space': credential_storage_info.service_info.quota.total - credential_storage_info.service_info.quota.used,  //quota_info.total_bytes - quota_info.used_bytes,
+                        'total_space': credential_storage_info.service_info.quota.total,
                         'calibre_version': '2.6.0'
                     }
                 })
