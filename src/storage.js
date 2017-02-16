@@ -279,6 +279,10 @@ module.exports = {
                             payload.headers.Location = "https://s3.amazonaws.com/" + encodeURI(book.storage_identifier)
                             console.log(payload)
                         }
+                        else{
+                            //TODO: handle storage download requests from other services.
+                            throw new Error("Storage service download not supported yet.")
+                        }
 
 
                         return payload

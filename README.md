@@ -32,3 +32,6 @@ api.quietthyme.com/v1/catalog/123456
 	- Trusted domains should include beta.quietthyme.com or www.quietthyme.com
 - Kloudless Security Crednetials page.
 	- Register custom app credentials for all storage apps.
+- Storage Services:
+	- Register webhooks for Dropbox, Box, GDrive that push events to kloudless.
+
