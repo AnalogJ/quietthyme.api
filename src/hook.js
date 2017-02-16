@@ -3,7 +3,7 @@ require('dotenv').config();
 var crypto = require('crypto');
 var HttpError = require('./common/HttpError');
 
-module.exports.kloudless = (event, context, callback) => {
+module.exports.kloudless = function(event, context, cb){
 
     //this function should do the following:
     //immediately validate if this is an authenticated callback.
@@ -13,18 +13,18 @@ module.exports.kloudless = (event, context, callback) => {
 
 
     //check if this is a valid callback.
+    console.dir(event)
     var kloudless_signature_header = event.headers['X-Kloudless-Signature']
     if(!kloudless_signature_header){
         console.log('invalid - missing x-kloudless-signature header')
-        return callback({statusCode: 400, body:'Invalid webhook request'})
+        return cb({statusCode: 400, body:'Invalid webhook request'})
     }
 
-    var crypto = require('crypto');
     var hash = crypto.createHmac('SHA256', process.env.KLOUDLESS_API_KEY).update(event.body).digest('base64');
 
     if(hash != kloudless_signature_header){
         console.log('invalid - signature headers dont match', hash, kloudless_signature_header);
-        return callback({statusCode: 400, body:'Invalid signatures dont match'})
+        return cb({statusCode: 400, body:'Invalid signatures dont match'})
     }
 
 
@@ -32,7 +32,7 @@ module.exports.kloudless = (event, context, callback) => {
 
 
     //response should always be kloudless API id.
-    return callback(null, {
+    return cb(null, {
         statusCode: 200,
         body: process.env.KLOUDLESS_API_ID
     });
