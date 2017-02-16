@@ -16,7 +16,7 @@ module.exports.kloudless = (event, context, callback) => {
     var kloudless_signature_header = event.headers['X-Kloudless-Signature']
     if(!kloudless_signature_header){
         console.log('invalid - missing x-kloudless-signature header')
-        return callback(new Error('[400] Invalid webhook request'))
+        return callback({statusCode: 200, body:'Invalid webhook request'})
     }
 
     var crypto = require('crypto');
@@ -24,7 +24,7 @@ module.exports.kloudless = (event, context, callback) => {
 
     if(hash != kloudless_signature_header){
         console.log('invalid - signature headers dont match', hash, kloudless_signature_header);
-        return callback(new Error('[400] Invalid webhook request'))
+        return callback({statusCode: 200, body:'Invalid signatures dont match'})
     }
 
 
