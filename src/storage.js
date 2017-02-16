@@ -29,8 +29,16 @@ module.exports = {
 
                     },['id', 'service_type'])
                     .then(function(new_cred){
-                        //now we have to create the required QuietThyme folders & README.md document
-                        return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
+                        //now we have to create notification webhooks, the QuietThyme folder & subfolders and README.md document
+                        var root_folder_promise = null;
+                        if(event.body.account.service == 'dropbox'){
+                            //dropbox app is sandboxed.
+                            root_folder_promise = q({id: 'root'})
+                        }
+                        else{
+                            root_folder_promise = KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
+                        }
+                        return root_folder_promise
                             .then(function(root_folder){
                                 return[
                                     q(root_folder),

@@ -21,3 +21,14 @@ aws logs get-log-events --log-group-name "/aws/lambda/quietthyme-api-dev-test" -
 
 
 api.quietthyme.com/v1/catalog/123456
+
+
+
+# Instructions
+- Deploy
+- Kloudless App Details page.
+	- Enable event collection for recent activity and collect events checkboxes
+	- Configure current webhooks url
+	- Trusted domains should include beta.quietthyme.com or www.quietthyme.com
+- Kloudless Security Crednetials page.
+	- Register custom app credentials for all storage apps.

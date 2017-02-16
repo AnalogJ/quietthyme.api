@@ -151,6 +151,7 @@ custom:
     OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
 
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
+    KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
     KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
 
   writeEnvVars:
@@ -170,6 +171,7 @@ custom:
     OAUTH_SKYDRIVE_CLIENT_SECRET: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_SECRET}
 
     PG_CONNECTION_STRING: ${self:custom.variables.PG_CONNECTION_STRING}
+    KLOUDLESS_API_ID: ${self:custom.variables.KLOUDLESS_API_ID}
     KLOUDLESS_API_KEY: ${self:custom.variables.KLOUDLESS_API_KEY}
     DEBUG: knex:*,pool2
     NODE_ENV: production
@@ -207,6 +209,13 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
+
+
+  hook:
+    handler: src/hook.kloudless
+      events:
+      - http: POST hook/kloudless
+
 
 # OAUTH connect & callback endpoints
 
