@@ -213,8 +213,8 @@ functions:
 
   hook:
     handler: src/hook.kloudless
-      events:
-      - http: POST hook/kloudless
+    events:
+    - http: POST hook/kloudless
 
 
 # OAUTH connect & callback endpoints
