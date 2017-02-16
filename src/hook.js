@@ -42,11 +42,10 @@ module.exports.kloudless = function(event, context, cb){
                     service_id: event.body.split('=')[1],
                 })
                 .then(function(credential){
-                    return KloudlessService.eventsGet(credential.service_id, credential.event_cursor)
+                    return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
                 })
-                .then(function(events){
+                .spread(function(events, credential){
                     //store the new cursor in the db
-                    console.log("EVENTS GET RESP", events)
                     return db_client.where({id:credential.id}).update({event_cursor:events.cursor})
                         .then(function(){
                             return events;
