@@ -21,7 +21,7 @@ kloudlessService.folderCreate = function(account_id, name, parent_id){
 kloudlessService.fileUpload = function(bearer_token, account_id, filename, parent_id, storage_identifier){
     var deferred = q.defer();
 
-    //the kloudless-node sdk has issues with this, and is missing hte url endpoint
+    //the kloudless-node sdk has issues with file uploads, and is missing ability to pass only url param to endpoint
 
 
     var options = {

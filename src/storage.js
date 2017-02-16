@@ -29,7 +29,7 @@ module.exports = {
 
                     },['id', 'service_type'])
                     .then(function(new_cred){
-                        //now we have to create the required QuietThyme folders.
+                        //now we have to create the required QuietThyme folders & README.md document
                         return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
                             .then(function(root_folder){
                                 return[

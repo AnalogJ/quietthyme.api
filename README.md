@@ -18,3 +18,6 @@ curl -i https://api.quietthyme.com/dev/auth/calibre?library_uuid=12345 \
 
 
 aws logs get-log-events --log-group-name "/aws/lambda/quietthyme-api-dev-test" --log-stream-name "2016/11/07/[\$LATEST]31236a7169424ffc90bfd00aae5294f3" --output text > a.log
+
+
+api.quietthyme.com/v1/catalog/123456
