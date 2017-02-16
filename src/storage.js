@@ -335,32 +335,31 @@ module.exports = {
                     ]
             })
             .spread(function(book, credential, db_client){
-                //now we have book information and credential info, lets generate the new book filename.
-                var clean_filename = book.authors[0]
-                if(book.series){
-                    clean_filename += ' - ' + book.series
-                }
-                if(book.series_number){
-                    clean_filename += ' - ' + book.series_number
-                }
-                clean_filename += ' - ' + book.title
+                // //now we have book information and credential info, lets generate the new book filename.
+                // var clean_filename = book.authors[0]
+                // if(book.series){
+                //     clean_filename += ' - ' + book.series
+                // }
+                // if(book.series_number){
+                //     clean_filename += ' - ' + book.series_number
+                // }
+                // clean_filename += ' - ' + book.title
 
 
                 //(bearer_token, account_id, filename, parent_id, storage_identifier){
                 return KloudlessService.fileUpload(
                         credential.oauth.access_token,
                         credential.service_id,
-                        clean_filename + book.storage_format,
+                        book.storage_filename + book.storage_format,
                         credential.library_folder_id,
                         book.storage_identifier
                     )
                     .then(function(kloudless_upload_resp){
-                        return db_client('book')
+                        return db_client('books')
                             .where('id', '=', book.id)
                             .update({
                                 'storage_type':credential.service_type,
-                                'storage_identifier': kloudless_upload_resp['id'],
-                                'storage_filename': clean_filename
+                                'storage_identifier': kloudless_upload_resp['id']
                             })
                     })
                 //TODO mark the file as can be deleted.
