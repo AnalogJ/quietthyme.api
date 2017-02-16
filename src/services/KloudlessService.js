@@ -22,8 +22,6 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
     var deferred = q.defer();
 
     //the kloudless-node sdk has issues with file uploads, and is missing ability to pass only url param to endpoint
-
-
     var options = {
         url: 'https://api.kloudless.com/v1/accounts/'+account_id + '/storage/files',
         method: 'POST',
@@ -35,7 +33,6 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
             parent_id: parent_id,
             url: 'https://s3.amazonaws.com/' + storage_identifier
         }
-
     };
 
     request(options, function (error, response, body) {
@@ -45,5 +42,17 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
         return deferred.resolve(body)
     });
 
+    return deferred.promise;
+};
+
+kloudlessService.eventsGet = function(account_id, event_cursor){
+    var deferred = q.defer();
+    kloudless.events.get({
+        account_id: account_id,
+        cursor: event_cursor ||'after-auth'
+    }, function(err, res){
+        if (err) return deferred.reject(err);
+        return deferred.resolve(res)
+    })
     return deferred.promise;
 }

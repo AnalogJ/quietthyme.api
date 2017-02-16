@@ -34,8 +34,7 @@ exports.up = function(knex, Promise) {
             table.string('library_folder_id'); //this is "library" folder that all author folders are created in.
             table.string('blackhole_folder_id'); //this is "blackhole" folder that pending books should be copied into.
 
-
-
+            table.string('event_cursor')
             table.unique(['service_type', 'service_id']);
 
             table.timestamp('created_at').defaultTo(knex.fn.now());
