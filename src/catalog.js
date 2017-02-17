@@ -258,7 +258,7 @@ module.exports = {
     //#  /catalog/{{token}}/books/{{page}} -- alphabetical list of books
     books: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var page = (event.query.page | 0);
+        var page = (event.path.page | 0);
         var path = "/books/" + (page || "")
 
         return CatalogService.findUserByToken(token)
@@ -295,6 +295,41 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     },
+    //# /catalog/{{token}}/search?q={{search_term}} -- search
 
+    //# /catalog/{{token}}/recent/{{page}} -- recently added books
+    recent: function (event, context, cb) {
+        var token = event.path.catalogToken;
+        var path = "/recent/"
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                book_query.orderBy("created_at", 'desc')
+                return q.all([user, book_query]);
+            })
+            .spread(function (user, books) {
+                if (!books.length) {
+                    return q.reject(new Error("No Books found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':books'
+                var next_path = null;
+
+                var opds_catalog = CatalogService.common_feed(token, id, path);
+                opds_catalog.entries = books.map(function(book){
+                    return CatalogService.bookToEntry(id, token, book)
+                })
+                return CatalogService.toXML(opds_catalog);
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
 
 }

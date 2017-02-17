@@ -154,6 +154,14 @@ var FEED = {
         xmlnsrelevance: {
             name: "xmlns:relevance",
             default: "http://a9.com/-/opensearch/extensions/relevance/1.0/"
+        },
+        xmlnsxsi: {
+            name: "xmlns:xsi",
+            default: "http://www.w3.org/2001/XMLSchema-instance"
+        },
+        xmlnsschema: {
+            name: "xmlns:schema",
+            default: "http://schema.org/"
         }
     },
     fields: {

@@ -446,12 +446,12 @@ functions:
 ##    handler: src/catalog.search
 ##    events:
 ##    - http: GET catalog/{catalogToken}/search
-#
-#  catalogrecent:
-#    handler: src/catalog.recent
-#    events:
-#    - http: GET catalog/{catalogToken}/recent
-#
+
+  catalogrecent:
+    handler: src/catalog.recent
+    events:
+    - http: GET catalog/{catalogToken}/recent
+
 #  catalogseriesid:
 #    handler: src/catalog.seriesid
 #    events:
