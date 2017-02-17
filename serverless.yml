@@ -129,6 +129,12 @@ custom:
     headers:
       Content-Type: "'application/xml'"
       Cache-Control: "'max-age=120'"
+    template: $input.path('$')
+    statusCodes:
+      200:
+        pattern: ''
+        template:
+          application/xml: $input.path('$')
 
   variables:
     master:
