@@ -14,7 +14,7 @@ function api_endpoint(){
 function self_link(path){
     return {
         rel: 'self',
-        href: api_endpoint + (path || ''),
+        href: api_endpoint() + (path || ''),
         title: 'Current Page',
         type: 'application/atom+xml;profile=opds-catalog'
     };
@@ -30,7 +30,7 @@ module.exports.token_endpoint = token_endpoint
 
 //token is the catalog token
 // id is required
-// current_path is required (url after the catalog token in path.
+// current_path is required (url after the catalog token in path, shoudl include `/`)
 module.exports.common_feed = function (token, id, current_path, next, page, limit ){
     var common =  {
         title: "QuietThyme - Home",
