@@ -29,6 +29,7 @@
     "q": "^1.4.1",
     "request": "^2.79.0",
     "serverless-plugin-write-env-vars": "^1.0.1",
-    "xkcd-password": "^1.2.0"
+    "xkcd-password": "^1.2.0",
+    "xml-schema": "^2.2.0"
   }
 }

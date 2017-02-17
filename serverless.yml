@@ -398,7 +398,70 @@ functions:
           bucket: ${self:service}-${opt:stage, self:provider.stage}-upload
           event: s3:ObjectCreated:*
 
+  catalogindex:
+    handler: src/catalog.index
+    events:
+    - http: GET catalog/{catalogToken}
 
+#  catalogseries:
+#    handler: src/catalog.series
+#    events:
+#    - http: GET catalog/{catalogToken}/series/{page}
+#
+#  catalogauthors:
+#    handler: src/catalog.authors
+#    events:
+#    - http: GET catalog/{catalogToken}/authors/{page}
+
+  catalogbooks:
+    handler: src/catalog.books
+    events:
+    - http: GET catalog/{catalogToken}/books/{page}
+
+#  catalogsearch:
+#    handler: src/catalog.search
+#    events:
+#    - http: GET catalog/{catalogToken}/search
+
+  catalogrecent:
+    handler: src/catalog.recent
+    events:
+    - http: GET catalog/{catalogToken}/recent
+
+  catalogseriesid:
+    handler: src/catalog.seriesid
+    events:
+    - http: GET catalog/{catalogToken}/in_series/{seriesId}/{page}
+
+  catalogauthorid:
+    handler: src/catalog.authorid
+    events:
+    - http: GET catalog/{catalogToken}/by_author/{authorId}/{page}
+
+  catalogtagname:
+    handler: src/catalog.taggedwith
+    events:
+    - http: GET catalog/{catalogToken}/tagged_with/{tag_name}/{page}
+
+  catalogsearchdefinition:
+    handler: src/catalog.searchdefinition
+    events:
+    - http: GET catalog/{catalogToken}/search_definition
+
+  catalogsearch:
+    handler: src/catalog.search
+    events:
+    - http: GET catalog/{catalogToken}/search
+
+  catalogbook:
+    handler: src/catalog.book
+    events:
+    - http: GET catalog/{catalogToken}/book/{bookId}
+
+  catalogdownload:
+    handler: src/catalog.download
+    events:
+    - http: GET catalog/{catalogToken}/download/{bookId}
 
 #   you can add any of the following events
 #   events:
