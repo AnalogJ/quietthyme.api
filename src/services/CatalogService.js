@@ -40,7 +40,7 @@ module.exports.common_feed = function (token, id, current_path, next, page, limi
             email: "support@quietthyme.com"
         },
         icon: web_endpoint() + '/favicon.png',
-        link: [
+        links: [
             {
                 rel: "search",
                 href: token_endpoint() + "/search_definition",
