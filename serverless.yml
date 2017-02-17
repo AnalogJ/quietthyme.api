@@ -425,12 +425,23 @@ functions:
 ##    handler: src/catalog.authors
 ##    events:
 ##    - http: GET catalog/{catalogToken}/authors/{page}
-#
-#  catalogbooks:
-#    handler: src/catalog.books
-#    events:
-#    - http: GET catalog/{catalogToken}/books/{page}
-#
+
+  catalogbooks:
+    handler: src/catalog.books
+    events:
+    - http:
+        path: catalog/{catalogToken}/books
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+    - http:
+        path: catalog/{catalogToken}/books/{page}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+
 ##  catalogsearch:
 ##    handler: src/catalog.search
 ##    events:
