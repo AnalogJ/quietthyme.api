@@ -49,7 +49,7 @@ provider:
 custom:
 
   # overridden from https://github.com/serverless/serverless/blob/03cc50b246c656183110669126a632735ea46b15/lib/plugins/aws/deploy/compile/events/apiGateway/lib/method/integration.js#L106-L140
-  authRequestTemplate: >-
+  standardRequestTemplate: >-
     #define( $loop )
       {
       #foreach($key in $map.keySet())
@@ -78,14 +78,21 @@ custom:
       "stageVariables": $loop,
 
       "httpMethod": "$context.httpMethod",
-      "token": "$input.params().header.get('Authorization').split(' ')[1]"
+
+      #set( $tokenVal = $input.params().header.get('Authorization').split(' ') )
+      #if( $tokenVal.size() == 2 )
+        "token": "$tokenVal[1]"
+      #else
+      "token": ""
+      #end
     }
   standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
   errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
 
-  authRequests:
+  standardRequests:
     template:
-      application/json: ${self:custom.authRequestTemplate}
+      application/json: ${self:custom.standardRequestTemplate}
+
   standardResponses:
     headers:
       Content-Type: "'application/json'"
@@ -112,24 +119,16 @@ custom:
     headers:
       Location: "integration.response.body.headers.Location"
       Content-Type: "'application/json'"
-    template: ${self:custom.standardResponseTemplate}
     statusCodes:
       302:
         pattern: ''
         template:
           application/json: "{}"
-      400:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[400\].*'
-      404:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[404\].*'
-      500:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[500\].*'
+
+  catalogResponse:
+    headers:
+      Content-Type: "'application/xml'"
+      Cache-Control: "'max-age=120'"
 
   variables:
     master:
@@ -289,7 +288,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   bookcreate:
     handler: src/book.create
@@ -300,7 +299,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   bookfind:
     handler: src/book.find
@@ -311,7 +310,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   bookdestroy:
     handler: src/book.destroy
@@ -322,7 +321,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   storagelink:
     handler: src/storage.link
@@ -334,7 +333,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   storagestatus:
     handler: src/storage.status
@@ -347,7 +346,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   storagepreparebook:
     handler: src/storage.prepare_book
@@ -360,7 +359,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   storagepreparecover:
     handler: src/storage.prepare_cover
@@ -373,7 +372,7 @@ functions:
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   storagedownload:
     handler: src/storage.download
@@ -386,7 +385,7 @@ functions:
           response: ${self:custom.redirectResponse}
           integration: lambda
           cors: true
-          request: ${self:custom.authRequests}
+          request: ${self:custom.standardRequests}
 
   # this process runs whenever a book is added to upload bucket.
   # it will then look up the book data in DB and migrate it to the correct
@@ -398,9 +397,18 @@ functions:
           bucket: ${self:service}-${opt:stage, self:provider.stage}-upload
           event: s3:ObjectCreated:*
 
+
+
+# the following methods are unauthetnicated, but require a catalogToken.
   catalogindex:
     handler: src/catalog.index
     events:
+      - http:
+          path: catalog/{catalogToken}
+          method: get
+          response: ${self:custom.standardResponses}
+          integration: lambda
+          cors: true
     - http: GET catalog/{catalogToken}
 
 ##  catalogseries:
