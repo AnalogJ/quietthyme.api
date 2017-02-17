@@ -107,6 +107,7 @@ module.exports = {
                         ]
                     }
                 ]
+                return opds_catalog;
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

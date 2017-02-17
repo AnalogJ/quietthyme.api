@@ -406,9 +406,8 @@ functions:
       - http:
           path: catalog/{catalogToken}
           method: get
-          response: ${self:custom.standardResponses}
+          response: ${self:custom.catalogResponse}
           integration: lambda
-          cors: true
 
 ##  catalogseries:
 ##    handler: src/catalog.series
