@@ -1,5 +1,5 @@
 require('dotenv').config();
-var CatalogService = require('./src/services/CatalogService'),
+var CatalogService = require('./services/CatalogService'),
     q = require('q')
 module.exports = {
     index: function (event, context, cb) {
