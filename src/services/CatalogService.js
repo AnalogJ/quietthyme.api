@@ -106,6 +106,7 @@ module.exports.findUserByToken = function(token){
         })
 }
 
+//page and limit are optional
 module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, page){
     var book_query = db_client.select()
         .from('books')

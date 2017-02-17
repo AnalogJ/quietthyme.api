@@ -1,7 +1,8 @@
 require('dotenv').config();
 var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
-    Helpers = require('./common/helpers'),
+    Helpers = require('./common/helpers')
+    Base64Service = require('./services/Base64Service'),
     q = require('q');
 
 
@@ -43,7 +44,7 @@ module.exports = {
                         links: [
                             {
                                 type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
-                                href: CatalogService.token_endpoint(token) + '/all'
+                                href: CatalogService.token_endpoint(token) + '/books'
                             },
                             {
                                 type: 'image/png',
@@ -297,7 +298,7 @@ module.exports = {
     },
     //# /catalog/{{token}}/search?q={{search_term}} -- search
 
-    //# /catalog/{{token}}/recent/{{page}} -- recently added books
+    //# /catalog/{{token}}/recent/ -- recently added books
     recent: function (event, context, cb) {
         var token = event.path.catalogToken;
         var path = "/recent/"
@@ -308,7 +309,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid);
                 book_query.orderBy("created_at", 'desc')
                 return q.all([user, book_query]);
             })
@@ -318,14 +319,57 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':books'
-                var next_path = null;
-
+                var id = 'root:' + token + ':recent';
                 var opds_catalog = CatalogService.common_feed(token, id, path);
+                opds_catalog.title = 'QuietThyme - Recent'
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
+
+    //# /catalog/{{token}}/in_series/{{series_id}}/{{page}} -- list of all books for a series_id
+    seriesid: function (event, context, cb) {
+        var token = event.path.catalogToken;
+        var encoded_series_id = event.path.seriesId
+        var page = (event.path.page | 0);
+        var path = "/in_series/" + encoded_series_id + '/'+ (page || "")
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)})
+                book_query.orderBy("title", 'desc')
+                return q.all([user, book_query]);
+            })
+            .spread(function (user, books) {
+                if (!books.length) {
+                    return q.reject(new Error("No Books found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':in_series:' + seriesId;
+                var next_path = null;
+                if (books.length >= QUERY_LIMIT) {
+                    next_path = "/in_series/" + encoded_series_id + '/'+ (page + 1);
+                }
+
+                var opds_catalog = CatalogService.common_feed(token, id, path, next_path, page, QUERY_LIMIT);
+                opds_catalog.title = 'QuietThyme - In Series';
+                opds_catalog.entries = books.map(function(book){
+                    return CatalogService.bookToEntry(id, token, book)
+                })
+                return CatalogService.toXML(opds_catalog);
+
+
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

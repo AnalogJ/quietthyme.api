@@ -450,13 +450,29 @@ functions:
   catalogrecent:
     handler: src/catalog.recent
     events:
-    - http: GET catalog/{catalogToken}/recent
+    - http:
+        path: catalog/{catalogToken}/recent
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
 
-#  catalogseriesid:
-#    handler: src/catalog.seriesid
-#    events:
-#    - http: GET catalog/{catalogToken}/in_series/{seriesId}/{page}
-#
+  catalogseriesid:
+    handler: src/catalog.seriesid
+    events:
+    - http:
+        path: catalog/{catalogToken}/in_series/{seriesId}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+    - http:
+        path: catalog/{catalogToken}/in_series/{seriesId}/{page}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+
 #  catalogauthorid:
 #    handler: src/catalog.authorid
 #    events:
