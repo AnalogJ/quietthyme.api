@@ -412,6 +412,7 @@ functions:
       - http:
           path: catalog/{catalogToken}
           method: get
+          request: ${self:custom.standardRequests}
           response: ${self:custom.catalogResponse}
           integration: lambda
 
