@@ -6,6 +6,7 @@ var CatalogService = require('./services/CatalogService'),
 module.exports = {
     index: function (event, context, cb) {
 
+        console.dir(event)
         DBService.get()
             .then(function(db_client) {
                 return db_client.first()
