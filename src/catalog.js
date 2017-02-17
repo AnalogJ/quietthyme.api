@@ -107,7 +107,7 @@ module.exports = {
                         ]
                     }
                 ]
-                return opds_catalog;
+                return CatalogService.toXML(opds_catalog);
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

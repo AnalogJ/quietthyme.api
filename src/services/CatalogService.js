@@ -83,7 +83,7 @@ module.exports.common_feed = function (token, id, current_path, next, page, limi
 
 
 // Create an opds feed
-module.exports.create_feed = function(feed) {
+module.exports.toXML = function(feed) {
     return opdsSchema.generate(feed, {
         version: '1.0',
         encoding: 'UTF-8',
