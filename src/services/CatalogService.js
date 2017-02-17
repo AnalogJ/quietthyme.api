@@ -1,7 +1,8 @@
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
 var opdsSchema = new XMLSchema(schemas.FEED);
-
+var DBService = require('../services/DBService')
+var Base64Service = require('../services/Base64Service')
 //private methods
 function web_endpoint(){
     return 'https://' + (process.env.STAGE == 'master' ? 'www' : 'beta') + '.quietthyme.com'
@@ -11,10 +12,10 @@ function api_endpoint(){
     return 'https://api.quietthyme.com/'+process.env.STAGE + '/catalog'
 }
 
-function self_link(path){
+function self_link(token, path){
     return {
         rel: 'self',
-        href: api_endpoint() + (path || ''),
+        href: token_endpoint(token) + (path || ''),
         title: 'Current Page',
         type: 'application/atom+xml;profile=opds-catalog'
     };
@@ -31,7 +32,7 @@ module.exports.token_endpoint = token_endpoint
 //token is the catalog token
 // id is required
 // current_path is required (url after the catalog token in path, shoudl include `/`)
-module.exports.common_feed = function (token, id, current_path, next, page, limit ){
+module.exports.common_feed = function (token, id, current_path, next_path, page, limit ){
     var common =  {
         title: "QuietThyme - Home",
         authors: {
@@ -43,7 +44,7 @@ module.exports.common_feed = function (token, id, current_path, next, page, limi
         links: [
             {
                 rel: "search",
-                href: token_endpoint() + "/search_definition",
+                href: token_endpoint(token) + "/search_definition",
                 type: "application/opensearchdescription+xml",
                 title: "QuietThyme Catalog Search"
             },
@@ -55,20 +56,20 @@ module.exports.common_feed = function (token, id, current_path, next, page, limi
             },
             {
                 rel: "start",
-                href: token_endpoint(),
+                href: token_endpoint(token),
                 type: "application/atom+xml;profile=opds-catalog",
                 title: "Catalog Start Page"
             },
             //All catalogs should specify their current page.
-            self_link(current_path)
+            self_link(token, current_path)
         ]
     }
 
-    if(next){
+    if(next_path){
         common.link.push({
             rel: "next",
             type: "application/atom+xml;profile=opds-catalog;kind=acquisition",
-            href: next,
+            href: token_endpoint(token) + next_path,
             title: "Next Page"
         })
     }
@@ -93,3 +94,74 @@ module.exports.toXML = function(feed) {
 }
 
 
+module.exports.findUserByToken = function(token){
+    return DBService.get()
+        .then(function(db_client) {
+            return [
+                db_client.first()
+                    .from('users')
+                    .where('catalog_token', token),
+                db_client
+            ]
+        })
+}
+
+module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, page){
+    var book_query = db_client.select()
+        .from('books')
+        .where({user_id: user_id});
+
+    if(page || page === 0){
+        book_query.limit(limit);
+        book_query.offset(page * limit)
+    }
+
+    return book_query;
+}
+
+module.exports.bookToEntry = function(id, token, book){
+    var entry = {
+        id: id +':' + book.id,
+        tile: book.title,
+        isbn: book.isbn || book.isbn10,
+        authors: book.authors.map(function(author){
+            return {
+                name: author,
+                uri: token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author)
+            }
+        }),
+        published: book.published_date,
+        issued: book.published_date,
+        updated: book.updated_at,
+        summary: book.short_summary,
+        categories: book.tags.map(function(tag){
+            return {
+                term: tag,
+                label: tag,
+                scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
+            }
+        }),
+        links: [
+            {
+                type:'image/jpeg',
+                rel: 'http://opds-spec.org/image',
+                href: "https://s3.amazonaws.com/" + encodeURI(book.cover)
+            },
+            {
+                type:'image/jpeg',
+                rel: 'http://opds-spec.org/image/thumbnail',
+                href: "https://s3.amazonaws.com/" + encodeURI(book.cover)
+            }
+        ]
+    }
+
+    if(book.goodreads_id){
+        entry.links.push({
+            type: 'text/html',
+            href: 'https://www.goodreads.com/book/show/' + book.goodreads_id,
+            title: 'View on Goodreads',
+            rel: 'alternate'
+        })
+    }
+    return entry
+}

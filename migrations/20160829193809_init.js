@@ -88,7 +88,7 @@ exports.up = function(knex, Promise) {
             table.string('ffiction_id');
             table.string('barnesnoble_id');
 
-            // cover art urls
+            // cover art urls (should always be encoded, encodeURIComponent
             table.string('cover'); //Image is always stored on AWS, identifier does not have leading '/', and is made up of 'bucket_name/s3_key'
             table.string('thumb'); // for future use. should always be null.
 

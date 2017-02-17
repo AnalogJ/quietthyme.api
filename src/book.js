@@ -58,10 +58,7 @@ module.exports = {
                     book_query.limit(50);
                     book_query.offset(event.query.page * 50)
                 }
-                else{
-                    //no pagination. force max limit
-                    book_query.limit(1000)
-                }
+
                 return book_query
                 // .then(function(books){
                 //     //todo: possibly filter out books that dont have a bookstorage.

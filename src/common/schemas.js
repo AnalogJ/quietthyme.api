@@ -4,6 +4,19 @@ var DATE = {
     }
 };
 
+var ISBN = {
+    tag: 'dcterms:identifier',
+    attributes: {
+        type: {
+            name: 'xsi:type',
+            default: 'dcterms:URI'
+        }
+    },
+    transform: function(isbn) {
+        return 'urn:ISBN:' + isbn;
+    }
+}
+
 var AUTHOR = {
     tag: 'author',
     array: true,
@@ -57,16 +70,11 @@ var CATEGORY = {
     tag: 'category',
     array: true,
     attributes: {
-        code: {
-            name: 'term'
-        },
+        term: {},
         label: {},
         scheme: {
             default: "http://www.bisg.org/standards/bisac_subject/index.html"
         }
-    },
-    map: {
-        to: 'code'
     }
 };
 
@@ -92,17 +100,19 @@ var ENTRY = {
     fields: {
         id: {},
         title: {},
+        isbn: ISBN,
         updated: DATE,
         summary: {},
         links: LINK,
         authors: AUTHOR,
         categories: CATEGORY,
         issued: {
-            tag: "dc:issued",
+            tag: "dcterms:issued",
             transform: function(d) {
-                return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+                return (new Date(d)).toISOString();
             }
         },
+        published:DATE,
         publisher: {
             tag: "dc:publisher"
         },
