@@ -10,7 +10,7 @@ module.exports = {
             .then(function(db_client) {
                 return db_client.first()
                     .from('users')
-                    .where('token', event.path.catalogToken)
+                    .where('catalog_token', event.path.catalogToken)
             })
             .then(function(user){
 
