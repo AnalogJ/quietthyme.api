@@ -192,6 +192,7 @@ function bookToBaseEntry(id, token, book){
             rel: 'alternate'
         })
     }
+    //todo add links to other identifiers
     return entry
 }
 
@@ -205,6 +206,7 @@ module.exports.bookToPartialEntry = function(id, token, book){
         title: 'Full entry',
         rel: 'alternate'
     })
+    return entry
 }
 
 
