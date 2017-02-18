@@ -435,17 +435,12 @@ functions:
     handler: src/catalog.books
     events:
     - http:
-        path: catalog/{catalogToken}/books
+        path: catalog/{catalogToken}/books/{page+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
         integration: lambda
-    - http:
-        path: catalog/{catalogToken}/books/{page}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
+
 
   catalogrecent:
     handler: src/catalog.recent
@@ -461,13 +456,7 @@ functions:
     handler: src/catalog.seriesid
     events:
     - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-    - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}/{page}
+        path: catalog/{catalogToken}/in_series/{seriesId}/{page+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
