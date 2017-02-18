@@ -166,13 +166,13 @@ function bookToBaseEntry(id, token, book){
         issued: book.published_date,
         updated: book.updated_at,
         summary: book.short_summary,
-        // categories: book.tags.map(function(tag){
-        //     return {
-        //         term: tag,
-        //         label: tag,
-        //         scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
-        //     }
-        // }),
+        categories: book.tags.map(function(tag){
+            return {
+                term: tag,
+                label: tag,
+                scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
+            }
+        }),
         links: [
             {
                 type:'image/jpeg',
