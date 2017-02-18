@@ -442,11 +442,6 @@ functions:
         response: ${self:custom.catalogResponse}
         integration: lambda
 
-##  catalogsearch:
-##    handler: src/catalog.search
-##    events:
-##    - http: GET catalog/{catalogToken}/search
-
   catalogrecent:
     handler: src/catalog.recent
     events:
@@ -524,7 +519,7 @@ functions:
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
 
-  catalogbook:
+  catalogbookentry:
     handler: src/catalog.book
     events:
     - http:
