@@ -59,7 +59,7 @@ kloudlessService.eventsGet = function(account_id, event_cursor){
 
 kloudlessService.linkCreate = function(account_id, file_id){
     var deferred = q.defer();
-    kloudless.events.get({
+    kloudless.links.create({
         account_id: account_id,
         file_id: file_id,
         queryParams: {
