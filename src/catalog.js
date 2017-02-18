@@ -287,7 +287,7 @@ module.exports = {
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
 
@@ -324,7 +324,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path);
                 opds_catalog.title = 'QuietThyme - Recent'
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
             })
@@ -366,7 +366,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - In Series';
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
 
@@ -410,7 +410,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - By Author';
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
 
@@ -454,7 +454,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - Tagged With';
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
             })
@@ -517,7 +517,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - Search Results';
                 opds_catalog.entries = books.map(function(book){
-                    return CatalogService.bookToEntry(id, token, book)
+                    return CatalogService.bookToPartialEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
             })
@@ -552,38 +552,8 @@ module.exports = {
                 //user was found.
                 var id = 'root:' + token + ':book:' + bookId;
 
-                var opds_entry = CatalogService.bookToEntry(id,token, book);
-                opds_entry.publisher = book.publisher;
-                opds_entry.content = book.short_summary;
+                var opds_entry = CatalogService.bookToFullEntry(id,token, book, path);
 
-                var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
-
-                opds_entry.links.push({
-                    type: Constants.file_extensions[storage_extension].mimetype,
-                    href: CatalogService.token_endpoint(token) + '/download/' + bookId,
-                    rel: 'http://opds-spec.org/acquisition'
-                })
-                if(book.series_name){
-                    opds_entry.links.push({
-                        type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
-                        href: CatalogService.token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(book.series_name),
-                        title: 'In the same series',
-                        rel: 'related'
-                    })
-                }
-                book.authors.forEach(function(author){
-                    opds_entry.links.push({
-                        type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
-                        href: CatalogService.token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author),
-                        title: 'More books by ' + author,
-                        rel: 'related'
-                    })
-                })
-                opds_entry.links.push({
-                    type: 'application/atom+xml;type=entry;profile=opds-catalog',
-                    href: CatalogService.token_endpoint(token) + path,
-                    rel: 'self'
-                })
 
                 return CatalogService.toXML(opds_entry, 'ENTRY');
             })

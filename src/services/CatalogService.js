@@ -147,7 +147,8 @@ module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, 
     return book_query;
 }
 
-module.exports.bookToEntry = function(id, token, book){
+
+function bookToBaseEntry(id, token, book){
     var entry = {
         id: id +':' + book.id,
         title: book.title,
@@ -196,3 +197,49 @@ module.exports.bookToEntry = function(id, token, book){
 
 
 
+module.exports.bookToPartialEntry = function(id, token, book){
+    var entry = bookToBaseEntry(id, token, book)
+    entry.links.push({
+        type: 'application/atom+xml;type=entry;profile=opds-catalog',
+        href: token_endpoint(token) + '/book/'+book.id,
+        title: 'Full entry',
+        rel: 'alternate'
+    })
+}
+
+
+module.exports.bookToFullEntry = function(id, token, book, path){
+    var opds_entry = bookToBaseEntry(id, token, book, path)
+    opds_entry.publisher = book.publisher;
+    opds_entry.content = book.short_summary;
+
+    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
+
+    opds_entry.links.push({
+        type: Constants.file_extensions[storage_extension].mimetype,
+        href: token_endpoint(token) + '/download/' + book.id,
+        rel: 'http://opds-spec.org/acquisition'
+    })
+    if(book.series_name){
+        opds_entry.links.push({
+            type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+            href: token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(book.series_name),
+            title: 'In the same series',
+            rel: 'related'
+        })
+    }
+    book.authors.forEach(function(author){
+        opds_entry.links.push({
+            type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+            href: token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author),
+            title: 'More books by ' + author,
+            rel: 'related'
+        })
+    })
+    opds_entry.links.push({
+        type: 'application/atom+xml;type=entry;profile=opds-catalog',
+        href: token_endpoint(token) + path,
+        rel: 'self'
+    })
+    return opds_entry
+}
