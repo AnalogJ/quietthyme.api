@@ -139,6 +139,65 @@ var ENTRY = {
     }
 };
 
+var FULL_ENTRY = {
+    tag: 'entry',
+    attributes: {
+        xmlns: {
+            default: "http://www.w3.org/2005/Atom"
+        },
+        xmlnsdcterms: {
+            name: "xmlns:dcterms",
+            default: "http://purl.org/dc/terms/"
+        },
+        xmlnsopds: {
+            name: "xmlns:opds",
+            default: "http://opds-spec.org/2010/catalog"
+        },
+
+        xmlnsxsi: {
+            name: "xmlns:xsi",
+            default: "http://www.w3.org/2001/XMLSchema-instance"
+        },
+        xmlnsschema: {
+            name: "xmlns:schema",
+            default: "http://schema.org/"
+        },
+        xmlnsthr: {
+            name: "xmlns:thr",
+            default: "http://purl.org/syndication/thread/1.0"
+        }
+    },
+    fields: {
+        id: {},
+        title: {},
+        isbn: ISBN,
+        updated: DATE,
+        summary: {},
+        links: LINK,
+        authors: AUTHOR,
+        categories: CATEGORY,
+        issued: {
+            tag: "dcterms:issued",
+            transform: function(d) {
+                return ISODateString(d);
+            }
+        },
+        published: {
+            transform: function(d) {
+                return ISODateString(d);
+            }
+        },
+        publisher: {
+            tag: "dcterms:publisher"
+        },
+        language: {
+            tag: "dcterms:language"
+        },
+        rights: {},
+        //size: {}
+        content: CONTENT
+    }
+};
 
 var ITEMS_PER_PAGE = {
     tag: 'opensearch:itemsPerPage'
@@ -265,5 +324,5 @@ var SEARCH_DESCRIPTION = {
 module.exports = {
     FEED: FEED,
     SEARCH_DESCRIPTION: SEARCH_DESCRIPTION,
-    ENTRY: ENTRY
+    FULL_ENTRY: FULL_ENTRY
 };

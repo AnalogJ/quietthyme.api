@@ -555,7 +555,7 @@ module.exports = {
                 var opds_entry = CatalogService.bookToFullEntry(id,token, book, path);
 
 
-                return CatalogService.toXML(opds_entry, 'ENTRY');
+                return CatalogService.toXML(opds_entry, 'FULL_ENTRY');
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
