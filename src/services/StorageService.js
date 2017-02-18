@@ -45,7 +45,7 @@ module.exports.get_user_storage = function(token){
         })
 }
 
-module.exports.get_download_link = function(book, db_client){
+module.exports.get_download_link = function(book, user_id, db_client){
     //check if the book storage_type is populated, if not, then we need to return
     if(!book.storage_type || !book.storage_identifier){
         return q.reject(new Error('Could not find storage'))
@@ -65,7 +65,7 @@ module.exports.get_download_link = function(book, db_client){
         return db_client.first()
             .from('credentials')
             .where({
-                user_id: auth.uid,
+                user_id: user_id,
                 id: book.credential_id
             })
             .then(function(credential){

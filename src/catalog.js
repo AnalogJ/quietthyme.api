@@ -548,7 +548,7 @@ module.exports = {
                         id: bookId
                     })
                     .then(function(book){
-                        return StorageService.get_download_link(book, db_client)
+                        return StorageService.get_download_link(book,user.uid,  db_client)
                     })
                     .then(function(link){
                         var payload = {
