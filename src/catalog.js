@@ -357,7 +357,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':in_series:' + seriesId;
+                var id = 'root:' + token + ':in_series:' + encoded_series_id;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
                     next_path = "/in_series/" + encoded_series_id + '/'+ (page + 1);
@@ -401,7 +401,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':by_author:' + seriesId;
+                var id = 'root:' + token + ':by_author:' + encoded_author_id;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
                     next_path = "/by_author/" + encoded_author_id + '/'+ (page + 1);
@@ -508,7 +508,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':search:';
+                var id = 'root:' + token + ':search';
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
                     next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (page + 1);
@@ -528,6 +528,7 @@ module.exports = {
 
     //#  /catalog/{{catalogToken}}/book/{{bookId}} -- book details for a book_id
     book: function (event, context, cb) {
+        console.dir(event)
         var bookId = event.path.bookId;
         var token = event.path.catalogToken;
         var path = "/book/" + bookId
@@ -549,7 +550,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':book:' + bookId;
+                var id = 'root:' + token + ':book';
 
                 var opds_entry = CatalogService.bookToFullEntry(id,token, book, path);
 
