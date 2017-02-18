@@ -92,11 +92,11 @@ module.exports = {
                         updated: '2014-05-07T15:45:36Z',
                         id: id + ':about',
                         title: 'About QuietThyme',
-                        content: 'About QuietThyme',
+                        content: 'QuietThyme Web',
                         links: [
                             {
                                 type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
-                                href: 'http://www.quietthyme.com/about'
+                                href: 'http://www.quietthyme.com'
                             },
                             {
                                 type: 'image/png',

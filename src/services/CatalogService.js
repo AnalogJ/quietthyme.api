@@ -149,6 +149,9 @@ module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, 
 
 
 function bookToBaseEntry(id, token, book){
+
+    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
+
     var entry = {
         id: id +':' + book.id,
         title: book.title,
@@ -180,6 +183,11 @@ function bookToBaseEntry(id, token, book){
                 type:'image/jpeg',
                 rel: 'http://opds-spec.org/image/thumbnail',
                 href: "https://s3.amazonaws.com/" + book.cover
+            },
+            {
+                type: Constants.file_extensions[storage_extension].mimetype,
+                href: token_endpoint(token) + '/download/' + book.id,
+                rel: 'http://opds-spec.org/acquisition'
             }
         ]
     }
@@ -215,13 +223,6 @@ module.exports.bookToFullEntry = function(id, token, book, path){
     opds_entry.publisher = book.publisher;
     opds_entry.content = book.short_summary;
 
-    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
-
-    opds_entry.links.push({
-        type: Constants.file_extensions[storage_extension].mimetype,
-        href: token_endpoint(token) + '/download/' + book.id,
-        rel: 'http://opds-spec.org/acquisition'
-    })
     if(book.series_name){
         opds_entry.links.push({
             type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
