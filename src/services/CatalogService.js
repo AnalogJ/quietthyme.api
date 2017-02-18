@@ -43,7 +43,7 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
             uri: web_endpoint(),
             email: "support@quietthyme.com"
         },
-        updated: '2017-02-18T00:17:48Z',
+        updated: new Date(),
         icon: web_endpoint() + '/favicon.png',
         links: [
             {
