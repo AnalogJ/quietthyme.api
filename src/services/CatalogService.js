@@ -24,6 +24,10 @@ function self_link(token, path, type){
 
 //public methods
 
+module.exports.page_suffix = function(page){
+    return (page || page === 0) ? ('?page='+ page) : ''
+}
+
 //BASE
 function token_endpoint(token){
     return api_endpoint() + '/' + token
@@ -163,7 +167,7 @@ module.exports.generatePaginatedSeriesQuery = function(db_client, user_id, limit
     return series_query;
 }
 
-function seriesToPartialEntry(id, token, series_name){
+module.exports.seriesToPartialEntry = function (id, token, series_name){
     return {
         updated: new Date(),
             id: id + ':series:' + Base64Service.urlEncode(series_name),

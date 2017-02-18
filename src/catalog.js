@@ -119,8 +119,8 @@ module.exports = {
     // # /catalog/{{token}}/series/{{page}} -- alphabetical list of series names.
     series: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var page = (event.path.page | 0);
-        var path = "/series/" + (page || "")
+        var page = (event.query.page | 0);
+        var path = "/series" + CatalogService.page_suffix(page)
 
 
         return CatalogService.findUserByToken(token)
@@ -143,7 +143,7 @@ module.exports = {
                 var id = 'root:' + token + ':series'
                 var next_path = null;
                 if (series_list.length >= QUERY_LIMIT) {
-                    next_path = "/series/" + (page + 1);
+                    next_path = "/series?page=" + (page + 1);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -301,8 +301,8 @@ module.exports = {
     //#  /catalog/{{token}}/books/{{page}} -- alphabetical list of books
     books: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var page = (event.path.page | 0);
-        var path = "/books/" + (page || "")
+        var page = (event.query.page | 0);
+        var path = "/books" + + CatalogService.page_suffix(page)
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -323,7 +323,7 @@ module.exports = {
                 var id = 'root:' + token + ':books'
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
-                    next_path = "/books/" + (page + 1);
+                    next_path = "/books" + + CatalogService.page_suffix(page + 1);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -378,8 +378,8 @@ module.exports = {
     seriesid: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_series_id = event.path.seriesId
-        var page = (event.path.page | 0);
-        var path = "/in_series/" + encoded_series_id + '/'+ (page || "")
+        var page = (event.query.page | 0);
+        var path = "/in_series/" + encoded_series_id + CatalogService.page_suffix(page)
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -401,7 +401,7 @@ module.exports = {
                 var id = 'root:' + token + ':in_series:' + encoded_series_id;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
-                    next_path = "/in_series/" + encoded_series_id + '/'+ (page + 1);
+                    next_path = "/in_series/" + encoded_series_id + + CatalogService.page_suffix(page + 1)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -422,8 +422,8 @@ module.exports = {
     authorid: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_author_id = event.path.authorId
-        var page = (event.path.page | 0);
-        var path = "/by_author/" + encoded_author_id + '/'+ (page || "")
+        var page = (event.query.page | 0);
+        var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page)
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -445,7 +445,7 @@ module.exports = {
                 var id = 'root:' + token + ':by_author:' + encoded_author_id;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
-                    next_path = "/by_author/" + encoded_author_id + '/'+ (page + 1);
+                    next_path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page + 1)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -466,8 +466,8 @@ module.exports = {
     tagname: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_tag_name = event.path.tagName
-        var page = (event.path.page | 0);
-        var path = "/tagged_with/" + encoded_tag_name + '/'+ (page || "")
+        var page = (event.query.page | 0);
+        var path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page)
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -489,7 +489,7 @@ module.exports = {
                 var id = 'root:' + token + ':tagged_with:' + encoded_tag_name;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
-                    next_path = "/tagged_with/" + encoded_tag_name + '/'+ (page + 1);
+                    next_path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page + 1)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -529,7 +529,7 @@ module.exports = {
     search: function (event, context, cb) {
         var token = event.path.catalogToken;
         var query = event.query.query
-        var page = (event.path.page | 0);
+        var page = (event.query.page | 0);
         var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page
 
         return CatalogService.findUserByToken(token)
