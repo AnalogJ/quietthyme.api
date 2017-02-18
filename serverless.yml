@@ -473,11 +473,23 @@ functions:
         response: ${self:custom.catalogResponse}
         integration: lambda
 
-#  catalogauthorid:
-#    handler: src/catalog.authorid
-#    events:
-#    - http: GET catalog/{catalogToken}/by_author/{authorId}/{page}
-#
+  catalogauthorid:
+    handler: src/catalog.authorid
+    events:
+    - http:
+        path: catalog/{catalogToken}/by_author/{authorId}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+    - http:
+        path: catalog/{catalogToken}/by_author/{authorId}/{page}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+
+
 #  catalogtagname:
 #    handler: src/catalog.taggedwith
 #    events:

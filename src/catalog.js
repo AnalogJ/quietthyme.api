@@ -376,4 +376,48 @@ module.exports = {
             .done()
     },
 
+    //# /catalog/{{token}}/by_author/{{author_id}}/{{page}} -- list of all books for a author_id
+    authorid: function (event, context, cb) {
+        var token = event.path.catalogToken;
+        var encoded_author_id = event.path.authorId
+        var page = (event.path.page | 0);
+        var path = "/by_author/" + encoded_author_id + '/'+ (page || "")
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id))
+                book_query.orderBy("title", 'desc')
+                return q.all([user, book_query]);
+            })
+            .spread(function (user, books) {
+                if (!books.length) {
+                    return q.reject(new Error("No Books found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':in_series:' + seriesId;
+                var next_path = null;
+                if (books.length >= QUERY_LIMIT) {
+                    next_path = "/by_author/" + encoded_author_id + '/'+ (page + 1);
+                }
+
+                var opds_catalog = CatalogService.common_feed(token, id, path, next_path, page, QUERY_LIMIT);
+                opds_catalog.title = 'QuietThyme - By Author';
+                opds_catalog.entries = books.map(function(book){
+                    return CatalogService.bookToEntry(id, token, book)
+                })
+                return CatalogService.toXML(opds_catalog);
+
+
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
+
 }

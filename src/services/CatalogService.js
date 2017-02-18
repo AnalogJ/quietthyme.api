@@ -146,12 +146,12 @@ module.exports.bookToEntry = function(id, token, book){
             {
                 type:'image/jpeg',
                 rel: 'http://opds-spec.org/image',
-                href: "https://s3.amazonaws.com/" + encodeURI(book.cover)
+                href: "https://s3.amazonaws.com/" + book.cover
             },
             {
                 type:'image/jpeg',
                 rel: 'http://opds-spec.org/image/thumbnail',
-                href: "https://s3.amazonaws.com/" + encodeURI(book.cover)
+                href: "https://s3.amazonaws.com/" + book.cover
             }
         ]
     }
