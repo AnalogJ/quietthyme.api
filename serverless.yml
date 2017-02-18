@@ -291,10 +291,10 @@ functions:
       - http:
           path: auth/status
           method: GET
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   bookcreate:
     handler: src/book.create
@@ -302,10 +302,10 @@ functions:
       - http:
           path: book
           method: POST
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   bookfind:
     handler: src/book.find
@@ -313,10 +313,10 @@ functions:
       - http:
           path: book
           method: GET
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   bookdestroy:
     handler: src/book.destroy
@@ -324,10 +324,10 @@ functions:
       - http:
           path: book/{id}
           method: DELETE
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   storagelink:
     handler: src/storage.link
@@ -336,10 +336,10 @@ functions:
       - http:
           path: storage/link
           method: POST
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   storagestatus:
     handler: src/storage.status
@@ -349,10 +349,10 @@ functions:
       - http:
           path: storage/status
           method: GET
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   storagepreparebook:
     handler: src/storage.prepare_book
@@ -362,10 +362,10 @@ functions:
       - http:
           path: storage/prepare/book
           method: POST
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   storagepreparecover:
     handler: src/storage.prepare_cover
@@ -375,10 +375,10 @@ functions:
       - http:
           path: storage/prepare/cover
           method: POST
+          request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   storagedownload:
     handler: src/storage.download
@@ -388,10 +388,10 @@ functions:
       - http:
           path: storage/{id}
           method: GET
+          request: ${self:custom.standardRequests}
           response: ${self:custom.redirectResponse}
           integration: lambda
           cors: true
-          request: ${self:custom.standardRequests}
 
   # this process runs whenever a book is added to upload bucket.
   # it will then look up the book data in DB and migrate it to the correct
