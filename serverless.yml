@@ -506,7 +506,7 @@ functions:
         response: ${self:custom.catalogResponse}
         integration: lambda
 
-  catalogsearchdefinition:
+  catalogsearchdef:
     handler: src/catalog.searchdefinition
     events:
     - http:
@@ -515,7 +515,7 @@ functions:
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
 
-  catalogsearch:
+  catalogsearchmethod:
     handler: src/catalog.search
     events:
     - http:
