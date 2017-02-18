@@ -12,12 +12,12 @@ function api_endpoint(){
     return 'https://api.quietthyme.com/'+process.env.STAGE + '/catalog'
 }
 
-function self_link(token, path){
+function self_link(token, path, type){
     return {
         rel: 'self',
         href: token_endpoint(token) + (path || ''),
         title: 'Current Page',
-        type: 'application/atom+xml;profile=opds-catalog'
+        type: 'application/atom+xml;profile=opds-catalog'+ (type || ';kind=acquisition')
     };
 }
 
@@ -29,17 +29,20 @@ function token_endpoint(token){
 }
 module.exports.token_endpoint = token_endpoint
 
+
 //token is the catalog token
 // id is required
 // current_path is required (url after the catalog token in path, shoudl include `/`)
-module.exports.common_feed = function (token, id, current_path, next_path, page, limit ){
+function common_feed(feed_type, token, id, current_path, next_path, page, limit ){
     var common =  {
+        id: id,
         title: "QuietThyme - Home",
         authors: {
             name: "Jason Kulatunga",
             uri: web_endpoint(),
             email: "support@quietthyme.com"
         },
+        updated: '2017-02-18T00:17:48Z',
         icon: web_endpoint() + '/favicon.png',
         links: [
             {
@@ -61,7 +64,7 @@ module.exports.common_feed = function (token, id, current_path, next_path, page,
                 title: "Catalog Start Page"
             },
             //All catalogs should specify their current page.
-            self_link(token, current_path)
+            self_link(token, current_path, feed_type)
         ]
     }
 
@@ -81,6 +84,16 @@ module.exports.common_feed = function (token, id, current_path, next_path, page,
     return common
 }
 
+module.exports.common_feed = common_feed
+
+
+module.exports.acquisition_feed = function acquisition_feed(token, id, current_path, next_path, page, limit ){
+    return common_feed(';kind=acquisition', token, id, current_path, next_path, page, limit)
+}
+
+module.exports.navigation_feed = function acquisition_feed(token, id, current_path, next_path, page, limit ){
+    return common_feed('kind=navigation', token, id, current_path, next_path, page, limit)
+}
 
 
 // Create an opds feed
@@ -166,3 +179,6 @@ module.exports.bookToEntry = function(id, token, book){
     }
     return entry
 }
+
+
+

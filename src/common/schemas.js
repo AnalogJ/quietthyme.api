@@ -49,11 +49,7 @@ var LINK = {
     array: true,
     attributes: {
         href: {},
-        rel: {
-            transform: function(v) {
-                return "http://opds-spec.org/"+v;
-            }
-        },
+        rel: {},
         type: {},
         title: {}
     },
