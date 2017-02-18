@@ -61,7 +61,7 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
             {
                 rel: "start",
                 href: token_endpoint(token),
-                type: "application/atom+xml;profile=opds-catalog",
+                type: "application/atom+xml;profile=opds-catalog;kind=navigation",
                 title: "Catalog Start Page"
             },
             //All catalogs should specify their current page.
@@ -163,13 +163,13 @@ function bookToBaseEntry(id, token, book){
         issued: book.published_date,
         updated: book.updated_at,
         summary: book.short_summary,
-        categories: book.tags.map(function(tag){
-            return {
-                term: tag,
-                label: tag,
-                scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
-            }
-        }),
+        // categories: book.tags.map(function(tag){
+        //     return {
+        //         term: tag,
+        //         label: tag,
+        //         scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
+        //     }
+        // }),
         links: [
             {
                 type:'image/jpeg',
