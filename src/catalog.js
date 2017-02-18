@@ -1,7 +1,7 @@
 require('dotenv').config();
 var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
-    Helpers = require('./common/helpers')
+    Helpers = require('./common/helpers'),
     Base64Service = require('./services/Base64Service'),
     StorageService = require('./service/StorageService'),
     Constants = require('./common/constants'),
