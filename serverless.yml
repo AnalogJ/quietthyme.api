@@ -205,15 +205,15 @@ package:
 
 functions:
 # UNAUTHENTICATED METHODS
-  version:
-    handler: src/version.handler
-    events:
-      - http:
-          path: version
-          method: get
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
+#  version:
+#    handler: src/version.handler
+#    events:
+#      - http:
+#          path: version
+#          method: get
+#          response: ${self:custom.standardResponses}
+#          integration: lambda
+#          cors: true
 
 
   hook:
