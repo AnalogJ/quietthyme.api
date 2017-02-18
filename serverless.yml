@@ -456,7 +456,7 @@ functions:
     handler: src/catalog.seriesid
     events:
     - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}/{pages+}
+        path: catalog/{catalogToken}/in_series/{seriesId} #/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -466,7 +466,7 @@ functions:
     handler: src/catalog.authorid
     events:
     - http:
-        path: catalog/{catalogToken}/by_author/{authorId}/{pages+}
+        path: catalog/{catalogToken}/by_author/{authorId} #/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -477,7 +477,7 @@ functions:
     handler: src/catalog.tagname
     events:
     - http:
-        path: catalog/{catalogToken}/tagged_with/{tagName}/{pages+}
+        path: catalog/{catalogToken}/tagged_with/{tagName} #/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
