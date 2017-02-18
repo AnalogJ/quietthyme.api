@@ -177,7 +177,7 @@ module.exports.seriesToPartialEntry = function (id, token, series_name){
             {
                 type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
                 rel: 'http://opds-spec.org/featured',
-                href: CatalogService.token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(series_name)
+                href: token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(series_name)
             }
         ]
     }
