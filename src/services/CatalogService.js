@@ -78,10 +78,10 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
         })
     }
 
-    if(page != null && limit != null){
-        common.itemsperpage = limit;
-        common.startindex = (page * limit) + 1
-    }
+    // if(page != null && limit != null){
+    //     common.itemsperpage = limit;
+    //     common.startindex = (page * limit) + 1
+    // }
     return common
 }
 
