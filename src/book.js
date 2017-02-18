@@ -26,7 +26,10 @@ module.exports = {
                 ///TODO: validate that the book properties match the database columns.
                 var book_data = event.body;
                 book_data.user_id = auth.uid;
-                book_data.short_summary = toMarkdown(book_data.short_summary)
+                book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
+                    filter: 'div',
+                    replacement: function (innerHTML) { return innerHTML }
+                }]})
                 return db_client('books')
                     .returning('id')
                     .insert(book_data)
