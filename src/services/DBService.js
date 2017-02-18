@@ -8,13 +8,21 @@ var knex        = null;
 
 module.exports = {
     get: function(){
-        knex = require('knex')(knex_config[process.env.STAGE]);
-        knex.client.initializePool(knex.client.config);
-        return q(knex)
+        if(knex){
+            return q(knex)
+        }
+        else{
+            knex = require('knex')(knex_config[process.env.STAGE]);
+            knex.client.initializePool(knex.client.config);
+            return q(knex)
+        }
     },
     destroy: function(){
         if(knex){
             return knex.destroy()
+                .then(function(){
+                    knex = null
+                })
         }
         else{
             return q({})
