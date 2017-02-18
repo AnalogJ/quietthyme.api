@@ -1,7 +1,8 @@
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
-var DBService = require('../services/DBService')
-var Base64Service = require('../services/Base64Service')
+var DBService = require('../services/DBService');
+var Base64Service = require('../services/Base64Service');
+var Constants = require('../common/constants');
 //private methods
 function web_endpoint(){
     return 'https://' + (process.env.STAGE == 'master' ? 'www' : 'beta') + '.quietthyme.com'
