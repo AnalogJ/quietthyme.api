@@ -138,7 +138,7 @@ module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, 
 module.exports.bookToEntry = function(id, token, book){
     var entry = {
         id: id +':' + book.id,
-        tile: book.title,
+        title: book.title,
         isbn: book.isbn || book.isbn10,
         authors: book.authors.map(function(author){
             return {
