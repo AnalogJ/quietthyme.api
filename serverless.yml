@@ -435,7 +435,7 @@ functions:
     handler: src/catalog.books
     events:
     - http:
-        path: catalog/{catalogToken}/books/{page+}
+        path: catalog/{catalogToken}/books/{proxy+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -456,7 +456,7 @@ functions:
     handler: src/catalog.seriesid
     events:
     - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}/{page+}
+        path: catalog/{catalogToken}/in_series/{seriesId}/{proxy+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
