@@ -420,7 +420,7 @@ functions:
     handler: src/catalog.series
     events:
     - http:
-        path: catalog/{catalogToken}/series/{page}
+        path: catalog/{catalogToken}/series/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -435,7 +435,7 @@ functions:
     handler: src/catalog.books
     events:
     - http:
-        path: catalog/{catalogToken}/books/{proxy+}
+        path: catalog/{catalogToken}/books/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -456,7 +456,7 @@ functions:
     handler: src/catalog.seriesid
     events:
     - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}/{proxy+}
+        path: catalog/{catalogToken}/in_series/{seriesId}/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -466,13 +466,7 @@ functions:
     handler: src/catalog.authorid
     events:
     - http:
-        path: catalog/{catalogToken}/by_author/{authorId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-    - http:
-        path: catalog/{catalogToken}/by_author/{authorId}/{page}
+        path: catalog/{catalogToken}/by_author/{authorId}/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
@@ -483,13 +477,7 @@ functions:
     handler: src/catalog.tagname
     events:
     - http:
-        path: catalog/{catalogToken}/tagged_with/{tagName}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-    - http:
-        path: catalog/{catalogToken}/tagged_with/{tagName}/{page}
+        path: catalog/{catalogToken}/tagged_with/{tagName}/{pages+}
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
