@@ -128,12 +128,13 @@ var ENTRY = {
             }
         },
         publisher: {
-            tag: "dc:publisher"
+            tag: "dcterms:publisher"
         },
         language: {
-            tag: "dc:language"
+            tag: "dcterms:language"
         },
         rights: {},
+        //size: {}
         content: CONTENT
     }
 };

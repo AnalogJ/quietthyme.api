@@ -3,6 +3,7 @@ var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
     Helpers = require('./common/helpers')
     Base64Service = require('./services/Base64Service'),
+    Constants = require('./common/Constants'),
     q = require('q');
 
 
@@ -475,22 +476,8 @@ module.exports = {
             })
             .then(function (user) {
 
-                var XMLSchema = require("xml-schema");
-                var schemas = require('./common/schemas');
-                var searchSchema = new XMLSchema(schemas.SEARCH_DESCRIPTION);
+                return CatalogService.toXML(CatalogService.search_description_feed(token),'SEARCH_DESCRIPTION')
 
-                var searchFeed = {
-                    image: CatalogService.web_endpoint() + '/favicon.ico',
-                    url: {
-                        template: CatalogService.token_endpoint(token) + '/search?query={searchTerms}&amp;page={startPage?}'
-                    }
-                }
-                return searchSchema.generate(searchFeed, {
-                    version: '1.0',
-                    encoding: 'UTF-8',
-                    standalone: true,
-                    pretty: true
-                });
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
@@ -533,6 +520,69 @@ module.exports = {
                     return CatalogService.bookToEntry(id, token, book)
                 })
                 return CatalogService.toXML(opds_catalog);
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
+
+    //#  /catalog/{{token}}/book/{{bookId}} -- book details for a book_id
+    book: function (event, context, cb) {
+        var bookId = event.path.bookId;
+        var token = event.path.catalogToken;
+        var path = "/book/" + bookId
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var book_query = db_client.select()
+                    .first()
+                    .from('books')
+                    .where({user_id: user.uid, id: bookId});
+                return q.all([user, book_query]);
+            })
+            .spread(function (user, book) {
+                if (!book) {
+                    return q.reject(new Error("No Book found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':book:' + bookId;
+
+                var opds_entry = CatalogService.bookToEntry(id,token, book);
+                opds_entry.publisher = book.publisher;
+                opds_entry.content = book.short_summary;
+                opds_entry.links.push({
+                    type: Constants.file_extensions[book.storage_format].mimetype,
+                    href: CatalogService.token_endpoint(token) + '/download/' + bookId,
+                    rel: 'http://opds-spec.org/acquisition'
+                })
+                if(book.series_name){
+                    opds_entry.links.push({
+                        type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                        href: CatalogService.token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(book.series_name),
+                        title: 'In the same series',
+                        rel: 'related'
+                    })
+                }
+                book.authors.each(function(author){
+                    opds_entry.links.push({
+                        type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                        href: CatalogService.token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author),
+                        title: 'More books by ' + author,
+                        rel: 'related'
+                    })
+                })
+                opds_entry.links.push({
+                    type: 'application/atom+xml;type=entry;profile=opds-catalog',
+                    href: CatalogService.token_endpoint(token) + path,
+                    rel: 'self'
+                })
+
+                return CatalogService.toXML(opds_entry, 'ENTRY');
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

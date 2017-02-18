@@ -524,11 +524,15 @@ functions:
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
 
-#  catalogbook:
-#    handler: src/catalog.book
-#    events:
-#    - http: GET catalog/{catalogToken}/book/{bookId}
-#
+  catalogbook:
+    handler: src/catalog.book
+    events:
+    - http:
+        path: catalog/{catalogToken}/book/{bookId}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+
 #  catalogdownload:
 #    handler: src/catalog.download
 #    events:

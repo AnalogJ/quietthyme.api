@@ -3,7 +3,8 @@ var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),
     Helpers = require('./common/helpers'),
-    q = require('q')
+    q = require('q'),
+    toMarkdown = require('to-markdown');
 module.exports = {
     create: function (event, context, cb) {
 
@@ -25,7 +26,7 @@ module.exports = {
                 ///TODO: validate that the book properties match the database columns.
                 var book_data = event.body;
                 book_data.user_id = auth.uid;
-
+                book_data.short_summary = toMarkdown(book_data.short_summary)
                 return db_client('books')
                     .returning('id')
                     .insert(book_data)

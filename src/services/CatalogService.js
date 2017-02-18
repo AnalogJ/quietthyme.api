@@ -1,6 +1,5 @@
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
-var opdsFeedSchema = new XMLSchema(schemas.FEED);
 var DBService = require('../services/DBService')
 var Base64Service = require('../services/Base64Service')
 //private methods
@@ -97,10 +96,23 @@ module.exports.navigation_feed = function acquisition_feed(token, id, current_pa
     return common_feed('kind=navigation', token, id, current_path, next_path, page, limit)
 }
 
+module.exports.search_description_feed = function search_description_feed(token){
+
+    return {
+        image: web_endpoint() + '/favicon.ico',
+        url: {
+            template: token_endpoint(token) + '/search?query={searchTerms}&amp;page={startPage?}'
+        }
+    }
+}
+
 
 // Create an opds feed
-module.exports.toXML = function(feed) {
-    return opdsFeedSchema.generate(feed, {
+module.exports.toXML = function(feed, type) {
+    if(!type) {type = 'FEED'}
+    var opdsSchema = new XMLSchema(schemas[type]);
+
+    return opdsSchema.generate(feed, {
         version: '1.0',
         encoding: 'UTF-8',
         standalone: true,
