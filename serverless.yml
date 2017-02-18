@@ -493,18 +493,37 @@ functions:
   catalogtagname:
     handler: src/catalog.tagname
     events:
-    - http: GET catalog/{catalogToken}/tagged_with/{tagName}/{page}
+    - http:
+        path: catalog/{catalogToken}/tagged_with/{tagName}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+    - http:
+        path: catalog/{catalogToken}/tagged_with/{tagName}/{page}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
 
-#  catalogsearchdefinition:
-#    handler: src/catalog.searchdefinition
-#    events:
-#    - http: GET catalog/{catalogToken}/search_definition
-#
-#  catalogsearch:
-#    handler: src/catalog.search
-#    events:
-#    - http: GET catalog/{catalogToken}/search
-#
+  catalogsearchdefinition:
+    handler: src/catalog.searchdefinition
+    events:
+    - http:
+        path: catalog/{catalogToken}/search_definition
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+
+  catalogsearch:
+    handler: src/catalog.search
+    events:
+    - http:
+        path: catalog/{catalogToken}/search
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+
 #  catalogbook:
 #    handler: src/catalog.book
 #    events:

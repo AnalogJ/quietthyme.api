@@ -1,12 +1,13 @@
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
-var opdsSchema = new XMLSchema(schemas.FEED);
+var opdsFeedSchema = new XMLSchema(schemas.FEED);
 var DBService = require('../services/DBService')
 var Base64Service = require('../services/Base64Service')
 //private methods
 function web_endpoint(){
     return 'https://' + (process.env.STAGE == 'master' ? 'www' : 'beta') + '.quietthyme.com'
 }
+module.exports.web_endpoint = web_endpoint
 
 function api_endpoint(){
     return 'https://api.quietthyme.com/'+process.env.STAGE + '/catalog'
@@ -20,6 +21,7 @@ function self_link(token, path, type){
         type: 'application/atom+xml;profile=opds-catalog'+ (type || ';kind=acquisition')
     };
 }
+
 
 //public methods
 
@@ -98,7 +100,7 @@ module.exports.navigation_feed = function acquisition_feed(token, id, current_pa
 
 // Create an opds feed
 module.exports.toXML = function(feed) {
-    return opdsSchema.generate(feed, {
+    return opdsFeedSchema.generate(feed, {
         version: '1.0',
         encoding: 'UTF-8',
         standalone: true,

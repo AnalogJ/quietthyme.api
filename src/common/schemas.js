@@ -174,6 +174,76 @@ var FEED = {
     }
 };
 
+
+var SEARCH_DESCRIPTION = {
+    tag: 'OpenSearchDescription',
+    attributes: {
+        xmlns: {
+            default: "http://a9.com/-/spec/opensearch/1.1/"
+        }
+    },
+    fields: {
+        shortname: {
+            tag: 'ShortName',
+            default: 'QuietThyme'
+        },
+        description: {
+            tag: 'Description',
+            default: 'Search for e-books on QuietThyme'
+        },
+        inputencoding: {
+            tag: 'InputEncoding',
+            default: 'UTF-8'
+        },
+        outputencoding: {
+            tag: 'OutputEncoding',
+            default: 'UTF-8'
+        },
+        contact: {
+            tag: 'Contact',
+            default: 'support@quietthyme.com'
+        },
+        image: {
+            tag: "Image",
+            attributes: {
+                type: {
+                    default: "image/x-icon"
+                },
+                width: {
+                    default: '16'
+                },
+                height:{
+                    default: '16'
+                }
+            },
+            default: ''
+        },
+        url: {
+            tag: "Url",
+            attributes: {
+                type: {
+                    default: "application/atom+xml"
+                },
+                template: {}
+            }
+        },
+        query: {
+            tag: "Query",
+            attributes: {
+                role: {
+                    default: "example"
+                },
+                searchTerms: {
+                    default: "robot"
+                }
+            },
+            default: {}
+        }
+    }
+};
+
+
 module.exports = {
-    FEED: FEED
+    FEED: FEED,
+    SEARCH_DESCRIPTION: SEARCH_DESCRIPTION
 };

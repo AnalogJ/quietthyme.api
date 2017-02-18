@@ -444,7 +444,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':tagged_with:' + seriesId;
+                var id = 'root:' + token + ':tagged_with:' + encoded_tag_name;
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
                     next_path = "/tagged_with/" + encoded_tag_name + '/'+ (page + 1);
@@ -452,6 +452,83 @@ module.exports = {
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - Tagged With';
+                opds_catalog.entries = books.map(function(book){
+                    return CatalogService.bookToEntry(id, token, book)
+                })
+                return CatalogService.toXML(opds_catalog);
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
+
+    //# /catalog/{{token}}/search_definition -- the search definition for this catalog.. specifies the format and url for searches
+    search_definition: function (event, context, cb)  {
+        var token = event.path.catalogToken;
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+                return user
+            })
+            .then(function (user) {
+
+                var XMLSchema = require("xml-schema");
+                var schemas = require('./common/schemas');
+                var searchSchema = new XMLSchema(schemas.SEARCH_DESCRIPTION);
+
+                var searchFeed = {
+                    image: CatalogService.web_endpoint() + '/favicon.ico',
+                    url: {
+                        template: CatalogService.token_endpoint(token) + '/search?query={searchTerms}&amp;page={startPage?}'
+                    }
+                }
+                return searchSchema.generate(searchFeed, {
+                    version: '1.0',
+                    encoding: 'UTF-8',
+                    standalone: true,
+                    pretty: true
+                });
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    },
+
+    //# /catalog/{{token}}/search?page={{page}}&query={{seach_term}} -- list of all books tagged with a tag.,
+    search: function (event, context, cb) {
+        var token = event.path.catalogToken;
+        var query = event.query.query
+        var page = (event.path.page | 0);
+        var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                book_query.where('title', 'like', query)
+                book_query.orderBy("title", 'desc')
+                return q.all([user, book_query]);
+            })
+            .spread(function (user, books) {
+                if (!books.length) {
+                    return q.reject(new Error("No Books found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':search:';
+                var next_path = null;
+                if (books.length >= QUERY_LIMIT) {
+                    next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (page + 1);
+                }
+
+                var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
+                opds_catalog.title = 'QuietThyme - Search Results';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToEntry(id, token, book)
                 })
