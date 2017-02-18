@@ -3,7 +3,7 @@ var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
     Helpers = require('./common/helpers')
     Base64Service = require('./services/Base64Service'),
-    Constants = require('./common/Constants'),
+    Constants = require('./common/constants'),
     q = require('q');
 
 
