@@ -509,6 +509,7 @@ functions:
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
+        integration: lambda
 
   catalogsearchmethod:
     handler: src/catalog.search
@@ -518,6 +519,7 @@ functions:
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
+        integration: lambda
 
   catalogbookentry:
     handler: src/catalog.book
@@ -527,6 +529,7 @@ functions:
         method: get
         request: ${self:custom.standardRequests}
         response: ${self:custom.catalogResponse}
+        integration: lambda
 
 #  catalogdownload:
 #    handler: src/catalog.download
