@@ -56,3 +56,20 @@ kloudlessService.eventsGet = function(account_id, event_cursor){
     })
     return deferred.promise;
 }
+
+kloudlessService.linkCreate = function(account_id, file_id){
+    var deferred = q.defer();
+    kloudless.events.get({
+        account_id: account_id,
+        file_id: file_id,
+        queryParams: {
+            direct: true
+            //TODO: set expiry to 10 minutes
+            //expiration: ISO 8601 timestamp specifying when the link expires.
+        }
+    }, function(err, res){
+        if (err) return deferred.reject(err);
+        return deferred.resolve(res)
+    })
+    return deferred.promise;
+}

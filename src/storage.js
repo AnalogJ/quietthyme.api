@@ -278,15 +278,32 @@ module.exports = {
 
                             payload.headers.Location = "https://s3.amazonaws.com/" + encodeURI(book.storage_identifier)
                             console.log(payload)
+                            return payload
                         }
                         else{
                             //TODO: handle storage download requests from other services.
-                            throw new Error("Storage service download not supported yet.")
+                            //throw new Error("Storage service download not supported yet.")
+
+
+                            //find the credential for this book
+                            return db_client.first()
+                                    .from('credentials')
+                                    .where({
+                                        user_id: auth.uid,
+                                        id: book.credential_id
+                                    })
+                                .then(function(credential){
+                                    return KloudlessService.linkCreate(credential.service_id, book.storage_identifier)
+                                })
+                                .then(function(data){
+
+                                    console.log("REDIRECT LINK", data)
+                                    payload.headers.Location = data.url
+                                    return payload
+
+                                })
+
                         }
-
-
-                        return payload
-
                     })
             })
 
