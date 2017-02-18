@@ -2,7 +2,8 @@
 var q = require('q'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
     JWTokenService = require('./JWTokenService'),
-    DBService = require('./DBService')
+    DBService = require('./DBService'),
+    KloudlessService = require('./KloudlessService')
 
 
 
@@ -44,6 +45,42 @@ module.exports.get_user_storage = function(token){
         })
 }
 
+module.exports.get_download_link = function(book, db_client){
+    //check if the book storage_type is populated, if not, then we need to return
+    if(!book.storage_type || !book.storage_identifier){
+        return q.reject(new Error('Could not find storage'))
+    }
+    else if(book.storage_type == 'quietthyme'){
+        //book is stored in S3, lets get it from there.
+        //storage_identifier for s3 is bucket/key
+
+        return q.resolve("https://s3.amazonaws.com/" + encodeURI(book.storage_identifier))
+    }
+    else{
+        //TODO: handle storage download requests from other services.
+        //throw new Error("Storage service download not supported yet.")
+
+
+        //find the credential for this book
+        return db_client.first()
+            .from('credentials')
+            .where({
+                user_id: auth.uid,
+                id: book.credential_id
+            })
+            .then(function(credential){
+                return KloudlessService.linkCreate(credential.service_id, book.storage_identifier)
+            })
+            .then(function(data){
+
+                console.log("REDIRECT LINK", data)
+                return data.url
+
+            })
+
+    }
+}
+
 
 //content identifiers are publically readable.
 // eg. HASH1234/image/cover/bookname.png
@@ -81,6 +118,10 @@ function storage_identifier_from_filename(filename, type){
     }
     return "library/"+ filename;
 };
+
+
+
+
 //
 ////TODO:download the file to adata buffer?
 //exports.download_file_in_container = function(storage_full_identifier){

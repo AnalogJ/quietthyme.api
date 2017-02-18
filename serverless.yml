@@ -426,10 +426,10 @@ functions:
         response: ${self:custom.catalogResponse}
         integration: lambda
 
-##  catalogauthors:
-##    handler: src/catalog.authors
-##    events:
-##    - http: GET catalog/{catalogToken}/authors/{page}
+#  catalogauthors:
+#    handler: src/catalog.authors
+#    events:
+#    - http: GET catalog/{catalogToken}/authors/{page}
 
   catalogbooklist:
     handler: src/catalog.books
@@ -513,10 +513,16 @@ functions:
         response: ${self:custom.catalogResponse}
         integration: lambda
 
-#  catalogdownload:
-#    handler: src/catalog.download
-#    events:
-#    - http: GET catalog/{catalogToken}/download/{bookId}
+  catalogdownload:
+    handler: src/catalog.download
+    events:
+    - http:
+        path: catalog/{catalogToken}/download/{bookId}
+        method: GET
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.redirectResponse}
+        integration: lambda
+        cors: true
 
 
 

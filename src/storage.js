@@ -263,47 +263,16 @@ module.exports = {
                         id: event.path.id
                     })
                     .then(function(book){
+                        return StorageService.get_download_link(book, db_client)
+                    })
+                    .then(function(link){
                         var payload = {
                             headers: {
-                                "Location": null
+                                "Location": link
                             }
                         };
-                        //check if the book storage_type is populated, if not, then we need to return
-                        if(!book.storage_type || !book.storage_identifier){
-                            return q.reject(new Error('Could not find storage'))
-                        }
-                        else if(book.storage_type == 'quietthyme'){
-                            //book is stored in S3, lets get it from there.
-                            //storage_identifier for s3 is bucket/key
-
-                            payload.headers.Location = "https://s3.amazonaws.com/" + encodeURI(book.storage_identifier)
-                            console.log(payload)
-                            return payload
-                        }
-                        else{
-                            //TODO: handle storage download requests from other services.
-                            //throw new Error("Storage service download not supported yet.")
-
-
-                            //find the credential for this book
-                            return db_client.first()
-                                    .from('credentials')
-                                    .where({
-                                        user_id: auth.uid,
-                                        id: book.credential_id
-                                    })
-                                .then(function(credential){
-                                    return KloudlessService.linkCreate(credential.service_id, book.storage_identifier)
-                                })
-                                .then(function(data){
-
-                                    console.log("REDIRECT LINK", data)
-                                    payload.headers.Location = data.url
-                                    return payload
-
-                                })
-
-                        }
+                        console.log(payload)
+                        return payload
                     })
             })
 

@@ -3,6 +3,7 @@ var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
     Helpers = require('./common/helpers')
     Base64Service = require('./services/Base64Service'),
+    StorageService = require('./service/StorageService'),
     Constants = require('./common/constants'),
     q = require('q');
 
@@ -569,7 +570,6 @@ module.exports = {
 
     //#  /catalog/{{catalogToken}}/book/{{bookId}} -- book details for a book_id
     book: function (event, context, cb) {
-        console.dir(event)
         var bookId = event.path.bookId;
         var token = event.path.catalogToken;
         var path = "/book/" + bookId
@@ -601,6 +601,40 @@ module.exports = {
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
-    }
+    },
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // #Acquisition - Download files
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //#  /catalog/{{token}}/download/{{book_id}}/ -- book details for a book_id
+    download: function (event, context, cb) {
+        var bookId = event.path.bookId;
+        var token = event.path.catalogToken;
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                return db_client.first()
+                    .from('books')
+                    .where({
+                        user_id: user.uid,
+                        id: bookId
+                    })
+                    .then(function(book){
+                        return StorageService.get_download_link(book, db_client)
+                    })
+                    .then(function(link){
+                        var payload = {
+                            headers: {
+                                "Location": link
+                            }
+                        };
+                        console.log(payload)
+                        return payload
+                    })
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+    }
 }
