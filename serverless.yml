@@ -416,17 +416,22 @@ functions:
           response: ${self:custom.catalogResponse}
           integration: lambda
 
-##  catalogseries:
-##    handler: src/catalog.series
-##    events:
-##    - http: GET catalog/{catalogToken}/series/{page}
-##
+  catalogserieslist:
+    handler: src/catalog.series
+    events:
+    - http:
+        path: catalog/{catalogToken}/series/{page}
+        method: get
+        request: ${self:custom.standardRequests}
+        response: ${self:custom.catalogResponse}
+        integration: lambda
+
 ##  catalogauthors:
 ##    handler: src/catalog.authors
 ##    events:
 ##    - http: GET catalog/{catalogToken}/authors/{page}
 
-  catalogbooks:
+  catalogbooklist:
     handler: src/catalog.books
     events:
     - http:

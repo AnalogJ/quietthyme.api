@@ -148,6 +148,37 @@ module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, 
 }
 
 
+module.exports.generatePaginatedSeriesQuery = function(db_client, user_id, limit, page){
+
+    var series_query =  db_client('books')
+        .distinct('series_name')
+        .whereNotNull('series_name')
+        .where({user_id: 1})
+
+    if(page || page === 0){
+        series_query.limit(limit);
+        series_query.offset(page * limit)
+    }
+
+    return series_query;
+}
+
+function seriesToPartialEntry(id, token, series_name){
+    return {
+        updated: new Date(),
+            id: id + ':series:' + Base64Service.urlEncode(series_name),
+        title: series_name,
+        content: 'Books in ' + series_name,
+        links: [
+            {
+                type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                rel: 'http://opds-spec.org/featured',
+                href: CatalogService.token_endpoint(token) + '/in_series/' + Base64Service.urlEncode(series_name)
+            }
+        ]
+    }
+}
+
 function bookToBaseEntry(id, token, book){
 
     var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )

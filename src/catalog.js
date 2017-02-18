@@ -27,7 +27,7 @@ module.exports = {
                         links: [
                             {
                                 type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
-                                rel: 'featured',
+                                rel: 'http://opds-spec.org/featured',
                                 href: CatalogService.token_endpoint(token) + '/recent'
                             },
                             {
@@ -45,6 +45,7 @@ module.exports = {
                         links: [
                             {
                                 type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                                rel: 'http://opds-spec.org/featured',
                                 href: CatalogService.token_endpoint(token) + '/books'
                             },
                             {
@@ -61,7 +62,8 @@ module.exports = {
                         content: 'Authors, listed alphabetically.',
                         links: [
                             {
-                                type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                                type: 'application/atom+xml;profile=opds-catalog;kind=navigation',
+                                rel: 'http://opds-spec.org/featured',
                                 href: CatalogService.token_endpoint(token) + '/authors'
                             },
                             {
@@ -78,7 +80,8 @@ module.exports = {
                         content: 'Series names, listed alphabetically.',
                         links: [
                             {
-                                type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
+                                type: 'application/atom+xml;profile=opds-catalog;kind=navigation',
+                                rel: 'http://opds-spec.org/featured',
                                 href: CatalogService.token_endpoint(token) + '/series'
                             },
                             {
@@ -113,83 +116,121 @@ module.exports = {
             .done()
     },
 
-    //# /catalog/{{token}}/series/{{page}} -- alphabetical list of series names.
-    //series: function (req, res) {
-    //    var token = req.params.token.trim()
-    //    var page = (req.params.page | 0);
-    //    //root catalog parameters
-    //
-    //    //TODO: do a custom query here, all the books on this shelf, and for each book, select the series. for each series
-    //
-    //    function querySeries(user) {
-    //        var deferred = q.defer()
-    //        Book.query("SELECT DISTINCT series_name " +
-    //            "FROM book " +
-    //            "WHERE owner = $1 AND series_name IS NOT NULL " +
-    //            "ORDER BY series_name ASC " +
-    //            "LIMIT $2 " +
-    //            "OFFSET $3 ", [user.id, limit, limit * page],
-    //            function (error, data) {
-    //                if (error) {
-    //                    deferred.reject(error)
-    //                }
-    //                else {
-    //                    deferred.resolve(data.rows);//resolved successfully.
-    //                }
-    //            })
-    //        return deferred.promise;
-    //    }
-    //
-    //    var token = req.params.token.trim()
-    //    var page = (req.params.page | 0);
-    //
-    //    return findUserByCatalogToken(token)
-    //        .then(function (user) {
-    //            if (!user) {
-    //                return q.reject(new Error("No User found"));
-    //            }
-    //
-    //            var book_query = generatePaginatedBookQuery(user, limit, page);
-    //            book_query.ascending("title")
-    //            return q.all([user, book_query.find({useMasterKey: true})]);
-    //        })
-    //
-    //    return findUserByCatalogToken(token)
-    //        .then(function (user) {
-    //            if (!user) {
-    //                return q.reject(new Error("No User found"));
-    //            }
-    //            return querySeries(user)
-    //                .then(function (series) {
-    //
-    //
-    //                    if (!series.length) {
-    //                        return q.reject(new Error("No Books found"))
-    //                    }
-    //                    //root catalog parameters
-    //                    var params = common_params(token);
-    //                    params.id = "root:" + token + ":series";
-    //                    params.title = "Series"
-    //                    params.series = series;
-    //                    params.updated = user.updatedAt;
-    //                    params.self = params.base + "/series/" + (page || "")
-    //                    params.page = page;
-    //                    if (series.length >= limit) {
-    //                        params.next = params.base + "/series/" + (page + 1);
-    //                    }
-    //
-    //                    //catalog root;
-    //                    res.setHeader("Content-Type", "application/xml");
-    //                    res.view(params);
-    //                })
-    //        })
-    //
-    //
-    //    // list the series name here., sorted and paginated.
-    //
-    //    //catalog root;
-    //
-    //},
+    // # /catalog/{{token}}/series/{{page}} -- alphabetical list of series names.
+    series: function (event, context, cb) {
+        var token = event.path.catalogToken;
+        var page = (event.path.page | 0);
+        var path = "/series/" + (page || "")
+
+
+        return CatalogService.findUserByToken(token)
+            .spread(function(user, db_client){
+                if (!user) {
+                    return q.reject(new Error("No User found"));
+                }
+
+                var series_query = CatalogService.generatePaginatedSeriesQuery(db_client, user.uid, QUERY_LIMIT, page);
+                series_query.orderBy('series_name');
+                return q.all([user, series_query]);
+            })
+
+            .spread(function (user, series_list) {
+                if (!series_list.length) {
+                    return q.reject(new Error("No Series found"))
+                }
+
+                //user was found.
+                var id = 'root:' + token + ':series'
+                var next_path = null;
+                if (series_list.length >= QUERY_LIMIT) {
+                    next_path = "/series/" + (page + 1);
+                }
+
+                var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
+                opds_catalog.entries = series_list.map(function(series){
+                    return CatalogService.seriesToPartialEntry(id, token, series.series_name)
+                })
+                return CatalogService.toXML(opds_catalog);
+
+
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
+
+
+
+       // //TODO: do a custom query here, all the books on this shelf, and for each book, select the series. for each series
+       //
+       // function querySeries(user) {
+       //     var deferred = q.defer()
+       //     Book.query("SELECT DISTINCT series_name " +
+       //         "FROM book " +
+       //         "WHERE owner = $1 AND series_name IS NOT NULL " +
+       //         "ORDER BY series_name ASC " +
+       //         "LIMIT $2 " +
+       //         "OFFSET $3 ", [user.id, limit, limit * page],
+       //         function (error, data) {
+       //             if (error) {
+       //                 deferred.reject(error)
+       //             }
+       //             else {
+       //                 deferred.resolve(data.rows);//resolved successfully.
+       //             }
+       //         })
+       //     return deferred.promise;
+       // }
+       //
+       // var token = req.params.token.trim()
+       // var page = (req.params.page | 0);
+       //
+       // return findUserByCatalogToken(token)
+       //     .then(function (user) {
+       //         if (!user) {
+       //             return q.reject(new Error("No User found"));
+       //         }
+       //
+       //         var book_query = generatePaginatedBookQuery(user, limit, page);
+       //         book_query.ascending("title")
+       //         return q.all([user, book_query.find({useMasterKey: true})]);
+       //     })
+       //
+       // return findUserByCatalogToken(token)
+       //     .then(function (user) {
+       //         if (!user) {
+       //             return q.reject(new Error("No User found"));
+       //         }
+       //         return querySeries(user)
+       //             .then(function (series) {
+       //
+       //
+       //                 if (!series.length) {
+       //                     return q.reject(new Error("No Books found"))
+       //                 }
+       //                 //root catalog parameters
+       //                 var params = common_params(token);
+       //                 params.id = "root:" + token + ":series";
+       //                 params.title = "Series"
+       //                 params.series = series;
+       //                 params.updated = user.updatedAt;
+       //                 params.self = params.base + "/series/" + (page || "")
+       //                 params.page = page;
+       //                 if (series.length >= limit) {
+       //                     params.next = params.base + "/series/" + (page + 1);
+       //                 }
+       //
+       //                 //catalog root;
+       //                 res.setHeader("Content-Type", "application/xml");
+       //                 res.view(params);
+       //             })
+       //     })
+
+
+       // list the series name here., sorted and paginated.
+
+       //catalog root;
+
+    },
 
     //# /catalog/{{token}}/authors/{{page}} -- alphabetical list of authors
     //authors: function (req, res) {
@@ -270,7 +311,7 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.orderBy("title", 'desc')
+                book_query.orderBy("title")
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -348,7 +389,7 @@ module.exports = {
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
                 book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)})
-                book_query.orderBy("title", 'desc')
+                book_query.orderBy("title")
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -392,7 +433,7 @@ module.exports = {
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
                 book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id))
-                book_query.orderBy("title", 'desc')
+                book_query.orderBy("title")
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -436,7 +477,7 @@ module.exports = {
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
                 book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name))
-                book_query.orderBy("title", 'desc')
+                book_query.orderBy("title")
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -499,7 +540,7 @@ module.exports = {
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
                 book_query.where('title', 'like', query)
-                book_query.orderBy("title", 'desc')
+                book_query.orderBy("title")
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
