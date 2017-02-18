@@ -526,7 +526,7 @@ module.exports = {
             .done()
     },
 
-    //#  /catalog/{{token}}/book/{{bookId}} -- book details for a book_id
+    //#  /catalog/{{catalogToken}}/book/{{bookId}} -- book details for a book_id
     book: function (event, context, cb) {
         var bookId = event.path.bookId;
         var token = event.path.catalogToken;
@@ -538,8 +538,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = db_client.select()
-                    .first()
+                var book_query = db_client.first()
                     .from('books')
                     .where({user_id: user.uid, id: bookId});
                 return q.all([user, book_query]);
