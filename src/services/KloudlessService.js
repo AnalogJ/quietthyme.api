@@ -62,11 +62,12 @@ kloudlessService.linkCreate = function(account_id, file_id){
     kloudless.links.create({
         account_id: account_id,
         file_id: file_id,
-        queryParams: {
-            direct: true
-            //TODO: set expiry to 10 minutes
-            //expiration: ISO 8601 timestamp specifying when the link expires.
-        }
+        direct: true
+
+        // queryParams: {
+        //     //TODO: set expiry to 10 minutes
+        //     //expiration: ISO 8601 timestamp specifying when the link expires.
+        // }
     }, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
