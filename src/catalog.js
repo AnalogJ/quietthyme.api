@@ -555,8 +555,11 @@ module.exports = {
                 var opds_entry = CatalogService.bookToEntry(id,token, book);
                 opds_entry.publisher = book.publisher;
                 opds_entry.content = book.short_summary;
+
+                var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
+
                 opds_entry.links.push({
-                    type: Constants.file_extensions[book.storage_format].mimetype,
+                    type: Constants.file_extensions[storage_extension].mimetype,
                     href: CatalogService.token_endpoint(token) + '/download/' + bookId,
                     rel: 'http://opds-spec.org/acquisition'
                 })
@@ -568,7 +571,7 @@ module.exports = {
                         rel: 'related'
                     })
                 }
-                book.authors.each(function(author){
+                book.authors.forEach(function(author){
                     opds_entry.links.push({
                         type: 'application/atom+xml;profile=opds-catalog;kind=acquisition',
                         href: CatalogService.token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author),
@@ -587,6 +590,6 @@ module.exports = {
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
-    },
+    }
 
 }
