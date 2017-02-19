@@ -46,6 +46,7 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
 };
 
 kloudlessService.eventsGet = function(account_id, event_cursor){
+    console.log("KLOUDLESS EVENTS GET REQUEST:", account_id, event_cursor)
     var deferred = q.defer();
     kloudless.events.get({
         account_id: account_id,
