@@ -72,6 +72,10 @@ module.exports.kloudless = function(event, context, cb){
                 //we only care about files in the blackhole_folder that we can download
                 if (!(kl_event.metadata.type == 'file' && kl_event.metadata.parent.id == blackhole_folder_id && kl_event.metadata.downloadable)){
                     console.log("SKIPPING (invalid file/parent):", kl_event.account, kl_event.metadata.path)
+
+                    //TODO: debugging
+                    console.log('blackhole_folder_id',blackhole_folder_id)
+                    console.dir(kl_event)
                     return false;
                 }
 
