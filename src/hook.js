@@ -43,7 +43,7 @@ module.exports.kloudless = function(event, context, cb){
                 })
                 .then(function(credential){
                     console.log("FOUND CREDENTIAL", credential)
-                    return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
+                    return q.all([KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential])
                 })
                 .spread(function(kloudless_events, credential){
                     //store the new cursor in the db
