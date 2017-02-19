@@ -284,7 +284,7 @@ module.exports = {
 
     //must handle 2 types of events:
     // - books uploaded via webui to bucketname/USERHASH/user_id/cred_id/NEW/filename
-    // - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
+    // (DONE) - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
 
     // if its a new book, we need to process it, if its a calibre book we just need to move it to correct location
     process_book: function (event, context, cb) {
@@ -299,15 +299,16 @@ module.exports = {
         var dirty_filename = upload_key_parts[4];
 
 
-        //check if the book is a new book a book
+        //check if the book is a new book
         var is_new_book = (book_id == 'NEW');
 
-        //check if the book lives on quietthyme storage
+        //check if the book destination is quietthyme storage
         var is_quietthyme_storage = (cred_id == '0');
 
 
         if(is_new_book){
             return cb(new Error("Not Implemented. New books cannot be processed yet."), null)
+            // newly uploaded books should only be
         }
 
         if(is_quietthyme_storage){
@@ -365,6 +366,5 @@ module.exports = {
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
-
     }
 };

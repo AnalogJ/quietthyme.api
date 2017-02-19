@@ -39,6 +39,10 @@ provider:
         - "s3:PutObject"
         - "s3:GetObject"
       Resource: "arn:aws:s3:::${self:service}-${opt:stage, self:provider.stage}-*"
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda::::${self:service}-${opt:stage, self:provider.stage}-queueprocessunknownbook" # triggers the process_unknown_processor
 #  vpc:
 #    securityGroupIds:
 #      - sg-bbb818c3
@@ -217,7 +221,7 @@ functions:
 #          integration: lambda
 
 # hooks are for notifications about events like books being moved, and maybe payments.
-  hook:
+  hookkloudlessevent:
     handler: src/hook.kloudless
     events:
     - http: POST hook/kloudless
@@ -515,6 +519,9 @@ functions:
         integration: lambda
         cors: true
 
+  # this function is processed async and triggered by Lambda Invoke calls.
+  queueprocessunknownbook:
+    handler: src/queue.process_unknown_book
 
 
 # you can add CloudFormation resource templates here

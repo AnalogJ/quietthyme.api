@@ -4,7 +4,12 @@ var crypto = require('crypto');
 var q = require('q')
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
-var Helpers = require('./common/helpers')
+var Helpers = require('./common/helpers');
+var Constants = require('./common/constants')
+var path = require('path')
+
+var aws = require('aws-sdk');
+var lambda = new aws.Lambda();
 
 module.exports.kloudless = function(event, context, cb){
 
@@ -42,32 +47,69 @@ module.exports.kloudless = function(event, context, cb){
                     service_id: event.body.split('=')[1],
                 })
                 .then(function(credential){
-                    console.log("FOUND CREDENTIAL", credential)
-                    return KloudlessService.eventsGet(credential.service_id, credential.event_cursor)
-                        .then(function(kloudless_events){
-                            //store the new cursor in the db
-                            console.dir("KLOUDLESS EVENTS:", kloudless_events)
-                            return db_client.where({id:credential.id})
-                                .update({event_cursor:kloudless_events.cursor})
-                                .then(function(){
-                                    return kloudless_events;
-                                })
-
-                        })
+                    return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
                 })
-
+                .spread(function(kloudless_events, credential){
+                    //store the new cursor in the db
+                    return [db_client('credentials')
+                        .where({id:credential.id})
+                        .update({event_cursor: kloudless_events.cursor})
+                        .then(function(){
+                            return kloudless_events;
+                        }), credential.blackhole_folder_id]
+                })
         })
-        .then(function(events){
+        .spread(function(events, blackhole_folder_id){
             //begin filtering the events, and start invoking new lambda's
 
-            //TODO: add code to filer out events we can ignore, and then invoke.
+            var filtered_events = events.objects.filter(function(kl_event){
+                //we only care about add, move, copy actions (all others are ignorable)
+                if (!(kl_event.type == 'add' || kl_event.type == 'move' || kl_event.type == 'copy')){
+                    return false;
+                }
 
+                //we only care about files in the blackhole_folder that we can download
+                if (!(kl_event.metadata.type == 'file' && kl_event.metadata.parent.id == blackhole_folder_id && kl_event.metadata.downloadable)){
+                    return false;
+                }
 
+                //we only care about certain file extensions (ones we can process)
+                var ext = path.extname(kl_event.metadata.name).split('.').join('') //safe way to remove '.' prefix, even on empty string.
+
+                if(!Constants.file_extensions[ext]){
+                    //lets log the files that we don't process in the blackhole folde.r
+                    console.log("SKIPPING:", kl_event.account, kl_event.metadata.path)
+                    return false
+                }
+
+                //we're left with only the books that were added, moved, copied into the blackhole folder.
+                return true
+            })
+
+            // we should trigger new lambda invocations for each event we find.
+            // http://stackoverflow.com/a/31745774
+            var promises = filtered_events.map(function(kl_event){
+                var deferred = q.defer();
+
+                lambda.invoke({
+                    FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
+                    Payload: JSON.stringify(event, null, 2),
+                    InvocationType: 'Event'
+                }, function(err, data) {
+                    if (err) return deferred.reject(err);
+                    return deferred.resolve(data.Payload);
+                })
+                return deferred.promise
+            })
+
+            return q.allSettled(promises)
+        })
+        .then(function(){
             //response should always be kloudless API id.
-            return cb(null, {
+            return {
                 statusCode: 200,
                 body: process.env.KLOUDLESS_API_ID
-            });
+            };
         })
         .then(Helpers.successHandler(cb))
         .fail(Helpers.errorHandler(cb))
