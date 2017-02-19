@@ -43,22 +43,24 @@ module.exports.kloudless = function(event, context, cb){
                 })
                 .then(function(credential){
                     console.log("FOUND CREDENTIAL", credential)
-                    return q.all([KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential])
-                })
-                .spread(function(kloudless_events, credential){
-                    //store the new cursor in the db
-                    console.dir("KLOUDLESS EVENTS:", kloudless_events)
-                    return db_client.where({id:credential.id}).update({event_cursor:kloudless_events.cursor})
-                        .then(function(){
-                            return kloudless_events;
+                    return KloudlessService.eventsGet(credential.service_id, credential.event_cursor)
+                        .then(function(kloudless_events){
+                            //store the new cursor in the db
+                            console.dir("KLOUDLESS EVENTS:", kloudless_events)
+                            return db_client.where({id:credential.id})
+                                .update({event_cursor:kloudless_events.cursor})
+                                .then(function(){
+                                    return kloudless_events;
+                                })
+
                         })
                 })
+
         })
         .then(function(events){
             //begin filtering the events, and start invoking new lambda's
 
             //TODO: add code to filer out events we can ignore, and then invoke.
-
 
 
             //response should always be kloudless API id.

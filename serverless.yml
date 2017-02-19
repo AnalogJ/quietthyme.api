@@ -216,7 +216,7 @@ functions:
 #          response: ${self:custom.standardResponses}
 #          integration: lambda
 
-
+# hooks are for notifications about events like books being moved, and maybe payments.
   hook:
     handler: src/hook.kloudless
     events:
@@ -270,16 +270,6 @@ functions:
     events:
       - http:
           path: auth/login
-          method: POST
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  authcalibre:
-    handler: src/auth.calibre
-    events:
-      - http:
-          path: auth/calibre
           method: POST
           response: ${self:custom.standardResponses}
           integration: lambda
