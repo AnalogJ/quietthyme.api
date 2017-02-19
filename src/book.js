@@ -50,17 +50,28 @@ module.exports = {
                 }
 
                 var condition = {'user_id': auth.uid}
-                if(event.query.storage_id){
-                    condition['credential_id'] = event.query.storage_id;
+
+                var book_query = null
+
+                if(event.query.id){
+                    condition['id'] = event.query.id;
+                    book_query = db_client.first()
+                        .from('books')
+                        .where(condition)
                 }
+                else{
+                    if(event.query.storage_id){
+                        condition['credential_id'] = event.query.storage_id;
+                    }
 
-                var book_query = db_client.select()
-                    .from('books')
-                    .where(condition)
+                    book_query = db_client.select()
+                        .from('books')
+                        .where(condition)
 
-                if(event.query.page || event.query.page === 0){
-                    book_query.limit(50);
-                    book_query.offset(event.query.page * 50)
+                    if(event.query.page || event.query.page === 0){
+                        book_query.limit(50);
+                        book_query.offset(event.query.page * 50)
+                    }
                 }
 
                 return book_query
