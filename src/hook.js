@@ -65,11 +65,13 @@ module.exports.kloudless = function(event, context, cb){
             var filtered_events = events.objects.filter(function(kl_event){
                 //we only care about add, move, copy actions (all others are ignorable)
                 if (!(kl_event.type == 'add' || kl_event.type == 'move' || kl_event.type == 'copy')){
+                    console.log("SKIPPING (invalid type):", kl_event.account, kl_event.metadata.path)
                     return false;
                 }
 
                 //we only care about files in the blackhole_folder that we can download
                 if (!(kl_event.metadata.type == 'file' && kl_event.metadata.parent.id == blackhole_folder_id && kl_event.metadata.downloadable)){
+                    console.log("SKIPPING (invalid file/parent):", kl_event.account, kl_event.metadata.path)
                     return false;
                 }
 
@@ -78,7 +80,7 @@ module.exports.kloudless = function(event, context, cb){
 
                 if(!Constants.file_extensions[ext]){
                     //lets log the files that we don't process in the blackhole folde.r
-                    console.log("SKIPPING:", kl_event.account, kl_event.metadata.path)
+                    console.log("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path)
                     return false
                 }
 
