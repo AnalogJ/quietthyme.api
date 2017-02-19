@@ -55,6 +55,7 @@ module.exports.kloudless = function(event, context, cb){
                         .where({id:credential.id})
                         .update({event_cursor: kloudless_events.cursor})
                         .then(function(){
+                            console.log("UPDATED CURSOR:",credential.event_cursor,  kloudless_events.cursor)
                             return kloudless_events;
                         }), credential.blackhole_folder_id]
                 })
@@ -75,7 +76,7 @@ module.exports.kloudless = function(event, context, cb){
 
                     //TODO: debugging
                     console.log('blackhole_folder_id',blackhole_folder_id)
-                    console.dir(kl_event)
+                    console.dir(JSON.stringify(kl_event))
                     return false;
                 }
 
@@ -96,7 +97,7 @@ module.exports.kloudless = function(event, context, cb){
             // http://stackoverflow.com/a/31745774
             var promises = filtered_events.map(function(kl_event){
                 var deferred = q.defer();
-
+                console.log("QUEUED:", kl_event.account, kl_event.metadata.path)
                 lambda.invoke({
                     FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
                     Payload: JSON.stringify(event, null, 2),
