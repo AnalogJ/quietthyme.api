@@ -42,13 +42,15 @@ module.exports.kloudless = function(event, context, cb){
                     service_id: event.body.split('=')[1],
                 })
                 .then(function(credential){
+                    console.log("FOUND CREDENTIAL", credential)
                     return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
                 })
-                .spread(function(events, credential){
+                .spread(function(kloudless_events, credential){
                     //store the new cursor in the db
-                    return db_client.where({id:credential.id}).update({event_cursor:events.cursor})
+                    console.dir("KLOUDLESS EVENTS:", kloudless_events)
+                    return db_client.where({id:credential.id}).update({event_cursor:kloudless_events.cursor})
                         .then(function(){
-                            return events;
+                            return kloudless_events;
                         })
                 })
         })

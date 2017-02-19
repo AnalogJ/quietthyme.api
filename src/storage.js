@@ -288,11 +288,11 @@ module.exports = {
 
     // if its a new book, we need to process it, if its a calibre book we just need to move it to correct location
     process_book: function (event, context, cb) {
-        var upload_key = event.Records[0].s3.object.key
-        var upload_bucket = event.Records[0].s3.bucket.name
+        var upload_key = event.Records[0].s3.object.key;
+        var upload_bucket = event.Records[0].s3.bucket.name;
 
         var upload_key_parts = upload_key.split('/');
-        //ignore the userhash.
+        //ignore the userhash.h
         var user_id = upload_key_parts[1];
         var cred_id = upload_key_parts[2];
         var book_id = upload_key_parts[3];
