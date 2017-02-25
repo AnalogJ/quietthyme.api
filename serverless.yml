@@ -42,7 +42,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "lambda:InvokeFunction"
-      Resource: "arn:aws:lambda::::${self:service}-${opt:stage, self:provider.stage}-queueprocessunknownbook" # triggers the process_unknown_processor
+      Resource: "arn:aws:lambda:*:*:*:${self:service}-${opt:stage, self:provider.stage}-queueprocessunknownbook" # triggers the process_unknown_processor
 #  vpc:
 #    securityGroupIds:
 #      - sg-bbb818c3
