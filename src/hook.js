@@ -112,7 +112,8 @@ module.exports.kloudless = function(event, context, cb){
 
             return q.allSettled(promises)
         })
-        .then(function(){
+        .then(function(promises){
+            console.dir(promises)
             //response should always be kloudless API id.
             return {
                 statusCode: 200,
