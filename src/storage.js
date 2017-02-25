@@ -34,8 +34,8 @@ module.exports = {
                             .then(function(root_folder){
                                 return[
                                     q(root_folder),
-                                    KloudlessService.folderCreate(event.body.account.id,'library',root_folder.id),
-                                    KloudlessService.folderCreate(event.body.account.id,'blackhole',root_folder.id)
+                                    KloudlessService.folderCreate(event.body.account.id,'library',root_folder.id, event.body.account.service),
+                                    KloudlessService.folderCreate(event.body.account.id,'blackhole',root_folder.id, event.body.account.service)
                                 ]
                             })
                             .spread(function(root_folder, library_folder, blackhole_folder){
