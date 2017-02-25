@@ -26,8 +26,10 @@ kloudlessService.folderCreate = function(account_id, name, parent_id, service_ty
         //we have to generate both.
         return deferred.promise
             .then(function(folder_metadata){
+                console.log("CONVERTING ID FOR DROPBOX:", folder_metadata.path)
                 return kloudlessService.convertId(account_id, folder_metadata.path)
                     .then(function(convert_data){
+                        console.log("CONVERT RESPONSE", convert_data)
                         folder_metadata.path_id = convert_data.id;
                         return folder_metadata;
                     })
