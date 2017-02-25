@@ -74,7 +74,7 @@ module.exports = {
                     credential.oauth.access_token,
                     credential.service_id,
                     book.storage_filename + book.storage_format,
-                    credential.library_folder_id,
+                    credential.library_folder.id,
                     book.storage_identifier
                 )
                     .then(function(kloudless_upload_resp){
