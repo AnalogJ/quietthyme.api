@@ -67,7 +67,7 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
     return deferred.promise;
 };
 
-kloudlessService.convertId = function(account_id, identifier){
+kloudlessService.convertId = function(account_id, identifier, type){
     var deferred = q.defer();
 
     //the kloudless encrypts & encodes the service id into their own.
@@ -78,7 +78,8 @@ kloudlessService.convertId = function(account_id, identifier){
             'Authorization': 'ApiKey ' + process.env.KLOUDLESS_API_KEY
         },
         json: {
-            raw_id: identifier
+            raw_id: identifier,
+            type: type || 'folder'
         }
     };
 
