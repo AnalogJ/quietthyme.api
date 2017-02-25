@@ -57,10 +57,10 @@ module.exports.kloudless = function(event, context, cb){
                         .then(function(){
                             console.log("UPDATED CURSOR:",credential.event_cursor,  kloudless_events.cursor)
                             return kloudless_events;
-                        }), credential.blackhole_folder_id]
+                        }), credential.blackhole_folder]
                 })
         })
-        .spread(function(events, blackhole_folder_id){
+        .spread(function(events, blackhole_folder){
             //begin filtering the events, and start invoking new lambda's
 
             var filtered_events = events.objects.filter(function(kl_event){
@@ -71,11 +71,12 @@ module.exports.kloudless = function(event, context, cb){
                 }
 
                 //we only care about files in the blackhole_folder that we can download
-                if (!(kl_event.metadata.type == 'file' && kl_event.metadata.parent.id == blackhole_folder_id && kl_event.metadata.downloadable)){
+                if (!(kl_event.metadata.type == 'file' && kl_event.metadata.downloadable &&
+                    (kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.path_id))){
                     console.log("SKIPPING (invalid file/parent):", kl_event.account, kl_event.metadata.path)
 
                     //TODO: debugging
-                    console.log('blackhole_folder_id',blackhole_folder_id)
+                    console.log('blackhole_folder',blackhole_folder)
                     console.dir(JSON.stringify(kl_event))
                     return false;
                 }
@@ -84,7 +85,7 @@ module.exports.kloudless = function(event, context, cb){
                 var ext = path.extname(kl_event.metadata.name).split('.').join('') //safe way to remove '.' prefix, even on empty string.
 
                 if(!Constants.file_extensions[ext]){
-                    //lets log the files that we don't process in the blackhole folde.r
+                    //lets log the files that we don't process in the blackhole folder
                     console.log("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path)
                     return false
                 }

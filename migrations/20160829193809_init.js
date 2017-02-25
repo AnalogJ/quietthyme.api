@@ -30,9 +30,9 @@ exports.up = function(knex, Promise) {
             table.string('name');
             table.string('email');
             table.json('oauth');
-            table.string('root_folder_id'); //this is the service specific "QuietThyme" folder that all sub folders are created in.
-            table.string('library_folder_id'); //this is "library" folder that all author folders are created in.
-            table.string('blackhole_folder_id'); //this is "blackhole" folder that pending books should be copied into.
+            table.json('root_folder'); //this is the service specific "QuietThyme" folder that all sub folders are created in.
+            table.json('library_folder'); //this is "library" folder that all author folders are created in.
+            table.json('blackhole_folder'); //this is "blackhole" folder that pending books should be copied into.
 
             table.string('event_cursor')
             table.unique(['service_type', 'service_id']);

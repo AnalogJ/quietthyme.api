@@ -30,15 +30,7 @@ module.exports = {
                     },['id', 'service_type'])
                     .then(function(new_cred){
                         //now we have to create notification webhooks, the QuietThyme folder & subfolders and README.md document
-                        var root_folder_promise = null;
-                        if(event.body.account.service == 'dropbox'){
-                            //dropbox app is sandboxed.
-                            root_folder_promise = q({id: 'root'})
-                        }
-                        else{
-                            root_folder_promise = KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root')
-                        }
-                        return root_folder_promise
+                        return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root', event.body.account.service)
                             .then(function(root_folder){
                                 return[
                                     q(root_folder),
@@ -52,9 +44,9 @@ module.exports = {
                                 return db_client('credentials')
                                     .where('id', '=', new_cred[0].id)
                                     .update({
-                                        'root_folder_id': root_folder.id, //this is the service specific "QuietThyme" folder that all sub folders are created in.
-                                        'library_folder_id': library_folder.id, //this is "library" folder that all author folders are created in.
-                                        'blackhole_folder_id': blackhole_folder.id
+                                        'root_folder': {id: root_folder.id, raw_id: root_folder.raw_id, path_id: root_folder.path_id}, //this is the service specific "QuietThyme" folder that all sub folders are created in.
+                                        'library_folder': {id: library_folder.id, raw_id: library_folder.raw_id, path_id: library_folder.path_id}, //this is "library" folder that all author folders are created in.
+                                        'blackhole_folder': {id: blackhole_folder.id, raw_id: blackhole_folder.raw_id, path_id: blackhole_folder.path_id}
                                     })
                             })
 

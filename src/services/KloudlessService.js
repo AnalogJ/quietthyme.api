@@ -5,7 +5,12 @@ var request = require('request');
 
 var kloudlessService = exports;
 
-kloudlessService.folderCreate = function(account_id, name, parent_id){
+kloudlessService.folderCreate = function(account_id, name, parent_id, service_type){
+    if(service_type == 'dropbox' && parent_id == 'root' && name == 'QuietThyme'){
+        //dropbox app is sandboxed, no need to create a QuietThyme folder.
+        return q({id: 'root', raw_id: 'root', path_id: 'root'})
+    }
+
     var deferred = q.defer();
     kloudless.folders.create({
         account_id: account_id,
@@ -15,7 +20,22 @@ kloudlessService.folderCreate = function(account_id, name, parent_id){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
     })
-    return deferred.promise;
+
+    if(service_type == 'dropbox'){
+        //the kloudless dropbox integration has 2 different identifiers, 1 for the DB static ID and one for the path ID.
+        //we have to generate both.
+        return deferred.promise
+            .then(function(folder_metadata){
+                return kloudlessService.convertId(account_id, folder_metadata.path)
+                    .then(function(convert_data){
+                        folder_metadata.path_id = convert_data.id;
+                        return folder_metadata;
+                    })
+            })
+    }
+    else{
+        return deferred.promise;
+    }
 }
 
 kloudlessService.fileUpload = function(bearer_token, account_id, filename, parent_id, storage_identifier){
@@ -32,6 +52,31 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
             name: filename,
             parent_id: parent_id,
             url: 'https://s3.amazonaws.com/' + storage_identifier
+        }
+    };
+
+    request(options, function (error, response, body) {
+        if(error){
+            return deferred.reject(error)
+        }
+        return deferred.resolve(body)
+    });
+
+    return deferred.promise;
+};
+
+kloudlessService.convertId = function(account_id, identifier){
+    var deferred = q.defer();
+
+    //the kloudless encrypts & encodes the service id into their own.
+    var options = {
+        url: 'https://api.kloudless.com/v1/accounts/'+account_id + '/storage/convert_id',
+        method: 'POST',
+        headers: {
+            'Authorization': 'ApiKey ' + process.env.KLOUDLESS_API_KEY
+        },
+        json: {
+            raw_id: identifier
         }
     };
 
