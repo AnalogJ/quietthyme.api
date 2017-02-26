@@ -118,11 +118,11 @@ module.exports = {
                 console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
                 var deferred = q.defer();
                 //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
-                exec('pwd', function(err, stdout, stderr) {
+                exec(`opt/calibre-2.80.0/ebook-meta "${book_path}"`, {}, function(err, stdout, stderr) {
                     if (err) return deferred.reject(err);
                     console.log(`stdout: ${stdout}`);
                     console.log(`stderr: ${stderr}`);
-                    return deferred.resolve(data)
+                    return deferred.resolve({})
                 });
 
                 return deferred.promise
