@@ -1,3 +1,4 @@
+'use strict';
 require('dotenv').config();
 var q = require('q'),
     HttpError = require('./common/HttpError'),
