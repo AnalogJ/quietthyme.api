@@ -5,7 +5,8 @@ var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
 var Helpers = require('./common/helpers')
 var q = require('q');
-
+var path = require('path')
+var exec = require('child_process').exec;
 
 module.exports = {
 
@@ -115,7 +116,18 @@ module.exports = {
             })
             .then(function(book_path){
                 console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
+
+                console.log("fun() start");
+                var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
+
+                exec('pwd', {cwd: parentDir}, function(err, data) {
+                    console.log(err)
+                    console.log(data.toString());
+                });
+
                 return book_path
+
+
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

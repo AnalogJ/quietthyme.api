@@ -200,6 +200,7 @@ package:
   include:
     - src
     - functions
+    - opt
   # The following paths will be excluded from the resulting artifact. If both include and exclude are defined we first apply the include, then the exclude so files are guaranteed to be excluded
   exclude:
     - tmp
