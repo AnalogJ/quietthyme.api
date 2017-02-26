@@ -116,16 +116,14 @@ module.exports = {
             })
             .then(function(book_path){
                 console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
-
-                console.log("fun() start");
+                var deferred = q.defer();
                 var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
-
                 exec('pwd', {cwd: parentDir}, function(err, data) {
-                    console.log(err)
-                    console.log(data.toString());
+                    if (err) return deferred.reject(err);
+                    return deferred.resolve(data)
                 });
 
-                return book_path
+                return deferred.promise
 
 
             })

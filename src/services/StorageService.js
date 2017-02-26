@@ -29,6 +29,7 @@ module.exports.download_book_tmp = function(db_client, filename, credential_id, 
             console.log('WRITING TO File: ', filepath);
             return KloudlessService.fileContents(credential.service_id, storage_identifier, writeStream)
                 .then(function(){
+                    console.log("FINISHED DOWNLOADING FILE")
                     return filepath
                 })
 

@@ -104,7 +104,7 @@ module.exports.kloudless = function(event, context, cb){
                     FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
                     Payload: JSON.stringify({
                         credential_id: credential.id,
-                        storage_identifier: kl_event.id,
+                        storage_identifier: kl_event.metadata.id,
                         filename: kl_event.metadata.name
                     }, null, 2),
                     InvocationType: 'Event'
