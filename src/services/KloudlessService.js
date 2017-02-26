@@ -67,6 +67,24 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
     return deferred.promise;
 };
 
+kloudlessService.fileContents = function(account_id, file_identifier, out_filestream){
+    var deferred = q.defer();
+    var options = {
+        url: 'https://api.kloudless.com/v1/accounts/'+account_id + '/storage/files/' + file_identifier + '/contents',
+        method: 'GET',
+        headers: {
+            'Authorization': 'ApiKey ' + process.env.KLOUDLESS_API_KEY
+        }
+    };
+    request(options)
+        .pipe(out_filestream)
+        .on('end', function() {
+            return deferred.resolve({})
+        })
+
+    return deferred.promise;
+}
+
 kloudlessService.convertId = function(account_id, identifier, type){
     var deferred = q.defer();
 
@@ -98,7 +116,9 @@ kloudlessService.eventsGet = function(account_id, event_cursor){
     var deferred = q.defer();
     kloudless.events.get({
         account_id: account_id,
-        cursor: event_cursor ||'after-auth'
+        queryParams: {
+            cursor: event_cursor ||'after-auth'
+        }
     }, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)

@@ -57,10 +57,11 @@ module.exports.kloudless = function(event, context, cb){
                         .then(function(){
                             console.log("UPDATED CURSOR:",credential.event_cursor,  kloudless_events.cursor)
                             return kloudless_events;
-                        }), credential.blackhole_folder]
+                        }), credential]
                 })
         })
-        .spread(function(events, blackhole_folder){
+        .spread(function(events, credential){
+            var blackhole_folder = credential.blackhole_folder
             //begin filtering the events, and start invoking new lambda's
 
             var filtered_events = events.objects.filter(function(kl_event){
@@ -101,7 +102,11 @@ module.exports.kloudless = function(event, context, cb){
                 console.log("QUEUED:", kl_event.account, kl_event.metadata.path)
                 lambda.invoke({
                     FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
-                    Payload: JSON.stringify(event, null, 2),
+                    Payload: JSON.stringify({
+                        credential_id: credential.id,
+                        storage_identifier: kl_event.id,
+                        filename: kl_event.metadata.name
+                    }, null, 2),
                     InvocationType: 'Event'
                 }, function(err, data) {
                     if (err) return deferred.reject(err);

@@ -4,6 +4,7 @@ var KloudlessService = require('./services/KloudlessService');
 var Helpers = require('./common/helpers')
 var q = require('q');
 
+
 module.exports = {
 
     //must handle 2 types of events:
@@ -104,6 +105,18 @@ module.exports = {
     //
     process_unknown_book: function(event, context, cb){
         console.log("JUST TESTING UNKONWN HOOK", event)
-        cb(null,"JUST TESTING")
+
+        DBService.get()
+            .then(function(db_client){
+                return StorageService.download_book_tmp(db_client, event.filename, event.credential_id, event.storage_identifier)
+
+            })
+            .then(function(book_path){
+                console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
+                return book_path
+            })
+            .then(Helpers.successHandler(cb))
+            .fail(Helpers.errorHandler(cb))
+            .done()
     }
 }

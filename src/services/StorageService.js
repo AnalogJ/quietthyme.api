@@ -3,13 +3,39 @@ var q = require('q'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
     JWTokenService = require('./JWTokenService'),
     DBService = require('./DBService'),
-    KloudlessService = require('./KloudlessService')
+    KloudlessService = require('./KloudlessService'),
+    fs = require('fs'),
+    tmp = require('tmp');
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Kloudless related storage methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports.download_book_tmp = function(db_client, filename, credential_id, storage_identifier){
+    //TODO: this function should also handle downloading books from S3.
+
+    return q(db_client.first()
+        .from('credentials')
+        .where('id', credential_id))
+        .then(function(credential){
+
+            var tmpDir = tmp.dirSync()
+
+            //we need to keep the filename intact because we'll be sending it to Calibre to detect metadata.
+            var filepath = tmpDir.name + '/' + filename;
+            var writeStream = fs.createWriteStream(filepath);
+            console.log('WRITING TO File: ', filepath);
+            return KloudlessService.fileContents(credential.service_id, storage_identifier, writeStream)
+                .then(function(){
+                    return filepath
+                })
+
+        })
+
+
+}
 
 module.exports.get_user_storage = function(token){
 
