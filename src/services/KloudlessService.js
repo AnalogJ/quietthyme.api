@@ -78,7 +78,7 @@ kloudlessService.fileContents = function(account_id, file_identifier, out_filest
     };
     request(options)
         .pipe(out_filestream)
-        .on('end', function() {
+        .on('finish', function() {
             return deferred.resolve({})
         })
 
