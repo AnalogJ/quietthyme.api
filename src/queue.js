@@ -3,6 +3,7 @@ require('dotenv').config();
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
+var ParseExternalService = require('./services/ParseExternalService');
 var Helpers = require('./common/helpers')
 var q = require('q');
 var path = require('path')
@@ -114,23 +115,51 @@ module.exports = {
                 return StorageService.download_book_tmp(db_client, event.filename, event.credential_id, event.storage_identifier)
 
             })
-            .then(function(book_path){
+            .spread(function(book_path, credential){
                 console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
+
+                var tmp_folder = path.dirname(book_path);
+                var book_ext = path.extname(book_path);
+                var book_filename = path.basename(book_path, book_ext);
+
+                var opf_path = tmp_folder + '/'+ book_filename + '.opf';
+                var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
+
+
                 var deferred = q.defer();
                 //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
-                exec(`opt/calibre-2.80.0/ebook-meta "${book_path}"`, {}, function(err, stdout, stderr) {
+                exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
                     if (err) return deferred.reject(err);
                     console.log(`stdout: ${stdout}`);
                     console.log(`stderr: ${stderr}`);
-                    return deferred.resolve({})
+                    return deferred.resolve({
+                        opf_path: opf_path,
+                        cover_path: cover_path,
+                        book_filename: book_filename
+                    })
                 });
-
                 return deferred.promise
+                    .then(function(paths){
 
+                        //parse opf file and create a book
+                        //upload book
+                        var image_key = StorageService.create_content_identifier('image', credential.user_id, paths.book_filename, '.jpeg')
 
+                        return [
+                            StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
+                            ParseExternalService.read_opf_file(paths.opf_path)
+                        ]
+
+                    })
             })
+            .spread(function(cover_data, opf_data){
+                console.log("COVERDATA", cover_data)
+                console.log("OPF_DATA", opf_data)
+            })
+
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
     }
 }
+

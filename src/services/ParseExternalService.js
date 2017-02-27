@@ -5,7 +5,13 @@
 //by default.
 var extend = require('node.extend');
 var q = require('q');
-exports.merge_parsed_data = function(book_default, additional_data) {
+var opf = require('opf.js')
+var fs = require('fs')
+
+var ParseExternalService = module.exports;
+
+
+ParseExternalService.merge_parsed_data = function(book_default, additional_data) {
     //the title and descripton should not be overridden if they have been provided by a default source already.
 
     if(book_default.title) {delete additional_data.title}
@@ -25,7 +31,21 @@ exports.merge_parsed_data = function(book_default, additional_data) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OPF Data
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-exports.parse_opf_data = function(opf_metadata){
+
+ParseExternalService.read_opf_file = function(filepath){
+
+
+    var deferred = q.defer();
+
+    fs.readFile(filepath, 'utf8', function (err, opf_content) {
+        if (err) deferred.reject(new Error('Could not find file'))
+        deferred.resolve(this.parse_opf_data(opf.load(opf_content)))
+    })
+    return deferred.promise;
+
+}
+
+ParseExternalService.parse_opf_data = function(opf_metadata){
     var goodreads_identifier = opf_metadata.identifiers["GOODREADS"];
     var amazon_identifier = opf_metadata.identifiers["AMAZON"];
     var google_identifier = opf_metadata.identifiers["GOOGLE"];
@@ -92,7 +112,7 @@ exports.parse_opf_data = function(opf_metadata){
 
 }
 
-exports.generate_opf_from_book = function(details){
+ParseExternalService.generate_opf_from_book = function(details){
     var opf_doc = {identifiers:{}, tags : [], metadata: {}};
 
     if (details.goodreads_id) opf_doc.identifiers["GOODREADS"] = {value: details.goodreads_id, scheme: "GOODREADS", id:null}
@@ -132,7 +152,7 @@ exports.generate_opf_from_book = function(details){
 // Goodreads Data
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-exports.parse_goodreads_search_results = function (goodreads_response) {
+ParseExternalService.parse_goodreads_search_results = function (goodreads_response) {
     var parsed_results = [];
     if(!(goodreads_response.GoodreadsResponse.search && goodreads_response.GoodreadsResponse.search[0].results && goodreads_response.GoodreadsResponse.search[0].results[0] && goodreads_response.GoodreadsResponse.search[0].results[0].work && goodreads_response.GoodreadsResponse.search[0].results[0].work[0] )){
         return parsed_results;
@@ -167,7 +187,7 @@ exports.parse_goodreads_search_results = function (goodreads_response) {
     return parsed_results;
 };
 
-exports.parse_goodreads_search_author = function (goodreads_response) {
+ParseExternalService.parse_goodreads_search_author = function (goodreads_response) {
     var parsed_results = [];
     //seems like the response for searching author by name is always just 1 result.
     if (goodreads_response.author) {
@@ -182,7 +202,7 @@ exports.parse_goodreads_search_author = function (goodreads_response) {
 
 
 
-exports.parse_goodreads_book_details = function (response) {
+ParseExternalService.parse_goodreads_book_details = function (response) {
 
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.book && response.GoodreadsResponse.book[0])){
         throw new Error("Invalid Goodreads Response")
@@ -277,7 +297,7 @@ exports.parse_goodreads_book_details = function (response) {
     return parsed_book;
 };
 
-exports.parse_goodreads_shelves = function(response){
+ParseExternalService.parse_goodreads_shelves = function(response){
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.shelves && response.GoodreadsResponse.shelves[0])){
         throw new Error("Invalid Goodreads Response")
     }
@@ -292,7 +312,7 @@ exports.parse_goodreads_shelves = function(response){
     return parsed_shelves
 }
 
-exports.parse_goodreads_shelf_content = function(response){
+ParseExternalService.parse_goodreads_shelf_content = function(response){
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.reviews && response.GoodreadsResponse.reviews[0])){
         throw new Error("Invalid Goodreads Response")
     }
@@ -327,7 +347,7 @@ exports.parse_goodreads_shelf_content = function(response){
  * Assume that the filename does not have an extension (extension has arleady been removed)
  * @param filename
  */
-exports.clean_filename = function(filename){
+ParseExternalService.clean_filename = function(filename){
     if(!filename){
         throw new Exception("Invalid filename, null or empty");
     }
@@ -341,7 +361,7 @@ exports.clean_filename = function(filename){
 };
 
 
-exports.parse_filename = function(cleaned_filename){
+ParseExternalService.parse_filename = function(cleaned_filename){
 
     var parts = cleaned_filename.split('-');
     if(parts.length != 2){
@@ -389,7 +409,7 @@ exports.parse_filename = function(cleaned_filename){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //mostly this function should just be a cleanup/conversion of exsting data that will be added as is.
-exports.parse_api_metadata = function (api_metadata) {
+ParseExternalService.parse_api_metadata = function (api_metadata) {
 
     var parsed_book = api_metadata;
     parsed_book.average_rating = parseFloat(parsed_book.average_rating |0);

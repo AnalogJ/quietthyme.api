@@ -5,8 +5,9 @@ var q = require('q'),
     DBService = require('./DBService'),
     KloudlessService = require('./KloudlessService'),
     fs = require('fs'),
-    tmp = require('tmp');
-
+    tmp = require('tmp'),
+    AWS = require('aws-sdk'),
+    s3 = new AWS.S3({apiVersion: '2006-03-01'})
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,11 +28,14 @@ module.exports.download_book_tmp = function(db_client, filename, credential_id, 
             var filepath = tmpDir.name + '/' + filename;
             var writeStream = fs.createWriteStream(filepath);
             console.log('WRITING TO File: ', filepath);
-            return KloudlessService.fileContents(credential.service_id, storage_identifier, writeStream)
-                .then(function(){
-                    console.log("FINISHED DOWNLOADING FILE")
-                    return filepath
-                })
+            return [
+                    KloudlessService.fileContents(credential.service_id, storage_identifier, writeStream)
+                        .then(function(){
+                            console.log("FINISHED DOWNLOADING FILE")
+                            return filepath
+                        }),
+                    credential
+                ]
 
         })
 
@@ -108,6 +112,27 @@ module.exports.get_download_link = function(book, user_id, db_client){
     }
 }
 
+module.exports.upload_file = function(filepath, bucket, key){
+    var deferred = q.defer();
+
+    fs.readFile(filepath, function (err, data) {
+        if (err) deferred.reject(new Error('Could not find file'))
+
+        var base64data = new Buffer(data, 'binary').toString('base64');
+        s3.client.putObject({
+            Bucket: bucket,
+            Key: key,
+            Body: base64data
+        },function (resp) {
+            console.log(arguments);
+            console.log('Successfully uploaded package.');
+            deferred.resolve({bucket: bucket, key: key});
+        });
+
+    })
+    return deferred.promise;
+
+}
 
 //content identifiers are publically readable.
 // eg. HASH1234/image/cover/bookname.png
