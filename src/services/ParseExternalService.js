@@ -56,6 +56,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
     var google_identifier = opf_metadata.identifiers["GOOGLE"];
     var ffiction_identifier = opf_metadata.identifiers["FF"];
     var barnesnoble_identifier = opf_metadata.identifiers["BARNESNOBLE"];
+    var isbn_identifier = opf_metadata.identifiers["ISBN"];
 
     var meta_average_rating = opf_metadata.metadata['calibre:rating'];
     var meta_series_name = opf_metadata.metadata['calibre:series']
@@ -65,8 +66,8 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
 
     var parsed_book = {};
     parsed_book.title = opf_metadata.title;
-//                    parsed_book.isbn = parsed_book.isbn || parsed_book.isbn || '';
-//                    parsed_book.isbn13 = parsed_book.isbn13 || parsed_book.isbn13 || ''; //isbn_identifier
+   // parsed_book.isbn = parsed_book.isbn || parsed_book.isbn || '';
+   // parsed_book.isbn13 = parsed_book.isbn13 || parsed_book.isbn13 || ''; //isbn_identifier
 
     if(goodreads_identifier && goodreads_identifier.value){
         parsed_book.goodreads_id = goodreads_identifier.value;
@@ -82,6 +83,14 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
     }
     if(barnesnoble_identifier && barnesnoble_identifier.value){
         parsed_book.barnesnoble_id = barnesnoble_identifier.value;
+    }
+    if(isbn_identifier && isbn_identifier.value){
+        if(isbn_identifier.value.length == 10){
+            parsed_book.isbn10 = isbn_identifier.value;
+        }
+        else{
+            parsed_book.isbn = isbn_identifier.value;
+        }
     }
 
     if(meta_average_rating && meta_average_rating.value){
