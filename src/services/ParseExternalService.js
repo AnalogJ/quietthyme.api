@@ -105,9 +105,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
         if(!name){
             return
         };
-        authors.push({
-            name: Author.normalize_author_name(name)
-        })
+        authors.push(name)
     });
     if(authors.length>0){
         parsed_book.authors = authors;
