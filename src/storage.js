@@ -239,7 +239,6 @@ module.exports = {
                             })
                     })
             })
-
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()

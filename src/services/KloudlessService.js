@@ -85,6 +85,23 @@ kloudlessService.fileContents = function(account_id, file_identifier, out_filest
     return deferred.promise;
 }
 
+kloudlessService.fileMove = function(account_id, identifier, dest_parent_id, dest_filename){
+    var payload = {
+        account_id: account_id,
+        file_id: identifier,
+        parent_id: dest_parent_id
+    }
+    if(dest_filename){
+        payload['name'] = dest_filename;
+    }
+    var deferred = q.defer();
+    kloudless.files.move(payload, function(err, res){
+        if (err) return deferred.reject(err);
+        return deferred.resolve(res)
+    })
+    return deferred.promise;
+};
+
 kloudlessService.convertId = function(account_id, identifier, type){
     var deferred = q.defer();
 

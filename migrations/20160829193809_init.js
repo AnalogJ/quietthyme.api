@@ -56,7 +56,7 @@ exports.up = function(knex, Promise) {
             table.integer('storage_size'); //size in bytes.
             table.string('storage_identifier'); // if this is quietthyme storage, storage path will be 'bucket_name/s3_key'
             table.string('storage_filename'); //just used to generate a nice looking file path.
-            table.string('storage_format');
+            table.string('storage_format'); //this storage format includes the . prefix
 
 
             table.string('title');

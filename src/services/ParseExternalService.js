@@ -34,7 +34,6 @@ ParseExternalService.merge_parsed_data = function(book_default, additional_data)
 
 ParseExternalService.read_opf_file = function(filepath){
 
-
     var deferred = q.defer();
 
     fs.readFile(filepath, 'utf8', function (err, opf_content) {
@@ -43,7 +42,6 @@ ParseExternalService.read_opf_file = function(filepath){
     })
     return deferred.promise
         .then(function(opf_content){
-            console.log("OPF_CONTENT", opf_content)
             return opf.load(opf_content)
         })
         .then(ParseExternalService.parse_opf_data)

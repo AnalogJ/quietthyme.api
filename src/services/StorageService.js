@@ -10,11 +10,35 @@ var q = require('q'),
     s3 = new AWS.S3({apiVersion: '2006-03-01'})
 
 
+//ALL MEthods in here should support Kloudless storage and s3 storage transparently.
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Kloudless related storage methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-module.exports.download_book_tmp = function(db_client, filename, credential_id, storage_identifier){
+var StorageService = module.exports;
+
+
+StorageService.book_filename = function(book){
+    var filename = book.authors[0]
+    if(book.series_name){
+        filename += ` - ${book.series_name}`
+    }
+    if(book.series_number){
+        filename += ` - ${book.series_number}`
+    }
+    filename += ` - ${book.title}`
+    return filename
+}
+
+StorageService.move_to_perm_storage = function(credential, book){
+
+    //filename
+    var filename = StorageService.book_filename(book) + book.storage_format
+    return KloudlessService.fileMove(credential.service_id, book.storage_identifier, credential.library_folder.id, filename)
+}
+
+StorageService.download_book_tmp = function(db_client, filename, credential_id, storage_identifier){
     //TODO: this function should also handle downloading books from S3.
 
     return q(db_client.first()
@@ -42,7 +66,7 @@ module.exports.download_book_tmp = function(db_client, filename, credential_id, 
 
 }
 
-module.exports.get_user_storage = function(token){
+StorageService.get_user_storage = function(token){
 
     console.log("GET STORAGE QUTOAS")
     return q.spread([JWTokenService.verify(token), DBService.get()],
@@ -76,7 +100,7 @@ module.exports.get_user_storage = function(token){
         })
 }
 
-module.exports.get_download_link = function(book, user_id, db_client){
+StorageService.get_download_link = function(book, user_id, db_client){
     //check if the book storage_type is populated, if not, then we need to return
     if(!book.storage_type || !book.storage_identifier){
         return q.reject(new Error('Could not find storage'))
@@ -112,7 +136,7 @@ module.exports.get_download_link = function(book, user_id, db_client){
     }
 }
 
-module.exports.upload_file = function(filepath, bucket, key){
+StorageService.upload_file = function(filepath, bucket, key){
     var deferred = q.defer();
 
     fs.readFile(filepath, function (err, data) {
@@ -137,7 +161,7 @@ module.exports.upload_file = function(filepath, bucket, key){
 //content identifiers are publically readable.
 // eg. HASH1234/image/cover/bookname.png
 // HASH1234/library/bookname.epub
-module.exports.create_content_identifier = function(file_type, user_id, filename, extension){
+StorageService.create_content_identifier = function(file_type, user_id, filename, extension){
     return storage_user_hash(user_id) + '/' + storage_identifier_from_filename(filename, file_type) + extension
 }
 
@@ -147,7 +171,7 @@ module.exports.create_content_identifier = function(file_type, user_id, filename
 
 //eg. HASH1234/cred_id/book_id/bookname.epub
 //eg. HASH1234/cred_id/NEW/bookname.epub #bookid NEW is reserved for books which have to be processed/parsed first
-module.exports.create_upload_identifier = function(user_id, cred_id, book_id, filename, extension){
+StorageService.create_upload_identifier = function(user_id, cred_id, book_id, filename, extension){
     return storage_user_hash(user_id) + '/' + user_id + '/' + cred_id + '/' + (book_id || 'NEW') + '/' + filename + extension
 }
 

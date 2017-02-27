@@ -8,6 +8,8 @@ var Helpers = require('./common/helpers')
 var q = require('q');
 var path = require('path')
 var exec = require('child_process').exec;
+var toMarkdown = require('to-markdown');
+
 
 module.exports = {
 
@@ -86,7 +88,7 @@ module.exports = {
                         return db_client('books')
                             .where('id', '=', book.id)
                             .update({
-                                'storage_type':credential.service_type,
+                                'storage_type': credential.service_type,
                                 'storage_identifier': kloudless_upload_resp['id']
                             })
                     })
@@ -113,48 +115,80 @@ module.exports = {
         DBService.get()
             .then(function(db_client){
                 return StorageService.download_book_tmp(db_client, event.filename, event.credential_id, event.storage_identifier)
+                    .spread(function(book_path, credential){
+                        console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
 
-            })
-            .spread(function(book_path, credential){
-                console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
+                        var tmp_folder = path.dirname(book_path);
+                        var book_ext = path.extname(book_path);
+                        var book_filename = path.basename(book_path, book_ext);
 
-                var tmp_folder = path.dirname(book_path);
-                var book_ext = path.extname(book_path);
-                var book_filename = path.basename(book_path, book_ext);
-
-                var opf_path = tmp_folder + '/'+ book_filename + '.opf';
-                var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
+                        var opf_path = tmp_folder + '/'+ book_filename + '.opf';
+                        var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
 
 
-                var deferred = q.defer();
-                //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
-                exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
-                    if (err) return deferred.reject(err);
-                    console.log(`stdout: ${stdout}`);
-                    console.log(`stderr: ${stderr}`);
-                    return deferred.resolve({
-                        opf_path: opf_path,
-                        cover_path: cover_path,
-                        book_filename: book_filename
+                        var deferred = q.defer();
+                        //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
+                        exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
+                            if (err) return deferred.reject(err);
+                            console.log(`stdout: ${stdout}`);
+                            console.log(`stderr: ${stderr}`);
+                            return deferred.resolve({
+                                opf_path: opf_path,
+                                cover_path: cover_path,
+                                book_filename: book_filename
+                            })
+                        });
+                        return deferred.promise
+                            .then(function(paths){
+
+                                //parse opf file and create a book
+
+                                return [
+                                    ParseExternalService.read_opf_file(paths.opf_path),
+                                    paths
+                                ]
+
+                            })
+                            .spread(function(book_data, paths){
+                                //create new book for user.
+
+                                ///TODO: validate that the book properties match the database columns.
+                                book_data.user_id = credential.user_id;
+                                book_data.credential_id = credential.id;
+                                book_data.storage_type = credential.service_type;
+                                book_data.storage_identifier = event.storage_identifier;
+                                book_data.storage_filename = event.filename;
+                                book_data.storage_format = path.extname(event.filename);
+
+
+                                book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
+                                    filter: 'div',
+                                    replacement: function (innerHTML) { return innerHTML }
+                                }]});
+                                return [db_client('books')
+                                    .insert(book_data), paths]
+                            })
+                            .spread(function(inserted_books, paths){
+                                //move the book to the libary folder
+                                //upload teh cover art.
+                                var image_filename = StorageService.book_filename(inserted_books[0])
+                                var image_key = StorageService.create_content_identifier('image', credential.user_id, image_filename, '.jpeg')
+
+                                return [
+                                    StorageService.move_to_perm_storage(credential, inserted_books[0]),
+                                    StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
+                                ]
+                            })
+
+
                     })
-                });
-                return deferred.promise
-                    .then(function(paths){
-
-                        //parse opf file and create a book
-                        //upload book
-                        var image_key = StorageService.create_content_identifier('image', credential.user_id, paths.book_filename, '.jpeg')
-
-                        return [
-                            StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
-                            ParseExternalService.read_opf_file(paths.opf_path)
-                        ]
-
-                    })
             })
-            .spread(function(cover_data, opf_data){
-                console.log("COVERDATA", cover_data)
-                console.log("OPF_DATA", opf_data)
+            .spread(function(book_storage_identifier, cover_identifier){
+                console.log("BOOK_STORAGE", book_storage_identifier)
+                console.log("COVER_STORAGE", cover_identifier)
+
+                //upload book
+                return {};
             })
 
             .then(Helpers.successHandler(cb))
