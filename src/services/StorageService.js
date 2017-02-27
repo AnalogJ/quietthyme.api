@@ -119,7 +119,7 @@ module.exports.upload_file = function(filepath, bucket, key){
         if (err) deferred.reject(new Error('Could not find file'))
 
         var base64data = new Buffer(data, 'binary').toString('base64');
-        s3.client.putObject({
+        s3.putObject({
             Bucket: bucket,
             Key: key,
             Body: base64data
