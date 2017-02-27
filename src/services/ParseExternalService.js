@@ -39,7 +39,13 @@ ParseExternalService.read_opf_file = function(filepath){
 
     fs.readFile(filepath, 'utf8', function (err, opf_content) {
         if (err) deferred.reject(new Error('Could not find file'))
-        deferred.resolve(ParseExternalService.parse_opf_data(opf.load(opf_content)))
+
+        console.log("OPF_CONTENT", opf_content)
+        var opf_data = opf.load(opf_content);
+        console.log("OPF_DATA", opf_data)
+        var book_data = ParseExternalService.parse_opf_data(opf_data)
+        console.log("BOOK_DATA", book_data)
+        deferred.resolve(book_data)
     })
     return deferred.promise;
 
