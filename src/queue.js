@@ -175,7 +175,7 @@ module.exports = {
                                 var image_filename = StorageService.book_filename(inserted_books[0])
                                 var image_key = StorageService.create_content_identifier('image', credential.user_id, image_filename, '.jpeg')
 
-                                return [
+                                return [inserted_books[0],
                                     StorageService.move_to_perm_storage(credential, inserted_books[0]),
                                     StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
                                 ]
@@ -183,15 +183,23 @@ module.exports = {
 
 
                     })
-            })
-            .spread(function(book_storage_identifier, cover_identifier){
-                console.log("BOOK_STORAGE", book_storage_identifier)
-                console.log("COVER_STORAGE", cover_identifier)
+                    .spread(function(book_data, book_storage_identifier, cover_identifier){
+                        console.log("BOOK_STORAGE", book_storage_identifier)
+                        console.log("COVER_STORAGE", cover_identifier)
 
-                //upload book
-                return {};
+                        //update book with new storage information and cover info.
+                        return db_client('books')
+                            .where('id', '=', book_data.id)
+                            .update({
+                                storage_identifier: book_storage_identifier.id,
+                                storage_filename: path.basename(book_storage_identifier.name),
+                                cover: cover_identifier.bucket + '/' + cover_identifier.key
+                            })
+                    })
+                    .then(function(){
+                        return {}
+                    })
             })
-
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
             .done()
