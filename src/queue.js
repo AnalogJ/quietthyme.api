@@ -165,7 +165,7 @@ module.exports = {
                                     filter: 'div',
                                     replacement: function (innerHTML) { return innerHTML }
                                 }]});
-                                return [q(db_client('books').insert(book_data)), paths]
+                                return [q(db_client('books').insert(book_data).returning('*')), paths]
                             })
                             .spread(function(inserted_books, paths){
                                 console.log("INSERTED BOOK:", inserted_books)
