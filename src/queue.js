@@ -188,13 +188,17 @@ module.exports = {
                         console.log("COVER_STORAGE", cover_identifier)
 
                         //update book with new storage information and cover info.
+                        var update_data = {
+                            storage_identifier: book_storage_identifier.id,
+                            storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
+                        }
+                        if(cover_identifier.bucket && cover_identifier.key){
+                            update_data['cover'] = cover_identifier.bucket + '/' + cover_identifier.key
+                        }
+
                         return db_client('books')
                             .where('id', '=', book_data.id)
-                            .update({
-                                storage_identifier: book_storage_identifier.id,
-                                storage_filename: path.basename(book_storage_identifier.name),
-                                cover: cover_identifier.bucket + '/' + cover_identifier.key
-                            })
+                            .update(update_data)
                     })
                     .then(function(){
                         return {}
