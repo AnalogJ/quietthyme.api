@@ -165,10 +165,10 @@ module.exports = {
                                     filter: 'div',
                                     replacement: function (innerHTML) { return innerHTML }
                                 }]});
-                                return [db_client('books')
-                                    .insert(book_data), paths]
+                                return [q(db_client('books').insert(book_data)), paths]
                             })
                             .spread(function(inserted_books, paths){
+                                console.log("INSERTED BOOK:", inserted_books)
                                 //move the book to the libary folder
                                 //upload teh cover art.
                                 var image_filename = StorageService.book_filename(inserted_books[0])
