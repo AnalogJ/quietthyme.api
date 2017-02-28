@@ -49,6 +49,10 @@ ParseExternalService.read_opf_file = function(filepath){
 }
 
 ParseExternalService.parse_opf_data = function(opf_metadata){
+    console.log("OBJECT OPF DATA")
+    console.dir(opf_metadata)
+
+
     var goodreads_identifier = opf_metadata.identifiers["GOODREADS"];
     var amazon_identifier = opf_metadata.identifiers["AMAZON"];
     var google_identifier = opf_metadata.identifiers["GOOGLE"];
@@ -63,7 +67,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
 
 
     var parsed_book = {};
-    parsed_book.title = opf_metadata.title;
+    parsed_book.title = opf_metadata.title || 'Unknown Title';
    // parsed_book.isbn = parsed_book.isbn || parsed_book.isbn || '';
    // parsed_book.isbn13 = parsed_book.isbn13 || parsed_book.isbn13 || ''; //isbn_identifier
 
@@ -91,24 +95,33 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
         }
     }
 
-    if(meta_average_rating && meta_average_rating.value){
-        parsed_book.average_rating = meta_average_rating.value | 0;
+    if(meta_average_rating){
+        parsed_book.average_rating = meta_average_rating | 0;
     }
-    if(meta_series_name && meta_series_name.value){
-        parsed_book.series_name =  meta_series_name.value;
+    if(meta_series_name){
+        parsed_book.series_name =  meta_series_name;
     }
-    if(meta_series_number && meta_series_number.value){
-        parsed_book.series_number = meta_series_number.value |0
+    if(meta_series_number && meta_series_number){
+        parsed_book.series_number = meta_series_number |0
     }
     parsed_book.short_summary = opf_metadata.description || '';
-//                    parsed_book.publication_date = parsed_book.publication_date;
+    if(opf_metadata.date){
+        parsed_book.published_date = opf_metadata.date;
+    }
     if(subject_tags.length){
         parsed_book.tags = subject_tags;
     }
 
     var authors = [];
     opf_metadata.creators.forEach(function(creator){
-        var name = creator['file-as'] || creator.value;
+        var name;
+        if(creator['file-as'] && creator['file-as'] != 'Unknown'){
+            name = creator['file-as']
+        }
+        else{
+            name = creator.value
+        }
+
         if(!name){
             return
         };
@@ -116,6 +129,10 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
     });
     if(authors.length>0){
         parsed_book.authors = authors;
+    }
+
+    if(opf_metadata.publishers){
+        parsed_book.publisher = opf_metadata.publishers[0]
     }
 
     return parsed_book;

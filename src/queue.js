@@ -9,7 +9,7 @@ var q = require('q');
 var path = require('path')
 var exec = require('child_process').exec;
 var toMarkdown = require('to-markdown');
-
+var fs = require("fs");
 
 module.exports = {
 
@@ -157,8 +157,9 @@ module.exports = {
                                 book_data.credential_id = credential.id;
                                 book_data.storage_type = credential.service_type;
                                 book_data.storage_identifier = event.storage_identifier;
-                                book_data.storage_filename = event.filename;
+                                book_data.storage_filename = path.basename(event.filename);
                                 book_data.storage_format = path.extname(event.filename);
+                                book_data.storage_size = fs.statSync(book_path).size
 
 
                                 book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
