@@ -22,8 +22,6 @@ aws logs get-log-events --log-group-name "/aws/lambda/quietthyme-api-dev-test" -
 
 api.quietthyme.com/v1/catalog/123456
 
-
-
 # Instructions
 - Deploy
 - Kloudless App Details page.
