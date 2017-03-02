@@ -133,12 +133,15 @@ StorageService.get_download_link = function(book, user_id, db_client){
 }
 
 StorageService.upload_file = function(filepath, bucket, key){
+
+    console.log("UPLOAD_FILE",filepath, bucket, key)
     var deferred = q.defer();
     if(!filepath){
         return q({});
     }
 
     fs.readFile(filepath, function (err, data) {
+        console.log("READFILE",err, data)
         if (err) deferred.reject(new Error('Could not find file'))
         if (!data) deferred.reject(new Error('File data is empty'))
 
