@@ -542,3 +542,4 @@ resources:
 
 plugins:
    - serverless-plugin-write-env-vars
+   - serverless-prune-plugin

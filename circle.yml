@@ -27,5 +27,6 @@ deployment:
   deploy:
     branch: [beta, master]
     commands:
+      - sls prune -n 4
       - NODE_ENV=$CIRCLE_BRANCH knex migrate:latest
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1

@@ -35,5 +35,8 @@
     "to-markdown": "^3.0.3",
     "xkcd-password": "^1.2.0",
     "xml-schema": "^2.2.0"
+  },
+  "devDependencies": {
+    "serverless-prune-plugin": "^1.0.3"
   }
 }
