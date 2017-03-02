@@ -60,10 +60,7 @@ StorageService.download_book_tmp = function(db_client, filename, credential_id, 
                         }),
                     credential
                 ]
-
         })
-
-
 }
 
 StorageService.get_user_storage = function(token){
@@ -132,7 +129,6 @@ StorageService.get_download_link = function(book, user_id, db_client){
                 return data.url
 
             })
-
     }
 }
 
@@ -144,6 +140,7 @@ StorageService.upload_file = function(filepath, bucket, key){
 
     fs.readFile(filepath, function (err, data) {
         if (err) deferred.reject(new Error('Could not find file'))
+        if (!data) deferred.reject(new Error('File data is empty'))
 
         var base64data = new Buffer(data, 'binary').toString('base64');
         s3.putObject({
@@ -197,9 +194,6 @@ function storage_identifier_from_filename(filename, type){
     }
     return "library/"+ filename;
 };
-
-
-
 
 //
 ////TODO:download the file to adata buffer?

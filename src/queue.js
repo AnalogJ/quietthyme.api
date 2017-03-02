@@ -175,15 +175,19 @@ module.exports = {
                                 var image_filename = StorageService.book_filename(inserted_books[0])
                                 var image_key = StorageService.create_content_identifier('image', credential.user_id, image_filename, '.jpeg')
 
-                                return [inserted_books[0],
+                                return q.allSettled([inserted_books[0],
                                     StorageService.move_to_perm_storage(credential, inserted_books[0]),
                                     StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
-                                ]
+                                ])
                             })
 
 
                     })
-                    .spread(function(book_data, book_storage_identifier, cover_identifier){
+                    .spread(function(book_data, book_storage_promise, cover_promise){
+                        var book_storage_identifier = book_storage_promise.value
+                        var cover_identifier = cover_promise.value
+
+
                         console.log("BOOK_STORAGE", book_storage_identifier)
                         console.log("COVER_STORAGE", cover_identifier)
 
@@ -192,7 +196,7 @@ module.exports = {
                             storage_identifier: book_storage_identifier.id,
                             storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
                         }
-                        if(cover_identifier.bucket && cover_identifier.key){
+                        if(cover_promise.state == 'fulfilled' && cover_identifier.bucket && cover_identifier.key){
                             update_data['cover'] = cover_identifier.bucket + '/' + cover_identifier.key
                         }
 
