@@ -27,6 +27,6 @@ deployment:
   deploy:
     branch: [beta, master]
     commands:
-      - sls prune -n 4
+#      - sls prune -n 4 # remove prune until https://github.com/claygregory/serverless-prune-plugin/issues/1 fixed
       - NODE_ENV=$CIRCLE_BRANCH knex migrate:latest
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
