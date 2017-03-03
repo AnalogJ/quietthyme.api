@@ -142,8 +142,8 @@ StorageService.upload_file = function(filepath, bucket, key){
 
     fs.readFile(filepath, function (err, data) {
         console.log("READFILE",err, data)
-        if (err) deferred.reject(new Error('Could not find file'))
-        if (!data) deferred.reject(new Error('File data is empty'))
+        if (err) return deferred.reject(new Error('Could not find file'))
+        if (!data) return deferred.reject(new Error('File data is empty'))
 
         var base64data = new Buffer(data, 'binary').toString('base64');
         s3.putObject({
