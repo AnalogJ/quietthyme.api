@@ -37,6 +37,6 @@
     "xml-schema": "^2.2.0"
   },
   "devDependencies": {
-    "serverless-prune-plugin": "^1.0.3"
+    "serverless-prune-plugin": "^1.0.4"
   }
 }
