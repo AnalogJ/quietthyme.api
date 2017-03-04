@@ -151,14 +151,14 @@ module.exports = {
                             })
                             .spread(function(book_data, paths){
                                 //create new book for user.
-
+                                var book_ext = path.extname(event.filename);
                                 ///TODO: validate that the book properties match the database columns.
                                 book_data.user_id = credential.user_id;
                                 book_data.credential_id = credential.id;
                                 book_data.storage_type = credential.service_type;
                                 book_data.storage_identifier = event.storage_identifier;
-                                book_data.storage_filename = path.basename(event.filename);
-                                book_data.storage_format = path.extname(event.filename);
+                                book_data.storage_filename = path.basename(event.filename, book_ext);
+                                book_data.storage_format = book_ext
                                 book_data.storage_size = fs.statSync(book_path).size
 
 
@@ -183,7 +183,8 @@ module.exports = {
 
 
                     })
-                    .spread(function(book_data, book_storage_promise, cover_promise){
+                    .spread(function(book_data_promise, book_storage_promise, cover_promise){
+                        var book_data = book_data_promise.value
                         var book_storage_identifier = book_storage_promise.value
                         var cover_identifier = cover_promise.value
 
