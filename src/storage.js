@@ -221,7 +221,7 @@ module.exports = {
                         id: event.body.book_id
                     })
                     .then(function(book){
-                        var key = StorageService.create_content_identifier('image', auth.uid, event.body.filename, event.body.format);
+                        var key = StorageService.create_content_identifier('cover', auth.uid, event.body.filename, event.body.format);
 
                         var book_data = {
                             'cover': process.env.QUIETTHYME_CONTENT_BUCKET + '/' + encodeURI(key)

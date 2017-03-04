@@ -173,7 +173,7 @@ module.exports = {
                                 //move the book to the libary folder
                                 //upload teh cover art.
                                 var image_filename = StorageService.book_filename(inserted_books[0])
-                                var image_key = StorageService.create_content_identifier('image', credential.user_id, image_filename, '.jpeg')
+                                var image_key = StorageService.create_content_identifier('cover', credential.user_id, image_filename, '.jpeg')
 
                                 return q.allSettled([inserted_books[0],
                                     StorageService.move_to_perm_storage(credential, inserted_books[0]),

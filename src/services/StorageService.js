@@ -218,8 +218,11 @@ function storage_user_hash(user_id){
 }
 
 function storage_identifier_from_filename(filename, type){
-    if(type == 'image'){
+    if(type == 'image'){ //generic images
         return 'images/' + filename;
+    }
+    else if(type == 'cover'){
+        return 'covers/' + filename
     }
     return "library/"+ filename;
 };
