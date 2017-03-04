@@ -4,6 +4,7 @@ var q = require('q'),
     JWTokenService = require('./JWTokenService'),
     DBService = require('./DBService'),
     KloudlessService = require('./KloudlessService'),
+    Constants = require('../common/constants'),
     fs = require('fs'),
     tmp = require('tmp'),
     AWS = require('aws-sdk'),
@@ -137,26 +138,51 @@ StorageService.upload_file = function(filepath, bucket, key){
     console.log("UPLOAD_FILE",filepath, bucket, key)
     var deferred = q.defer();
     if(!filepath){
-        return q({});
+        return q.reject(new Error("No filepath specified"));
+    }
+    if (!fs.existsSync(filepath)) {
+        return q.reject(new Error("File not found"));
+
     }
 
-    fs.readFile(filepath, function (err, data) {
-        console.log("READFILE",err, data)
-        if (err) return deferred.reject(new Error('Could not find file'))
-        if (!data) return deferred.reject(new Error('File data is empty'))
+    var filestream = fs.createReadStream(filepath);
 
-        var base64data = new Buffer(data, 'binary').toString('base64');
-        s3.putObject({
-            Bucket: bucket,
-            Key: key,
-            Body: base64data
-        },function (resp) {
-            console.log(arguments);
-            console.log('Successfully uploaded package.');
-            deferred.resolve({bucket: bucket, key: key});
-        });
+    var payload = {
+        Bucket: bucket,
+        Key: key,
+        Body: filestream,
+        ContentEncoding: 'base64'
+    }
 
-    })
+    var ext = path.extname(filepath).split('.').join('') //safe way to remove '.' prefix, even on empty string.
+
+    if(Constants.image_extensions[ext]){
+        payload.Metadata = {
+            'Content-Type ': Constants.image_extensions[ext].mimetype
+        }
+    }
+    else if(Constants.file_extensions[ext]){
+        payload.Metadata = {
+            'Content-Type ': Constants.file_extensions[ext].mimetype
+        }
+    }
+
+    s3.putObject(payload,function (resp) {
+        console.log(arguments);
+        console.log('Successfully uploaded package.');
+        deferred.resolve({bucket: bucket, key: key});
+    });
+
+
+    // fs.readFile(filepath, function (err, data) {
+    //     console.log("READFILE",err, data)
+    //     if (err) return deferred.reject(new Error('Could not find file'))
+    //     if (!data) return deferred.reject(new Error('File data is empty'))
+    //
+    //     var base64data = new Buffer(data, 'binary').toString('base64');
+    //
+    //
+    // })
     return deferred.promise;
 
 }

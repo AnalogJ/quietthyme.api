@@ -109,6 +109,21 @@ module.exports = {
             parse :false
         }
     },
+    image_extensions:{
+        'jpg': {
+            extension : '.jpg',
+            mimetype : 'image/jpeg',
+        },
+        '.jpeg' : {
+            extension : '.jpeg',
+            mimetype : 'image/jpeg',
+        },
+        '.png' : {
+            extension : '.png',
+            mimetype : 'image/png',
+        }
+    },
+
     file_metadata :{
         '.opf' : {
             type : 'opf'
