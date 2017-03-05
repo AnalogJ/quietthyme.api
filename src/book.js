@@ -73,6 +73,8 @@ module.exports = {
                         book_query.limit(50);
                         book_query.offset(event.query.page * 50)
                     }
+
+                    book_query.orderBy(event.query.sort ? event.query.sort : 'title')
                 }
 
                 return book_query
