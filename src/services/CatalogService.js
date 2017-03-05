@@ -192,23 +192,23 @@ function bookToBaseEntry(id, token, book){
         id: id +':' + book.id,
         title: book.title,
         isbn: book.isbn || book.isbn10,
-        authors: book.authors.map(function(author){
+        authors: book.authors ? book.authors.map(function(author){
             return {
                 name: author,
                 uri: token_endpoint(token) + '/by_author/' + Base64Service.urlEncode(author)
             }
-        }),
+        }) : [],
         published: book.published_date,
         issued: book.published_date,
         updated: book.updated_at,
         summary: book.short_summary,
-        categories: book.tags.map(function(tag){
+        categories: book.tags ? book.tags.map(function(tag){
             return {
                 term: tag,
                 label: tag,
                 scheme: token_endpoint(token) + '/tagged_with/' + Base64Service.urlEncode(tag)
             }
-        }),
+        }) : [],
         links: [
             {
                 type:'image/jpeg',
