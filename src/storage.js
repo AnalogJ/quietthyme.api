@@ -92,19 +92,31 @@ module.exports = {
 
                 console.log("FOUND CREDENTIALS", credentials)
                 return credentials.map(function(credential_storage_info){
-                    return {
+
+                    var storage = {
                         'device_name': credential_storage_info.credential.service_type,
                         'prefix': credential_storage_info.credential.service_type +'://',
                         'storage_type': credential_storage_info.credential.service_type,
                         'storage_id': credential_storage_info.credential.id,
-                        'last_library_uuid': event.query.library_uuid,
                         'free_space': credential_storage_info.service_info.quota.total - credential_storage_info.service_info.quota.used,  //quota_info.total_bytes - quota_info.used_bytes,
                         'total_space': credential_storage_info.service_info.quota.total,
-                        'calibre_version': '2.6.0'
+                        'location_code': credential_storage_info.credential.calibre_location_code
                     }
+
+                    if(event.query.source == 'calibre'){
+                        storage['last_library_uuid'] = event.query.library_uuid
+                        storage ['calibre_version'] = '2.6.0'
+                    }
+                    return storage
                 })
             })
             .then(function(credential_quotas){
+
+                if(event.query.source != 'calibre'){
+                    return credential_quotas
+                }
+
+
                 console.log("USER AND CREDENTIALS", credential_quotas)
                 //calculate the amount of space free.
 

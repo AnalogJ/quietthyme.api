@@ -37,6 +37,8 @@ exports.up = function(knex, Promise) {
             table.string('event_cursor')
             table.unique(['service_type', 'service_id']);
 
+            table.enum('calibre_location_code',['main','A','B']); //this location code is used by the calibre plugin to determine which storage providers are available (main, a, b)
+
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.timestamp('updated_at').defaultTo(knex.fn.now());
         }),
