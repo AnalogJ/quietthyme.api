@@ -34,7 +34,7 @@ module.exports = {
             .then(function(user){
                 console.log("NEWLY CREATED USER:",user);
                 return {
-                    token: JWTokenService.issue({uid: user[0].uid })
+                    token: JWTokenService.issue({uid: user[0].uid, catalog_token: user[0].catalog_token })
                 }
             })
             .then(Helpers.successHandler(cb))
@@ -70,7 +70,7 @@ module.exports = {
             })
             .then(function(user){
                 return {
-                    token: JWTokenService.issue({uid: user.uid })
+                    token: JWTokenService.issue({uid: user.uid, catalog_token: user.catalog_token })
                 }
             })
             .then(Helpers.successHandler(cb))
