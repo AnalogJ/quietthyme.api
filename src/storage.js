@@ -256,7 +256,12 @@ module.exports = {
             .done()
     },
 
+
     download: function(event, context, cb){
+        // unfortunately, due to http://stackoverflow.com/questions/18539403/chrome-cancels-cors-xhr-upon-http-302-redirect
+        // and http://stackoverflow.com/questions/34949492/cors-request-with-preflight-and-redirect-disallowed-workarounds
+        // we can't just redirect th user, we need to return the link location, and have the app do the redirect.
+
 
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client){
@@ -271,9 +276,7 @@ module.exports = {
                     })
                     .then(function(link){
                         var payload = {
-                            headers: {
-                                "Location": link
-                            }
+                            url: link
                         };
                         console.log(payload)
                         return payload

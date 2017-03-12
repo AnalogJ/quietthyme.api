@@ -384,7 +384,7 @@ functions:
           path: storage/{id}
           method: GET
           request: ${self:custom.standardRequests}
-          response: ${self:custom.redirectResponse}
+          response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
 
