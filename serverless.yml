@@ -22,7 +22,7 @@ provider:
   runtime: nodejs4.3
   memorySize: 128
 
-  #these vpc rules are required because we've hardcoded postgres connection during testing.
+  #TODO: these vpc rules are required because we've hardcoded postgres connection during testing.
   #in prod, this will be specified dynamically via cloudformation.
   # because of issues like: https://github.com/serverless/serverless/issues/2780 on first deploy make sure to comment out
   # the vpc section, and uncomment it after a successful deploy.
@@ -150,14 +150,17 @@ custom:
     STAGE: ${opt:stage, self:provider.stage}
     STORAGE_SALT: ${env:${opt:stage, self:provider.stage}_STORAGE_SALT, env:STORAGE_SALT}
     ENCRYPTION_JWT_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_JWT_PASSPHRASE, env:ENCRYPTION_JWT_PASSPHRASE}
-    OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
-    OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
-    OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
-    OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
-    OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
-    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
-    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
-    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
+#    OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
+#    OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
+#    OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
+#    OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
+#    OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
+#    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
+#    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
+#    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
+    OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
+    OAUTH_GOODREADS_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_SECRET, env:OAUTH_GOODREADS_CLIENT_SECRET}
+
 
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
     KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
@@ -170,14 +173,16 @@ custom:
     STORAGE_SALT: ${self:custom.variables.STORAGE_SALT}
     ENCRYPTION_JWT_PASSPHRASE: ${self:custom.variables.ENCRYPTION_JWT_PASSPHRASE}
 
-    OAUTH_BOX_CLIENT_KEY: ${self:custom.variables.OAUTH_BOX_CLIENT_KEY}
-    OAUTH_BOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_BOX_CLIENT_SECRET}
-    OAUTH_DROPBOX_CLIENT_KEY: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_KEY}
-    OAUTH_DROPBOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_SECRET}
-    OAUTH_GOOGLE_CLIENT_KEY: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_KEY}
-    OAUTH_GOOGLE_CLIENT_SECRET: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_SECRET}
-    OAUTH_SKYDRIVE_CLIENT_KEY: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_KEY}
-    OAUTH_SKYDRIVE_CLIENT_SECRET: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_SECRET}
+#    OAUTH_BOX_CLIENT_KEY: ${self:custom.variables.OAUTH_BOX_CLIENT_KEY}
+#    OAUTH_BOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_BOX_CLIENT_SECRET}
+#    OAUTH_DROPBOX_CLIENT_KEY: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_KEY}
+#    OAUTH_DROPBOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_SECRET}
+#    OAUTH_GOOGLE_CLIENT_KEY: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_KEY}
+#    OAUTH_GOOGLE_CLIENT_SECRET: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_SECRET}
+#    OAUTH_SKYDRIVE_CLIENT_KEY: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_KEY}
+#    OAUTH_SKYDRIVE_CLIENT_SECRET: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_SECRET}
+    OAUTH_GOODREADS_CLIENT_KEY: ${self:custom.variables.OAUTH_GOODREADS_CLIENT_KEY}
+    OAUTH_GOODREADS_CLIENT_SECRET: ${self:custom.variables.OAUTH_GOODREADS_CLIENT_SECRET}
 
     PG_CONNECTION_STRING: ${self:custom.variables.PG_CONNECTION_STRING}
     KLOUDLESS_API_ID: ${self:custom.variables.KLOUDLESS_API_ID}

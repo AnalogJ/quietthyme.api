@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="calibre_id">
+  <metadata xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:title>Gatefather</dc:title>
+    <dc:creator opf:file-as="Card, Orson Scott" opf:role="aut">Orson Scott Card</dc:creator>
+    <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (2.41.0) [http://calibre-ebook.com]</dc:contributor>
+    <dc:identifier id="calibre_id" opf:scheme="calibre">91935672-57b3-4989-9efd-cc8eac763384</dc:identifier>
+    <dc:date>2015-10-20T04:00:00+00:00</dc:date>
+    <dc:language>eng</dc:language>
+    <dc:description>&lt;div&gt; &lt;p style="margin: 0px;"&gt;&lt;b&gt;In Gatefather, the third installment in the Mithermages series, New York Times bestselling author Orson Scott Card continues his fantastic tale of the Mages of Westil who live in exile on Earth.&lt;/b&gt;&lt;/p&gt; &lt;p style="margin: 0px;"&gt;&lt;br&gt;&lt;/p&gt; &lt;p style="margin: 0px;"&gt;Danny North is the first Gate Mage to be born on Earth in nearly 2000 years, or at least the first to survive to claim his power. Families of Westil in exile on Earth have had a treaty that required the death of any suspected Gate Mage. The wars between the Families had been terrible, until at last they realized it was their own survival in question. But a Gate Mage, one who could build a Great Gate back to Westil, would give his own Family a terrible advantage over all the others, and reignite the wars. So they all had to die. And if the Families didn't kill them, the Gate Thief would-that mysterious Mage who destroyed every Great Gate, and the Gate Mage, before it could be opened between Earth and Westil.&lt;/p&gt; &lt;p style="margin: 0px;"&gt;&lt;br&gt;&lt;/p&gt; &lt;p style="margin: 0px;"&gt;But Danny survived. And Danny battled the Gate Thief, and won.&lt;/p&gt; &lt;p style="margin: 0px;"&gt;&lt;br&gt;&lt;/p&gt; &lt;p style="margin: 0px;"&gt;What he didn't know at the time was that the Gate Thief had a very good reason for closing the Great Gates-and Danny has now fallen into the power of that great enemy of both Earth and Westil.&lt;/p&gt;&lt;/div&gt;</dc:description>
+    <dc:publisher>Tom Doherty Associates</dc:publisher>
+    <dc:identifier opf:scheme="ISBN">9781429952088</dc:identifier>
+    <dc:rights>All rights reserved</dc:rights>
+    <meta content="Gatefather" name="calibre:title_sort"/>
+  </metadata>
+  <manifest>
+    <item id="cover" href="Images/cover.jpeg" media-type="image/jpeg"/>
+    <item id="G-I-001.jpeg" href="Images/G-I-001.jpeg" media-type="image/jpeg"/>
+    <item id="G-I-002.jpeg" href="Images/G-I-002.jpeg" media-type="image/jpeg"/>
+    <item id="G-I-003.jpeg" href="Images/G-I-003.jpeg" media-type="image/jpeg"/>
+    <item id="G-I-004.gif" href="Images/G-I-004.gif" media-type="image/gif"/>
+    <item id="G-I-005.gif" href="Images/G-I-005.gif" media-type="image/gif"/>
+    <item id="G-I-006.jpeg" href="Images/G-I-006.jpeg" media-type="image/jpeg"/>
+    <item id="page_css" href="Styles/page_styles.css" media-type="text/css"/>
+    <item id="css" href="Styles/stylesheet.css" media-type="text/css"/>
+    <item id="G-001.html" href="Text/G-001.html" media-type="application/xhtml+xml"/>
+    <item id="G-002.html" href="Text/G-002.html" media-type="application/xhtml+xml"/>
+    <item id="G-003.html" href="Text/G-003.html" media-type="application/xhtml+xml"/>
+    <item id="G-004.html" href="Text/G-004.html" media-type="application/xhtml+xml"/>
+    <item id="G-005.html" href="Text/G-005.html" media-type="application/xhtml+xml"/>
+    <item id="G-006.html" href="Text/G-006.html" media-type="application/xhtml+xml"/>
+    <item id="G-007.html" href="Text/G-007.html" media-type="application/xhtml+xml"/>
+    <item id="G-008.html" href="Text/G-008.html" media-type="application/xhtml+xml"/>
+    <item id="G-009.html" href="Text/G-009.html" media-type="application/xhtml+xml"/>
+    <item id="G-010.html" href="Text/G-010.html" media-type="application/xhtml+xml"/>
+    <item id="G-011.html" href="Text/G-011.html" media-type="application/xhtml+xml"/>
+    <item id="G-012.html" href="Text/G-012.html" media-type="application/xhtml+xml"/>
+    <item id="G-013.html" href="Text/G-013.html" media-type="application/xhtml+xml"/>
+    <item id="G-014.html" href="Text/G-014.html" media-type="application/xhtml+xml"/>
+    <item id="G-015.html" href="Text/G-015.html" media-type="application/xhtml+xml"/>
+    <item id="G-016.html" href="Text/G-016.html" media-type="application/xhtml+xml"/>
+    <item id="G-017.html" href="Text/G-017.html" media-type="application/xhtml+xml"/>
+    <item id="G-018.html" href="Text/G-018.html" media-type="application/xhtml+xml"/>
+    <item id="G-019.html" href="Text/G-019.html" media-type="application/xhtml+xml"/>
+    <item id="G-020.html" href="Text/G-020.html" media-type="application/xhtml+xml"/>
+    <item id="G-021.html" href="Text/G-021.html" media-type="application/xhtml+xml"/>
+    <item id="G-022.html" href="Text/G-022.html" media-type="application/xhtml+xml"/>
+    <item id="G-023.html" href="Text/G-023.html" media-type="application/xhtml+xml"/>
+    <item id="G-024.html" href="Text/G-024.html" media-type="application/xhtml+xml"/>
+    <item id="G-025.html" href="Text/G-025.html" media-type="application/xhtml+xml"/>
+    <item id="G-026.html" href="Text/G-026.html" media-type="application/xhtml+xml"/>
+    <item id="G-027.html" href="Text/G-027.html" media-type="application/xhtml+xml"/>
+    <item id="G-028.html" href="Text/G-028.html" media-type="application/xhtml+xml"/>
+    <item id="G-029.html" href="Text/G-029.html" media-type="application/xhtml+xml"/>
+    <item id="G-030.html" href="Text/G-030.html" media-type="application/xhtml+xml"/>
+    <item id="G-031.html" href="Text/G-031.html" media-type="application/xhtml+xml"/>
+    <item id="G-032.html" href="Text/G-032.html" media-type="application/xhtml+xml"/>
+    <item id="titlepage" href="Text/titlepage.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+  </manifest>
+  <spine toc="ncx"/>
+  <guide>
+    <reference type="text" href="Text/G-002.html#UGI3-0c6c9d14c3a9429ebc8917c6462d6adb" title="start"/>
+    <reference type="toc" href="Text/G-031.html#SJGS0-0c6c9d14c3a9429ebc8917c6462d6adb" title="Table of Contents"/>
+    <reference type="cover" href="Text/titlepage.xhtml"/>
+    <reference type="other.ms-coverimage-standard" href="Text/titlepage.xhtml"/>
+    <reference type="other.ms-coverimage" href="Text/titlepage.xhtml"/>
+  </guide>
+</package>

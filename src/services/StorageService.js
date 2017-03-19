@@ -134,11 +134,10 @@ StorageService.get_download_link = function(book, user_id, db_client){
     }
 }
 
-StorageService.upload_file = function(filepath, bucket, key){
+StorageService.upload_file_from_path = function(filepath, bucket, key) {
 
-    console.log("UPLOAD_FILE",filepath, bucket, key)
-    var deferred = q.defer();
-    if(!filepath){
+    console.log("UPLOAD_FILE", filepath, bucket, key)
+    if (!filepath) {
         return q.reject(new Error("No filepath specified"));
     }
     if (!fs.existsSync(filepath)) {
@@ -148,14 +147,21 @@ StorageService.upload_file = function(filepath, bucket, key){
 
     var filestream = fs.createReadStream(filepath);
 
+    var ext = path.extname(filepath).split('.').join('') //safe way to remove '.' prefix, even on empty string.
+
+
+    return StorageService.upload_file_from_stream(filestream, ext, bucket, key)
+}
+
+StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key){
+    var deferred = q.defer();
+
     var payload = {
         Bucket: bucket,
         Key: key,
         Body: filestream,
         ContentEncoding: 'base64'
     }
-
-    var ext = path.extname(filepath).split('.').join('') //safe way to remove '.' prefix, even on empty string.
 
     if(Constants.image_extensions[ext]){
         payload.Metadata = {
@@ -174,19 +180,9 @@ StorageService.upload_file = function(filepath, bucket, key){
         deferred.resolve({bucket: bucket, key: key});
     });
 
-
-    // fs.readFile(filepath, function (err, data) {
-    //     console.log("READFILE",err, data)
-    //     if (err) return deferred.reject(new Error('Could not find file'))
-    //     if (!data) return deferred.reject(new Error('File data is empty'))
-    //
-    //     var base64data = new Buffer(data, 'binary').toString('base64');
-    //
-    //
-    // })
     return deferred.promise;
-
 }
+
 
 //content identifiers are publically readable.
 // eg. HASH1234/image/cover/bookname.png

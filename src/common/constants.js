@@ -137,6 +137,64 @@ module.exports = {
         '.png' : {
             type:'image'
         }
+    },
+
+    //metadata priority orders, (lower is better) (0 means the data will never be overridden)
+    metadata_data_set_types: {
+        'manual': {
+            priority: 0
+        },
+        'calibre' : { //data retrieved from calibre database via plugin, (which in some cases is the opf file)
+            priority : 1
+        },
+        'api' : { //data retrieved from calibre database via plugin, (which in some cases is the opf file)
+            priority : 1
+        },
+        'goodreads': {
+            priority: 2
+        },
+        'amazon':{
+            priority: 2
+        },
+        'google':{
+            priority: 2
+        },
+        //other sources, barnesandnoble, fanfiction, ect go here, priority 2 (book was found via an Identifier)
+        'opf' : {
+            priority: 3
+        },
+        'embedded': { //data retrieved from embedded book metadata (eg. book spines, pdf attributes)'
+            priority:4
+        },
+        'file': { //data retrieved from the filename.
+            priority:5
+        }
+    },
+    image_data_set_types: {
+        'manual' : {
+            priority:0
+        },
+        'file' : {
+            priority:1
+        },
+        'calibre': {
+            priority:1
+        },
+        'api': {
+            priority:2
+        },
+        'goodreads' : {
+            priority:2
+        },
+        'amazon' : {
+            priority:3
+        },
+        'openlibrary' : {
+            priority:4
+        },
+        'embedded' : {
+            priority:5
+        }
     }
 
 }
