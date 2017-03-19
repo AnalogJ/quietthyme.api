@@ -88,10 +88,10 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
     }
     if(isbn_identifier && isbn_identifier.value){
         if(isbn_identifier.value.length == 10){
-            parsed_book.isbn10 = isbn_identifier.value;
+            parsed_book.isbn10 = isbn_identifier.value.replace(/\D/g,'');
         }
         else{
-            parsed_book.isbn = isbn_identifier.value;
+            parsed_book.isbn = isbn_identifier.value.replace(/\D/g,'');
         }
     }
 
@@ -114,13 +114,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
 
     var authors = [];
     opf_metadata.creators.forEach(function(creator){
-        var name;
-        if(creator['file-as'] && creator['file-as'] != 'Unknown'){
-            name = creator['file-as']
-        }
-        else{
-            name = creator.value
-        }
+        var name = creator.value;
 
         if(!name){
             return
@@ -265,8 +259,8 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     //sort them
     //reject low value tags and conver to strings in one loop
     goodreads_book.popular_shelves[0].shelf = goodreads_book.popular_shelves[0].shelf.sort(function(a, b){
-        a_count = (a['$'].count | 0);
-        b_count = (b['$'].count | 0);
+        var a_count = (a['$'].count | 0);
+        var b_count = (b['$'].count | 0);
         return b_count - a_count;
     });
     parsed_book.tags = goodreads_book.popular_shelves[0].shelf
@@ -287,10 +281,10 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     if (goodreads_book.authors && goodreads_book.authors[0] && goodreads_book.authors[0].author) {
 
         parsed_book.authors = goodreads_book.authors[0].author.map(function (item) {
-            var author = {};
-            author.name = item.name[0];
-            author.goodreads_id = item.id[0]
-            return author;
+            // var author = {};
+            // author.name = item.name[0];
+            // author.goodreads_id = item.id[0]
+            return item.name[0];
         })
     }
 //    //TODO: tihs shoudl eb an array
@@ -407,9 +401,7 @@ ParseExternalService.parse_filename = function(cleaned_filename){
             //assume that this part is the title,
             return {
                 title: parts[0],
-                authors:[{
-                    name: Author.normalize_author_name(parts[1])
-                }]
+                authors:[Author.normalize_author_name(parts[1])]
             }
         }
     }
@@ -419,9 +411,7 @@ ParseExternalService.parse_filename = function(cleaned_filename){
             //assume that this part is the title,
             return {
                 title: parts[1],
-                authors:[{
-                    name:Author.normalize_author_name(parts[0])
-                }]
+                authors:[Author.normalize_author_name(parts[0])]
             }
         }
     }

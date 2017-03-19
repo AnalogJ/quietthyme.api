@@ -3,12 +3,13 @@ require('dotenv').config();
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
-var ParseExternalService = require('./services/ParseExternalService');
+var PipelineMetadataService = require('./services/PipelineMetadataService');
+var PipelineImageService = require('./services/PipelineImageService');
+var PipelineService = require('./services/PipelineService')
 var Helpers = require('./common/helpers')
 var q = require('q');
 var path = require('path')
 var exec = require('child_process').exec;
-var toMarkdown = require('to-markdown');
 var fs = require("fs");
 
 module.exports = {
@@ -143,62 +144,70 @@ module.exports = {
 
                                 //parse opf file and create a book
 
-                                return [
-                                    ParseExternalService.read_opf_file(paths.opf_path),
-                                    paths
-                                ]
+
+                                // var primary_criteria = {user_id: auth.uid};
+                                // var metadata_pipeline = [PipelineMetadataService.generate_api_data_set(event.body, event.query.source || 'api')];
+                                // var image_pipeline = [];
+                                // return PipelineService.create_with_pipeline(primary_criteria,
+                                //     metadata_pipeline,
+                                //     image_pipeline)
+
+
+
+                                return PipelineMetadataService.generate_embedded_opf_data_set(paths.opf_path)
+                                    .then(function(embedded_opf){
+                                        var primary_criteria = {
+                                            //required criteria
+                                            user_id: credential.user_id,
+
+                                            //optional criteria
+                                            credential_id: credential.id,
+                                            storage_type: credential.service_type,
+                                            storage_identifier: event.storage_identifier,
+                                            storage_filename: path.basename(event.filename, path.extname(event.filename)),
+                                            storage_format: path.extname(event.filename),
+                                            storage_size: fs.statSync(book_path).size
+                                        };
+                                        var metadata_pipeline = [embedded_opf];
+                                        var image_pipeline = [PipelineImageService.generate_file_data_set('embedded', paths.cover_path)];
+                                        return PipelineService.create_with_pipeline(primary_criteria,
+                                            metadata_pipeline,
+                                            image_pipeline)
+                                    })
+
+
+
+                                // return [
+                                //     ParseExternalService.read_opf_file(paths.opf_path),
+                                //     paths
+                                // ]
 
                             })
-                            .spread(function(book_data, paths){
-                                //create new book for user.
-                                var book_ext = path.extname(event.filename);
-                                ///TODO: validate that the book properties match the database columns.
-                                book_data.user_id = credential.user_id;
-                                book_data.credential_id = credential.id;
-                                book_data.storage_type = credential.service_type;
-                                book_data.storage_identifier = event.storage_identifier;
-                                book_data.storage_filename = path.basename(event.filename, book_ext);
-                                book_data.storage_format = book_ext
-                                book_data.storage_size = fs.statSync(book_path).size
+                            .then(function(inserted_books){
 
+                                //at this point the book data is stored in the Database, and the cover art has been uploaded to S3 already.
+                                // we just need to move the book to permanent storage.
 
-                                book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
-                                    filter: 'div',
-                                    replacement: function (innerHTML) { return innerHTML }
-                                }]});
-                                return [q(db_client('books').insert(book_data).returning('*')), paths]
-                            })
-                            .spread(function(inserted_books, paths){
                                 console.log("INSERTED BOOK:", inserted_books)
-                                //move the book to the libary folder
-                                //upload teh cover art.
-                                var image_filename = StorageService.book_filename(inserted_books[0])
-                                var image_key = StorageService.create_content_identifier('cover', credential.user_id, image_filename, '.jpeg')
 
                                 return q.allSettled([inserted_books[0],
-                                    StorageService.move_to_perm_storage(credential, inserted_books[0]),
-                                    StorageService.upload_file(paths.cover_path, process.env.QUIETTHYME_CONTENT_BUCKET, image_key),
+                                    StorageService.move_to_perm_storage(credential, inserted_books[0])
                                 ])
                             })
 
 
                     })
-                    .spread(function(book_data_promise, book_storage_promise, cover_promise){
+                    .spread(function(book_data_promise, book_storage_promise){
                         var book_data = book_data_promise.value
                         var book_storage_identifier = book_storage_promise.value
-                        var cover_identifier = cover_promise.value
 
 
                         console.log("BOOK_STORAGE", book_storage_identifier)
-                        console.log("COVER_STORAGE", cover_identifier)
 
                         //update book with new storage information and cover info.
                         var update_data = {
                             storage_identifier: book_storage_identifier.id,
                             storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
-                        }
-                        if(cover_promise.state == 'fulfilled' && cover_identifier.bucket && cover_identifier.key){
-                            update_data['cover'] = cover_identifier.bucket + '/' + cover_identifier.key
                         }
 
                         return db_client('books')

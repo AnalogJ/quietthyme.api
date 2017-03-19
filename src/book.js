@@ -4,6 +4,8 @@ var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),
     Helpers = require('./common/helpers'),
+    PipelineMetadataService = require('./services/PipelineMetadataService'),
+    PipelineService = require('./services/PipelineService'),
     q = require('q'),
     toMarkdown = require('to-markdown');
 module.exports = {
@@ -24,16 +26,26 @@ module.exports = {
                     throw new HttpError('No source present, dont know where this book is from. Should always be calibre', 500)
                 }
 
-                ///TODO: validate that the book properties match the database columns.
-                var book_data = event.body;
-                book_data.user_id = auth.uid;
-                book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
-                    filter: 'div',
-                    replacement: function (innerHTML) { return innerHTML }
-                }]})
-                return db_client('books')
-                    .returning('id')
-                    .insert(book_data)
+
+
+                var primary_criteria = {user_id: auth.uid};
+                var metadata_pipeline = [PipelineMetadataService.generate_api_data_set(event.body, event.query.source || 'api')];
+                var image_pipeline = [];
+                return PipelineService.create_with_pipeline(primary_criteria,
+                    metadata_pipeline,
+                    image_pipeline)
+
+
+                // ///TODO: validate that the book properties match the database columns.
+                // var book_data = event.body;
+                // book_data.user_id = auth.uid;
+                // book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
+                //     filter: 'div',
+                //     replacement: function (innerHTML) { return innerHTML }
+                // }]})
+                // return db_client('books')
+                //     .returning('id')
+                //     .insert(book_data)
             })
             .then(function(book_result){
                 return {id: book_result[0]}
