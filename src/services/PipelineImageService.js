@@ -22,6 +22,7 @@ var q = require('q');
 var Constants = require('../common/constants')
 var _ = require('lodash')
 var PipelineImageService = module.exports;
+var fs = require('fs')
 //When given an array of image data_sets, sort the potential data_sets and then will convert each to a fallback-enabled
 // wrapped promise and use q-combinators method to get the first successfully retrieved image.
 PipelineImageService.process_image_pipeline = function(current_sources, image_pipeline){
