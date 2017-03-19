@@ -65,6 +65,7 @@ exports.up = function(knex, Promise) {
             table.float('average_rating');
             table.integer('ratings_count');
             table.float('user_rating');
+            table.integer('num_pages');
             table.text('short_summary');
             table.string('publisher');
             table.date('published_date');
