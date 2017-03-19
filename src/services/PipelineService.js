@@ -302,16 +302,15 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
 
     console.log("BOOK_WITH_COVER", parsed_book)
 
-
     var final_book = extend(true, bookPromise.value,parsed_book);
 
     console.log("BOOK_MERGED", final_book)
 
     //cleanup book
-    final_book.short_summary = toMarkdown(final_book.short_summary, {converters: [{
+    final_book.short_summary = final_book.short_summary ? toMarkdown(final_book.short_summary, {converters: [{
         filter: 'div',
         replacement: function (innerHTML) { return innerHTML }
-    }]});
+    }]}) : null;
 
     console.log("FINAL_BOOK", final_book)
     // throw "RAISING ERROR FOR TESTING!!"
