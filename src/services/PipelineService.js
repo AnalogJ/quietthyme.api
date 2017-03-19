@@ -293,13 +293,19 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
     //     parsed_book.series_link = externalSeriesPromise.value.id;
     // }
 
+    console.log("PARSED_BOOK", parsed_book)
+
     if(coverPromise.state === "fulfilled" && coverPromise.value){
         console.log("COVER FUFILLED",coverPromise.value);
         parsed_book.cover = coverPromise.value.bucket +  '/' + coverPromise.value.key;
     }
 
+    console.log("BOOK_WITH_COVER", parsed_book)
+
+
     var final_book = extend(true, bookPromise.value,parsed_book);
 
+    console.log("BOOK_MERGED", final_book)
 
     //cleanup book
     final_book.short_summary = toMarkdown(final_book.short_summary, {converters: [{
@@ -307,7 +313,7 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
         replacement: function (innerHTML) { return innerHTML }
     }]});
 
-    console.dir(final_book)
+    console.log("FINAL_BOOK", final_book)
     // throw "RAISING ERROR FOR TESTING!!"
 
     return DBService.get()
