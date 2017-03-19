@@ -19,7 +19,7 @@
  *#######################################################################
  * */
 var q = require('q');
-var Constants = require('../common/Constants')
+var Constants = require('../common/constants')
 var _ = require('lodash')
 var PipelineImageService = module.exports;
 //When given an array of image data_sets, sort the potential data_sets and then will convert each to a fallback-enabled
