@@ -10,9 +10,9 @@ general:
 
 dependencies:
   override:
-    - npm install -g serverless
-    - npm install knex -g
-    - npm install
+    - npm install --production -g serverless
+    - npm install --production -g knex
+    - npm install --production
 #    - npm ls
 
 test:
