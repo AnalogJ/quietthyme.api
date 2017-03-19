@@ -308,7 +308,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
 
     if(goodreads_book.image_url && goodreads_book.image_url[0]){
         var str = goodreads_book.image_url[0];
-        var replaced = str.replace(/(https?:\/\/d\.gr-assets\.com\/books\/[a-zA-Z0-9]{9,13})m(\/[a-zA-Z0-9]{5,9}\.jpg)/, '$1l$2');
+        var replaced = str.replace(/(https?:\/\/images\.gr-assets\.com\/books\/[a-zA-Z0-9]{9,13})m(\/[a-zA-Z0-9]{5,9}\.jpg)/, '$1l$2');
         console.log("REPLACED=================",replaced);
         parsed_book.image = {
             identifier: replaced
