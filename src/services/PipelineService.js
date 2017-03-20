@@ -232,7 +232,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             var externalImagePromise = qCombinators
                 .fallback(PipelineImageService.process_image_pipeline(current_sources, image_pipeline))
                 .then(function(resp){
-                    if(resp.data && resp.headers){
+                    if(resp.data){
                         console.log("IMAGE data")
 
                         return bookPromise.then(
@@ -243,7 +243,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
                                 return StorageService.upload_file_from_stream(resp.data,'.jpg', process.env.QUIETTHYME_CONTENT_BUCKET, image_key)
                             })
                             .fail(function(err){
-                                console.log("FAILED", err)
+                                console.log("FAILED TO CREATE COVER IMAGE", err)
                             })
                     }
                     else if(resp.identifier){

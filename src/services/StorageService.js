@@ -176,7 +176,7 @@ StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key)
 
     s3.putObject(payload,function (resp) {
         console.log(arguments);
-        console.log('Successfully uploaded package.');
+        console.log('Successfully uploaded package.', bucket + '/' + key);
         deferred.resolve({bucket: bucket, key: key});
     });
 
