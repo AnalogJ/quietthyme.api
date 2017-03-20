@@ -20,7 +20,6 @@ provider:
   region: us-east-1
   timeout: 40 # optional, default is 6
   runtime: nodejs4.3
-  memorySize: 64
 
   #TODO: these vpc rules are required because we've hardcoded postgres connection during testing.
   #in prod, this will be specified dynamically via cloudformation.
