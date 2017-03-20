@@ -20,7 +20,7 @@ provider:
   region: us-east-1
   timeout: 40 # optional, default is 6
   runtime: nodejs4.3
-  memorySize: 128
+  memorySize: 64
 
   #TODO: these vpc rules are required because we've hardcoded postgres connection during testing.
   #in prod, this will be specified dynamically via cloudformation.
@@ -237,7 +237,6 @@ functions:
   callback:
     handler: src/link.callback
     timeout: 120
-    memorySize: 512
     events:
       - http:
           path: callback/{serviceType}
@@ -253,7 +252,6 @@ functions:
   connect:
     handler: src/link.connect
     timeout: 120
-    memorySize: 512
     events:
       - http:
           path: connect/{serviceType}
@@ -309,6 +307,7 @@ functions:
 
   bookfind:
     handler: src/book.find
+    memorySize: 128
     events:
       - http:
           path: book
@@ -526,6 +525,7 @@ functions:
 
   # this function is processed async and triggered by Lambda Invoke calls.
   queueprocessunknownbook:
+    memorySize: 256
     handler: src/queue.process_unknown_book
 
 

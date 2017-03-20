@@ -190,9 +190,7 @@ module.exports = {
 
                                 console.log("INSERTED BOOK:", inserted_books)
 
-                                return q.allSettled([inserted_books[0],
-                                    StorageService.move_to_perm_storage(credential, inserted_books[0])
-                                ])
+                                return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
                             })
 
 
