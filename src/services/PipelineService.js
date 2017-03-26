@@ -142,7 +142,8 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             else if(book.isbn || book.isbn10){
                 metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_isbn(book.isbn || book.isbn10))
             }
-            else if(!book.short_summary && !(book.tags || book.tags.length) && ! book.cover){
+            else if(!(book.short_summary && book.tags && book.tags.length && book.cover)){
+                //this book doesnt have a summary tags or cover art.
                 //lookup the book by name.
                 metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(book.title + ' - ' + book.author  ))
             }
