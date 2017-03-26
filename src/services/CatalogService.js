@@ -1,3 +1,6 @@
+'use strict';
+const debug = require('debug')('quietthyme:CatalogService')
+
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
 var DBService = require('../services/DBService');

@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:link')
+
 var cloudrail = require("cloudrail-si");
 var blocked = require('blocked')
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
@@ -42,10 +44,8 @@ module.exports = {
         context.callbackWaitsForEmptyEventLoop = false; //this is because service.exit doesn't actually complete.
         var timer = blocked(fn, options);
 
-        console.log(event.path.serviceType)
         let serviceName = event.path.serviceType;
         let redirectReceiver = (url, state, callback) => {
-            console.log(url)
             cb(null, {
                 url: url
             })

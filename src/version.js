@@ -1,4 +1,5 @@
 'use strict';
+const debug = require('debug')('quietthyme:version')
 
 module.exports.handler = (event, context, callback) => {
 

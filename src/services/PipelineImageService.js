@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:PipelineImageService')
 /*#######################################################################
  *#######################################################################
  * The Image pipeline service is used to retieve book cover art from various sources asynchronously.
@@ -36,12 +38,12 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
     //check if the current image has a lower priority than the lowest in the pipeline (if so we shouldnt download anything)
     //check if the pipeline is empty.
     if(!image_pipeline || image_pipeline.length == 0){
-        console.log('EXITING IMAGE PROCESS PIPELINE, empty')
+        console.info('EXITING IMAGE PROCESS PIPELINE, empty')
         return [];
     }
     else if (current_sources['image'] &&
         Constants.image_data_set_types[current_sources['image']].priority < Constants.image_data_set_types[image_pipeline[0]._type].priority){
-        console.log('EXITING IMAGE PROCESS PIPELINE, current image is lower priority',current_sources.image)
+        console.info('EXITING IMAGE PROCESS PIPELINE, current image is lower priority',current_sources.image)
 
         return [];
     }
@@ -55,7 +57,7 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
         }
         else if(data_set._type && data_set.promise){
             return function(){
-                console.log('downloading image via data promise');
+                console.ubfi('downloading image via data promise');
                 return data_set.promise;
             }
         }
@@ -78,7 +80,7 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
 PipelineImageService.generate_download_cover_promise = function (url, type){
     var deferred = q.defer();
     var request = require('request');
-    console.log('downloading '+type+' image from: '+url);
+    console.info('downloading '+type+' image from: '+url);
     request({url: url, encoding: null}, function (error, response, body) {
         var content_type = response.headers['content-type'];
         var content_length = response.headers['content-length'];
@@ -104,13 +106,13 @@ PipelineImageService.generate_download_cover_promise = function (url, type){
 PipelineImageService.generate_file_data_set = function(type, filepath){
 
     function filepathPromise(local_filepath){
-        console.log("READING IMAGE FROM FILEPATH:", local_filepath)
+        console.info("Loading image from filepath:", local_filepath)
         if (!local_filepath) {
-            console.log("ERROR, no filepath specified for image. ")
+            console.error("ERROR, no filepath specified for image. ")
             return q.reject(new Error("No filepath specified"));
         }
         if (!fs.existsSync(local_filepath)) {
-            console.log("ERROR, file not found fo rimage.  ")
+            console.error("ERROR, file not found fo rimage.  ")
             return q.reject(new Error("File not found"));
 
         }

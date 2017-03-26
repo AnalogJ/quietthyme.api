@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:queue')
+
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
@@ -110,13 +112,11 @@ module.exports = {
     // will determine the book's destination location (dest_storage_type, dest_storage_identifier)
     //
     process_unknown_book: function(event, context, cb){
-        console.log("JUST TESTING UNKONWN HOOK", event)
-
         DBService.get()
             .then(function(db_client){
                 return StorageService.download_book_tmp(db_client, event.filename, event.credential_id, event.storage_identifier)
                     .spread(function(book_path, credential){
-                        console.log("WE've DOWNLOADED THE BOOK, elts get metadata from it, then process it");
+                        //We've downloaded the book, lets get metadata from it, then process it
 
                         var tmp_folder = path.dirname(book_path);
                         var book_ext = path.extname(book_path);
@@ -125,13 +125,14 @@ module.exports = {
                         var opf_path = tmp_folder + '/'+ book_filename + '.opf';
                         var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
 
+                        debug("Begin processing book: %s", book_path)
 
                         var deferred = q.defer();
                         //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
                         exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
                             if (err) return deferred.reject(err);
-                            console.log(`stdout: ${stdout}`);
-                            console.log(`stderr: ${stderr}`);
+                            if(stdout) debug("calibre metadata extract stdout: %s", ${stdout});
+                            if(stderr) console.error(`calibre metadata extract stderr: ${stderr}`);
                             return deferred.resolve({
                                 opf_path: opf_path,
                                 cover_path: cover_path,
@@ -142,17 +143,6 @@ module.exports = {
                             .then(function(paths){
 
                                 //parse opf file and create a book
-
-
-                                // var primary_criteria = {user_id: auth.uid};
-                                // var metadata_pipeline = [PipelineMetadataService.generate_api_data_set(event.body, event.query.source || 'api')];
-                                // var image_pipeline = [];
-                                // return PipelineService.create_with_pipeline(primary_criteria,
-                                //     metadata_pipeline,
-                                //     image_pipeline)
-
-
-
                                 return PipelineMetadataService.generate_embedded_opf_data_set(paths.opf_path)
                                     .then(function(embedded_opf){
                                         var primary_criteria = {
@@ -173,22 +163,13 @@ module.exports = {
                                             metadata_pipeline,
                                             image_pipeline)
                                     })
-
-
-
-                                // return [
-                                //     ParseExternalService.read_opf_file(paths.opf_path),
-                                //     paths
-                                // ]
-
                             })
                             .then(function(inserted_books){
 
                                 //at this point the book data is stored in the Database, and the cover art has been uploaded to S3 already.
                                 // we just need to move the book to permanent storage.
 
-                                console.log("INSERTED BOOK:", inserted_books)
-
+                                debug("Inserted Book: %o", inserted_books)
                                 return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
                             })
 
@@ -199,7 +180,7 @@ module.exports = {
                         var book_storage_identifier = book_storage_promise.value
 
 
-                        console.log("BOOK_STORAGE", book_storage_identifier)
+                        console.info("Book storage identifier:", book_storage_identifier)
 
                         //update book with new storage information and cover info.
                         var update_data = {

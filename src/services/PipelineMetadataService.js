@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:PipelineMetadataService')
 var ParseExternalService = require('./ParseExternalService')
 var Constants = require('../common/constants')
 /*#######################################################################
@@ -31,7 +33,7 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
         if (result.state === "fulfilled") {
             data_sets.push(result.value);
         } else {
-            console.log("An error occured while processing data_set"+ result.reason);
+            console.error("Skipping data_set which finished processing with an error: "+ result.reason);
         }
     })
 
@@ -47,7 +49,6 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
 
         for(var prop in data_set){
             var current_prop_type = Constants.metadata_data_set_types[current_sources[prop] || ""]
-            console.log(prop, current_prop_type)
             //exceptions for special properties (images)
             if(prop == "image"){
                 //add to the image pipeline.
@@ -142,7 +143,7 @@ PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
             return client.BookIsbnToId(isbn)
         })
         .then(function(goodreads_id){
-            console.log("FOUND ID IS:", goodreads_id)
+            debug("Found Goodreads book id: %s", goodreads_id)
             return PipelineMetadataService.generate_goodreads_data_set(goodreads_id)
         })
 }
@@ -153,7 +154,7 @@ PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(t
     title = title.replace(/-/g, '')
     author = author.replace(/-/g, '')
     var clean_title_author = (title + ' - ' + author).replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, "");
-    console.log("SEARCHING BOOK BY TITLE & AUTHOR:" + clean_title_author)
+    debug("Searching for Goodreads book id by title and author: %s", clean_title_author)
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
         'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
@@ -168,8 +169,7 @@ PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(t
             return data.GoodreadsResponse.search[0].results[0].work[0].best_book[0].id[0]['_']
         })
         .then(function(goodreads_id){
-
-            console.log("FOUND ID IS:", goodreads_id)
+            debug("Found Goodreads book id: %s", goodreads_id)
             return PipelineMetadataService.generate_goodreads_data_set(goodreads_id)
         })
 }

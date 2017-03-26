@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:SecurityService')
 var xkcdPassword = require('xkcd-password');
 var q = require('q');
 var bcrypt = require('bcrypt');

@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:hook')
+
 var crypto = require('crypto');
 var q = require('q')
 var DBService = require('./services/DBService');
@@ -14,17 +16,17 @@ module.exports.kloudless = function(event, context, cb){
 
 
     //check if this is a valid callback.
-    console.dir(event)
+    debug("Kloudless hook data: %o", event)
     var kloudless_signature_header = event.headers['X-Kloudless-Signature']
     if(!kloudless_signature_header){
-        console.log('invalid - missing x-kloudless-signature header')
+        console.error('invalid - missing x-kloudless-signature header')
         return cb({statusCode: 400, body:'Invalid webhook request'}, null)
     }
 
     //immediately validate if this is an authenticated callback.
     var hash = crypto.createHmac('SHA256', process.env.KLOUDLESS_API_KEY).update(event.body || '').digest('base64');
     if(hash != kloudless_signature_header){
-        console.log('invalid - signature headers dont match', hash, kloudless_signature_header);
+        console.error('invalid - signature headers dont match', hash, kloudless_signature_header);
         return cb({statusCode: 400, body:'Invalid signatures dont match'}, null)
     }
 
@@ -54,7 +56,7 @@ module.exports.kloudless = function(event, context, cb){
                         .where({id:credential.id})
                         .update({event_cursor: kloudless_events.cursor})
                         .then(function(){
-                            console.log("UPDATED CURSOR:",credential.event_cursor,  kloudless_events.cursor)
+                            debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor)
                             return kloudless_events;
                         }), credential]
                 })
@@ -66,18 +68,14 @@ module.exports.kloudless = function(event, context, cb){
             var filtered_events = events.objects.filter(function(kl_event){
                 //we only care about add, move, copy actions (all others are ignorable)
                 if (!(kl_event.type == 'add' || kl_event.type == 'move' || kl_event.type == 'copy')){
-                    console.log("SKIPPING (invalid type):", kl_event.account, kl_event.metadata.path)
+                    debug("SKIPPING (invalid type): %s %s", kl_event.account, kl_event.metadata.path)
                     return false;
                 }
 
                 //we only care about files in the blackhole_folder that we can download
                 if (!(kl_event.metadata.type == 'file' && kl_event.metadata.downloadable &&
                     (kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.path_id))){
-                    console.log("SKIPPING (invalid file/parent):", kl_event.account, kl_event.metadata.path)
-
-                    //TODO: debugging
-                    console.log('blackhole_folder',blackhole_folder)
-                    console.dir(JSON.stringify(kl_event))
+                    debug("SKIPPING (invalid file/parent): %s %s", kl_event.account, kl_event.metadata.path)
                     return false;
                 }
 
@@ -86,7 +84,7 @@ module.exports.kloudless = function(event, context, cb){
 
                 if(!Constants.file_extensions[ext]){
                     //lets log the files that we don't process in the blackhole folder
-                    console.log("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path)
+                    console.error("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path)
                     return false
                 }
 
@@ -98,7 +96,7 @@ module.exports.kloudless = function(event, context, cb){
             // http://stackoverflow.com/a/31745774
             var promises = filtered_events.map(function(kl_event){
                 var deferred = q.defer();
-                console.log("QUEUED:", kl_event.account, kl_event.metadata.path)
+                console.info("Added file to Queue:", kl_event.account, kl_event.metadata.path)
                 lambda.invoke({
                     FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
                     Payload: JSON.stringify({

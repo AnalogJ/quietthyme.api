@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:PipelineService')
 var q = require('q');
 var util = require('util');
 var extend = require('node.extend');
@@ -50,10 +52,9 @@ var PipelineService = module.exports;
 
 PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipeline, image_pipeline, opts){
 
-    console.log("BEGIN CREATING WITH PIPELINE");
-    console.dir(metadata_pipeline[0])
+    debug("Metadata pipeline initial content: %o", metadata_pipeline)
     if(!primary_criteria || (!primary_criteria.user_id)){
-        console.log(new Error("the primary criteria is required."))
+        console.error("the primary criteria is required.")
         return q.reject(new Error("the primary criteria is required."))
     }
 
@@ -244,8 +245,6 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
                 .fallback(PipelineImageService.process_image_pipeline(current_sources, image_pipeline))
                 .then(function(resp){
                     if(resp.data){
-                        console.log("IMAGE data")
-
                         return bookPromise.then(
                             function(book){
                                 //we dont know the book's actual final name at this point, so lets just store the coverart to a HASH.jpg file in S3.
@@ -253,13 +252,8 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
 
                                 return StorageService.upload_file_from_stream(resp.data,'.jpg', process.env.QUIETTHYME_CONTENT_BUCKET, image_key)
                             })
-                            .fail(function(err){
-                                console.log("FAILED TO CREATE COVER IMAGE", err)
-                            })
                     }
                     else if(resp.identifier){
-                        console.log("IMAGE identifier")
-
                         //manually uploaded files are already stored in azure, no need to move them.
                         return resp.identifier;
                     }
@@ -304,18 +298,11 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
     //     parsed_book.series_link = externalSeriesPromise.value.id;
     // }
 
-    console.log("PARSED_BOOK", parsed_book)
-
     if(coverPromise.state === "fulfilled" && coverPromise.value){
-        console.log("COVER FUFILLED",coverPromise.value);
         parsed_book.cover = coverPromise.value.bucket +  '/' + coverPromise.value.key;
     }
 
-    console.log("BOOK_WITH_COVER", parsed_book)
-
     var final_book = extend(true, bookPromise.value,parsed_book);
-
-    console.log("BOOK_MERGED", final_book)
 
     //cleanup book
     final_book.short_summary = final_book.short_summary ? toMarkdown(final_book.short_summary, {converters: [{
@@ -323,7 +310,7 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
         replacement: function (innerHTML) { return innerHTML }
     }]}) : null;
 
-    console.log("FINAL_BOOK", final_book)
+    console.info("Merged final book data: ", final_book)
     // throw "RAISING ERROR FOR TESTING!!"
 
     return DBService.get()

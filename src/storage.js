@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:storage')
+
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var JWTokenService = require('./services/JWTokenService');
@@ -39,7 +41,7 @@ module.exports = {
                                 ]
                             })
                             .spread(function(root_folder, library_folder, blackhole_folder){
-                                console.log(root_folder, library_folder, blackhole_folder)
+                                debug("root_folder: %s, library_folder: %s, blackhole_folder: %s", root_folder, library_folder, blackhole_folder)
 
                                 return db_client('credentials')
                                     .where('id', '=', new_cred[0].id)
@@ -63,12 +65,6 @@ module.exports = {
     },
 
     status: function (event, context, cb) {
-        console.log("STATUS============================QUERY")
-        console.log(event.query)
-        console.log("STATUS============================PARAMS")
-        console.log(event.path)
-        console.log("STATUS============================HEADERS")
-        console.log(event.headers)
         //res.setHeader('Cache-Control', 'public, max-age=31557600');
         var user_calibre_id_promise = q({})
         //TODO: this code was commented out because the library_uuid can be None. so we need to write code to handle this later.
@@ -88,10 +84,7 @@ module.exports = {
         //TODO: due to issues with kloudless library, we're not actually getting quota info yet.
         StorageService.get_user_storage(event.token)
             .then(function(credentials){
-
-                console.log("FOUND CREDENTIALS", credentials)
                 return credentials.map(function(credential_storage_info){
-
                     var storage = {
                         'device_name': credential_storage_info.credential.service_type,
                         'prefix': credential_storage_info.credential.service_type +'://',
@@ -112,11 +105,10 @@ module.exports = {
             .then(function(credential_quotas){
 
                 if(event.query.source != 'calibre'){
+                    debug("User storage quotas %o", credential_quotas)
                     return credential_quotas
                 }
 
-
-                console.log("USER AND CREDENTIALS", credential_quotas)
                 //calculate the amount of space free.
 
                 var status_obj = {
@@ -160,7 +152,7 @@ module.exports = {
                  'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
                  }
                  * */
-                console.log("RESPONSE STATUS", status_obj)
+                debug("Calibre User storage quotas %o", status_obj)
                 return status_obj
             })
             .then(Helpers.successHandler(cb))
@@ -204,12 +196,10 @@ module.exports = {
                         .update(book_data)
                         .then(function(){
                             var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: key, Expires: 60};
-                            console.log("PARAMS", params)
                             var payload = {
                                 book_data: book_data,
                                 upload_url: s3.getSignedUrl('putObject', params)
                             }
-                            console.log(payload)
                             return payload
                         })
                 })
@@ -243,9 +233,7 @@ module.exports = {
                             .update(book_data)
                             .then(function(){
                                 var params = {Bucket: process.env.QUIETTHYME_CONTENT_BUCKET, Key: key, Expires: 60};
-                                console.log("PARAMS", params)
                                 var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)}
-                                console.log(payload)
                                 return payload
                             })
                     })
@@ -277,7 +265,7 @@ module.exports = {
                         var payload = {
                             url: link
                         };
-                        console.log(payload)
+                        debug("download link for book: %o", payload)
                         return payload
                     })
             })

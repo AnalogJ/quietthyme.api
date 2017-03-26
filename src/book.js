@@ -1,4 +1,5 @@
 'use strict';
+const debug = require('debug')('quietthyme:book')
 var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),
@@ -13,15 +14,12 @@ module.exports = {
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client) {
 
-                console.log("CREATE BOOK ============================PARAMS")
-                console.log(event.path)
-                console.log("CREATE BOOK ============================QUERY")
-                console.log(event.query)
-                console.log("CREATE BOOK ============================BODY")
-                console.log(event.body)
+                debug("Create book params: %o", event.path)
+                debug("Create book query: %o", event.query)
+                debug("Create book body: %s", event.body)
 
                 if(!event.query.source){
-                    console.log('No source present, dont know where this book is from', event.query.source)
+                    console.error('No source present, dont know where this book is from', event.query.source)
                     throw new HttpError('No source present, dont know where this book is from. Should always be calibre', 500)
                 }
 
@@ -110,7 +108,7 @@ module.exports = {
             function(auth, db_client) {
 
                 if(!event.path.id){
-                    console.log('No book specified', event.path.id)
+                    console.error('No book specified', event.path.id)
                     throw new HttpError('No book specified', 500)
                 }
 

@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:catalog')
+
 var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
     Helpers = require('./common/helpers'),
@@ -556,7 +558,7 @@ module.exports = {
                                 "Location": link
                             }
                         };
-                        console.log(payload)
+                        console.info("Redirecting user to:", payload)
                         return payload
                     })
             })

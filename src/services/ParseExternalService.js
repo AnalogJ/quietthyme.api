@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:ParseExternalService')
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utilities
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,9 +51,7 @@ ParseExternalService.read_opf_file = function(filepath){
 }
 
 ParseExternalService.parse_opf_data = function(opf_metadata){
-    console.log("OBJECT OPF DATA")
-    console.dir(opf_metadata)
-
+    debug("Parse OPF data: %o", opf_metadata)
 
     var goodreads_identifier = opf_metadata.identifiers["GOODREADS"];
     var amazon_identifier = opf_metadata.identifiers["AMAZON"];
@@ -309,7 +309,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     if(goodreads_book.image_url && goodreads_book.image_url[0]){
         var str = goodreads_book.image_url[0];
         var replaced = str.replace(/(https?:\/\/images\.gr-assets\.com\/books\/[a-zA-Z0-9]{9,13})m(\/[a-zA-Z0-9]{5,9}\.jpg)/, '$1l$2');
-        console.log("REPLACED=================",replaced);
+        debug("Goodreads Image URL Replaced: %s", replaced);
         parsed_book.image = {
             identifier: replaced
         }

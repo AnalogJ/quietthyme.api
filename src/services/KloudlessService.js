@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:KloudlessService')
 var q = require('q');
 var kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
 var request = require('request');
@@ -25,10 +27,10 @@ kloudlessService.folderCreate = function(account_id, name, parent_id, service_ty
         //we have to generate both.
         return deferred.promise
             .then(function(folder_metadata){
-                console.log("CONVERTING ID FOR DROPBOX:", folder_metadata.path)
+                console.info("Converting Dropbox Id:", folder_metadata.path)
                 return kloudlessService.convertId(account_id, folder_metadata.path)
                     .then(function(convert_data){
-                        console.log("CONVERT RESPONSE", convert_data)
+                        debug("Conversion response: %o", convert_data)
                         folder_metadata.path_id = convert_data.id;
                         return folder_metadata;
                     })
@@ -128,7 +130,7 @@ kloudlessService.convertId = function(account_id, identifier, type){
 };
 
 kloudlessService.eventsGet = function(account_id, event_cursor){
-    console.log("KLOUDLESS EVENTS GET REQUEST:", account_id, event_cursor)
+    debug("Get Kloudless events from account (%s) at cursor: %s", account_id, event_cursor)
     var deferred = q.defer();
     kloudless.events.get({
         account_id: account_id,

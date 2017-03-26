@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:StorageService')
 var q = require('q'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
     JWTokenService = require('./JWTokenService'),
@@ -52,11 +54,9 @@ StorageService.download_book_tmp = function(db_client, filename, credential_id, 
             //we need to keep the filename intact because we'll be sending it to Calibre to detect metadata.
             var filepath = tmpDir.name + '/' + filename;
             var writeStream = fs.createWriteStream(filepath);
-            console.log('WRITING TO File: ', filepath);
             return [
                     KloudlessService.fileContents(credential.service_id, storage_identifier, writeStream)
                         .then(function(){
-                            console.log("FINISHED DOWNLOADING FILE")
                             return filepath
                         }),
                     credential
@@ -66,27 +66,24 @@ StorageService.download_book_tmp = function(db_client, filename, credential_id, 
 
 StorageService.get_user_storage = function(token){
 
-    console.log("GET STORAGE QUTOAS")
     return q.spread([JWTokenService.verify(token), DBService.get()],
         function(auth, db_client){
-            console.log(auth)
             return q(db_client.select()
                 .from('credentials')
                 .where('user_id', auth.uid))
                 .then(function(credentials){
-                    console.log("Found credentials for user", auth.uid, credentials);
+                    debug("Found credentials for user: %s", auth.uid);
                     var credential_info_promises = credentials.map(function(cred){
                         var deferred = q.defer();
 
-                        console.log("Requesting Quota", cred.service_type, cred.service_id);
-                        console.log(process.env.KLOUDLESS_API_KEY);
+                        console.info("Requesting Quota", cred.service_type, cred.service_id);
                         kloudless.accounts.get({account_id: cred.service_id,
                             queryParams: {
                                 retrieve_full: true
                             }}, function(err, service_info){
                             if(err) return deferred.reject(err);
 
-                            console.log("Credential info:", service_info)
+                            console.info("Credential info:", service_info)
                             deferred.resolve({credential: cred, service_info: service_info});
                         });
 
@@ -126,7 +123,7 @@ StorageService.get_download_link = function(book, user_id, db_client){
             })
             .then(function(data){
 
-                console.log("REDIRECT LINK", data)
+                debug("Book download link: %o", data)
                 return data.url
 
             })
@@ -135,7 +132,7 @@ StorageService.get_download_link = function(book, user_id, db_client){
 
 StorageService.upload_file_from_path = function(filepath, bucket, key) {
 
-    console.log("UPLOAD_FILE", filepath, bucket, key)
+    console.info("Uploading file from "+ filepath, bucket, key)
     if (!filepath) {
         return q.reject(new Error("No filepath specified"));
     }
@@ -174,8 +171,7 @@ StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key)
     }
 
     s3.putObject(payload,function (resp) {
-        console.log(arguments);
-        console.log('Successfully uploaded package.', bucket + '/' + key);
+        console.info('Successfully uploaded package.', bucket + '/' + key);
         deferred.resolve({bucket: bucket, key: key});
     });
 

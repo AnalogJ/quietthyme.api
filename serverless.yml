@@ -40,7 +40,7 @@ provider:
     PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
     KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
     KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
-    DEBUG: knex:*,pool2
+    DEBUG: ${self:custom.variables.${opt:stage, self:provider.stage}.debug}
     NODE_ENV: production
 
     # content bucket contains thumbnails and files that will be served directly from S3.
@@ -174,9 +174,10 @@ custom:
   variables:
     master:
       cleanup_enabled: true
+      debug: ''
     beta:
       cleanup_enabled: false
-
+      debug: knex:*,pool2,quietthyme:*
 
 
 # you can add packaging information here
@@ -527,4 +528,5 @@ resources:
 
 plugins:
    - serverless-prune-plugin
+   - serverless-mocha-plugin
 #   - serverless-plugin-optimize

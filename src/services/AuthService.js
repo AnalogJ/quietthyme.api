@@ -1,3 +1,4 @@
+'use strict';
 /**
  * In the Data Browser, set the Class Permissions for these 2 classes to
  *   disallow public access for Get/Find/Create/Update/Delete operations.
@@ -5,6 +6,7 @@
  *
  */
 var q = require('q');
+const debug = require('debug')('quietthyme:AuthService')
 var SecurityService = require('./SecurityService');
 
 var authService = exports;
@@ -12,7 +14,6 @@ var authService = exports;
 authService.createEmailUser = function(db_client, name, email, password){
     return q.spread([SecurityService.generate_catalog_token(), SecurityService.hash_password(password)],
         function(catalog_token, password_hash){
-            console.log('creating user');
             return db_client('users')
                 .returning(['uid', 'catalog_token','email'])
                 .insert({
@@ -27,7 +28,6 @@ authService.createEmailUser = function(db_client, name, email, password){
 authService.createCalibreUser = function(db_client, library_uuid){
     return SecurityService.generate_catalog_token()
         .then(function(catalog_token){
-            console.log('creating user');
             return db_client('users')
                 .insert({
                     "library_uuid": library_uuid,

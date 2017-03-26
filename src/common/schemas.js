@@ -1,3 +1,4 @@
+'use strict';
 function ISODateString(d){
     if(typeof(d) == 'string'){
         d = new Date(d)

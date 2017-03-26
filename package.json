@@ -19,6 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.5.3",
     "bcrypt": "^0.8.7",
+    "debug": "^2.6.3",
     "goodreads.js": "^0.0.9",
     "jsonwebtoken": "^7.1.9",
     "kloudless": "git://github.com/Kloudless/kloudless-node.git",

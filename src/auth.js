@@ -1,4 +1,6 @@
 'use strict';
+const debug = require('debug')('quietthyme:auth')
+
 var q = require('q'),
     HttpError = require('./common/HttpError'),
     DBService = require('./services/DBService'),
@@ -21,7 +23,7 @@ module.exports = {
                 return user_query
                     .then(function(user){
                         if(user){
-                            console.log('user already exists, cant re-register');
+                            console.error('User already exists, cant re-register');
                             throw 'User already exists'
                         }
                         else{
@@ -31,7 +33,7 @@ module.exports = {
             })
 
             .then(function(user){
-                console.log("NEWLY CREATED USER:",user);
+                debug("Newly created user: %o", user);
                 return {
                     token: JWTokenService.issue({uid: user[0].uid, catalog_token: user[0].catalog_token, name: user[0].name, email: user[0].email })
                 }

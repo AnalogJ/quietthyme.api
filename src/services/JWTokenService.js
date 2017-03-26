@@ -1,3 +1,5 @@
+'use strict';
+const debug = require('debug')('quietthyme:JWTokenService')
 /**
  * jwToken
  *
@@ -14,7 +16,7 @@ var jwt = require('jsonwebtoken'),
 
 // Generates a token from supplied payload
 module.exports.issue = function(payload) {
-    console.log('CREATING JWT,', payload)
+    debug('Creating JWT: %o', payload)
     return jwt.sign(
         payload,
         tokenSecret, // Token Secret that we sign it with

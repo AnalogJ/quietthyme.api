@@ -1,3 +1,4 @@
+'use strict';
 /*
  * base64.js: An extremely simple implementation of base64 encoding / decoding using node.js Buffers
  *
