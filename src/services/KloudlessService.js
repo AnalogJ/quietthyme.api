@@ -1,4 +1,3 @@
-//require('dotenv').config();
 var q = require('q');
 var kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
 var request = require('request');

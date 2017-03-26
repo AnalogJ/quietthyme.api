@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 var cloudrail = require("cloudrail-si");
 var blocked = require('blocked')
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);

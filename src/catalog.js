@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
     Helpers = require('./common/helpers'),

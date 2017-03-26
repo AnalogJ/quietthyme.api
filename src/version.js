@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 
 module.exports.handler = (event, context, callback) => {
 

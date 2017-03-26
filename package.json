@@ -19,7 +19,6 @@
   "dependencies": {
     "aws-sdk": "^2.5.3",
     "bcrypt": "^0.8.7",
-    "dotenv": "^2.0.0",
     "goodreads.js": "^0.0.9",
     "jsonwebtoken": "^7.1.9",
     "kloudless": "git://github.com/Kloudless/kloudless-node.git",
@@ -33,7 +32,6 @@
     "q": "^1.4.1",
     "q-combinators": "^1.0.0",
     "request": "^2.79.0",
-    "serverless-plugin-write-env-vars": "^1.0.1",
     "tmp": "0.0.31",
     "to-markdown": "^3.0.3",
     "xkcd-password": "^1.2.0",

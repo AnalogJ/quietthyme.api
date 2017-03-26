@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 var crypto = require('crypto');
 var q = require('q')
 var DBService = require('./services/DBService');

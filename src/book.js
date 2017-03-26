@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),

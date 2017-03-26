@@ -1,5 +1,4 @@
 'use strict';
-require('dotenv').config();
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');

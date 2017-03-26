@@ -20,6 +20,38 @@ provider:
   region: us-east-1
   timeout: 40 # optional, default is 6
   runtime: nodejs4.3
+  environment:
+    DOMAIN: api.quietthyme.com
+    DEPLOY_SHA: ${env:CIRCLE_SHA1}
+    STAGE: ${opt:stage, self:provider.stage}
+    STORAGE_SALT: ${env:${opt:stage, self:provider.stage}_STORAGE_SALT, env:STORAGE_SALT}
+    ENCRYPTION_JWT_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_JWT_PASSPHRASE, env:ENCRYPTION_JWT_PASSPHRASE}
+  #    OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
+  #    OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
+  #    OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
+  #    OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
+  #    OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
+  #    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
+  #    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
+  #    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
+    OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
+    OAUTH_GOODREADS_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_SECRET, env:OAUTH_GOODREADS_CLIENT_SECRET}
+
+    PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
+    KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
+    KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
+    DEBUG: knex:*,pool2
+    NODE_ENV: production
+
+    # content bucket contains thumbnails and files that will be served directly from S3.
+    QUIETTHYME_CONTENT_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-content
+
+    # upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
+    # - files manually uploaded via WebUI
+    # - files uploaded by Calibre client
+    QUIETTHYME_UPLOAD_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-upload
+
+
 
   #TODO: these vpc rules are required because we've hardcoded postgres connection during testing.
   #in prod, this will be specified dynamically via cloudformation.
@@ -144,58 +176,7 @@ custom:
       cleanup_enabled: true
     beta:
       cleanup_enabled: false
-    DOMAIN: api.quietthyme.com
-    DEPLOY_SHA: ${env:CIRCLE_SHA1}
-    STAGE: ${opt:stage, self:provider.stage}
-    STORAGE_SALT: ${env:${opt:stage, self:provider.stage}_STORAGE_SALT, env:STORAGE_SALT}
-    ENCRYPTION_JWT_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_JWT_PASSPHRASE, env:ENCRYPTION_JWT_PASSPHRASE}
-#    OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
-#    OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
-#    OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
-#    OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
-#    OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
-#    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
-#    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
-#    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
-    OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
-    OAUTH_GOODREADS_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_SECRET, env:OAUTH_GOODREADS_CLIENT_SECRET}
 
-
-    PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
-    KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
-    KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
-
-  writeEnvVars:
-    DOMAIN: ${self:custom.variables.DOMAIN}
-    DEPLOY_SHA: ${self:custom.variables.DEPLOY_SHA}
-    STAGE: ${self:custom.variables.STAGE}
-    STORAGE_SALT: ${self:custom.variables.STORAGE_SALT}
-    ENCRYPTION_JWT_PASSPHRASE: ${self:custom.variables.ENCRYPTION_JWT_PASSPHRASE}
-
-#    OAUTH_BOX_CLIENT_KEY: ${self:custom.variables.OAUTH_BOX_CLIENT_KEY}
-#    OAUTH_BOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_BOX_CLIENT_SECRET}
-#    OAUTH_DROPBOX_CLIENT_KEY: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_KEY}
-#    OAUTH_DROPBOX_CLIENT_SECRET: ${self:custom.variables.OAUTH_DROPBOX_CLIENT_SECRET}
-#    OAUTH_GOOGLE_CLIENT_KEY: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_KEY}
-#    OAUTH_GOOGLE_CLIENT_SECRET: ${self:custom.variables.OAUTH_GOOGLE_CLIENT_SECRET}
-#    OAUTH_SKYDRIVE_CLIENT_KEY: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_KEY}
-#    OAUTH_SKYDRIVE_CLIENT_SECRET: ${self:custom.variables.OAUTH_SKYDRIVE_CLIENT_SECRET}
-    OAUTH_GOODREADS_CLIENT_KEY: ${self:custom.variables.OAUTH_GOODREADS_CLIENT_KEY}
-    OAUTH_GOODREADS_CLIENT_SECRET: ${self:custom.variables.OAUTH_GOODREADS_CLIENT_SECRET}
-
-    PG_CONNECTION_STRING: ${self:custom.variables.PG_CONNECTION_STRING}
-    KLOUDLESS_API_ID: ${self:custom.variables.KLOUDLESS_API_ID}
-    KLOUDLESS_API_KEY: ${self:custom.variables.KLOUDLESS_API_KEY}
-    DEBUG: knex:*,pool2
-    NODE_ENV: production
-
-    # content bucket contains thumbnails and files that will be served directly from S3.
-    QUIETTHYME_CONTENT_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-content
-
-    # upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
-    # - files manually uploaded via WebUI
-    # - files uploaded by Calibre client
-    QUIETTHYME_UPLOAD_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-upload
 
 
 # you can add packaging information here
@@ -545,6 +526,5 @@ resources:
     $ref: ./cloudformation-resources.yaml
 
 plugins:
-   - serverless-plugin-write-env-vars
    - serverless-prune-plugin
 #   - serverless-plugin-optimize
