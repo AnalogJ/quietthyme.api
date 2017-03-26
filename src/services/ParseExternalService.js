@@ -231,7 +231,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     var goodreads_book = response.GoodreadsResponse.book[0];
 
     var parsed_book = {};
-    parsed_book.title = goodreads_book.title[0];
+    parsed_book.title = goodreads_book.title[0].replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, ""); //sometimes goodreads includes the series information in the title. Lets strip that out.
     parsed_book.isbn = goodreads_book.isbn13[0];
     parsed_book.isbn10 = goodreads_book.isbn[0];
     parsed_book.amazon_id = goodreads_book.asin[0] || null; //if the asin is an empty string, return null
