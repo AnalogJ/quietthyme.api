@@ -12,8 +12,7 @@ dependencies:
   override:
     - npm install --production -g serverless
     - npm install --production -g knex
-    - npm install --production
-    - npm install serverless-prune-plugin
+    - npm install
 #    - npm ls
 
 test:

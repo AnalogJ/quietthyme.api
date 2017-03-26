@@ -40,6 +40,9 @@
     "xml-schema": "^2.2.0"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.0",
+    "serverless-mocha-plugin": "^1.3.3",
+    "serverless-plugin-optimize": "^1.0.0-rc.15",
     "serverless-prune-plugin": "^1.0.4"
   }
 }
