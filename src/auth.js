@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:auth')
+const debug = require('debug')('quietthyme:auth');
 
 var q = require('q'),
     HttpError = require('./common/HttpError'),
@@ -18,7 +18,7 @@ module.exports = {
             .then(function(db_client) {
                 var user_query = db_client.first()
                     .from('users')
-                    .where('email', event.body.email)
+                    .where('email', event.body.email);
 
                 return user_query
                     .then(function(user){
@@ -49,7 +49,7 @@ module.exports = {
             .then(function(db_client) {
                 var user_query = db_client.first()
                     .from('users')
-                    .where('email', event.body.email)
+                    .where('email', event.body.email);
 
                 return user_query
                     .then(function(user){
@@ -87,4 +87,4 @@ module.exports = {
             }
         );
     }
-}
+};

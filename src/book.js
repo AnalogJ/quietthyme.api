@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:book')
+const debug = require('debug')('quietthyme:book');
 var JWTokenService = require('./services/JWTokenService'),
     DBService = require('./services/DBService'),
     HttpError = require('./common/HttpError'),
@@ -14,12 +14,12 @@ module.exports = {
         q.spread([JWTokenService.verify(event.token), DBService.get()],
             function(auth, db_client) {
 
-                debug("Create book params: %o", event.path)
-                debug("Create book query: %o", event.query)
-                debug("Create book body: %s", event.body)
+                debug("Create book params: %o", event.path);
+                debug("Create book query: %o", event.query);
+                debug("Create book body: %s", event.body);
 
                 if(!event.query.source){
-                    console.error('No source present, dont know where this book is from', event.query.source)
+                    console.error('No source present, dont know where this book is from', event.query.source);
                     throw new HttpError('No source present, dont know where this book is from. Should always be calibre', 500)
                 }
 
@@ -30,7 +30,7 @@ module.exports = {
                 var image_pipeline = [];
                 return PipelineService.create_with_pipeline(primary_criteria,
                     metadata_pipeline,
-                    image_pipeline)
+                    image_pipeline);
 
 
                 // ///TODO: validate that the book properties match the database columns.
@@ -59,9 +59,9 @@ module.exports = {
                     console.warn('No storage_id present, returning books from all storage providers.', event.query.storage_id)
                 }
 
-                var condition = {'user_id': auth.uid}
+                var condition = {'user_id': auth.uid};
 
-                var book_query = null
+                var book_query = null;
 
                 if(event.query.id){
                     condition['id'] = event.query.id;
@@ -76,7 +76,7 @@ module.exports = {
 
                     book_query = db_client.select()
                         .from('books')
-                        .where(condition)
+                        .where(condition);
 
                     if(event.query.page || event.query.page === 0){
                         book_query.limit(50);
@@ -86,7 +86,7 @@ module.exports = {
                     book_query.orderBy(event.query.sort ? event.query.sort : 'title')
                 }
 
-                return book_query
+                return book_query;
                 // .then(function(books){
                 //     //todo: possibly filter out books that dont have a bookstorage.
                 //     return res.json({success:true, data:books});
@@ -108,7 +108,7 @@ module.exports = {
             function(auth, db_client) {
 
                 if(!event.path.id){
-                    console.error('No book specified', event.path.id)
+                    console.error('No book specified', event.path.id);
                     throw new HttpError('No book specified', 500)
                 }
 
@@ -127,4 +127,4 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     }
-}
+};

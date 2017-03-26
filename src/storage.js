@@ -1,16 +1,16 @@
 'use strict';
-const debug = require('debug')('quietthyme:storage')
+const debug = require('debug')('quietthyme:storage');
 
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var JWTokenService = require('./services/JWTokenService');
 var KloudlessService = require('./services/KloudlessService');
-var Helpers = require('./common/helpers')
+var Helpers = require('./common/helpers');
 var q = require('q');
 
 
 var AWS = require('aws-sdk');
-var s3 = new AWS.S3({apiVersion: '2006-03-01'})
+var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 module.exports = {
 
@@ -41,7 +41,7 @@ module.exports = {
                                 ]
                             })
                             .spread(function(root_folder, library_folder, blackhole_folder){
-                                debug("root_folder: %s, library_folder: %s, blackhole_folder: %s", root_folder, library_folder, blackhole_folder)
+                                debug("root_folder: %s, library_folder: %s, blackhole_folder: %s", root_folder, library_folder, blackhole_folder);
 
                                 return db_client('credentials')
                                     .where('id', '=', new_cred[0].id)
@@ -66,7 +66,7 @@ module.exports = {
 
     status: function (event, context, cb) {
         //res.setHeader('Cache-Control', 'public, max-age=31557600');
-        var user_calibre_id_promise = q({})
+        var user_calibre_id_promise = q({});
         //TODO: this code was commented out because the library_uuid can be None. so we need to write code to handle this later.
         //if(req.user.calibre_id && req.user.calibre_id != req.query.library_uuid){
         //    sails.log.debug('The calibre library_uuid is does not match the user calibre_id', req.user.calibre_id, req.query.library_uuid)
@@ -93,10 +93,10 @@ module.exports = {
                         'free_space': credential_storage_info.service_info.quota.total - credential_storage_info.service_info.quota.used,  //quota_info.total_bytes - quota_info.used_bytes,
                         'total_space': credential_storage_info.service_info.quota.total,
                         'location_code': credential_storage_info.credential.calibre_location_code
-                    }
+                    };
 
                     if(event.query.source == 'calibre'){
-                        storage['last_library_uuid'] = event.query.library_uuid
+                        storage['last_library_uuid'] = event.query.library_uuid;
                         storage ['calibre_version'] = '2.6.0'
                     }
                     return storage
@@ -105,7 +105,7 @@ module.exports = {
             .then(function(credential_quotas){
 
                 if(event.query.source != 'calibre'){
-                    debug("User storage quotas %o", credential_quotas)
+                    debug("User storage quotas %o", credential_quotas);
                     return credential_quotas
                 }
 
@@ -132,10 +132,10 @@ module.exports = {
                 var location_codes = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 for(var ndx in credential_quotas){
                     //
-                    var location_code = location_codes[ndx]
+                    var location_code = location_codes[ndx];
                     var location_settings = credential_quotas[ndx];
                     location_settings['location_code'] = location_code;
-                    location_settings['date_last_connected'] = '2014-12-18T16:24:59.541905+00:00'
+                    location_settings['date_last_connected'] = '2014-12-18T16:24:59.541905+00:00';
                     status_obj.settings[location_code] = location_settings;
                 }
                 /*
@@ -152,7 +152,7 @@ module.exports = {
                  'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
                  }
                  * */
-                debug("Calibre User storage quotas %o", status_obj)
+                debug("Calibre User storage quotas %o", status_obj);
                 return status_obj
             })
             .then(Helpers.successHandler(cb))
@@ -189,7 +189,7 @@ module.exports = {
                         'storage_size': event.body.storage_size,
                         'storage_filename': event.body.storage_filename,
                         'storage_format': event.body.storage_format
-                    }
+                    };
 
                     return db_client('books')
                         .where('id', '=', book.id)
@@ -199,7 +199,7 @@ module.exports = {
                             var payload = {
                                 book_data: book_data,
                                 upload_url: s3.getSignedUrl('putObject', params)
-                            }
+                            };
                             return payload
                         })
                 })
@@ -226,14 +226,14 @@ module.exports = {
 
                         var book_data = {
                             'cover': process.env.QUIETTHYME_CONTENT_BUCKET + '/' + encodeURI(key)
-                        }
+                        };
 
                         return db_client('books')
                             .where('id', '=', book.id)
                             .update(book_data)
                             .then(function(){
                                 var params = {Bucket: process.env.QUIETTHYME_CONTENT_BUCKET, Key: key, Expires: 60};
-                                var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)}
+                                var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)};
                                 return payload
                             })
                     })
@@ -265,7 +265,7 @@ module.exports = {
                         var payload = {
                             url: link
                         };
-                        debug("download link for book: %o", payload)
+                        debug("download link for book: %o", payload);
                         return payload
                     })
             })

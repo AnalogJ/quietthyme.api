@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:catalog')
+const debug = require('debug')('quietthyme:catalog');
 
 var CatalogService = require('./services/CatalogService'),
     DBService = require('./services/DBService'),
@@ -18,8 +18,8 @@ module.exports = {
             .spread(function(user, db_client){
 
                 //user was found.
-                var id = 'root'
-                var token = user.catalog_token
+                var id = 'root';
+                var token = user.catalog_token;
                 var opds_catalog = CatalogService.navigation_feed(token, id);
                 opds_catalog.entries = [
                     {
@@ -111,7 +111,7 @@ module.exports = {
                             }
                         ]
                     }
-                ]
+                ];
                 return CatalogService.toXML(opds_catalog);
             })
             .then(Helpers.successHandler(cb))
@@ -123,7 +123,7 @@ module.exports = {
     series: function (event, context, cb) {
         var token = event.path.catalogToken;
         var page = (event.query.page | 0);
-        var path = "/series" + CatalogService.page_suffix(page)
+        var path = "/series" + CatalogService.page_suffix(page);
 
 
         return CatalogService.findUserByToken(token)
@@ -143,7 +143,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':series'
+                var id = 'root:' + token + ':series';
                 var next_path = null;
                 if (series_list.length >= QUERY_LIMIT) {
                     next_path = "/series?page=" + (page + 1);
@@ -152,7 +152,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.entries = series_list.map(function(series){
                     return CatalogService.seriesToPartialEntry(id, token, series.series_name)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
 
 
@@ -232,7 +232,7 @@ module.exports = {
     books: function (event, context, cb) {
         var token = event.path.catalogToken;
         var page = (event.query.page | 0);
-        var path = "/books" + + CatalogService.page_suffix(page)
+        var path = "/books" + + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -241,7 +241,7 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.orderBy("title")
+                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -250,7 +250,7 @@ module.exports = {
                 }
 
                 //user was found.
-                var id = 'root:' + token + ':books'
+                var id = 'root:' + token + ':books';
                 var next_path = null;
                 if (books.length >= QUERY_LIMIT) {
                     next_path = "/books" + + CatalogService.page_suffix(page + 1);
@@ -259,7 +259,7 @@ module.exports = {
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
 
 
@@ -273,7 +273,7 @@ module.exports = {
     //# /catalog/{{token}}/recent/ -- recently added books
     recent: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var path = "/recent/"
+        var path = "/recent/";
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -282,7 +282,7 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid);
-                book_query.orderBy("created_at", 'desc')
+                book_query.orderBy("created_at", 'desc');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -293,10 +293,10 @@ module.exports = {
                 //user was found.
                 var id = 'root:' + token + ':recent';
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path);
-                opds_catalog.title = 'QuietThyme - Recent'
+                opds_catalog.title = 'QuietThyme - Recent';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
             })
             .then(Helpers.successHandler(cb))
@@ -307,9 +307,9 @@ module.exports = {
     //# /catalog/{{token}}/in_series/{{seriesId}}/{{page}} -- list of all books for a series_id
     seriesid: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var encoded_series_id = event.path.seriesId
+        var encoded_series_id = event.path.seriesId;
         var page = (event.query.page | 0);
-        var path = "/in_series/" + encoded_series_id + CatalogService.page_suffix(page)
+        var path = "/in_series/" + encoded_series_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -318,8 +318,8 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)})
-                book_query.orderBy("title")
+                book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)});
+                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -338,7 +338,7 @@ module.exports = {
                 opds_catalog.title = 'QuietThyme - In Series';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
 
 
@@ -351,9 +351,9 @@ module.exports = {
     //# /catalog/{{token}}/by_author/{{authorId}}/{{page}} -- list of all books for a author_id
     authorid: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var encoded_author_id = event.path.authorId
+        var encoded_author_id = event.path.authorId;
         var page = (event.query.page | 0);
-        var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page)
+        var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -362,8 +362,8 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id))
-                book_query.orderBy("title")
+                book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id));
+                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -382,7 +382,7 @@ module.exports = {
                 opds_catalog.title = 'QuietThyme - By Author';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
 
 
@@ -395,9 +395,9 @@ module.exports = {
     //# /catalog/{{token}}/tagged_with/{{tagName}}/page? -- list of all books tagged with a tag.,
     tagname: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var encoded_tag_name = event.path.tagName
+        var encoded_tag_name = event.path.tagName;
         var page = (event.query.page | 0);
-        var path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page)
+        var path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -406,8 +406,8 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name))
-                book_query.orderBy("title")
+                book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name));
+                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -426,7 +426,7 @@ module.exports = {
                 opds_catalog.title = 'QuietThyme - Tagged With';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
             })
             .then(Helpers.successHandler(cb))
@@ -458,9 +458,9 @@ module.exports = {
     //# /catalog/{{token}}/search?page={{page}}&query={{seach_term}} -- list of all books tagged with a tag.,
     search: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var query = event.query.query
+        var query = event.query.query;
         var page = (event.query.page | 0);
-        var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page
+        var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page;
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -469,8 +469,8 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
-                book_query.where('title', 'like', query)
-                book_query.orderBy("title")
+                book_query.where('title', 'like', query);
+                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -489,7 +489,7 @@ module.exports = {
                 opds_catalog.title = 'QuietThyme - Search Results';
                 opds_catalog.entries = books.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
-                })
+                });
                 return CatalogService.toXML(opds_catalog);
             })
             .then(Helpers.successHandler(cb))
@@ -501,7 +501,7 @@ module.exports = {
     book: function (event, context, cb) {
         var bookId = event.path.bookId;
         var token = event.path.catalogToken;
-        var path = "/book/" + bookId
+        var path = "/book/" + bookId;
 
         return CatalogService.findUserByToken(token)
             .spread(function(user, db_client){
@@ -558,7 +558,7 @@ module.exports = {
                                 "Location": link
                             }
                         };
-                        console.info("Redirecting user to:", payload)
+                        console.info("Redirecting user to:", payload);
                         return payload
                     })
             })
@@ -566,4 +566,4 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     }
-}
+};

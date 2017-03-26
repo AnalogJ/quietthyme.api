@@ -1,8 +1,8 @@
 'use strict';
-const debug = require('debug')('quietthyme:link')
+const debug = require('debug')('quietthyme:link');
 
 var cloudrail = require("cloudrail-si");
-var blocked = require('blocked')
+var blocked = require('blocked');
 cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
 // var q = require('q');
 // var uuid = require('node-uuid');
@@ -65,7 +65,7 @@ module.exports = {
     }
 
 
-}
+};
 //
 //
 // module.exports = {

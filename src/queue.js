@@ -1,15 +1,15 @@
 'use strict';
-const debug = require('debug')('quietthyme:queue')
+const debug = require('debug')('quietthyme:queue');
 
 var StorageService = require('./services/StorageService');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
 var PipelineMetadataService = require('./services/PipelineMetadataService');
 var PipelineImageService = require('./services/PipelineImageService');
-var PipelineService = require('./services/PipelineService')
-var Helpers = require('./common/helpers')
+var PipelineService = require('./services/PipelineService');
+var Helpers = require('./common/helpers');
 var q = require('q');
-var path = require('path')
+var path = require('path');
 var exec = require('child_process').exec;
 var fs = require("fs");
 
@@ -40,7 +40,7 @@ module.exports = {
 
 
         if(is_new_book){
-            return cb(new Error("Not Implemented. New books cannot be processed yet."), null)
+            return cb(new Error("Not Implemented. New books cannot be processed yet."), null);
             // newly uploaded books should only be
         }
 
@@ -93,7 +93,7 @@ module.exports = {
                                 'storage_type': credential.service_type,
                                 'storage_identifier': kloudless_upload_resp['id']
                             })
-                    })
+                    });
                 //TODO mark the file as can be deleted.
             })
             .then(Helpers.successHandler(cb))
@@ -125,7 +125,7 @@ module.exports = {
                         var opf_path = tmp_folder + '/'+ book_filename + '.opf';
                         var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
 
-                        debug("Begin processing book: %s", book_path)
+                        debug("Begin processing book: %s", book_path);
 
                         var deferred = q.defer();
                         //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
@@ -169,24 +169,24 @@ module.exports = {
                                 //at this point the book data is stored in the Database, and the cover art has been uploaded to S3 already.
                                 // we just need to move the book to permanent storage.
 
-                                debug("Inserted Book: %o", inserted_books)
+                                debug("Inserted Book: %o", inserted_books);
                                 return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
                             })
 
 
                     })
                     .spread(function(book_data_promise, book_storage_promise){
-                        var book_data = book_data_promise.value
-                        var book_storage_identifier = book_storage_promise.value
+                        var book_data = book_data_promise.value;
+                        var book_storage_identifier = book_storage_promise.value;
 
 
-                        console.info("Book storage identifier:", book_storage_identifier)
+                        console.info("Book storage identifier:", book_storage_identifier);
 
                         //update book with new storage information and cover info.
                         var update_data = {
                             storage_identifier: book_storage_identifier.id,
                             storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
-                        }
+                        };
 
                         return db_client('books')
                             .where('id', '=', book_data.id)
@@ -200,5 +200,5 @@ module.exports = {
             .fail(Helpers.errorHandler(cb))
             .done()
     }
-}
+};
 

@@ -30,7 +30,7 @@ var ISBN = {
     transform: function(isbn) {
         return 'urn:ISBN:' + isbn;
     }
-}
+};
 
 var AUTHOR = {
     tag: 'author',

@@ -1,13 +1,13 @@
 'use strict';
-const debug = require('debug')('quietthyme:hook')
+const debug = require('debug')('quietthyme:hook');
 
 var crypto = require('crypto');
-var q = require('q')
+var q = require('q');
 var DBService = require('./services/DBService');
 var KloudlessService = require('./services/KloudlessService');
 var Helpers = require('./common/helpers');
-var Constants = require('./common/constants')
-var path = require('path')
+var Constants = require('./common/constants');
+var path = require('path');
 
 var aws = require('aws-sdk');
 var lambda = new aws.Lambda();
@@ -16,10 +16,10 @@ module.exports.kloudless = function(event, context, cb){
 
 
     //check if this is a valid callback.
-    debug("Kloudless hook data: %o", event)
-    var kloudless_signature_header = event.headers['X-Kloudless-Signature']
+    debug("Kloudless hook data: %o", event);
+    var kloudless_signature_header = event.headers['X-Kloudless-Signature'];
     if(!kloudless_signature_header){
-        console.error('invalid - missing x-kloudless-signature header')
+        console.error('invalid - missing x-kloudless-signature header');
         return cb({statusCode: 400, body:'Invalid webhook request'}, null)
     }
 
@@ -56,47 +56,47 @@ module.exports.kloudless = function(event, context, cb){
                         .where({id:credential.id})
                         .update({event_cursor: kloudless_events.cursor})
                         .then(function(){
-                            debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor)
+                            debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor);
                             return kloudless_events;
                         }), credential]
                 })
         })
         .spread(function(events, credential){
-            var blackhole_folder = credential.blackhole_folder
+            var blackhole_folder = credential.blackhole_folder;
             //begin filtering the events, and start invoking new lambda's
 
             var filtered_events = events.objects.filter(function(kl_event){
                 //we only care about add, move, copy actions (all others are ignorable)
                 if (!(kl_event.type == 'add' || kl_event.type == 'move' || kl_event.type == 'copy')){
-                    debug("SKIPPING (invalid type): %s %s", kl_event.account, kl_event.metadata.path)
+                    debug("SKIPPING (invalid type): %s %s", kl_event.account, kl_event.metadata.path);
                     return false;
                 }
 
                 //we only care about files in the blackhole_folder that we can download
                 if (!(kl_event.metadata.type == 'file' && kl_event.metadata.downloadable &&
                     (kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.path_id))){
-                    debug("SKIPPING (invalid file/parent): %s %s", kl_event.account, kl_event.metadata.path)
+                    debug("SKIPPING (invalid file/parent): %s %s", kl_event.account, kl_event.metadata.path);
                     return false;
                 }
 
                 //we only care about certain file extensions (ones we can process)
-                var ext = path.extname(kl_event.metadata.name).split('.').join('') //safe way to remove '.' prefix, even on empty string.
+                var ext = path.extname(kl_event.metadata.name).split('.').join(''); //safe way to remove '.' prefix, even on empty string.
 
                 if(!Constants.file_extensions[ext]){
                     //lets log the files that we don't process in the blackhole folder
-                    console.error("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path)
+                    console.error("SKIPPING (invalid ext):", kl_event.account, kl_event.metadata.path);
                     return false
                 }
 
                 //we're left with only the books that were added, moved, copied into the blackhole folder.
                 return true
-            })
+            });
 
             // we should trigger new lambda invocations for each event we find.
             // http://stackoverflow.com/a/31745774
             var promises = filtered_events.map(function(kl_event){
                 var deferred = q.defer();
-                console.info("Added file to Queue:", kl_event.account, kl_event.metadata.path)
+                console.info("Added file to Queue:", kl_event.account, kl_event.metadata.path);
                 lambda.invoke({
                     FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
                     Payload: JSON.stringify({
@@ -108,14 +108,14 @@ module.exports.kloudless = function(event, context, cb){
                 }, function(err, data) {
                     if (err) return deferred.reject(err);
                     return deferred.resolve(data.Payload);
-                })
+                });
                 return deferred.promise
-            })
+            });
 
             return q.allSettled(promises)
         })
         .then(function(promises){
-            console.dir(promises)
+            console.dir(promises);
             //response should always be kloudless API id.
             return {
                 statusCode: 200,
