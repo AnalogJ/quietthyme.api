@@ -127,7 +127,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             //embedded book info doesnt have isbn or goodreads id
             //embedded book info doesnt have a summary tags or cover art.
             //lookup the book by name.
-            metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(book.title, book.authors[0]))
+            metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(primary_dataset.title, primary_dataset.authors[0]))
         }
     }
 
