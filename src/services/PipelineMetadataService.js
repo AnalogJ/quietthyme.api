@@ -148,10 +148,12 @@ PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
 }
 
 
-PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(title_author) {
+PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(title, author) {
 
-    var clean_title_author = title_author.replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, "").replace(/-/g, '');
-
+    title = title.replace(/-/g, '')
+    author = author.replace(/-/g, '')
+    var clean_title_author = (title + ' - ' + author).replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, "");
+    console.log("SEARCHING BOOK BY TITLE & AUTHOR:" + clean_title_author)
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
         'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
