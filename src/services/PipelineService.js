@@ -118,6 +118,17 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             create_criteria.isbn10 = primary_dataset.isbn10
             create_criteria.sources['isbn10'] = primary_dataset['_type']
         }
+
+        //
+        if(
+            (!(primary_dataset.isbn ||primary_dataset.isbn10 || primary_dataset.goodreads_id))
+            && (!(primary_dataset.short_summary && primary_dataset.tags && primary_dataset.tags.length && primary_dataset.cover))
+            && (primary_dataset.title && primary_dataset.authors && primary_dataset.authors.length )){
+            //embedded book info doesnt have isbn or goodreads id
+            //embedded book info doesnt have a summary tags or cover art.
+            //lookup the book by name.
+            metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(book.title, book.authors[0]))
+        }
     }
 
     //#############################################################################
@@ -141,11 +152,6 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             }
             else if(book.isbn || book.isbn10){
                 metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_isbn(book.isbn || book.isbn10))
-            }
-            else if((!(book.short_summary && book.tags && book.tags.length && book.cover)) && (book.title && book.authors && book.authors.length )){
-                //this book doesnt have a summary tags or cover art.
-                //lookup the book by name.
-                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(book.title, book.authors[0]))
             }
 
             //each promise can return a single data_set object (with a matching type) or an arrary of promises
