@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:DBService')
+const debug = require('debug')('quietthyme:DBService');
 var q = require('q');
 // from http://www.dancorman.com/knex-your-sql-best-friend/
 // http://blog.rowanudell.com/database-connections-in-lambda/

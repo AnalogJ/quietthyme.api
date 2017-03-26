@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:PipelineImageService')
+const debug = require('debug')('quietthyme:PipelineImageService');
 /*#######################################################################
  *#######################################################################
  * The Image pipeline service is used to retieve book cover art from various sources asynchronously.
@@ -21,10 +21,10 @@ const debug = require('debug')('quietthyme:PipelineImageService')
  *#######################################################################
  * */
 var q = require('q');
-var Constants = require('../common/constants')
-var _ = require('lodash')
+var Constants = require('../common/constants');
+var _ = require('lodash');
 var PipelineImageService = module.exports;
-var fs = require('fs')
+var fs = require('fs');
 //When given an array of image data_sets, sort the potential data_sets and then will convert each to a fallback-enabled
 // wrapped promise and use q-combinators method to get the first successfully retrieved image.
 PipelineImageService.process_image_pipeline = function(current_sources, image_pipeline){
@@ -38,12 +38,12 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
     //check if the current image has a lower priority than the lowest in the pipeline (if so we shouldnt download anything)
     //check if the pipeline is empty.
     if(!image_pipeline || image_pipeline.length == 0){
-        console.info('EXITING IMAGE PROCESS PIPELINE, empty')
+        console.info('EXITING IMAGE PROCESS PIPELINE, empty');
         return [];
     }
     else if (current_sources['image'] &&
         Constants.image_data_set_types[current_sources['image']].priority < Constants.image_data_set_types[image_pipeline[0]._type].priority){
-        console.info('EXITING IMAGE PROCESS PIPELINE, current image is lower priority',current_sources.image)
+        console.info('EXITING IMAGE PROCESS PIPELINE, current image is lower priority',current_sources.image);
 
         return [];
     }
@@ -74,7 +74,7 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
     });
     return image_pipeline;
 
-}
+};
 
 
 PipelineImageService.generate_download_cover_promise = function (url, type){
@@ -97,7 +97,7 @@ PipelineImageService.generate_download_cover_promise = function (url, type){
         }
     });
     return deferred.promise;
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // File Data
@@ -106,13 +106,13 @@ PipelineImageService.generate_download_cover_promise = function (url, type){
 PipelineImageService.generate_file_data_set = function(type, filepath){
 
     function filepathPromise(local_filepath){
-        console.info("Loading image from filepath:", local_filepath)
+        console.info("Loading image from filepath:", local_filepath);
         if (!local_filepath) {
-            console.error("ERROR, no filepath specified for image. ")
+            console.error("ERROR, no filepath specified for image. ");
             return q.reject(new Error("No filepath specified"));
         }
         if (!fs.existsSync(local_filepath)) {
-            console.error("ERROR, file not found fo rimage.  ")
+            console.error("ERROR, file not found fo rimage.  ");
             return q.reject(new Error("File not found"));
 
         }
@@ -123,7 +123,7 @@ PipelineImageService.generate_file_data_set = function(type, filepath){
         _type: type || 'file',
         promise:filepathPromise(filepath)
     }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OpenLibrary Data
@@ -136,7 +136,7 @@ PipelineImageService.generate_openlibrary_data_set = function(isbn){
         _type:'openlibrary',
         url : 'http://covers.openlibrary.org/b/isbn/' + isbn + '-L.jpg?default=false'
     }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Amazon Data
@@ -149,7 +149,7 @@ PipelineImageService.generate_amazon_data_set = function(isbn){
         _type:'amazon',
         url : 'http://images.amazon.com/images/P/' + isbn + '.01.LZZZZZZZ.jpg'
     }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Goodreads Data
@@ -162,7 +162,7 @@ PipelineImageService.generate_goodreads_data_set = function(url){
         _type:'goodreads',
         url : url
     }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Manual Data
@@ -175,7 +175,7 @@ PipelineImageService.generate_manual_data_set = function(identifier){
         _type:'manual',
         identifier : identifier
     }
-}
+};
 
 
 

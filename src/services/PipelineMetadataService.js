@@ -1,7 +1,7 @@
 'use strict';
-const debug = require('debug')('quietthyme:PipelineMetadataService')
-var ParseExternalService = require('./ParseExternalService')
-var Constants = require('../common/constants')
+const debug = require('debug')('quietthyme:PipelineMetadataService');
+var ParseExternalService = require('./ParseExternalService');
+var Constants = require('../common/constants');
 /*#######################################################################
  *#######################################################################
  * The Metadata pipeline service is used to retieve book data from various sources asynchronously. Once the data has been
@@ -22,7 +22,7 @@ var Constants = require('../common/constants')
  *#######################################################################
  * */
 
-var q = require('q')
+var q = require('q');
 
 var PipelineMetadataService = module.exports;
 PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_sets_promises){
@@ -35,7 +35,7 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
         } else {
             console.error("Skipping data_set which finished processing with an error: "+ result.reason);
         }
-    })
+    });
 
     var parsed_book = {};
     var image_pipeline = [];
@@ -48,7 +48,7 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
         delete data_set._type;
 
         for(var prop in data_set){
-            var current_prop_type = Constants.metadata_data_set_types[current_sources[prop] || ""]
+            var current_prop_type = Constants.metadata_data_set_types[current_sources[prop] || ""];
             //exceptions for special properties (images)
             if(prop == "image"){
                 //add to the image pipeline.
@@ -70,7 +70,7 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
         }
 
 
-    })
+    });
     //cleanup flattened dataset
     //make sure that the entries in the filename_ids are distinct.
     if(parsed_book.filename_ids){
@@ -78,7 +78,7 @@ PipelineMetadataService.flatten_data_sets = function(current_sources, raw_data_s
     }
 
     return [current_sources, parsed_book, image_pipeline];
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Embedded Data
@@ -93,11 +93,11 @@ PipelineMetadataService.generate_file_data_set = function(cleaned_filename){
     parsed_data['_type'] = 'file';
     parsed_data['filename_ids'] = [cleaned_filename];
     return parsed_data;
-}
+};
 
 PipelineMetadataService.generate_existing_filename_ids = function(filename_ids){
     return {filename_ids: filename_ids, _type: 'file'};
-}
+};
 
 PipelineMetadataService.generate_embedded_opf_data_set = function(opf_metadata_path){
     return ParseExternalService.read_opf_file(opf_metadata_path)
@@ -106,7 +106,7 @@ PipelineMetadataService.generate_embedded_opf_data_set = function(opf_metadata_p
             return parsed_book;
         })
 
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Goodreads Data
@@ -125,10 +125,10 @@ PipelineMetadataService.generate_goodreads_data_set = function(goodreads_book_id
         })
         .then(function (goodreads_book) {
             var parsed_book = ParseExternalService.parse_goodreads_book_details(goodreads_book);
-            parsed_book['_type'] = "goodreads"
+            parsed_book['_type'] = "goodreads";
             return q(parsed_book);
         })
-}
+};
 
 
 PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
@@ -143,18 +143,18 @@ PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
             return client.BookIsbnToId(isbn)
         })
         .then(function(goodreads_id){
-            debug("Found Goodreads book id: %s", goodreads_id)
+            debug("Found Goodreads book id: %s", goodreads_id);
             return PipelineMetadataService.generate_goodreads_data_set(goodreads_id)
         })
-}
+};
 
 
 PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(title, author) {
 
-    title = title.replace(/-/g, '')
-    author = author.replace(/-/g, '')
+    title = title.replace(/-/g, '');
+    author = author.replace(/-/g, '');
     var clean_title_author = (title + ' - ' + author).replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, "");
-    debug("Searching for Goodreads book id by title and author: %s", clean_title_author)
+    debug("Searching for Goodreads book id by title and author: %s", clean_title_author);
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
         'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
@@ -169,10 +169,10 @@ PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(t
             return data.GoodreadsResponse.search[0].results[0].work[0].best_book[0].id[0]['_']
         })
         .then(function(goodreads_id){
-            debug("Found Goodreads book id: %s", goodreads_id)
+            debug("Found Goodreads book id: %s", goodreads_id);
             return PipelineMetadataService.generate_goodreads_data_set(goodreads_id)
         })
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OPF Data
@@ -188,7 +188,7 @@ PipelineMetadataService.generate_opf_data_set = function(opf_metadata, metadata_
         };
     }
     return parsed_book;
-}
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,4 +199,4 @@ PipelineMetadataService.generate_api_data_set = function(api_metadata,type){
     var parsed_book = ParseExternalService.parse_api_metadata(api_metadata);
     parsed_book['_type'] = type || 'api';
     return parsed_book;
-}
+};

@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:CatalogService')
+const debug = require('debug')('quietthyme:CatalogService');
 
 var XMLSchema = require("xml-schema");
 var schemas = require('../common/schemas');
@@ -10,7 +10,7 @@ var Constants = require('../common/constants');
 function web_endpoint(){
     return 'https://' + (process.env.STAGE == 'master' ? 'www' : 'beta') + '.quietthyme.com'
 }
-module.exports.web_endpoint = web_endpoint
+module.exports.web_endpoint = web_endpoint;
 
 function api_endpoint(){
     return 'https://api.quietthyme.com/'+process.env.STAGE + '/catalog'
@@ -30,13 +30,13 @@ function self_link(token, path, type){
 
 module.exports.page_suffix = function(page){
     return (page || page === 0) ? ('?page='+ page) : ''
-}
+};
 
 //BASE
 function token_endpoint(token){
     return api_endpoint() + '/' + token
 }
-module.exports.token_endpoint = token_endpoint
+module.exports.token_endpoint = token_endpoint;
 
 
 //token is the catalog token
@@ -75,7 +75,7 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
             //All catalogs should specify their current page.
             self_link(token, current_path, feed_type)
         ]
-    }
+    };
 
     if(next_path){
         common.link.push({
@@ -93,16 +93,16 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
     return common
 }
 
-module.exports.common_feed = common_feed
+module.exports.common_feed = common_feed;
 
 
 module.exports.acquisition_feed = function acquisition_feed(token, id, current_path, next_path, page, limit ){
     return common_feed(';kind=acquisition', token, id, current_path, next_path, page, limit)
-}
+};
 
 module.exports.navigation_feed = function acquisition_feed(token, id, current_path, next_path, page, limit ){
     return common_feed('kind=navigation', token, id, current_path, next_path, page, limit)
-}
+};
 
 module.exports.search_description_feed = function search_description_feed(token){
 
@@ -112,7 +112,7 @@ module.exports.search_description_feed = function search_description_feed(token)
             template: token_endpoint(token) + '/search?query={searchTerms}&amp;page={startPage?}'
         }
     }
-}
+};
 
 
 // Create an opds feed
@@ -126,7 +126,7 @@ module.exports.toXML = function(feed, type) {
         standalone: true,
         pretty: true
     });
-}
+};
 
 
 module.exports.findUserByToken = function(token){
@@ -139,7 +139,7 @@ module.exports.findUserByToken = function(token){
                 db_client
             ]
         })
-}
+};
 
 //page and limit are optional
 module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, page){
@@ -153,7 +153,7 @@ module.exports.generatePaginatedBookQuery = function(db_client, user_id, limit, 
     }
 
     return book_query;
-}
+};
 
 
 module.exports.generatePaginatedSeriesQuery = function(db_client, user_id, limit, page){
@@ -161,7 +161,7 @@ module.exports.generatePaginatedSeriesQuery = function(db_client, user_id, limit
     var series_query =  db_client('books')
         .distinct('series_name')
         .whereNotNull('series_name')
-        .where({user_id: 1})
+        .where({user_id: 1});
 
     if(page || page === 0){
         series_query.limit(limit);
@@ -169,7 +169,7 @@ module.exports.generatePaginatedSeriesQuery = function(db_client, user_id, limit
     }
 
     return series_query;
-}
+};
 
 module.exports.seriesToPartialEntry = function (id, token, series_name){
     return {
@@ -185,11 +185,11 @@ module.exports.seriesToPartialEntry = function (id, token, series_name){
             }
         ]
     }
-}
+};
 
 function bookToBaseEntry(id, token, book){
 
-    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format )
+    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format );
 
     var entry = {
         id: id +':' + book.id,
@@ -229,7 +229,7 @@ function bookToBaseEntry(id, token, book){
                 rel: 'http://opds-spec.org/acquisition'
             }
         ]
-    }
+    };
 
     if(book.goodreads_id){
         entry.links.push({
@@ -246,19 +246,19 @@ function bookToBaseEntry(id, token, book){
 
 
 module.exports.bookToPartialEntry = function(id, token, book){
-    var entry = bookToBaseEntry(id, token, book)
+    var entry = bookToBaseEntry(id, token, book);
     entry.links.push({
         type: 'application/atom+xml;type=entry;profile=opds-catalog',
         href: token_endpoint(token) + '/book/'+book.id,
         title: 'Full entry',
         rel: 'alternate'
-    })
+    });
     return entry
-}
+};
 
 
 module.exports.bookToFullEntry = function(id, token, book, path){
-    var opds_entry = bookToBaseEntry(id, token, book, path)
+    var opds_entry = bookToBaseEntry(id, token, book, path);
     opds_entry.publisher = book.publisher;
     opds_entry.content = book.short_summary;
 
@@ -277,11 +277,11 @@ module.exports.bookToFullEntry = function(id, token, book, path){
             title: 'More books by ' + author,
             rel: 'related'
         })
-    })
+    });
     opds_entry.links.push({
         type: 'application/atom+xml;type=entry;profile=opds-catalog',
         href: token_endpoint(token) + path,
         rel: 'self'
-    })
+    });
     return opds_entry
-}
+};

@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:SecurityService')
+const debug = require('debug')('quietthyme:SecurityService');
 var xkcdPassword = require('xkcd-password');
 var q = require('q');
 var bcrypt = require('bcrypt');
@@ -43,7 +43,7 @@ module.exports.generate_catalog_token = function(){
         if (err) {
             return deferred.reject(err);
         }
-        return deferred.resolve(result.join('-'))
+        return deferred.resolve(result.join('-'));
     });
     return deferred.promise;
-}
+};

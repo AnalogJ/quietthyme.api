@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:ParseExternalService')
+const debug = require('debug')('quietthyme:ParseExternalService');
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Utilities
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,8 +7,8 @@ const debug = require('debug')('quietthyme:ParseExternalService')
 //by default.
 var extend = require('node.extend');
 var q = require('q');
-var opf = require('opf.js')
-var fs = require('fs')
+var opf = require('opf.js');
+var fs = require('fs');
 
 var ParseExternalService = module.exports;
 
@@ -28,7 +28,7 @@ ParseExternalService.merge_parsed_data = function(book_default, additional_data)
         delete additional_data.tags;
     }
     return extend({},book_default, additional_data)
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OPF Data
@@ -39,19 +39,19 @@ ParseExternalService.read_opf_file = function(filepath){
     var deferred = q.defer();
 
     fs.readFile(filepath, 'utf8', function (err, opf_content) {
-        if (err) deferred.reject(new Error('Could not find file'))
+        if (err) deferred.reject(new Error('Could not find file'));
         deferred.resolve(opf_content)
-    })
+    });
     return deferred.promise
         .then(function(opf_content){
             return opf.load(opf_content)
         })
         .then(ParseExternalService.parse_opf_data)
 
-}
+};
 
 ParseExternalService.parse_opf_data = function(opf_metadata){
-    debug("Parse OPF data: %o", opf_metadata)
+    debug("Parse OPF data: %o", opf_metadata);
 
     var goodreads_identifier = opf_metadata.identifiers["GOODREADS"];
     var amazon_identifier = opf_metadata.identifiers["AMAZON"];
@@ -61,7 +61,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
     var isbn_identifier = opf_metadata.identifiers["ISBN"];
 
     var meta_average_rating = opf_metadata.metadata['calibre:rating'];
-    var meta_series_name = opf_metadata.metadata['calibre:series']
+    var meta_series_name = opf_metadata.metadata['calibre:series'];
     var meta_series_number = opf_metadata.metadata['calibre:series_index'];
     var subject_tags = opf_metadata.subjects;
 
@@ -118,7 +118,7 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
 
         if(!name){
             return
-        };
+        }
         authors.push(name)
     });
     if(authors.length>0){
@@ -131,12 +131,12 @@ ParseExternalService.parse_opf_data = function(opf_metadata){
 
     return parsed_book;
 
-}
+};
 
 ParseExternalService.generate_opf_from_book = function(details){
     var opf_doc = {identifiers:{}, tags : [], metadata: {}};
 
-    if (details.goodreads_id) opf_doc.identifiers["GOODREADS"] = {value: details.goodreads_id, scheme: "GOODREADS", id:null}
+    if (details.goodreads_id) opf_doc.identifiers["GOODREADS"] = {value: details.goodreads_id, scheme: "GOODREADS", id:null};
     if (details.amazon_id) opf_doc.identifiers["AMAZON"] = {value: details.amazon_id, scheme: "AMAZON", id:null};
     if (details.google_id) opf_doc.identifiers["GOOGLE"] = {value: details.google_id, scheme: "GOOGLE", id:null};
     if (details.ffiction_id) opf_doc.identifiers["FF"] = {value: details.ffiction_id, scheme: "FF", id:null};
@@ -166,7 +166,7 @@ ParseExternalService.generate_opf_from_book = function(details){
 
     return opf_doc;
 
-}
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ ParseExternalService.parse_goodreads_search_author = function (goodreads_respons
         });
     }
     return parsed_results;
-}
+};
 
 
 
@@ -228,7 +228,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.book && response.GoodreadsResponse.book[0])){
         throw new Error("Invalid Goodreads Response")
     }
-    var goodreads_book = response.GoodreadsResponse.book[0]
+    var goodreads_book = response.GoodreadsResponse.book[0];
 
     var parsed_book = {};
     parsed_book.title = goodreads_book.title[0];
@@ -274,7 +274,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
                 return prev;
             }
 
-            prev.push(tag)
+            prev.push(tag);
             return prev;
         }, []);
 
@@ -322,22 +322,22 @@ ParseExternalService.parse_goodreads_shelves = function(response){
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.shelves && response.GoodreadsResponse.shelves[0])){
         throw new Error("Invalid Goodreads Response")
     }
-    var goodreads_shelves = response.GoodreadsResponse.shelves[0]
+    var goodreads_shelves = response.GoodreadsResponse.shelves[0];
 
     var parsed_shelves = goodreads_shelves.user_shelf.map(function(goodreads_shelf){
         var parsed_shelf = {};
-        parsed_shelf['name'] =  goodreads_shelf['name'][0]
+        parsed_shelf['name'] =  goodreads_shelf['name'][0];
 
         return parsed_shelf
-    })
+    });
     return parsed_shelves
-}
+};
 
 ParseExternalService.parse_goodreads_shelf_content = function(response){
     if(!(response.GoodreadsResponse && response.GoodreadsResponse.reviews && response.GoodreadsResponse.reviews[0])){
         throw new Error("Invalid Goodreads Response")
     }
-    var goodreads_shelf_content = response.GoodreadsResponse.reviews[0]
+    var goodreads_shelf_content = response.GoodreadsResponse.reviews[0];
     if(!goodreads_shelf_content.review){
         return [];
     }
@@ -355,9 +355,9 @@ ParseExternalService.parse_goodreads_shelf_content = function(response){
 
 
         return parsed_shelf_book
-    })
+    });
     return parsed_shelf_content
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Filename Data
@@ -373,10 +373,10 @@ ParseExternalService.clean_filename = function(filename){
         throw new Exception("Invalid filename, null or empty");
     }
 
-    filename = filename.replace(/\[(.+?)\]/g, '')   //remove square brackets
-    filename = filename.replace(/\((.+?)\)/g, '')   //remove braces
-    filename = filename.replace(/\./g, " ")         //replace periods
-    filename = filename.replace(/\_/g, " ")         //replace underscores
+    filename = filename.replace(/\[(.+?)\]/g, '');   //remove square brackets
+    filename = filename.replace(/\((.+?)\)/g, '');   //remove braces
+    filename = filename.replace(/\./g, " ");         //replace periods
+    filename = filename.replace(/\_/g, " ");         //replace underscores
 
     return filename.trim();
 };
@@ -392,7 +392,7 @@ ParseExternalService.parse_filename = function(cleaned_filename){
         }
     }
 
-    var preposition_list = ["as","at","in","of","on","the","to","too","with","for"]
+    var preposition_list = ["as","at","in","of","on","the","to","too","with","for"];
     var first_part = parts[0].toLowerCase().split(' ');
     var second_part = parts[1].toLowerCase().split(' ');
 
@@ -419,7 +419,7 @@ ParseExternalService.parse_filename = function(cleaned_filename){
     return {
         title: cleaned_filename
     }
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // API Data

@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:PipelineService')
+const debug = require('debug')('quietthyme:PipelineService');
 var q = require('q');
 var util = require('util');
 var extend = require('node.extend');
@@ -9,7 +9,7 @@ var PipelineMetadataService = require('./PipelineMetadataService');
 var PipelineImageService = require('./PipelineImageService');
 var StorageService = require('./StorageService');
 var DBService = require('./DBService');
-var crypto = require('crypto')
+var crypto = require('crypto');
 var toMarkdown = require('to-markdown');
 
 q.longStackSupport = true;
@@ -52,9 +52,9 @@ var PipelineService = module.exports;
 
 PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipeline, image_pipeline, opts){
 
-    debug("Metadata pipeline initial content: %o", metadata_pipeline)
+    debug("Metadata pipeline initial content: %o", metadata_pipeline);
     if(!primary_criteria || (!primary_criteria.user_id)){
-        console.error("the primary criteria is required.")
+        console.error("the primary criteria is required.");
         return q.reject(new Error("the primary criteria is required."))
     }
 
@@ -91,33 +91,33 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
     if(primary_dataset){
         //populate query with or conditions.
         if(primary_dataset.goodreads_id){
-            create_criteria.goodreads_id = primary_dataset.goodreads_id
-            create_criteria.sources['goodreads_id'] = primary_dataset['_type']
+            create_criteria.goodreads_id = primary_dataset.goodreads_id;
+            create_criteria.sources['goodreads_id'] = primary_dataset['_type'];
         }
         if(primary_dataset.amazon_id){
-            create_criteria.amazon_id = primary_dataset.amazon_id
-            create_criteria.sources['amazon_id'] = primary_dataset['_type']
+            create_criteria.amazon_id = primary_dataset.amazon_id;
+            create_criteria.sources['amazon_id'] = primary_dataset['_type'];
         }
         if(primary_dataset.barnesnoble_id){
-            create_criteria.barnesnoble_id = primary_dataset.barnesnoble_id
-            create_criteria.sources['barnesnoble_id'] = primary_dataset['_type']
+            create_criteria.barnesnoble_id = primary_dataset.barnesnoble_id;
+            create_criteria.sources['barnesnoble_id'] = primary_dataset['_type'];
         }
         if(primary_dataset.ffiction_id){
-            create_criteria.ffiction_id = primary_dataset.ffiction_id
-            create_criteria.sources['ffiction_id'] = primary_dataset['_type']
+            create_criteria.ffiction_id = primary_dataset.ffiction_id;
+            create_criteria.sources['ffiction_id'] = primary_dataset['_type'];
         }
         if(primary_dataset.calibre_id){
-            create_criteria.calibre_id = primary_dataset.calibre_id
-            create_criteria.sources['calibre_id'] = primary_dataset['_type']
+            create_criteria.calibre_id = primary_dataset.calibre_id;
+            create_criteria.sources['calibre_id'] = primary_dataset['_type'];
         }
         if(primary_dataset.isbn){
-            create_criteria.isbn = primary_dataset.isbn
-            create_criteria.sources['isbn'] = primary_dataset['_type']
+            create_criteria.isbn = primary_dataset.isbn;
+            create_criteria.sources['isbn'] = primary_dataset['_type'];
 
         }
         if(primary_dataset.isbn10){
-            create_criteria.isbn10 = primary_dataset.isbn10
-            create_criteria.sources['isbn10'] = primary_dataset['_type']
+            create_criteria.isbn10 = primary_dataset.isbn10;
+            create_criteria.sources['isbn10'] = primary_dataset['_type'];
         }
 
         //
@@ -128,14 +128,14 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             //embedded book info doesnt have isbn or goodreads id
             //embedded book info doesnt have a summary tags or cover art.
             //lookup the book by name.
-            metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(primary_dataset.title, primary_dataset.authors[0]))
+            metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(primary_dataset.title, primary_dataset.authors[0]));
         }
     }
 
     //#############################################################################
     //Initialize Book
     //#############################################################################
-    var bookPromise = q(create_criteria)
+    var bookPromise = q(create_criteria);
     //#############################################################################
     //Retrieve Book data from external/secondary sources
     //#############################################################################
@@ -149,10 +149,10 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
 
             //TODO: make this data_set have a fallback, incase the id version fails.
             if(book.goodreads_id){
-                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set(book.goodreads_id))
+                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set(book.goodreads_id));
             }
             else if(book.isbn || book.isbn10){
-                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_isbn(book.isbn || book.isbn10))
+                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_isbn(book.isbn || book.isbn10));
             }
 
             //each promise can return a single data_set object (with a matching type) or an arrary of promises
@@ -181,7 +181,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
 
             //generate additional image data_sets
             if(flattened_data.isbn || flattened_data.isbn10){
-                image_pipeline.push(PipelineImageService.generate_openlibrary_data_set(flattened_data.isbn || flattened_data.isbn10))
+                image_pipeline.push(PipelineImageService.generate_openlibrary_data_set(flattened_data.isbn || flattened_data.isbn10));
                 image_pipeline.push(PipelineImageService.generate_amazon_data_set(flattened_data.isbn || flattened_data.isbn10))
             }
 
@@ -258,7 +258,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
                         return resp.identifier;
                     }
 
-                })
+                });
 
             delete flattened_data.image;
 
@@ -274,7 +274,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
         })
         .spread(_populate_book_with_parsed_data);
 
-}
+};
 
 
 // Private functions
@@ -310,7 +310,7 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
         replacement: function (innerHTML) { return innerHTML }
     }]}) : null;
 
-    console.info("Merged final book data: ", final_book)
+    console.info("Merged final book data: ", final_book);
     // throw "RAISING ERROR FOR TESTING!!"
 
     return DBService.get()

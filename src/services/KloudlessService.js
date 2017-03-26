@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:KloudlessService')
+const debug = require('debug')('quietthyme:KloudlessService');
 var q = require('q');
 var kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
 var request = require('request');
@@ -20,17 +20,17 @@ kloudlessService.folderCreate = function(account_id, name, parent_id, service_ty
     }, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
-    })
+    });
 
     if(service_type == 'dropbox'){
         //the kloudless dropbox integration has 2 different identifiers, 1 for the DB static ID and one for the path ID.
         //we have to generate both.
         return deferred.promise
             .then(function(folder_metadata){
-                console.info("Converting Dropbox Id:", folder_metadata.path)
+                console.info("Converting Dropbox Id:", folder_metadata.path);
                 return kloudlessService.convertId(account_id, folder_metadata.path)
                     .then(function(convert_data){
-                        debug("Conversion response: %o", convert_data)
+                        debug("Conversion response: %o", convert_data);
                         folder_metadata.path_id = convert_data.id;
                         return folder_metadata;
                     })
@@ -39,7 +39,7 @@ kloudlessService.folderCreate = function(account_id, name, parent_id, service_ty
     else{
         return deferred.promise;
     }
-}
+};
 
 kloudlessService.fileUpload = function(bearer_token, account_id, filename, parent_id, storage_identifier){
     var deferred = q.defer();
@@ -81,17 +81,17 @@ kloudlessService.fileContents = function(account_id, file_identifier, out_filest
         .pipe(out_filestream)
         .on('finish', function() {
             return deferred.resolve({})
-        })
+        });
 
     return deferred.promise;
-}
+};
 
 kloudlessService.fileMove = function(account_id, identifier, dest_parent_id, dest_filename){
     var payload = {
         account_id: account_id,
         file_id: identifier,
         parent_id: dest_parent_id
-    }
+    };
     if(dest_filename){
         payload['name'] = dest_filename;
     }
@@ -99,7 +99,7 @@ kloudlessService.fileMove = function(account_id, identifier, dest_parent_id, des
     kloudless.files.move(payload, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
-    })
+    });
     return deferred.promise;
 };
 
@@ -130,7 +130,7 @@ kloudlessService.convertId = function(account_id, identifier, type){
 };
 
 kloudlessService.eventsGet = function(account_id, event_cursor){
-    debug("Get Kloudless events from account (%s) at cursor: %s", account_id, event_cursor)
+    debug("Get Kloudless events from account (%s) at cursor: %s", account_id, event_cursor);
     var deferred = q.defer();
     kloudless.events.get({
         account_id: account_id,
@@ -140,9 +140,9 @@ kloudlessService.eventsGet = function(account_id, event_cursor){
     }, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
-    })
+    });
     return deferred.promise;
-}
+};
 
 kloudlessService.linkCreate = function(account_id, file_id){
     var deferred = q.defer();
@@ -158,6 +158,6 @@ kloudlessService.linkCreate = function(account_id, file_id){
     }, function(err, res){
         if (err) return deferred.reject(err);
         return deferred.resolve(res)
-    })
+    });
     return deferred.promise;
-}
+};

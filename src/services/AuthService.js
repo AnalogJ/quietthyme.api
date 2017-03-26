@@ -6,7 +6,7 @@
  *
  */
 var q = require('q');
-const debug = require('debug')('quietthyme:AuthService')
+const debug = require('debug')('quietthyme:AuthService');
 var SecurityService = require('./SecurityService');
 
 var authService = exports;
@@ -23,7 +23,7 @@ authService.createEmailUser = function(db_client, name, email, password){
                     "catalog_token": catalog_token
                 })
         })
-}
+};
 
 authService.createCalibreUser = function(db_client, library_uuid){
     return SecurityService.generate_catalog_token()
@@ -34,7 +34,7 @@ authService.createCalibreUser = function(db_client, library_uuid){
                     "catalog_token": catalog_token
                 })
         })
-}
+};
 
 
 //

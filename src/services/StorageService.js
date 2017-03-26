@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('quietthyme:StorageService')
+const debug = require('debug')('quietthyme:StorageService');
 var q = require('q'),
     kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
     JWTokenService = require('./JWTokenService'),
@@ -10,7 +10,7 @@ var q = require('q'),
     fs = require('fs'),
     tmp = require('tmp'),
     AWS = require('aws-sdk'),
-    s3 = new AWS.S3({apiVersion: '2006-03-01'})
+    s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 
 //ALL MEthods in here should support Kloudless storage and s3 storage transparently.
@@ -23,23 +23,23 @@ var StorageService = module.exports;
 
 
 StorageService.book_filename = function(book){
-    var filename = book.authors[0]
+    var filename = book.authors[0];
     if(book.series_name){
         filename += ` - ${book.series_name}`
     }
     if(book.series_number){
         filename += ` - ${book.series_number}`
     }
-    filename += ` - ${book.title}`
+    filename += ` - ${book.title}`;
     return filename
-}
+};
 
 StorageService.move_to_perm_storage = function(credential, book){
 
     //filename
-    var filename = StorageService.book_filename(book) + book.storage_format
+    var filename = StorageService.book_filename(book) + book.storage_format;
     return KloudlessService.fileMove(credential.service_id, book.storage_identifier, credential.library_folder.id, filename)
-}
+};
 
 StorageService.download_book_tmp = function(db_client, filename, credential_id, storage_identifier){
     //TODO: this function should also handle downloading books from S3.
@@ -49,7 +49,7 @@ StorageService.download_book_tmp = function(db_client, filename, credential_id, 
         .where('id', credential_id))
         .then(function(credential){
 
-            var tmpDir = tmp.dirSync()
+            var tmpDir = tmp.dirSync();
 
             //we need to keep the filename intact because we'll be sending it to Calibre to detect metadata.
             var filepath = tmpDir.name + '/' + filename;
@@ -62,7 +62,7 @@ StorageService.download_book_tmp = function(db_client, filename, credential_id, 
                     credential
                 ]
         })
-}
+};
 
 StorageService.get_user_storage = function(token){
 
@@ -83,7 +83,7 @@ StorageService.get_user_storage = function(token){
                             }}, function(err, service_info){
                             if(err) return deferred.reject(err);
 
-                            console.info("Credential info:", service_info)
+                            console.info("Credential info:", service_info);
                             deferred.resolve({credential: cred, service_info: service_info});
                         });
 
@@ -93,7 +93,7 @@ StorageService.get_user_storage = function(token){
                     return q.all(credential_info_promises)
                 })
         })
-}
+};
 
 StorageService.get_download_link = function(book, user_id, db_client){
     //check if the book storage_type is populated, if not, then we need to return
@@ -123,16 +123,16 @@ StorageService.get_download_link = function(book, user_id, db_client){
             })
             .then(function(data){
 
-                debug("Book download link: %o", data)
+                debug("Book download link: %o", data);
                 return data.url
 
             })
     }
-}
+};
 
 StorageService.upload_file_from_path = function(filepath, bucket, key) {
 
-    console.info("Uploading file from "+ filepath, bucket, key)
+    console.info("Uploading file from "+ filepath, bucket, key);
     if (!filepath) {
         return q.reject(new Error("No filepath specified"));
     }
@@ -143,11 +143,11 @@ StorageService.upload_file_from_path = function(filepath, bucket, key) {
 
     var filestream = fs.createReadStream(filepath);
 
-    var ext = path.extname(filepath).split('.').join('') //safe way to remove '.' prefix, even on empty string.
+    var ext = path.extname(filepath).split('.').join(''); //safe way to remove '.' prefix, even on empty string.
 
 
     return StorageService.upload_file_from_stream(filestream, ext, bucket, key)
-}
+};
 
 StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key){
     var deferred = q.defer();
@@ -157,7 +157,7 @@ StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key)
         Key: key,
         Body: filestream,
         ContentEncoding: 'base64'
-    }
+    };
 
     if(Constants.image_extensions[ext]){
         payload.Metadata = {
@@ -176,7 +176,7 @@ StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key)
     });
 
     return deferred.promise;
-}
+};
 
 
 //content identifiers are publically readable.
@@ -184,7 +184,7 @@ StorageService.upload_file_from_stream = function(filestream, ext,  bucket, key)
 // HASH1234/library/bookname.epub
 StorageService.create_content_identifier = function(file_type, user_id, filename, extension){
     return storage_user_hash(user_id) + '/' + storage_identifier_from_filename(filename, file_type) + extension
-}
+};
 
 
 //upload identifiers are for temporary file storage, before the files are processed and moved to content bucket or storage
@@ -194,7 +194,7 @@ StorageService.create_content_identifier = function(file_type, user_id, filename
 //eg. HASH1234/cred_id/NEW/bookname.epub #bookid NEW is reserved for books which have to be processed/parsed first
 StorageService.create_upload_identifier = function(user_id, cred_id, book_id, filename, extension){
     return storage_user_hash(user_id) + '/' + user_id + '/' + cred_id + '/' + (book_id || 'NEW') + '/' + filename + extension
-}
+};
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,8 +217,7 @@ function storage_identifier_from_filename(filename, type){
         return 'covers/' + filename
     }
     return "library/"+ filename;
-};
-
+}
 //
 ////TODO:download the file to adata buffer?
 //exports.download_file_in_container = function(storage_full_identifier){
