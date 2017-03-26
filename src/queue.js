@@ -131,7 +131,7 @@ module.exports = {
                         //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
                         exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
                             if (err) return deferred.reject(err);
-                            if(stdout) debug("calibre metadata extract stdout: %s", ${stdout});
+                            if(stdout) debug("calibre metadata extract stdout: %s", stdout);
                             if(stderr) console.error(`calibre metadata extract stderr: ${stderr}`);
                             return deferred.resolve({
                                 opf_path: opf_path,
