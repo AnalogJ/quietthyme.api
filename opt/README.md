@@ -9,3 +9,6 @@ This is a minimal version of calibre, stripped down to save space on AWS and kee
 - resources/content*
 - resources/dictionaries/
 - lib/libQt5*
+
+
+- //TODO: dont delete libQt5Image (is used by ebook-meta)

@@ -142,6 +142,10 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
             else if(book.isbn || book.isbn10){
                 metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_isbn(book.isbn || book.isbn10))
             }
+            else if(!book.short_summary && !(book.tags || book.tags.length) && ! book.cover){
+                //lookup the book by name.
+                metadata_pipeline.push(PipelineMetadataService.generate_goodreads_data_set_by_title_author(book.title + ' - ' + book.author  ))
+            }
 
             //each promise can return a single data_set object (with a matching type) or an arrary of promises
             return q.allSettled(metadata_pipeline)

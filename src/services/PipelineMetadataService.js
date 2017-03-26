@@ -147,6 +147,31 @@ PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
         })
 }
 
+
+PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(title_author) {
+
+    var clean_title_author = title_author.replace(/ *\([^)]*\) */g, "").replace(/ *\[[^\]]*\] */g, "").replace(/-/g, '');
+
+    var goodreads = require('goodreads.js');
+    var provider = new goodreads.provider({
+        'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
+        'client_secret': process.env.OAUTH_GOODREADS_CLIENT_SECRET
+    });
+    return provider.CreateClient()
+        .then(function (client) {
+            //var search_query = title.split(' ').join('+') + ' - ' + author.split(' ').join('+');
+            return client.SearchBooks(clean_title_author)
+        })
+        .then(function(data){
+            return data.GoodreadsResponse.search[0].results[0].work[0].best_book[0].id[0]['_']
+        })
+        .then(function(goodreads_id){
+
+            console.log("FOUND ID IS:", goodreads_id)
+            return PipelineMetadataService.generate_goodreads_data_set(goodreads_id)
+        })
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OPF Data
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
