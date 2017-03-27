@@ -17,10 +17,6 @@ dependencies:
 
 test:
   override:
-    - serverless deploy -v
-
-test:
-  override:
     - echo "skipping, no tests"
 
 deployment:
