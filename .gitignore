@@ -47,3 +47,5 @@ fabric.properties
 
 /test.js
 .idea
+
+coverage

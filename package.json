@@ -4,7 +4,8 @@
   "description": "",
   "main": "serverless.yml",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive",
+    "coverage": "rm -rf ./coverage && istanbul cover node_modules/.bin/_mocha test/**/*.spec.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -40,8 +41,12 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
     "serverless-mocha-plugin": "^1.3.3",
     "serverless-plugin-optimize": "^1.0.0-rc.15",
-    "serverless-prune-plugin": "^1.0.4"
+    "serverless-prune-plugin": "^1.0.4",
+    "should": "^11.2.1"
   }
 }
