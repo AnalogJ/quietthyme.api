@@ -37,16 +37,16 @@
     "tmp": "0.0.31",
     "to-markdown": "^3.0.3",
     "xkcd-password": "^1.2.0",
-    "xml-schema": "^2.2.0"
+    "xml-schema": "^2.2.0",
+    "serverless-mocha-plugin": "^1.3.3",
+    "serverless-plugin-optimize": "^1.0.0-rc.15",
+    "serverless-prune-plugin": "^1.0.4"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.3.0",
-    "serverless-mocha-plugin": "^1.3.3",
-    "serverless-plugin-optimize": "^1.0.0-rc.15",
-    "serverless-prune-plugin": "^1.0.4",
     "should": "^11.2.1"
   }
 }
