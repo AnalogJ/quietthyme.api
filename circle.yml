@@ -17,7 +17,7 @@ dependencies:
 
 test:
   override:
-    - echo "skipping, no tests"
+    - npm run-script coverage
 
 deployment:
   deploy:
