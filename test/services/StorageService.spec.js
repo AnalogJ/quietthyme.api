@@ -2,7 +2,7 @@ var should = require('should');
 var StorageService = require('../../src/services/StorageService')
 
 //this is just simple integration testing
-describe('StorageService', function () {
+describe.skip('StorageService', function () {
     var user;
     before(function (done) {
         User.create({

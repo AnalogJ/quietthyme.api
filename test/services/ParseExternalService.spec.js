@@ -40,10 +40,10 @@ describe('ParseExternalService', function () {
                                 ""
                             ],
                             "image_url": [
-                                "https://d.gr-assets.com/books/1316731170m/11045423.jpg"
+                                "https://images.gr-assets.com/books/1316731170m/11045423.jpg"
                             ],
                             "small_image_url": [
-                                "https://d.gr-assets.com/books/1316731170s/11045423.jpg"
+                                "https://images.gr-assets.com/books/1316731170s/11045423.jpg"
                             ],
                             "publication_year": [
                                 "2011"
@@ -225,10 +225,10 @@ describe('ParseExternalService', function () {
                                                 "L.E. Modesitt Jr."
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/authors/1207333645p5/1301649.jpg"
+                                                "https://images.gr-assets.com/authors/1207333645p5/1301649.jpg"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/authors/1207333645p2/1301649.jpg"
+                                                "https://images.gr-assets.com/authors/1207333645p2/1301649.jpg"
                                             ],
                                             "link": [
                                                 "https://www.goodreads.com/author/show/1301649.L_E_Modesitt_Jr_"
@@ -531,10 +531,10 @@ describe('ParseExternalService', function () {
                                                 "9780733624186"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1337655254s/6632027.jpg"
+                                                "https://images.gr-assets.com/books/1337655254s/6632027.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1337655254m/6632027.jpg"
+                                                "https://images.gr-assets.com/books/1337655254m/6632027.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.05"
@@ -611,10 +611,10 @@ describe('ParseExternalService', function () {
                                                 "9781937007843"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1352684152s/13542644.jpg"
+                                                "https://images.gr-assets.com/books/1352684152s/13542644.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1352684152m/13542644.jpg"
+                                                "https://images.gr-assets.com/books/1352684152m/13542644.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.09"
@@ -651,10 +651,10 @@ describe('ParseExternalService', function () {
                                                 "9780007217809"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1328040963s/1040469.jpg"
+                                                "https://images.gr-assets.com/books/1328040963s/1040469.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1328040963m/1040469.jpg"
+                                                "https://images.gr-assets.com/books/1328040963m/1040469.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.20"
@@ -691,10 +691,10 @@ describe('ParseExternalService', function () {
                                                 "9780230750067"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1340183566s/9787905.jpg"
+                                                "https://images.gr-assets.com/books/1340183566s/9787905.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1340183566m/9787905.jpg"
+                                                "https://images.gr-assets.com/books/1340183566m/9787905.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.76"
@@ -731,10 +731,10 @@ describe('ParseExternalService', function () {
                                                 "9780316177757"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1344269989s/12826714.jpg"
+                                                "https://images.gr-assets.com/books/1344269989s/12826714.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1344269989m/12826714.jpg"
+                                                "https://images.gr-assets.com/books/1344269989m/12826714.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.85"
@@ -771,10 +771,10 @@ describe('ParseExternalService', function () {
                                                 "9781597803496"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1362968747s/13096215.jpg"
+                                                "https://images.gr-assets.com/books/1362968747s/13096215.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1362968747m/13096215.jpg"
+                                                "https://images.gr-assets.com/books/1362968747m/13096215.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.85"
@@ -811,10 +811,10 @@ describe('ParseExternalService', function () {
                                                 ""
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1330693058s/7854686.jpg"
+                                                "https://images.gr-assets.com/books/1330693058s/7854686.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1330693058m/7854686.jpg"
+                                                "https://images.gr-assets.com/books/1330693058m/7854686.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.92"
@@ -851,10 +851,10 @@ describe('ParseExternalService', function () {
                                                 "9781603818100"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1328743107s/11217124.jpg"
+                                                "https://images.gr-assets.com/books/1328743107s/11217124.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1328743107m/11217124.jpg"
+                                                "https://images.gr-assets.com/books/1328743107m/11217124.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.17"
@@ -891,10 +891,10 @@ describe('ParseExternalService', function () {
                                                 "9780765312464"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1312029904s/137624.jpg"
+                                                "https://images.gr-assets.com/books/1312029904s/137624.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1312029904m/137624.jpg"
+                                                "https://images.gr-assets.com/books/1312029904m/137624.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.08"
@@ -931,10 +931,10 @@ describe('ParseExternalService', function () {
                                                 "9780765356598"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1287663477s/8512555.jpg"
+                                                "https://images.gr-assets.com/books/1287663477s/8512555.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1287663477m/8512555.jpg"
+                                                "https://images.gr-assets.com/books/1287663477m/8512555.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.86"
@@ -1011,10 +1011,10 @@ describe('ParseExternalService', function () {
                                                 ""
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1349513574s/16037931.jpg"
+                                                "https://images.gr-assets.com/books/1349513574s/16037931.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1349513574m/16037931.jpg"
+                                                "https://images.gr-assets.com/books/1349513574m/16037931.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.98"
@@ -1051,10 +1051,10 @@ describe('ParseExternalService', function () {
                                                 "9780991039524"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1390576835s/20627073.jpg"
+                                                "https://images.gr-assets.com/books/1390576835s/20627073.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1390576835m/20627073.jpg"
+                                                "https://images.gr-assets.com/books/1390576835m/20627073.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.17"
@@ -1131,10 +1131,10 @@ describe('ParseExternalService', function () {
                                                 ""
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1328065135s/13400527.jpg"
+                                                "https://images.gr-assets.com/books/1328065135s/13400527.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1328065135m/13400527.jpg"
+                                                "https://images.gr-assets.com/books/1328065135m/13400527.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.15"
@@ -1171,10 +1171,10 @@ describe('ParseExternalService', function () {
                                                 "9780857661548"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1305289469s/10201356.jpg"
+                                                "https://images.gr-assets.com/books/1305289469s/10201356.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1305289469m/10201356.jpg"
+                                                "https://images.gr-assets.com/books/1305289469m/10201356.jpg"
                                             ],
                                             "average_rating": [
                                                 "3.48"
@@ -1211,10 +1211,10 @@ describe('ParseExternalService', function () {
                                                 "9781409142416"
                                             ],
                                             "small_image_url": [
-                                                "https://d.gr-assets.com/books/1377004653s/13550502.jpg"
+                                                "https://images.gr-assets.com/books/1377004653s/13550502.jpg"
                                             ],
                                             "image_url": [
-                                                "https://d.gr-assets.com/books/1377004653m/13550502.jpg"
+                                                "https://images.gr-assets.com/books/1377004653m/13550502.jpg"
                                             ],
                                             "average_rating": [
                                                 "4.50"
@@ -1249,7 +1249,7 @@ describe('ParseExternalService', function () {
         it('Should correctly parse book', function () {
             var parsed_data = ParseExternalService.parse_goodreads_book_details(goodreads_book_basic);
             var parsed_book = parsed_data;
-            parsed_book.title.should.eql("Scholar (Imager Portfolio, #4)");
+            parsed_book.title.should.eql("Scholar");
             parsed_book.isbn.should.eql("9780765329554");
             should(function(){
                 (parsed_book.amazon_id == null).be.true
@@ -1269,14 +1269,9 @@ describe('ParseExternalService', function () {
                 "imager-portfolio",
                 "library"
             ]);
-            parsed_book.authors.should.eql([
-                {
-                    "name": "L.E. Modesitt Jr.",
-                    "goodreads_id": "1301649"
-                }
-            ]);
+            parsed_book.authors.should.eql(['L.E. Modesitt Jr.']);
 
-            parsed_book.image.identifier.should.eql("https://d.gr-assets.com/books/1316731170l/11045423.jpg");
+            parsed_book.image.identifier.should.eql("https://images.gr-assets.com/books/1316731170l/11045423.jpg");
         });
     })
 
@@ -1284,7 +1279,7 @@ describe('ParseExternalService', function () {
         var goodreads_search_array, goodreads_search_single, goodreads_search_empty;
 
         before(function () {
-            goodreads_search_array = {"GoodreadsResponse":{"Request":[{"authentication":["true"],"key":["VEjXc5XWMAeIJYoHlqZK8w"],"method":["search_index"]}],"search":[{"query":["Imager - L.E. Modesitt Jr."],"results-start":["1"],"results-end":["9"],"total-results":["9"],"source":["Goodreads"],"query-time-seconds":["0.04"],"results":[{"work":[{"books_count":[{"_":"16","$":{"type":"integer"}}],"id":[{"_":"4693480","$":{"type":"integer"}}],"original_publication_day":[{"_":"17","$":{"type":"integer"}}],"original_publication_month":[{"_":"3","$":{"type":"integer"}}],"original_publication_year":[{"_":"2009","$":{"type":"integer"}}],"ratings_count":[{"_":"4011","$":{"type":"integer"}}],"text_reviews_count":[{"_":"250","$":{"type":"integer"}}],"average_rating":["3.98"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"4643301","$":{"type":"integer"}}],"title":["Imager (Imager Portfolio, #1)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]},{"books_count":[{"_":"10","$":{"type":"integer"}}],"id":[{"_":"15966126","$":{"type":"integer"}}],"original_publication_day":[{"$":{"type":"integer","nil":"true"}}],"original_publication_month":[{"_":"11","$":{"type":"integer"}}],"original_publication_year":[{"_":"2011","$":{"type":"integer"}}],"ratings_count":[{"_":"1382","$":{"type":"integer"}}],"text_reviews_count":[{"_":"90","$":{"type":"integer"}}],"average_rating":["4.07"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"11045423","$":{"type":"integer"}}],"title":["Scholar (Imager Portfolio, #4)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1316731170m/11045423.jpg"],"small_image_url":["https://d.gr-assets.com/books/1316731170s/11045423.jpg"]}]},{"books_count":[{"_":"10","$":{"type":"integer"}}],"id":[{"_":"18293875","$":{"type":"integer"}}],"original_publication_day":[{"_":"22","$":{"type":"integer"}}],"original_publication_month":[{"_":"5","$":{"type":"integer"}}],"original_publication_year":[{"_":"2012","$":{"type":"integer"}}],"ratings_count":[{"_":"1182","$":{"type":"integer"}}],"text_reviews_count":[{"_":"59","$":{"type":"integer"}}],"average_rating":["4.14"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"13118885","$":{"type":"integer"}}],"title":["Princeps (Imager Portfolio, #5)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1344317727m/13118885.jpg"],"small_image_url":["https://d.gr-assets.com/books/1344317727s/13118885.jpg"]}]},{"books_count":[{"_":"12","$":{"type":"integer"}}],"id":[{"_":"6596460","$":{"type":"integer"}}],"original_publication_day":[{"_":"12","$":{"type":"integer"}}],"original_publication_month":[{"_":"10","$":{"type":"integer"}}],"original_publication_year":[{"_":"2009","$":{"type":"integer"}}],"ratings_count":[{"_":"2664","$":{"type":"integer"}}],"text_reviews_count":[{"_":"98","$":{"type":"integer"}}],"average_rating":["4.06"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"6407550","$":{"type":"integer"}}],"title":["Imager's Challenge (Imager Portfolio, #2)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1312055254m/6407550.jpg"],"small_image_url":["https://d.gr-assets.com/books/1312055254s/6407550.jpg"]}]},{"books_count":[{"_":"8","$":{"type":"integer"}}],"id":[{"_":"7860898","$":{"type":"integer"}}],"original_publication_day":[{"$":{"type":"integer","nil":"true"}}],"original_publication_month":[{"_":"7","$":{"type":"integer"}}],"original_publication_year":[{"_":"2010","$":{"type":"integer"}}],"ratings_count":[{"_":"2106","$":{"type":"integer"}}],"text_reviews_count":[{"_":"95","$":{"type":"integer"}}],"average_rating":["4.08"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"7199136","$":{"type":"integer"}}],"title":["Imager's Intrigue (Imager Portfolio, #3)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]},{"books_count":[{"_":"7","$":{"type":"integer"}}],"id":[{"_":"21455003","$":{"type":"integer"}}],"original_publication_day":[{"_":"22","$":{"type":"integer"}}],"original_publication_month":[{"_":"1","$":{"type":"integer"}}],"original_publication_year":[{"_":"2013","$":{"type":"integer"}}],"ratings_count":[{"_":"922","$":{"type":"integer"}}],"text_reviews_count":[{"_":"66","$":{"type":"integer"}}],"average_rating":["4.13"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"15757055","$":{"type":"integer"}}],"title":["Imager's Battalion (Imager Portfolio, #6)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1342560972m/15757055.jpg"],"small_image_url":["https://d.gr-assets.com/books/1342560972s/15757055.jpg"]}]},{"books_count":[{"_":"7","$":{"type":"integer"}}],"id":[{"_":"21846206","$":{"type":"integer"}}],"original_publication_day":[{"_":"28","$":{"type":"integer"}}],"original_publication_month":[{"_":"5","$":{"type":"integer"}}],"original_publication_year":[{"_":"2013","$":{"type":"integer"}}],"ratings_count":[{"_":"729","$":{"type":"integer"}}],"text_reviews_count":[{"_":"46","$":{"type":"integer"}}],"average_rating":["4.10"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"16059444","$":{"type":"integer"}}],"title":["Antiagon Fire (Imager Portfolio, #7)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1367749501m/16059444.jpg"],"small_image_url":["https://d.gr-assets.com/books/1367749501s/16059444.jpg"]}]},{"books_count":[{"_":"8","$":{"type":"integer"}}],"id":[{"_":"25095577","$":{"type":"integer"}}],"original_publication_day":[{"_":"7","$":{"type":"integer"}}],"original_publication_month":[{"_":"1","$":{"type":"integer"}}],"original_publication_year":[{"_":"2014","$":{"type":"integer"}}],"ratings_count":[{"_":"517","$":{"type":"integer"}}],"text_reviews_count":[{"_":"47","$":{"type":"integer"}}],"average_rating":["4.07"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"17910122","$":{"type":"integer"}}],"title":["Rex Regis (Imager Portfolio, #8)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://d.gr-assets.com/books/1373660829m/17910122.jpg"],"small_image_url":["https://d.gr-assets.com/books/1373660829s/17910122.jpg"]}]},{"books_count":[{"_":"1","$":{"type":"integer"}}],"id":[{"_":"41612078","$":{"type":"integer"}}],"original_publication_day":[{"_":"3","$":{"type":"integer"}}],"original_publication_month":[{"_":"3","$":{"type":"integer"}}],"original_publication_year":[{"_":"2015","$":{"type":"integer"}}],"ratings_count":[{"_":"0","$":{"type":"integer"}}],"text_reviews_count":[{"_":"0","$":{"type":"integer"}}],"average_rating":[{"_":"0.0","$":{"type":"float"}}],"best_book":[{"$":{"type":"Book"},"id":[{"_":"22238209","$":{"type":"integer"}}],"title":["Madness in Solidar: The Ninth Book of the Imager Portfolio"],"author":[{"id":[{"_":"8161250","$":{"type":"integer"}}],"name":["L E Modesitt  Jr"]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]}]}]}]}}
+            goodreads_search_array = {"GoodreadsResponse":{"Request":[{"authentication":["true"],"key":["VEjXc5XWMAeIJYoHlqZK8w"],"method":["search_index"]}],"search":[{"query":["Imager - L.E. Modesitt Jr."],"results-start":["1"],"results-end":["9"],"total-results":["9"],"source":["Goodreads"],"query-time-seconds":["0.04"],"results":[{"work":[{"books_count":[{"_":"16","$":{"type":"integer"}}],"id":[{"_":"4693480","$":{"type":"integer"}}],"original_publication_day":[{"_":"17","$":{"type":"integer"}}],"original_publication_month":[{"_":"3","$":{"type":"integer"}}],"original_publication_year":[{"_":"2009","$":{"type":"integer"}}],"ratings_count":[{"_":"4011","$":{"type":"integer"}}],"text_reviews_count":[{"_":"250","$":{"type":"integer"}}],"average_rating":["3.98"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"4643301","$":{"type":"integer"}}],"title":["Imager (Imager Portfolio, #1)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]},{"books_count":[{"_":"10","$":{"type":"integer"}}],"id":[{"_":"15966126","$":{"type":"integer"}}],"original_publication_day":[{"$":{"type":"integer","nil":"true"}}],"original_publication_month":[{"_":"11","$":{"type":"integer"}}],"original_publication_year":[{"_":"2011","$":{"type":"integer"}}],"ratings_count":[{"_":"1382","$":{"type":"integer"}}],"text_reviews_count":[{"_":"90","$":{"type":"integer"}}],"average_rating":["4.07"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"11045423","$":{"type":"integer"}}],"title":["Scholar (Imager Portfolio, #4)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1316731170m/11045423.jpg"],"small_image_url":["https://images.gr-assets.com/books/1316731170s/11045423.jpg"]}]},{"books_count":[{"_":"10","$":{"type":"integer"}}],"id":[{"_":"18293875","$":{"type":"integer"}}],"original_publication_day":[{"_":"22","$":{"type":"integer"}}],"original_publication_month":[{"_":"5","$":{"type":"integer"}}],"original_publication_year":[{"_":"2012","$":{"type":"integer"}}],"ratings_count":[{"_":"1182","$":{"type":"integer"}}],"text_reviews_count":[{"_":"59","$":{"type":"integer"}}],"average_rating":["4.14"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"13118885","$":{"type":"integer"}}],"title":["Princeps (Imager Portfolio, #5)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1344317727m/13118885.jpg"],"small_image_url":["https://images.gr-assets.com/books/1344317727s/13118885.jpg"]}]},{"books_count":[{"_":"12","$":{"type":"integer"}}],"id":[{"_":"6596460","$":{"type":"integer"}}],"original_publication_day":[{"_":"12","$":{"type":"integer"}}],"original_publication_month":[{"_":"10","$":{"type":"integer"}}],"original_publication_year":[{"_":"2009","$":{"type":"integer"}}],"ratings_count":[{"_":"2664","$":{"type":"integer"}}],"text_reviews_count":[{"_":"98","$":{"type":"integer"}}],"average_rating":["4.06"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"6407550","$":{"type":"integer"}}],"title":["Imager's Challenge (Imager Portfolio, #2)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1312055254m/6407550.jpg"],"small_image_url":["https://images.gr-assets.com/books/1312055254s/6407550.jpg"]}]},{"books_count":[{"_":"8","$":{"type":"integer"}}],"id":[{"_":"7860898","$":{"type":"integer"}}],"original_publication_day":[{"$":{"type":"integer","nil":"true"}}],"original_publication_month":[{"_":"7","$":{"type":"integer"}}],"original_publication_year":[{"_":"2010","$":{"type":"integer"}}],"ratings_count":[{"_":"2106","$":{"type":"integer"}}],"text_reviews_count":[{"_":"95","$":{"type":"integer"}}],"average_rating":["4.08"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"7199136","$":{"type":"integer"}}],"title":["Imager's Intrigue (Imager Portfolio, #3)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]},{"books_count":[{"_":"7","$":{"type":"integer"}}],"id":[{"_":"21455003","$":{"type":"integer"}}],"original_publication_day":[{"_":"22","$":{"type":"integer"}}],"original_publication_month":[{"_":"1","$":{"type":"integer"}}],"original_publication_year":[{"_":"2013","$":{"type":"integer"}}],"ratings_count":[{"_":"922","$":{"type":"integer"}}],"text_reviews_count":[{"_":"66","$":{"type":"integer"}}],"average_rating":["4.13"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"15757055","$":{"type":"integer"}}],"title":["Imager's Battalion (Imager Portfolio, #6)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1342560972m/15757055.jpg"],"small_image_url":["https://images.gr-assets.com/books/1342560972s/15757055.jpg"]}]},{"books_count":[{"_":"7","$":{"type":"integer"}}],"id":[{"_":"21846206","$":{"type":"integer"}}],"original_publication_day":[{"_":"28","$":{"type":"integer"}}],"original_publication_month":[{"_":"5","$":{"type":"integer"}}],"original_publication_year":[{"_":"2013","$":{"type":"integer"}}],"ratings_count":[{"_":"729","$":{"type":"integer"}}],"text_reviews_count":[{"_":"46","$":{"type":"integer"}}],"average_rating":["4.10"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"16059444","$":{"type":"integer"}}],"title":["Antiagon Fire (Imager Portfolio, #7)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1367749501m/16059444.jpg"],"small_image_url":["https://images.gr-assets.com/books/1367749501s/16059444.jpg"]}]},{"books_count":[{"_":"8","$":{"type":"integer"}}],"id":[{"_":"25095577","$":{"type":"integer"}}],"original_publication_day":[{"_":"7","$":{"type":"integer"}}],"original_publication_month":[{"_":"1","$":{"type":"integer"}}],"original_publication_year":[{"_":"2014","$":{"type":"integer"}}],"ratings_count":[{"_":"517","$":{"type":"integer"}}],"text_reviews_count":[{"_":"47","$":{"type":"integer"}}],"average_rating":["4.07"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"17910122","$":{"type":"integer"}}],"title":["Rex Regis (Imager Portfolio, #8)"],"author":[{"id":[{"_":"1301649","$":{"type":"integer"}}],"name":["L.E. Modesitt Jr."]}],"image_url":["https://images.gr-assets.com/books/1373660829m/17910122.jpg"],"small_image_url":["https://images.gr-assets.com/books/1373660829s/17910122.jpg"]}]},{"books_count":[{"_":"1","$":{"type":"integer"}}],"id":[{"_":"41612078","$":{"type":"integer"}}],"original_publication_day":[{"_":"3","$":{"type":"integer"}}],"original_publication_month":[{"_":"3","$":{"type":"integer"}}],"original_publication_year":[{"_":"2015","$":{"type":"integer"}}],"ratings_count":[{"_":"0","$":{"type":"integer"}}],"text_reviews_count":[{"_":"0","$":{"type":"integer"}}],"average_rating":[{"_":"0.0","$":{"type":"float"}}],"best_book":[{"$":{"type":"Book"},"id":[{"_":"22238209","$":{"type":"integer"}}],"title":["Madness in Solidar: The Ninth Book of the Imager Portfolio"],"author":[{"id":[{"_":"8161250","$":{"type":"integer"}}],"name":["L E Modesitt  Jr"]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]}]}]}]}}
             goodreads_search_single ={"GoodreadsResponse":{"Request":[{"authentication":["true"],"key":["VEjXc5XWMAeIJYoHlqZK8w"],"method":["search_index"]}],"search":[{"query":["Abaddons Gate - S.A. Corey"],"results-start":["1"],"results-end":["1"],"total-results":["1"],"source":["Goodreads"],"query-time-seconds":["0.03"],"results":[{"work":[{"books_count":[{"_":"15","$":{"type":"integer"}}],"id":[{"_":"17606564","$":{"type":"integer"}}],"original_publication_day":[{"_":"1","$":{"type":"integer"}}],"original_publication_month":[{"_":"1","$":{"type":"integer"}}],"original_publication_year":[{"_":"2013","$":{"type":"integer"}}],"ratings_count":[{"_":"7293","$":{"type":"integer"}}],"text_reviews_count":[{"_":"708","$":{"type":"integer"}}],"average_rating":["4.15"],"best_book":[{"$":{"type":"Book"},"id":[{"_":"16131032","$":{"type":"integer"}}],"title":["Abaddon's Gate (Expanse, #3)"],"author":[{"id":[{"_":"4192148","$":{"type":"integer"}}],"name":["James S.A. Corey"]}],"image_url":["https://s.gr-assets.com/assets/nophoto/book/111x148-0bc7d2a334eb7b34f3ef3fe4286bcf79.png"],"small_image_url":["https://s.gr-assets.com/assets/nophoto/book/50x75-673c574e721a5d4c3fd6e25b74d42bf2.png"]}]}]}]}]}}
             goodreads_search_empty = {"GoodreadsResponse":{"Request":[{"authentication":["true"],"key":["VEjXc5XWMAeIJYoHlqZK8w"],"method":["search_index"]}],"search":[{"query":["Completely Unreal - S.A. Corey"],"results-start":["1"],"results-end":["0"],"total-results":["0"],"source":["Goodreads"],"query-time-seconds":["0.01"],"results":["\n    "]}]}}
         })
@@ -1745,7 +1740,7 @@ describe('ParseExternalService', function () {
         var goodreads_shelf_content_response;
         before(function (done) {
             var fs = require('fs')
-            fs.readFile('./test/files/goodreads_shelf_content.json', function (err, data) {
+            fs.readFile('./test/fixtures/goodreads_shelf_content.json', function (err, data) {
                 goodreads_shelf_content_response = JSON.parse(data)
                 done();
             })

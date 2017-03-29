@@ -29,7 +29,7 @@ describe('SecurityService', function () {
 
     })
 
-    describe('#send()', function(){
+    describe.skip('#send()', function(){
         it('Should fail if no template provided', function (done) {
             var options = {
                 to: {
@@ -99,7 +99,7 @@ describe('SecurityService', function () {
                 .then(done, done);
         });
     })
-    describe('#is_oauth_token_expired()', function () {
+    describe.skip('#is_oauth_token_expired()', function () {
         it('Should be false if expires_on is null', function () {
             SecurityService.is_oauth_token_expired({oauth_data:{expires_on:null}}).should.be.false
         });

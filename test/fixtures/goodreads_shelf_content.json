@@ -1,0 +1,3382 @@
+{
+  "GoodreadsResponse": {
+    "Request": [
+      {
+        "authentication": ["true"],
+        "key": ["VEjXc5XWMAeIJYoHlqZK8w"],
+        "method": ["review_list"]
+      }
+    ],
+    "reviews": [
+      {
+        "$": {
+          "start": "1",
+          "end": "40",
+          "total": "163"
+        },
+        "review": [
+          {
+            "id": ["1218304354"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "19103097",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "1848",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Magician's Land (The Magicians, #3)"],
+                "image_url": ["https://d.gr-assets.com/books/1386012841m/19103097.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1386012841s/19103097.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/19103097-the-magician-s-land"],
+                "num_pages": ["416"],
+                "format": ["Kindle Edition"],
+                "edition_information": [null],
+                "publisher": ["Viking Adult"],
+                "publication_day": ["5"],
+                "publication_year": ["2014"],
+                "publication_month": ["8"],
+                "average_rating": ["4.18"],
+                "ratings_count": ["17178"],
+                "description": ["Quentin Coldwater has been cast out of Fillory, the secret magical land of his childhood dreams. With nothing left to lose, he returns to where his story began, the Brakebills Preparatory College of Magic, but he can’t hide from his past, and it’s not long before it comes looking for him.<br><br>Along with Plum, a brilliant young undergraduate with a dark secret of her own, Quentin sets out on a crooked path through a magical demimonde of gray magic and desperate characters. But all roads lead back to Fillory, and his new life takes him to old haunts, like Antarctica, and to buried secrets and old friends he thought were lost forever. He uncovers the key to a sorcery masterwork, a spell that could create magical utopia, and a new Fillory--but casting it will set in motion a chain of events that will bring Earth and Fillory crashing together. To save them he will have to risk sacrificing everything."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["142270"],
+                        "name": ["Lev Grossman"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p5/142270.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p2/142270.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/142270.Lev_Grossman"],
+                        "average_rating": ["3.62"],
+                        "ratings_count": ["171973"],
+                        "text_reviews_count": ["19820"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928100127",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:59:10 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:59:11 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218304354"],
+            "link": ["https://www.goodreads.com/review/show/1218304354"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218304335"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "10079321",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["043402080X"],
+                "isbn13": ["9780434020805"],
+                "text_reviews_count": [
+                  {
+                    "_": "2892",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Magician King (The Magicians, #2)"],
+                "image_url": ["https://d.gr-assets.com/books/1316177353m/10079321.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1316177353s/10079321.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/10079321-the-magician-king"],
+                "num_pages": ["400"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["William Heinemann"],
+                "publication_day": ["9"],
+                "publication_year": ["2011"],
+                "publication_month": ["8"],
+                "average_rating": ["3.87"],
+                "ratings_count": ["34673"],
+                "description": ["<strong>Return to Fillory in the riveting sequel to The New York Times bestseller and literary phenomenon of 2009--<em>The Magicians</em>.</strong><br><br><em>The Magicians</em> was praised as a triumph by readers and critics of both mainstream and fantasy literature. Now Grossman takes us back to Fillory, where the Brakebills graduates have fled the sorrows of the mundane world, only to face terrifying new challenges.<br><br>Quentin and his friends are now the kings and queens of Fillory, but the days and nights of royal luxury are starting to pall. After a morning hunt takes a sinister turn, Quentin and his old friend Julia charter a magical sailing ship and set out on an errand to the wild outer reaches of their kingdom. Their pleasure cruise becomes an adventure when the two are unceremoniously dumped back into the last place Quentin ever wants to see: his parent's house in Chesterton, Massachusetts. And only the black, twisted magic that Julia learned on the streets can save them.<br><br><em>The Magician King</em> is a grand voyage into the dark, glittering heart of magic, an epic quest for the Harry Potter generation. It also introduces a powerful new voice, that of Julia, whose angry genius is thrilling. Once again Grossman proves that he is the cutting edge of literary fantasy."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["142270"],
+                        "name": ["Lev Grossman"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p5/142270.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p2/142270.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/142270.Lev_Grossman"],
+                        "average_rating": ["3.62"],
+                        "ratings_count": ["171973"],
+                        "text_reviews_count": ["19820"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2011"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928100112",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:59:09 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:59:10 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218304335"],
+            "link": ["https://www.goodreads.com/review/show/1218304335"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218304312"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "6101718",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0670020559"],
+                "isbn13": ["9780670020553"],
+                "text_reviews_count": [
+                  {
+                    "_": "10601",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Magicians (The Magicians, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1313772941m/6101718.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1313772941s/6101718.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/6101718-the-magicians"],
+                "num_pages": ["402"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Viking"],
+                "publication_day": ["11"],
+                "publication_year": ["2009"],
+                "publication_month": ["8"],
+                "average_rating": ["3.46"],
+                "ratings_count": ["105258"],
+                "description": ["Like everyone else, precocious high school senior Quentin Coldwater assumes that magic isn't real, until he finds himself admitted to a very secretive and exclusive college of magic in upstate New York. There he indulges in joys of college-friendship, love, sex, and booze- and receives a rigorous education in modern sorcery. But magic doesn't bring the happiness and adventure Quentin thought it would. After graduation, he and his friends stumble upon a secret that sets them on a remarkable journey that may just fulfill Quentin's yearning. But their journey turns out to be darker and more dangerous than they'd imagined. Psychologically piercing and dazzlingly inventive, The Magicians, the prequel to the New York Times bestselling book The Magician King and the #1 bestseller The Magician's Land, is an enthralling coming-of-age tale about magic practiced in the real world-where good and evil aren't black and white, and power comes at a terrible price."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["142270"],
+                        "name": ["Lev Grossman"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p5/142270.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1386343699p2/142270.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/142270.Lev_Grossman"],
+                        "average_rating": ["3.62"],
+                        "ratings_count": ["171973"],
+                        "text_reviews_count": ["19820"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2009"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928100095",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:59:07 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:59:08 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218304312"],
+            "link": ["https://www.goodreads.com/review/show/1218304312"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218291686"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "22886612",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "1",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Nemesis Games (Expanse, #5)"],
+                "image_url": ["https://d.gr-assets.com/books/1407524221m/22886612.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1407524221s/22886612.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/22886612-nemesis-games"],
+                "num_pages": ["608"],
+                "format": ["Kindle Edition"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["2"],
+                "publication_year": ["2015"],
+                "publication_month": ["6"],
+                "average_rating": ["4.33"],
+                "ratings_count": ["57"],
+                "description": ["The fifth novel in James S.A. Corey's New York Times bestselling Expanse series--now being produced for television by the SyFy Channel!<br><br>A thousand worlds have opened, and the greatest land rush in human history has begun. As wave after wave of colonists leave, the power structures of the old solar system begin to buckle.<br><br>Ships are disappearing without a trace. Private armies are being secretly formed. The sole remaining protomolecule sample is stolen. Terrorist attacks previously considered impossible bring the inner planets to their knees. The sins of the past are returning to exact a terrible price.<br><br>And as a new human order is struggling to be born in blood and fire, James Holden and the crew of the Rocinante must struggle to survive and get back to the only home they have left."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["4192148"],
+                        "name": ["James S.A. Corey"],
+                        "role": [null],
+                        "image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/u_200x266-e183445fd1a1b5cc7075bb1cf7043306.png\n"],
+                        "small_image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png\n"],
+                        "link": ["https://www.goodreads.com/author/show/4192148.James_S_A_Corey"],
+                        "average_rating": ["4.10"],
+                        "ratings_count": ["76635"],
+                        "text_reviews_count": ["6618"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928088745",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:44:24 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:44:25 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218291686"],
+            "link": ["https://www.goodreads.com/review/show/1218291686"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218278908"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "17403559",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0356503658"],
+                "isbn13": ["9780356503653"],
+                "text_reviews_count": [
+                  {
+                    "_": "10",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Aeronaut's Windlass (The Cinder Spires, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1425399226m/17403559.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1425399226s/17403559.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/17403559-the-aeronaut-s-windlass"],
+                "num_pages": ["512"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["29"],
+                "publication_year": ["2015"],
+                "publication_month": ["9"],
+                "average_rating": ["4.10"],
+                "ratings_count": ["51"],
+                "description": ["Since time immemorial, the Spires have sheltered humanity, towering for miles over the mist-shrouded surface of the world. Within their halls, aristocratic houses have ruled for generations, developing scientific marvels, fostering trade alliances, and building fleets of airships to keep the peace.<br><br>Captain Grimm commands the merchant ship, Predator. Fiercely loyal to Spire Albion, he has taken their side in the cold war with Spire Aurora, disrupting the enemy's shipping lines by attacking their cargo vessels. But when the Predator is severely damaged in combat, leaving captain and crew grounded, Grimm is offered a proposition from the Spirearch of Albion—to join a team of agents on a vital mission in exchange for fully restoring Predator to its fighting glory.<br><br>And even as Grimm undertakes this dangerous task, he will learn that the conflict between the Spires is merely a premonition of things to come. Humanity's ancient enemy, silent for more than ten thousand years, has begun to stir once more. And death will follow in its wake"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["10746"],
+                        "name": ["Jim Butcher"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1400640324p5/10746.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1400640324p2/10746.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/10746.Jim_Butcher"],
+                        "average_rating": ["4.26"],
+                        "ratings_count": ["1346737"],
+                        "text_reviews_count": ["55240"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928076766",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:27:35 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:27:36 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218278908"],
+            "link": ["https://www.goodreads.com/review/show/1218278908"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218277310"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "25067656",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "3",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Untitled (A Darker Shade of Magic, #3)"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/25067656-untitled"],
+                "num_pages": [null],
+                "format": [null],
+                "edition_information": [null],
+                "publisher": ["Tor"],
+                "publication_day": [null],
+                "publication_year": ["2017"],
+                "publication_month": [null],
+                "average_rating": ["3.00"],
+                "ratings_count": ["2"],
+                "description": [null],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["7168230"],
+                        "name": ["V.E. Schwab"],
+                        "role": [null],
+                        "image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/f_200x266-3061b784cc8e7f021c6430c9aba94587.png\n"],
+                        "small_image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/f_50x66-6a03a5c12233c941481992b82eea8d23.png\n"],
+                        "link": ["https://www.goodreads.com/author/show/7168230.V_E_Schwab"],
+                        "average_rating": ["4.19"],
+                        "ratings_count": ["14535"],
+                        "text_reviews_count": ["3615"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2017"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928075337",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:25:32 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:25:34 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218277310"],
+            "link": ["https://www.goodreads.com/review/show/1218277310"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1218277301"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "20764879",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0765376474"],
+                "isbn13": ["9780765376473"],
+                "text_reviews_count": [
+                  {
+                    "_": "53",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["A Gathering of Shadows  (A Darker Shade of Magic, #2)"],
+                "image_url": ["https://d.gr-assets.com/books/1429627728m/20764879.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1429627728s/20764879.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/20764879-a-gathering-of-shadows"],
+                "num_pages": ["512"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Tor"],
+                "publication_day": ["23"],
+                "publication_year": ["2016"],
+                "publication_month": ["2"],
+                "average_rating": ["4.50"],
+                "ratings_count": ["12"],
+                "description": ["Four months have passed since the shadow stone fell into Kell’s possession. Four months since his path crossed with Delilah Bard. Four months since Rhy was wounded and the Dane twins fell, and the stone was cast with Holland’s dying body through the rift, and into Black London.<br><br>In many ways, things have almost returned to normal, though Rhy is more sober, and Kell is now plagued by his guilt. Restless, and having given up smuggling, Kell is visited by dreams of ominous magical events, waking only to think of Lila, who disappeared from the docks like she always meant to do. As Red London finalizes preparations for the Element Games—an extravagant international competition of magic, meant to entertain and keep healthy the ties between neighboring countries—a certain pirate ship draws closer, carrying old friends back into port.<br><br>But while Red London is caught up in the pageantry and thrills of the Games, another London is coming back to life, and those who were thought to be forever gone have returned. After all, a shadow that was gone in the night reappears in the morning, and so it seems Black London has risen again—meaning that another London must fall."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["7168230"],
+                        "name": ["V.E. Schwab"],
+                        "role": ["Pseudonym"],
+                        "image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/f_200x266-3061b784cc8e7f021c6430c9aba94587.png\n"],
+                        "small_image_url": ["\nhttps://s.gr-assets.com/assets/nophoto/user/f_50x66-6a03a5c12233c941481992b82eea8d23.png\n"],
+                        "link": ["https://www.goodreads.com/author/show/7168230.V_E_Schwab"],
+                        "average_rating": ["4.19"],
+                        "ratings_count": ["14535"],
+                        "text_reviews_count": ["3615"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2016"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "928075321",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Wed Mar 04 11:25:31 -0800 2015"],
+            "date_updated": ["Wed Mar 04 11:25:32 -0800 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1218277301"],
+            "link": ["https://www.goodreads.com/review/show/1218277301"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1126035522"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18966806",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0345539842"],
+                "isbn13": ["9780345539847"],
+                "text_reviews_count": [
+                  {
+                    "_": "54",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Morning Star (Red Rising Trilogy, #3)"],
+                "image_url": ["https://d.gr-assets.com/books/1426928658m/18966806.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1426928658s/18966806.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18966806-morning-star"],
+                "num_pages": ["400"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Del Rey"],
+                "publication_day": ["5"],
+                "publication_year": ["2016"],
+                "publication_month": ["1"],
+                "average_rating": ["4.45"],
+                "ratings_count": ["113"],
+                "description": ["<strong>Red Rising thrilled readers and announced the presence of a talented new author. Golden Son totally changed the game and took the story of Darrow to the next level. Now comes the exhilarating conclusion to the Red Rising Trilogy: Morning Star.</strong><br><br>Born a lowly Red in the mines of Mars, Darrow lost his beloved wife to the treacherous Gold overlords. Vowing to fight for the future that his wife believed in, Darrow joins a secret revolutionary group and is remade into a Gold so that he can infiltrate the ruling class and bring them down from the inside. Now, after years of hiding amongst the Golds, Darrow is finally ready to declare open revolution and throw off the chains of oppression. Nothing in Darrow’s world has been easily won, and this final fight will be the most harrowing of all."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["6474348"],
+                        "name": ["Pierce Brown"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1417558860p5/6474348.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1417558860p2/6474348.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/6474348.Pierce_Brown"],
+                        "average_rating": ["4.28"],
+                        "ratings_count": ["45057"],
+                        "text_reviews_count": ["7652"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2016"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "849545099",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sun Dec 07 15:25:28 -0800 2014"],
+            "date_updated": ["Sun Dec 07 15:25:29 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1126035522"],
+            "link": ["https://www.goodreads.com/review/show/1126035522"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1125422176"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "22756712",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["1596066989"],
+                "isbn13": ["9781596066984"],
+                "text_reviews_count": [
+                  {
+                    "_": "40",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Messenger’s Legacy"],
+                "image_url": ["https://d.gr-assets.com/books/1412039011m/22756712.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1412039011s/22756712.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/22756712-messenger-s-legacy"],
+                "num_pages": ["136"],
+                "format": ["Hardcover"],
+                "edition_information": ["Trade Edition"],
+                "publisher": ["Subterranean Press "],
+                "publication_day": ["30"],
+                "publication_year": ["2014"],
+                "publication_month": ["11"],
+                "average_rating": ["4.06"],
+                "ratings_count": ["678"],
+                "description": ["Humanity has been brought to the brink of extinction. Each night, the world is overrun by demons—bloodthirsty creatures of nightmare that have been hunting the surface for over 300 years. A scant few hamlets and half-starved city-states are all that remain of a once proud civilization, and it is only by hiding behind wards, ancient symbols with the power to repel the demons, that they survive. A handful of Messengers brave the night to keep the lines of communication open between the increasingly isolated populace.<br><br>Briar Damaj is a boy of six in the small village of Bogton. Half Krasian, the village children call him Mudboy for his dark skin. When tragedy strikes, Briar decides the town is better off without him, fleeing into the bog with nothing but his wits and a bit of herb lore to protect him.<br><br>After twenty years, Ragen Messenger has agreed to retire and pass on his route to his protégé, Arlen Bales. But for all that he’s earned the rest, he has no idea what to do with the rest of his life. When he learns Briar, the son of an old friend, is missing, Ragen is willing to risk any danger to bring him safely home."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1405152"],
+                        "name": ["Peter V. Brett"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1265682778p5/1405152.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1265682778p2/1405152.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1405152.Peter_V_Brett"],
+                        "average_rating": ["4.23"],
+                        "ratings_count": ["129313"],
+                        "text_reviews_count": ["6663"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "849003627",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 06 22:47:58 -0800 2014"],
+            "date_updated": ["Sat Dec 06 22:47:59 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1125422176"],
+            "link": ["https://www.goodreads.com/review/show/1125422176"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077301586"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "7137327",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0312650086"],
+                "isbn13": ["9780312650087"],
+                "text_reviews_count": [
+                  {
+                    "_": "3666",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Enclave (Razorland, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1327877657m/7137327.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1327877657s/7137327.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/7137327-enclave"],
+                "num_pages": ["259"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Feiwel & Friends"],
+                "publication_day": ["12"],
+                "publication_year": ["2011"],
+                "publication_month": ["4"],
+                "average_rating": ["3.92"],
+                "ratings_count": ["45891"],
+                "description": ["New York City residents, decimated by war and plague, live underground in Enclaves, barely past age 20. Deuce 15, trained as Huntress, pairs with odd Fade, who was boy Topside. Elders ignore warning, exile both. Monster Freaks, more organized, killed nearest Enclave. Guided by old memories, in gang-infested ruins, pair face apocalyptic world with new dangers and feelings."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["835348"],
+                        "name": ["Ann Aguirre"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1275442049p5/835348.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1275442049p2/835348.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/835348.Ann_Aguirre"],
+                        "average_rating": ["3.95"],
+                        "ratings_count": ["127715"],
+                        "text_reviews_count": ["13125"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2011"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807679674",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:56:29 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:56:30 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077301586"],
+            "link": ["https://www.goodreads.com/review/show/1077301586"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077301541"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "13326831",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0547959109"],
+                "isbn13": ["9780547959108"],
+                "text_reviews_count": [
+                  {
+                    "_": "3076",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Testing (The Testing, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1363452191m/13326831.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1363452191s/13326831.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/13326831-the-testing"],
+                "num_pages": ["336"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Houghton Mifflin Books for Children"],
+                "publication_day": ["4"],
+                "publication_year": ["2013"],
+                "publication_month": ["6"],
+                "average_rating": ["4.00"],
+                "ratings_count": ["23483"],
+                "description": ["Keep your friends close and your enemies closer. Isn’t that what they say? But how close is too close when they may be one and the same?  <br><br>The Seven Stages War left much of the planet a charred wasteland. The future belongs to the next generation’s chosen few who must rebuild it.  But to enter this elite group, candidates must first pass The Testing—their one chance at a college education and a rewarding career. <br><br>Cia Vale is honored to be chosen as a Testing candidate; eager to prove her worthiness as a University student and future leader of the United Commonwealth. But on the eve of her departure, her father’s advice hints at a darker side to her upcoming studies--trust no one. <br><br>But surely she can trust Tomas, her handsome childhood friend who offers an alliance? Tomas, who seems to care more about her with the passing of every grueling (and deadly) day of the Testing.    To survive, Cia must choose:  love without truth or life without trust."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["4027380"],
+                        "name": ["Joelle Charbonneau"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1326433815p5/4027380.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1326433815p2/4027380.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/4027380.Joelle_Charbonneau"],
+                        "average_rating": ["3.93"],
+                        "ratings_count": ["44489"],
+                        "text_reviews_count": ["6015"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2013"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807679644",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:56:21 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:56:22 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077301541"],
+            "link": ["https://www.goodreads.com/review/show/1077301541"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077301450"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "13138635",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["1423171020"],
+                "isbn13": ["9781423171027"],
+                "text_reviews_count": [
+                  {
+                    "_": "3983",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["These Broken Stars (Starbound, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1383578978m/13138635.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1383578978s/13138635.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/13138635-these-broken-stars"],
+                "num_pages": ["374"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Disney Hyperion"],
+                "publication_day": ["10"],
+                "publication_year": ["2013"],
+                "publication_month": ["12"],
+                "average_rating": ["3.96"],
+                "ratings_count": ["27029"],
+                "description": ["Luxury spaceliner Icarus suddenly plummets from hyperspace into the nearest planet. Lilac LaRoux and Tarver Merendsen survive -- alone. Lilac is the daughter of the richest man in the universe. Tarver comes from nothing, a cynical war hero. Both journey across the eerie deserted terrain for help. Everything changes when they uncover the truth. <br><br>The Starbound Trilogy: Three worlds. Three love stories. One enemy."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["5360335"],
+                        "name": ["Amie Kaufman"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1335234620p5/5360335.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1335234620p2/5360335.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/5360335.Amie_Kaufman"],
+                        "average_rating": ["3.97"],
+                        "ratings_count": ["32899"],
+                        "text_reviews_count": ["5676"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2013"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807679574",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:56:03 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:56:04 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077301450"],
+            "link": ["https://www.goodreads.com/review/show/1077301450"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077299674"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "19084955",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["161696183X"],
+                "isbn13": ["9781616961831"],
+                "text_reviews_count": [
+                  {
+                    "_": "320",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Hollow World"],
+                "image_url": ["https://d.gr-assets.com/books/1387920861m/19084955.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1387920861s/19084955.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/19084955-hollow-world"],
+                "num_pages": ["371"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["Tachyon Publications"],
+                "publication_day": ["15"],
+                "publication_year": ["2014"],
+                "publication_month": ["4"],
+                "average_rating": ["3.77"],
+                "ratings_count": ["2404"],
+                "description": ["The future is coming...for some, sooner than others.<br><br>Ellis Rogers is an ordinary man who is about to embark on an extraordinary journey. All his life he has played it safe and done the right thing, but when faced with a terminal illness, he’s willing to take an insane gamble. He’s built a time machine in his garage, and if it works, he’ll face a world that challenges his understanding of what it means to be human, what it takes to love, and the cost of paradise. He could find more than a cure for his illness; he might find what everyone has been searching for since time began…but only if he can survive Hollow World. <br><br>Welcome to the future and a new sci-fantasy thriller from the bestselling author of <em>The Riyria Revelations.</em><br><br><br>BEST OF &amp; MOST ANTICIPATED LISTS<br>• 2014 Goodreads Choice Award Nominee for Science Fiction<br>• 2014 The Qwillery's Brannigan Cheney’s Top 3 books<br>• 2014 The Fictional Hangout’s Best Books of the Year<br>• 2014 Ranting Dragon’s Ten Fantasy and Science-Fiction Novels worth reading in April<br>• 2014 Barnes and Noble Top Fantasy and Science Fiction Picks for April<br>• 2014 Ranting Dragon’s 30 Most Anticipated Science Fiction and Fantasy Novels<br>• 2014 The Book Probe’s Most Anticipated Sci-Fi Novels<br>• 2013 The BiblioSanctum’s Top 10 Reads<br>• 2013 Fantasy Review Barn’s Barney Award for Outstanding Reads"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["2063919"],
+                        "name": ["Michael J. Sullivan"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1396351926p5/2063919.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1396351926p2/2063919.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/2063919.Michael_J_Sullivan"],
+                        "average_rating": ["4.27"],
+                        "ratings_count": ["100975"],
+                        "text_reviews_count": ["6937"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807678134",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:51:14 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:51:15 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077299674"],
+            "link": ["https://www.goodreads.com/review/show/1077299674"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077299517"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "19381626",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0593062191"],
+                "isbn13": ["9780593062197"],
+                "text_reviews_count": [
+                  {
+                    "_": "1",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Fall of Light (The Kharkanas Trilogy, #2)"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/19381626-fall-of-light"],
+                "num_pages": ["760"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Bantam Press"],
+                "publication_day": ["19"],
+                "publication_year": ["2015"],
+                "publication_month": ["11"],
+                "average_rating": ["4.00"],
+                "ratings_count": ["27"],
+                "description": ["It is a bitter winter and civil war now ravages Kurald Galain, as Urusander's Legion prepares to march upon the city of Kharkanas.The rebels' only opposition lies scattered, bereft of a leader since Anomander's departure in search of his estranged brother, Andarist. The last brother remaining, Silchas Ruin, rules in Anomander's stead. He seeks to gather the Houseblades of the Highborn Noble families and resurrect the Hust Legion in the southlands, but is fast running out of time.<br><br><br>The officers and leaders of Urusander's Legion, led by Hunn Raal, want the Consort, Draconus, cast aside and Vatha Urusander wedded to Mother Dark, taking his place on a throne at the side of the Living Goddess. But this union will be far more than political, as a sorcerous power has claimed those opposing Mother Dark - given form by the exiled High Priestess Syntara, the Cult of Light rises in answer to Mother Dark and her Children.<br><br><br><br><br><br>Far to the west, an unlikely army has gathered, seeking an enemy without form, in a place none can find, and commanded by a Jaghut driven mad with grief. Hood's call has been heard, and the long-abandoned city of Omtose Phellack is now home to a rabble of new arrivals. From the south have come Dog-Runners and Jheck warriors. From the Western Sea strange ships have grounded upon the harsh shore, with blue-skinned strangers arriving to offer Hood their swords. And from the North, down from mountain fastnesses and isolated valleys, Toblakai arrive, day and night, to pledge themselves to Hood's impossible war. Soon, all will set forth - or not at all - under the banners of the living. Soon, weapons will be drawn, with Death itself the enemy.<br><br><br>Beneath the chaos of such events, and spanning the realm and those countless other realms hidden behind its veil, magic now bleeds into the world. Unconstrained, mysterious and savage, the power that is the lifeblood of the Azathanai, K'rul, runs loose and wild. Following its scent, seeking the places of wounding where the sorcery rushes forth, entities both new and ancient are gathering. And they are eager to feed.<br><br><br><br><br><br>Comprehending the terrible risk of his gift of blood, a weakened, dying K'rul sets out, in the company of a lone guardian, to bring order to this newborn sorcery - alas, his choice of potential allies is suspect. In the name of order, K'rul seeks its greatest avowed enemy."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["31232"],
+                        "name": ["Steven Erikson"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1219169436p5/31232.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1219169436p2/31232.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/31232.Steven_Erikson"],
+                        "average_rating": ["4.19"],
+                        "ratings_count": ["196530"],
+                        "text_reviews_count": ["7532"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807677973",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:50:49 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:50:49 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077299517"],
+            "link": ["https://www.goodreads.com/review/show/1077299517"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077299171"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "19161852",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0316229296"],
+                "isbn13": ["9780316229296"],
+                "text_reviews_count": [
+                  {
+                    "_": "11",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Fifth Season"],
+                "image_url": ["https://d.gr-assets.com/books/1386803701m/19161852.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1386803701s/19161852.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/19161852-the-fifth-season"],
+                "num_pages": ["512"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["4"],
+                "publication_year": ["2015"],
+                "publication_month": ["8"],
+                "average_rating": ["3.83"],
+                "ratings_count": ["58"],
+                "description": ["This is the way the world ends. Again.<br><br>Three terrible things happen in a single day. Essun, a woman living an ordinary life in a small town, comes home to find that her husband has brutally murdered their son and kidnapped their daughter. Meanwhile, mighty Sanze -- the world-spanning empire whose innovations have been civilization's bedrock for a thousand years -- collapses as most of its citizens are murdered to serve a madman's vengeance. And worst of all, across the heart of the vast continent known as the Stillness, a great red rift has been been torn into the heart of the earth, spewing ash enough to darken the sky for years. Or centuries.<br><br>Now Essun must pursue the wreckage of her family through a deadly, dying land. Without sunlight, clean water, or arable land, and with limited stockpiles of supplies, there will be war all across the Stillness: a battle royale of nations not for power or territory, but simply for the basic resources necessary to get through the long dark night. Essun does not care if the world falls apart around her. She'll break it herself, if she must, to save her daughter."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["2917917"],
+                        "name": ["N.K. Jemisin"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1334966221p5/2917917.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1334966221p2/2917917.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/2917917.N_K_Jemisin"],
+                        "average_rating": ["3.85"],
+                        "ratings_count": ["44094"],
+                        "text_reviews_count": ["5350"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807677646",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:49:50 -0700 2014"],
+            "date_updated": ["Thu May 14 05:00:14 -0700 2015"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077299171"],
+            "link": ["https://www.goodreads.com/review/show/1077299171"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077297303"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "16278318",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0804137250"],
+                "isbn13": ["9780804137256"],
+                "text_reviews_count": [
+                  {
+                    "_": "62",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Armada"],
+                "image_url": ["https://d.gr-assets.com/books/1377284428m/16278318.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1377284428s/16278318.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/16278318-armada"],
+                "num_pages": ["368"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Crown Publishing "],
+                "publication_day": ["14"],
+                "publication_year": ["2015"],
+                "publication_month": ["7"],
+                "average_rating": ["4.04"],
+                "ratings_count": ["102"],
+                "description": ["<strong>A cinematic, inventive, heartwarming, and completely nerdtastic adventure from the bestselling author of Ready Player One</strong><br><br>It’s just another day of high school for Zack Lightman. He’s daydreaming through another boring math class, with just one more month to go until graduation and freedom—if he can make it that long without getting suspended again.<br><br>Then he glances out his classroom window and spots the flying saucer.<br><br>At first, Zack thinks he’s going crazy.<br><br>A minute later, he’s sure of it. Because the UFO he’s staring at is straight out of the videogame he plays every night, a hugely popular online flight simulator called Armada—in which gamers just happen to be protecting the earth from alien invaders.<br><br>But what Zack’s seeing is all too real. And his skills—as well as those of millions of gamers across the world—are going to be needed to save the earth from what’s about to befall it.<br><br>Yet even as he and his new comrades scramble to prepare for the alien onslaught, Zack can’t help thinking of all the science-fiction books, TV shows, and movies he grew up reading and watching, and wonder: Doesn’t something about this scenario seem a little too…familiar?"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["31712"],
+                        "name": ["Ernest Cline"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1310753539p5/31712.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1310753539p2/31712.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/31712.Ernest_Cline"],
+                        "average_rating": ["4.31"],
+                        "ratings_count": ["167727"],
+                        "text_reviews_count": ["25842"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807675987",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:44:58 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:45:00 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077297303"],
+            "link": ["https://www.goodreads.com/review/show/1077297303"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1077292880"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "21535271",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0756410436"],
+                "isbn13": ["9780756410438"],
+                "text_reviews_count": [
+                  {
+                    "_": "3518",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Slow Regard of Silent Things"],
+                "image_url": ["https://d.gr-assets.com/books/1398466695m/21535271.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1398466695s/21535271.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/21535271-the-slow-regard-of-silent-things"],
+                "num_pages": ["159"],
+                "format": ["Hardcover"],
+                "edition_information": ["First Edition"],
+                "publisher": ["DAW Books"],
+                "publication_day": ["28"],
+                "publication_year": ["2014"],
+                "publication_month": ["10"],
+                "average_rating": ["3.93"],
+                "ratings_count": ["28122"],
+                "description": ["Deep below the University, there is a dark place. Few people know of it: a broken web of ancient passageways and abandoned rooms. A young woman lives there, tucked among the sprawling tunnels of the Underthing, snug in the heart of this forgotten place.<br><br>Her name is Auri, and she is full of mysteries.<br><br><em>The Slow Regard of Silent Things</em> is a brief, bittersweet glimpse of Auri’s life, a small adventure all her own. At once joyous and haunting, this story offers a chance to see the world through Auri’s eyes. And it gives the reader a chance to learn things that only Auri knows...<br><br>In this book, Patrick Rothfuss brings us into the world of one of <em>The Kingkiller Chronicle’s</em> most enigmatic characters. Full of secrets and mysteries, <em>The Slow Regard of Silent Things</em> is the story of a broken girl trying to live in a broken world.<br><br><br><strong>AUTHOR’S FOREWORD</strong><br><br>You might not want to buy this book.<br><br>I know, that’s not the sort of thing an author is supposed to say. The marketing people aren’t going to like this. My editor is going to have a fit. But I’d rather be honest with you right out of the gate.<br><br>First, if you haven’t read my other books, you don’t want to start here.<br><br>My first two books are <em>The Name of the Wind</em> and <em>The Wise Man’s Fear</em>. If you’re curious to try my writing, start there. They’re the best introduction to my world. This book deals with Auri, one of the characters from that series. Without the context of those books, you’re probably going to feel pretty lost.<br><br>Second, even if you have read my other books, I think it’s only fair to warn you that this is a bit of a strange story. I don’t go in for spoilers, but suffice to say that this one is ... different. It doesn’t do a lot of the things a classic story is supposed to do. And if you’re looking for a continuation of Kvothe’s storyline, you’re not going to find it here.<br><br>On the other hand, if you’d like to learn more about Auri, this story has a lot to offer. If you love words and mysteries and secrets. If you’re curious about the Underthing and alchemy. If you want to know more about the hidden turnings of my world...<br><br>Well, then this book might be for you.<br><br>"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["108424"],
+                        "name": ["Patrick Rothfuss"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1351307341p5/108424.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1351307341p2/108424.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/108424.Patrick_Rothfuss"],
+                        "average_rating": ["4.50"],
+                        "ratings_count": ["474834"],
+                        "text_reviews_count": ["34791"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "807672046",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 10 22:33:38 -0700 2014"],
+            "date_updated": ["Fri Oct 10 22:33:39 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1077292880"],
+            "link": ["https://www.goodreads.com/review/show/1077292880"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1071039249"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18071697",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "18",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Shadow's Curse (The Knots Duology, #2)"],
+                "image_url": ["https://d.gr-assets.com/books/1397639466m/18071697.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1397639466s/18071697.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18071697-the-shadow-s-curse"],
+                "num_pages": [null],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Random House Children's Publishers"],
+                "publication_day": ["15"],
+                "publication_year": ["2014"],
+                "publication_month": ["4"],
+                "average_rating": ["4.02"],
+                "ratings_count": ["94"],
+                "description": ["Raim is no closer to figuring out the meaning of the broken vow that sentenced him to exile for life. But with his former best friend now a tyrannical Khan who is holding the girl Raim loves captive, he finds it hard to care. Every day, he and Draikh learn more about their powers, but it quickly becomes clear that he will never be able to stop Khareh and free Wadi unless he can free himself from the ultimate taboo of his people. Reluctantly, Raim begins the long journey down to the dangerous South, to find the maker of his oath.<br><br><br>In Khareh's camp, Wadi is more than capable of devising her own escape plan, but she's gradually realizing she might not want to. The more she learns about Khareh, the more confused she becomes. He's done unquestionably bad things, horrific even, but he's got big dreams for Darhan that might improve their dire situation. What's more, rumours of a Southern king massing an army to invade Darhan are slowly gaining ground. Only if the Northern tribes can come together under a single ruler will they have the strength to fight the South - but what if that ruler is an impulsive (albeit brilliant) young man, barely able to control his ever-growing power, and missing the one part of him that might keep him sane? Whoever conquers the desert, wins the war. And the secret to desert survival lies in Lazar, which is set to become the heart of a great battle once again."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["5833021"],
+                        "name": ["Amy McCulloch"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1336728868p5/5833021.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1336728868p2/5833021.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/5833021.Amy_McCulloch"],
+                        "average_rating": ["3.71"],
+                        "ratings_count": ["947"],
+                        "text_reviews_count": ["181"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "802283238",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 03 09:59:07 -0700 2014"],
+            "date_updated": ["Fri Oct 03 09:59:08 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1071039249"],
+            "link": ["https://www.goodreads.com/review/show/1071039249"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1071038302"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18300350",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "0",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Ancestral Machines"],
+                "image_url": ["https://d.gr-assets.com/books/1376965833m/18300350.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1376965833s/18300350.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18300350-ancestral-machines"],
+                "num_pages": ["496"],
+                "format": ["Kindle Edition"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["4"],
+                "publication_year": ["2015"],
+                "publication_month": ["8"],
+                "average_rating": ["4.20"],
+                "ratings_count": ["5"],
+                "description": ["It was named Bringer of Battles, three hundred worlds orbiting a single artificial star, three hundred battlefields where different species vie for mastery and triumph. It is a cage where war is a game -- brutal, savage and sudden. In this arena, all must bend the knee to the Lords of Permutation and the ancient sentient weapons with which they have merged. Or suffer indescribable agonies. <br><br>Trapped in this draconian crucible of death, Brannan Pyke, captain and smuggler, must fight his way to freedom. <br><br>Because in the Bringer of Battles, the game of war is played to the death and beyond."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["241496"],
+                        "name": ["Michael Cobley"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1403942010p5/241496.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1403942010p2/241496.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/241496.Michael_Cobley"],
+                        "average_rating": ["3.43"],
+                        "ratings_count": ["2868"],
+                        "text_reviews_count": ["230"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "802282439",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Fri Oct 03 09:57:36 -0700 2014"],
+            "date_updated": ["Fri Oct 03 09:57:38 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1071038302"],
+            "link": ["https://www.goodreads.com/review/show/1071038302"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["1029320803"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "21066604",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0007550235"],
+                "isbn13": ["9780007550234"],
+                "text_reviews_count": [
+                  {
+                    "_": "159",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Half the World (Shattered Sea, #2)"],
+                "image_url": ["https://d.gr-assets.com/books/1415230868m/21066604.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1415230868s/21066604.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/21066604-half-the-world"],
+                "num_pages": ["484"],
+                "format": [null],
+                "edition_information": ["First Edition"],
+                "publisher": [null],
+                "publication_day": ["12"],
+                "publication_year": ["2015"],
+                "publication_month": ["2"],
+                "average_rating": ["4.29"],
+                "ratings_count": ["3935"],
+                "description": ["<strong>Sometimes a girl is touched by Mother War.</strong><br><br>Thorn is such a girl. Desperate to avenge her dead father, she lives to fight. But she has been named a murderer by the very man who trained her to kill.<br><br><strong>Sometimes a woman becomes a warrior.</strong><br><br>She finds herself caught up in the schemes of Father Yarvi, Gettland’s deeply cunning minister. Crossing half the world to find allies against the ruthless High King, she learns harsh lessons of blood and deceit.<br><br><strong>Sometimes a warrior becomes a weapon.</strong><br><br>Beside her on the journey is Brand, a young warrior who hates to kill, a failure in his eyes and hers, but with one chance at redemption.<br><br><strong>And weapons are made for one purpose.</strong><br><br>Will Thorn forever be a pawn in the hands of the powerful, or can she carve her own path? Is there a place beyond legend for a woman with a blade?<br><br>"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["276660"],
+                        "name": ["Joe Abercrombie"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1421267339p5/276660.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1421267339p2/276660.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/276660.Joe_Abercrombie"],
+                        "average_rating": ["4.17"],
+                        "ratings_count": ["254750"],
+                        "text_reviews_count": ["15017"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2015"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "767391230",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sun Aug 17 14:37:27 -0700 2014"],
+            "date_updated": ["Sun Aug 17 14:37:28 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/1029320803"],
+            "link": ["https://www.goodreads.com/review/show/1029320803"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["811699953"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "12074927",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "264",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Fractal Prince (Jean le Flambeur, #2)"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/12074927-the-fractal-prince"],
+                "num_pages": ["320"],
+                "format": ["Kindle Edition"],
+                "edition_information": [null],
+                "publisher": ["Tor Books"],
+                "publication_day": ["27"],
+                "publication_year": ["2012"],
+                "publication_month": ["9"],
+                "average_rating": ["4.03"],
+                "ratings_count": ["3509"],
+                "description": ["“The good thing is, no one will ever die again. The bad thing is, everyone will want to.”<br>A physicist receives a mysterious paper. The ideas in it are far, far ahead of current thinking and quite, quite terrifying. In a city of “fast ones,” shadow players, and jinni, two sisters contemplate a revolution.<br>And on the edges of reality a thief, helped by a sardonic ship, is trying to break into a Schrödinger box for his patron. In the box is his freedom. Or not.<br><br>Jean de Flambeur is back. And he’s running out of time.<br><br>In Hannu Rajaniemi’s sparkling follow-up to the critically acclaimed international sensation The Quantum Thief, he returns to his awe-inspiring vision of the universe…and we discover what the future held for Earth."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["2768002"],
+                        "name": ["Hannu Rajaniemi"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1300203018p5/2768002.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1300203018p2/2768002.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/2768002.Hannu_Rajaniemi"],
+                        "average_rating": ["3.90"],
+                        "ratings_count": ["17336"],
+                        "text_reviews_count": ["1942"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "589353508",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Jan 04 11:02:57 -0800 2014"],
+            "date_updated": ["Sat Jan 04 11:02:57 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/811699953"],
+            "link": ["https://www.goodreads.com/review/show/811699953"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809170992"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18114057",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0525953183"],
+                "isbn13": ["9780525953180"],
+                "text_reviews_count": [
+                  {
+                    "_": "688",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Influx"],
+                "image_url": ["https://d.gr-assets.com/books/1374634071m/18114057.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1374634071s/18114057.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18114057-influx"],
+                "num_pages": ["406"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Dutton"],
+                "publication_day": ["20"],
+                "publication_year": ["2014"],
+                "publication_month": ["2"],
+                "average_rating": ["3.91"],
+                "ratings_count": ["7629"],
+                "description": ["<strong>What if our civilization is more advanced than we know?</strong><br><br>The <em>New York Times</em> bestselling author of <em>Daemon</em> --\"the cyberthriller against which all others will be measured\" -<em>Publishers Weekly</em>) --imagines a world in which decades of technological advances have been suppressed in an effort to prevent disruptive change.<br><br>Are smart phones really humanity's most significant innovation since the moon landings? Or can something else explain why the bold visions of the 20th century--fusion power, genetic enhancements, artificial intelligence, cures for common disease, extended human life, and a host of other world-changing advances--have remained beyond our grasp? Why has the high-tech future that seemed imminent in the 1960's failed to arrive?<br><br>Perhaps it did arrive...but only for a select few.<br><br>Particle physicist Jon Grady is ecstatic when his team achieves what they've been working toward for years: a device that can reflect gravity. Their research will revolutionize the field of physics--the crowning achievement of a career. Grady expects widespread acclaim for his entire team. The Nobel. Instead, his lab is locked down by a shadowy organization whose mission is to prevent at all costs the social upheaval sudden technological advances bring. This Bureau of Technology Control uses the advanced technologies they have harvested over the decades to fulfill their mission.<br><br>They are living in our future.<br><br>Presented with the opportunity to join the BTC and improve his own technology in secret, Grady balks, and is instead thrown into a nightmarish high-tech prison built to hold rebellious geniuses like himself. With so many great intellects confined together, can Grady and his fellow prisoners conceive of a way to usher humanity out of its artificial dark age?<br><br>And when they do, is it possible to defeat an enemy that wields a technological advantage half a century in the making?"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1956402"],
+                        "name": ["Daniel Suarez"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1265394868p5/1956402.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1265394868p2/1956402.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1956402.Daniel_Suarez"],
+                        "average_rating": ["4.14"],
+                        "ratings_count": ["47539"],
+                        "text_reviews_count": ["4558"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587407258",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:33:09 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:33:09 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809170992"],
+            "link": ["https://www.goodreads.com/review/show/809170992"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809169865"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18755248",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "0",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Orion Connection (The Legends Trilogy, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1383681807m/18755248.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1383681807s/18755248.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18755248-orion-connection"],
+                "num_pages": [null],
+                "format": ["Kindle Edition"],
+                "edition_information": ["1"],
+                "publisher": ["S DeGiorgio"],
+                "publication_day": ["4"],
+                "publication_year": ["2014"],
+                "publication_month": ["4"],
+                "average_rating": ["4.04"],
+                "ratings_count": ["27"],
+                "description": ["Read the 1st half (180 pages) of Orion Connection by S DeGiorgio for FREE (available in EPUB and PDF).<strong>\n  <a title=\"Orion Connection\" href=\"http://pursuitofmeaning.com/orionconnection/\" rel=\"nofollow\">Get my copy!</a>\n</strong><br><br>ORION CONNECTION is the first installment in the Legends Trilogy. Inspired by the Face on Mars and the unexplainable technological marvels that predate the rise of Egypt by thousands of years, S DeGiorgio offers an eerily plausible connection between Mars and the rise of modern civilization. This novel is rocket fuel for people seeking answers to the question, “Are we alone?” <br><br>It’s 2050, Earth’s resources are nearly gone, and armies guard what precious little remains. As mankind prepares to set foot on Mars, leaders of an ancient society are forced out of the shadows to protect secrets they’ve guarded for millennia. <br><br>Orion’s crew gets caught in the middle, and on the eve of Earth’s first manned mission to Mars, unknown adversaries murder four of their own. As the reserve team is pressed into service, fears grow that co-conspirators may be on board. <br><br>No one’s ever gone farther than the moon. Rumor and espionage threaten to tear the crew apart at a time when America can’t afford to fail, and they only have each other, elite training, and raw instincts to rely on. Not everyone believes they will make it home. Some even consider them expendable—acceptable losses to advance the cause. <br><br>Control of Mars’ mineral rights will reestablish America’s position as the leader of the free world. Standing down is not an option—but we’re not the only country in the race for the red planet. <br><br>“This story kept me spellbound and on the edge of my seat! I have been reading non-stop all day and just couldn’t put it down. Now I have to wait for the next book, which I hope is out soon. If you’re looking for great action, science fiction, mystery and a fantastic cast of characters, this is the book you need to read.” ~ RW"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["7374899"],
+                        "name": ["S. DeGiorgio"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1383794795p5/7374899.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1383794795p2/7374899.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/7374899.S_DeGiorgio"],
+                        "average_rating": ["4.08"],
+                        "ratings_count": ["40"],
+                        "text_reviews_count": ["14"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587406259",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:32:13 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:32:13 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809169865"],
+            "link": ["https://www.goodreads.com/review/show/809169865"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809161954"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "21418013",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": [{"$": {"nil": "true"}}],
+                "text_reviews_count": [
+                  {
+                    "_": "1707",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Lock In"],
+                "image_url": ["https://d.gr-assets.com/books/1399037491m/21418013.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1399037491s/21418013.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/21418013-lock-in"],
+                "num_pages": ["337"],
+                "format": [null],
+                "edition_information": [null],
+                "publisher": [null],
+                "publication_day": [null],
+                "publication_year": [null],
+                "publication_month": [null],
+                "average_rating": ["3.83"],
+                "ratings_count": ["15948"],
+                "description": ["<strong>A novel of our near future, from one of the most popular authors in modern SF</strong><br><br>Fifteen years from now, a new virus sweeps the globe. 95% of those afflicted experience nothing worse than fever and headaches. Four percent suffer acute meningitis, creating the largest medical crisis in history. And one percent find themselves “locked in”—fully awake and aware, but unable to move or respond to stimulus.<br><br>One per cent doesn't seem like a lot. But in the United States, that's 1.7 million people “locked in”...including the President's wife and daughter.<br><br>Spurred by grief and the sheer magnitude of the suffering, America undertakes a massive scientific initiative. Nothing can restore the ability to control their own bodies to the locked in. But then two new technologies emerge. One is a virtual-reality environment, “The Agora,” in which the locked-in can interact with other humans, both locked-in and not. The other is the discovery that a few rare individuals have brains that are receptive to being controlled by others, meaning that from time to time, those who are locked in can “ride” these people and use their bodies as if they were their own.<br><br>This skill is quickly regulated, licensed, bonded, and controlled. Nothing can go wrong. Certainly nobody would be tempted to misuse it, for murder, for political power, or worse...."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["4763"],
+                        "name": ["John Scalzi"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1407277112p5/4763.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1407277112p2/4763.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/4763.John_Scalzi"],
+                        "average_rating": ["4.00"],
+                        "ratings_count": ["267517"],
+                        "text_reviews_count": ["23475"]
+                      }
+                    ]
+                  }
+                ],
+                "published": [null]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587399651",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:25:53 -0800 2014"],
+            "date_updated": ["Thu May 15 09:36:30 -0700 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809161954"],
+            "link": ["https://www.goodreads.com/review/show/809161954"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809159455"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18751458",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["1909224995"],
+                "isbn13": ["9781909224995"],
+                "text_reviews_count": [
+                  {
+                    "_": "17",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Presence (Presence, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1383540598m/18751458.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1383540598s/18751458.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18751458-presence"],
+                "num_pages": ["180"],
+                "format": ["Paperback"],
+                "edition_information": ["The 1st Edition"],
+                "publisher": ["Netherworldbooks, Mirador Publishing"],
+                "publication_day": ["12"],
+                "publication_year": ["2013"],
+                "publication_month": ["12"],
+                "average_rating": ["3.79"],
+                "ratings_count": ["136"],
+                "description": ["<strong>&lt;&lt;&lt;&lt;&lt;&lt;  AVAILABLE RIGHT NOW  &gt;&gt;&gt;&gt;&gt;&gt;&gt;</strong><br><br><em>(Click on \"More photos\" to see Promo Posters)</em><br><br><strong>\n  <em>Our planet is just one of a bunch</em>\n</strong><br><br>Telling a story about the importance of survival within any circumstances, however strange, and showing a girl-in-a-man’s-world angle, <em>Presence</em> is a novel about Samantha, a woman in her late twenties, both smart and attractive. One day, Samantha’s regular life is suddenly turned around as the fact of her existence is somehow erased from the world. Nobody seems to remember her, her own apartment is occupied by the uninvited tenants, and even her sister, the only family Samantha has, is unable to recognize her. Lost and confused, Samantha accepts help from a stranger, a charismatic man named Archie, whom she accidentally encounters and unwillingly joins him in his fight against the silent invasion of the planet, <em>Alpha</em> planet as he calls it; and he himself happens to be a soldier from a parallel one, <em>Beta</em>. The glass wall put between Samantha’s new life and her former life makes her discover the roadside of the world, dark and silent, the hidden place where her primary instincts come to the surface and she finally feels the urge to fight for herself and for others."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["7255282"],
+                        "name": ["Perie Wolford"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1427287152p5/7255282.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1427287152p2/7255282.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/7255282.Perie_Wolford"],
+                        "average_rating": ["3.86"],
+                        "ratings_count": ["743"],
+                        "text_reviews_count": ["179"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2013"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587397633",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:23:56 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:23:56 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809159455"],
+            "link": ["https://www.goodreads.com/review/show/809159455"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809157859"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "17910112",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0765334860"],
+                "isbn13": ["9780765334862"],
+                "text_reviews_count": [
+                  {
+                    "_": "123",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Waking Engine"],
+                "image_url": ["https://d.gr-assets.com/books/1370532615m/17910112.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1370532615s/17910112.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/17910112-the-waking-engine"],
+                "num_pages": ["400"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Tor Books"],
+                "publication_day": ["11"],
+                "publication_year": ["2014"],
+                "publication_month": ["2"],
+                "average_rating": ["3.14"],
+                "ratings_count": ["469"],
+                "description": ["<em>Welcome to the City Unspoken, where Gods and Mortals come to die.</em><br><br>Contrary to popular wisdom, death is not the end, nor is it a passage to some transcendent afterlife. Those who die merely awake as themselves on one of a million worlds, where they are fated to live until they die again, and wake up somewhere new. All are born only once, but die many times . . . until they come at last to the City Unspoken, where the gateway to True Death can be found.<br><br>Wayfarers and pilgrims are drawn to the City, which is home to murderous aristocrats, disguised gods and goddesses, a sadistic faerie princess, immortal prostitutes and queens, a captive angel, gangs of feral Death Boys and Charnel Girls . . . and one very confused New Yorker.<br><br>Late of Manhattan, Cooper finds himself in a City that is not what it once was. The gateway to True Death is failing, so that the City is becoming overrun by the Dying, who clot its byzantine streets and alleys . . . and a spreading madness threatens to engulf the entire metaverse."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["3409966"],
+                        "name": ["David Edison"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1388276499p5/3409966.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1388276499p2/3409966.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/3409966.David_Edison"],
+                        "average_rating": ["3.16"],
+                        "ratings_count": ["483"],
+                        "text_reviews_count": ["140"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587396462",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:22:44 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:22:44 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809157859"],
+            "link": ["https://www.goodreads.com/review/show/809157859"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809153795"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "17910124",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0765336405"],
+                "isbn13": ["9780765336408"],
+                "text_reviews_count": [
+                  {
+                    "_": "856",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Emperor's Blades (Chronicle of the Unhewn Throne, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1369246817m/17910124.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1369246817s/17910124.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/17910124-the-emperor-s-blades"],
+                "num_pages": ["480"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Tor Books"],
+                "publication_day": ["14"],
+                "publication_year": ["2014"],
+                "publication_month": ["1"],
+                "average_rating": ["4.19"],
+                "ratings_count": ["9249"],
+                "description": ["Book one in an epic fantasy of intrigue and empire, for fans of George R. R. Martin and Douglas Hulick.<br><br>The circle is closing. The stakes are high. And old truths will live again . . .<br><br>The Emperor has been murdered, leaving the Annurian Empire in turmoil. Now his progeny must bury their grief and prepare to unmask a conspiracy.<br><br>His son Valyn, training for the empire’s deadliest fighting force, hears the news an ocean away. He expected a challenge, but after several ‘accidents’ and a dying soldier’s warning, he realizes his life is also in danger. Yet before Valyn can take action, he must survive the mercenaries’ brutal final initiation.<br><br>Meanwhile, the Emperor’s daughter, Minister Adare, hunts her father’s murderer in the capital itself. Court politics can be fatal, but she needs justice. And Kaden, heir to an empire, studies in a remote monastery. Here, the Blank God’s disciples teach their harsh ways – which Kaden must master to unlock their ancient powers. When an imperial delegation arrives, he’s learnt enough to perceive evil intent. But will this keep him alive, as long-hidden powers make their move?"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["7086094"],
+                        "name": ["Brian Staveley"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1379804626p5/7086094.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1379804626p2/7086094.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/7086094.Brian_Staveley"],
+                        "average_rating": ["4.20"],
+                        "ratings_count": ["12767"],
+                        "text_reviews_count": ["1306"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587393724",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:20:11 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:20:11 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809153795"],
+            "link": ["https://www.goodreads.com/review/show/809153795"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809152018"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "17910122",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0765336340"],
+                "isbn13": ["9780765336347"],
+                "text_reviews_count": [
+                  {
+                    "_": "54",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Rex Regis (Imager Portfolio, #8)"],
+                "image_url": ["https://d.gr-assets.com/books/1373660829m/17910122.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1373660829s/17910122.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/17910122-rex-regis"],
+                "num_pages": ["445"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Tor Books"],
+                "publication_day": ["7"],
+                "publication_year": ["2014"],
+                "publication_month": ["1"],
+                "average_rating": ["4.12"],
+                "ratings_count": ["901"],
+                "description": ["The saga of the Imager Quaeryt, Commander in the forces of Lord Bhayar, reaches a new climax as the great struggle to unify the continent of Lydar enters its final phase. Only the land of Khel remains uncommitted to Bhayar’s rule. Their decision could mean a lasting peace, or more conflict across an already war-ravaged realm.<br><br>While the conqueror of Bovaria awaits emissaries to arrive with news of Khel’s decision, other weighty matters occupy Bhayar, his sister Velora, and her husband Quaeryt—not the least of which is the fulfillment of Quaeryt's dream to create the world's first Imager academy, where the magical abilities of these powerful casters may be honed, managed, and put to the service of the common good.<br><br>But before that dream may be realized, or Khel’s fateful choice made known, the spectre of high treason threatens to unravel all that Quaeryt has achieved, catapulting him toward a fateful confrontation with Bhayar's most powerful military leaders."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1301649"],
+                        "name": ["L.E. Modesitt Jr."],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1207333645p5/1301649.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1207333645p2/1301649.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1301649.L_E_Modesitt_Jr_"],
+                        "average_rating": ["3.93"],
+                        "ratings_count": ["128276"],
+                        "text_reviews_count": ["3113"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587392602",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:18:58 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:18:58 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809152018"],
+            "link": ["https://www.goodreads.com/review/show/809152018"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["809150667"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "18458800",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["031620398X"],
+                "isbn13": ["9780316203982"],
+                "text_reviews_count": [
+                  {
+                    "_": "153",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Widow's House (The Dagger and the Coin, #4)"],
+                "image_url": ["https://d.gr-assets.com/books/1378389953m/18458800.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1378389953s/18458800.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/18458800-the-widow-s-house"],
+                "num_pages": ["495"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["5"],
+                "publication_year": ["2014"],
+                "publication_month": ["8"],
+                "average_rating": ["4.07"],
+                "ratings_count": ["2128"],
+                "description": ["THE RISE OF THE DRAGON AND THE FALL OF KINGS<br><br>Lord Regent Geder Palliako's war has led his nation and the priests of the spider goddess to victory after victory. No power has withstood him, except for the heart of the one woman he desires. As the violence builds and the cracks in his rule begin to show, he will risk everything to gain her love or else her destruction.<br><br>Clara Kalliam, the loyal traitor, is torn between the woman she once was and the woman she has become. With her sons on all sides of the conflict, her house cannot stand, but there is a power in choosing when and how to fall.<br><br>And in Porte Oliva, banker Cithrin bel Sarcour and Captain Marcus Wester learn the terrible truth that links this war to the fall of the dragons millennia before, and that to save the world, Cithrin must conquer it."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["134"],
+                        "name": ["Daniel Abraham"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1207149629p5/134.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1207149629p2/134.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/134.Daniel_Abraham"],
+                        "average_rating": ["4.15"],
+                        "ratings_count": ["102511"],
+                        "text_reviews_count": ["5531"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2014"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "587391617",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Thu Jan 02 14:17:55 -0800 2014"],
+            "date_updated": ["Thu Jan 02 14:17:55 -0800 2014"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/809150667"],
+            "link": ["https://www.goodreads.com/review/show/809150667"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802788222"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "13542400",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0441017576"],
+                "isbn13": ["9780441017577"],
+                "text_reviews_count": [
+                  {
+                    "_": "123",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Slow Apocalypse"],
+                "image_url": ["https://d.gr-assets.com/books/1345756315m/13542400.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1345756315s/13542400.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/13542400-slow-apocalypse"],
+                "num_pages": ["438"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Ace Hardcover"],
+                "publication_day": ["4"],
+                "publication_year": ["2012"],
+                "publication_month": ["9"],
+                "average_rating": ["3.42"],
+                "ratings_count": ["515"],
+                "description": ["Despite wars with Iraq and Afghanistan, as well as 9/11, the United States’ dependence on foreign oil has kept the nation tied to the Middle East. A scientist has developed a cure for America’s addiction—a slow-acting virus that feeds on petroleum, turning it solid. But he didn’t consider that his contagion of an Iraqi oil field could spread to infect the fuel supply of the entire world… In Los Angeles, screenwriter Dave Marshall heard this scenario from a retired US marine and government insider who acted as a consultant on Dave’s last film. It sounded as implausible as many of his scripts, but the reality is much more frightening than anything he could have envisioned. An ordinary guy armed with extraordinary information, Dave hopes his survivor’s instinct will kick in so he can protect his wife and daughter from the coming apocalypse that will alter the future of Earth—and humanity…"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["27341"],
+                        "name": ["John Varley"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1346593830p5/27341.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1346593830p2/27341.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/27341.John_Varley"],
+                        "average_rating": ["3.91"],
+                        "ratings_count": ["29244"],
+                        "text_reviews_count": ["1604"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582397403",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:27:55 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:27:55 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802788222"],
+            "link": ["https://www.goodreads.com/review/show/802788222"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802786078"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "11830394",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0316098124"],
+                "isbn13": ["9780316098120"],
+                "text_reviews_count": [
+                  {
+                    "_": "1175",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["2312"],
+                "image_url": ["https://d.gr-assets.com/books/1405778758m/11830394.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1405778758s/11830394.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/11830394-2312"],
+                "num_pages": ["561"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["22"],
+                "publication_year": ["2012"],
+                "publication_month": ["5"],
+                "average_rating": ["3.39"],
+                "ratings_count": ["7430"],
+                "description": ["<strong>Winner of the Nebula Award for Best SF Novel of the Year</strong><br> The year is 2312. Scientific and technological advances have opened gateways to an extraordinary future. Earth is no longer humanity's only home; new habitats have been created throughout the solar system on moons, planets, and in between. But in this year, 2312, a sequence of events will force humanity to confront its past, its present, and its future.<br><br>The first event takes place on Mercury, on the city of Terminator, itself a miracle of engineering on an unprecedented scale. It is an unexpected death, but one that might have been foreseen. For Swan Er Hong, it is an event that will change her life. Swan was once a woman who designed worlds. Now she will be led into a plot to destroy them."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1858"],
+                        "name": ["Kim Stanley Robinson"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1376955089p5/1858.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1376955089p2/1858.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1858.Kim_Stanley_Robinson"],
+                        "average_rating": ["3.77"],
+                        "ratings_count": ["105692"],
+                        "text_reviews_count": ["6410"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582395593",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:25:33 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:25:33 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802786078"],
+            "link": ["https://www.goodreads.com/review/show/802786078"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802785781"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "15698799",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": [{"$": {"nil": "true"}}],
+                "isbn13": ["9781937551452"],
+                "text_reviews_count": [
+                  {
+                    "_": "149",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Incursion"],
+                "image_url": ["https://d.gr-assets.com/books/1339279813m/15698799.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1339279813s/15698799.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/15698799-incursion"],
+                "num_pages": ["85"],
+                "format": ["ebook"],
+                "edition_information": [null],
+                "publisher": ["Riptide Publishing"],
+                "publication_day": ["9"],
+                "publication_year": ["2012"],
+                "publication_month": ["7"],
+                "average_rating": ["3.94"],
+                "ratings_count": ["519"],
+                "description": ["When the local authorities ask Kyle Juenger to hunt a shape-shifting Glyrinny spy, he can't refuse. After all, he can use the reward to replace his paralyzed legs with cyberware, and maybe even to return to his home planet. Besides, he hates the morphs-those invasive, brain-eating monstrosities whose weapons cost him his legs.<br><br>Kyle's best lead is the Scorpion, a mercenary ship armed to the teeth. Grimm, the \"Scorpion's\" pilot and captain, fascinates Kyle. He's everything Kyle lost with his legs, and he's from the same home world. He's also of the warrior caste-half priest, half savior. But Grimm's been twisted by life as a merc, and Kyle's stuck undercover as a criminal on the run.<br><br>That doesn't stop Grimm from coming on to Kyle, or from insisting he's more than the sum of his past and his useless legs. But Kyle has other concerns-like tracking a dangerous morph who could be wearing anyone's face. And as if things weren't complicated enough, Kyle can't tell if Grimm is part of the solution . . . or part of the problem."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["3074905"],
+                        "name": ["Aleksandr Voinov"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1269087737p5/3074905.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1269087737p2/3074905.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/3074905.Aleksandr_Voinov"],
+                        "average_rating": ["4.07"],
+                        "ratings_count": ["31744"],
+                        "text_reviews_count": ["7103"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582395340",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:25:09 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:25:09 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802785781"],
+            "link": ["https://www.goodreads.com/review/show/802785781"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802785498"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "13542606",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0525952616"],
+                "isbn13": ["9780525952619"],
+                "text_reviews_count": [
+                  {
+                    "_": "592",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Kill Decision"],
+                "image_url": ["https://d.gr-assets.com/books/1332376530m/13542606.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1332376530s/13542606.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/13542606-kill-decision"],
+                "num_pages": ["400"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Dutton Adult"],
+                "publication_day": ["19"],
+                "publication_year": ["2012"],
+                "publication_month": ["7"],
+                "average_rating": ["3.93"],
+                "ratings_count": ["6061"],
+                "description": ["<strong>The shocking techno-thriller that cements Daniel Suarez’s status as the heir to Michael Crichton and Tom Clancy—a terrifying, breathtaking, and all-too-plausible vision of the world’s near future</strong>.<br><br> Unmanned weaponized drones already exist—they’re widely used by America in our war efforts in the Middle East. In <em>Kill Decision</em>, bestselling author Daniel Suarez takes that fact and the real science behind it one step further, with frightening results.<br><br> Linda McKinney is a myrmecologist, a scientist who studies the social structure of ants. Her academic career has left her entirely unprepared for the day her sophisticated research is conscripted by unknown forces to help run an unmanned—and thanks to her research, automated—drone army. Odin is the secretive Special Ops soldier with a unique insight into the faceless enemy who has begun to attack the American homeland with drones programmed to seek, identify, and execute targets without human intervention.<br><br> Together, McKinney and Odin must slow this advance long enough for the world to recognize its destructive power, because for thousands of years the “kill decision” during battle has remained in the hands of humans—and off-loading that responsibility to machines will bring unintended, possibly irreversible, consequences. But as forces even McKinney and Odin don’t understand begin to gather, and death rains down from above, it may already be too late to save humankind from destruction at the hands of our own technology."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1956402"],
+                        "name": ["Daniel Suarez"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1265394868p5/1956402.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1265394868p2/1956402.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1956402.Daniel_Suarez"],
+                        "average_rating": ["4.14"],
+                        "ratings_count": ["47539"],
+                        "text_reviews_count": ["4558"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582395067",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:24:47 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:24:47 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802785498"],
+            "link": ["https://www.goodreads.com/review/show/802785498"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802785157"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "12952546",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0061958794"],
+                "isbn13": ["9780061958793"],
+                "text_reviews_count": [
+                  {
+                    "_": "17",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Deep Sky"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/12952546-deep-sky"],
+                "num_pages": ["400"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["Harper"],
+                "publication_day": ["27"],
+                "publication_year": ["2011"],
+                "publication_month": ["12"],
+                "average_rating": ["4.05"],
+                "ratings_count": ["2115"],
+                "description": ["The anomaly called the Breach is the government’s most carefully guarded secret.<br><br>But there is another secret even less known . . . and far more terrifying.<br><br>As the U.S. President addresses the nation fromthe Oval Office, a missile screams toward the White House. In a lightning flash, the Chief Executive is dead, his mansion in ruins, and two cryptic words are the only clue to the assassins’ motives: <em>“See Scalar.”</em><br><br>Now Travis Chase of the covert agency Tangent—caretakers of the Breach and all its grim wonders—along with partner and lover Paige Campbell and technology expert Bethany Stewart, have only twenty-four hours to unearth a decades-old mystery once spoken of in terrified whispers by the long since silenced. But their breakneck race cross-country—and back through time and malleable memory—is calling the total destructive might of a shadow government down upon them. For Travis Chase has a dark destiny he cannot be allowed to fulfill . . ."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["4917483"],
+                        "name": ["Patrick  Lee"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1307552046p5/4917483.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1307552046p2/4917483.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/4917483.Patrick_Lee"],
+                        "average_rating": ["4.03"],
+                        "ratings_count": ["12333"],
+                        "text_reviews_count": ["1522"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2011"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582394776",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:24:26 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:24:26 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802785157"],
+            "link": ["https://www.goodreads.com/review/show/802785157"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802784450"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "12040447",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0765332000"],
+                "isbn13": ["9780765332004"],
+                "text_reviews_count": [
+                  {
+                    "_": "781",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Shadows in Flight (Ender's Shadow, #5)"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/12040447-shadows-in-flight"],
+                "num_pages": ["237"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Tor Books"],
+                "publication_day": ["17"],
+                "publication_year": ["2012"],
+                "publication_month": ["1"],
+                "average_rating": ["3.70"],
+                "ratings_count": ["9015"],
+                "description": ["Ender’s Shadow explores the stars in this all-new novel...<br><br>At the end of <em>Shadow of the Giant</em>, Bean flees to the stars with three of his children--the three who share the engineered genes that gave him both hyper-intelligence and a short, cruel physical life. The time dilation granted by the speed of their travel gives Earth’s scientists generations to seek a cure, to no avail. In time, they are forgotten--a fading ansible signal speaking of events lost to Earth’s history. But the Delphikis are about to make a discovery that will let them save themselves, and perhaps all of humanity in days to come.<br><br>For there in space before them lies a derelict Formic colony ship. Aboard it, they will find both death and wonders--the life support that is failing on their own ship, room to grow, and labs in which to explore their own genetic anomaly and the mysterious disease that killed the ship’s colony.<br> <br><br><em>Shadows in Flight</em> is the fifth novel in Orson Scott Card's Shadow Series."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["589"],
+                        "name": ["Orson Scott Card"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1294099952p5/589.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1294099952p2/589.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/589.Orson_Scott_Card"],
+                        "average_rating": ["4.04"],
+                        "ratings_count": ["1661593"],
+                        "text_reviews_count": ["76272"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582394156",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:23:39 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:23:39 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802784450"],
+            "link": ["https://www.goodreads.com/review/show/802784450"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802783047"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "13038833",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0593062175"],
+                "isbn13": ["9780593062173"],
+                "text_reviews_count": [
+                  {
+                    "_": "162",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Forge of Darkness (The Kharkanas Trilogy #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1337989053m/13038833.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1337989053s/13038833.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/13038833-forge-of-darkness"],
+                "num_pages": ["760"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Bantam Press"],
+                "publication_day": ["2"],
+                "publication_year": ["2012"],
+                "publication_month": ["8"],
+                "average_rating": ["4.15"],
+                "ratings_count": ["2856"],
+                "description": ["<strong>Now is the time to tell the story of an ancient realm, a tragic tale that sets the stage for all the tales yet to come and all those already told...</strong><br><br>It's a conflicted time in Kurald Galain, the realm of Darkness, where Mother Dark reigns. But this ancient land was once home to many a power. and even death is not quite eternal. The commoners' great hero, Vatha Urusander, is being promoted by his followers to take Mother Dark's hand in marriage, but her Consort, Lord Draconus, stands in the way of such ambitions. The impending clash sends fissures throughout the realm, and as the rumors of civil war burn through the masses, an ancient power emerges from the long dead seas. Caught in the middle of it all are the First Sons of Darkness, Anomander, Andarist, and Silchas Ruin of the Purake Hold...<br>Steven Erikson entered the pantheon of great fantasy writers with his debut <em>Gardens of the Moon</em>. Now he returns with the first novel in a trilogy that takes place millennia before the events of the <em>Malazan Book of the Fallen and </em>introduces readers to Kurald Galain, the warren of Darkness. It is the epic story of a realm whose fate plays a crucial role in shaping the world of the Malazan Empire."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["31232"],
+                        "name": ["Steven Erikson"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1219169436p5/31232.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1219169436p2/31232.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/31232.Steven_Erikson"],
+                        "average_rating": ["4.19"],
+                        "ratings_count": ["196530"],
+                        "text_reviews_count": ["7532"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582392942",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:22:06 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:22:06 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802783047"],
+            "link": ["https://www.goodreads.com/review/show/802783047"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802782030"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "12759057",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["1841498890"],
+                "isbn13": ["9781841498898"],
+                "text_reviews_count": [
+                  {
+                    "_": "257",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The King's Blood (The Dagger and the Coin, #2)"],
+                "image_url": ["https://d.gr-assets.com/books/1356495172m/12759057.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1356495172s/12759057.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/12759057-the-king-s-blood"],
+                "num_pages": ["501"],
+                "format": ["Paperback"],
+                "edition_information": [null],
+                "publisher": ["Orbit"],
+                "publication_day": ["3"],
+                "publication_year": ["2012"],
+                "publication_month": ["5"],
+                "average_rating": ["4.01"],
+                "ratings_count": ["5505"],
+                "description": ["The sequel to the acclaimed series launch, The Dragon’s Path, is the perfect summer read for fans of George R. R. Martin.<br><br>War casts its shadow over the lands that the dragons once ruled. Only the courage of a young woman with the mind of a gambler and loyalty to no one stands between hope and universal darkness.<br><br>The high and powerful will fall, the despised and broken shall rise up, and everything will be remade. And quietly, almost beneath the notice of anyone, an old, broken-hearted warrior and an apostate priest will begin a terrible journey with an impossible goal: destroy a Goddess before she eats the world."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["134"],
+                        "name": ["Daniel Abraham"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1207149629p5/134.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1207149629p2/134.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/134.Daniel_Abraham"],
+                        "average_rating": ["4.15"],
+                        "ratings_count": ["102511"],
+                        "text_reviews_count": ["5531"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582392032",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:21:00 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:21:00 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802782030"],
+            "link": ["https://www.goodreads.com/review/show/802782030"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802781836"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "11487807",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0756407117"],
+                "isbn13": ["9780756407117"],
+                "text_reviews_count": [
+                  {
+                    "_": "893",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["Throne of the Crescent Moon (The Crescent Moon Kingdoms, #1)"],
+                "image_url": ["https://d.gr-assets.com/books/1344256189m/11487807.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1344256189s/11487807.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/11487807-throne-of-the-crescent-moon"],
+                "num_pages": ["274"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["DAW"],
+                "publication_day": ["7"],
+                "publication_year": ["2012"],
+                "publication_month": ["2"],
+                "average_rating": ["3.60"],
+                "ratings_count": ["5851"],
+                "description": ["From Saladin Ahmed, finalist for the Nebula and Campbell Awards, comes one of the year’s most anticipated fantasy debuts: THRONE OF THE CRESCENT MOON, a fantasy adventure with all the magic of <em>The Arabian Nights</em>.<br><br>The Crescent Moon Kingdoms, home to djenn and ghuls, holy warriors and heretics, are at the boiling point of a power struggle between the iron-fisted Khalif and the mysterious master thief known as the Falcon Prince. In the midst of this brewing rebellion a series of brutal supernatural murders strikes at the heart of the Kingdoms. It is up to a handful of heroes to learn the truth behind these killings.<br><br>Doctor Adoulla Makhslood, “the last real ghul hunter in the great city of Dhamsawaat,” just wants a quiet cup of tea. Three score and more years old, he has grown weary of hunting monsters and saving lives, and is more than ready to retire from his dangerous and demanding vocation. But when an old flame’s family is murdered, Adoulla is drawn back to the hunter’s path.<br><br>Raseed bas Raseed, Adoulla’s young assistant, is a hidebound holy warrior whose prowess is matched only by his piety. But even as Raseed’s sword is tested by ghuls and manjackals, his soul is tested when he and Adoulla cross paths with the tribeswoman Zamia.<br><br>Zamia Badawi, Protector of the Band, has been gifted with the near-mythical power of the lion-shape, but shunned by her people for daring to take up a man’s title. She lives only to avenge her father’s death. Until she learns that Adoulla and his allies also hunt her father’s killer. Until she meets Raseed.<br><br>When they learn that the murders and the Falcon Prince’s brewing revolution are connected, the companions must race against time—and struggle against their own misgivings—to save the life of a vicious despot. In so doing they discover a plot for the Throne of the Crescent Moon that threatens to turn Dhamsawaat, and the world itself, into a blood-soaked ruin."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["4025591"],
+                        "name": ["Saladin Ahmed"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1325700680p5/4025591.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1325700680p2/4025591.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/4025591.Saladin_Ahmed"],
+                        "average_rating": ["3.63"],
+                        "ratings_count": ["7889"],
+                        "text_reviews_count": ["1470"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2012"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582391879",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:20:48 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:20:48 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802781836"],
+            "link": ["https://www.goodreads.com/review/show/802781836"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802779286"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "16142151",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0786963719"],
+                "isbn13": ["9780786963713"],
+                "text_reviews_count": [
+                  {
+                    "_": "324",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Companions (The Sundering, #1; Legend of Drizzt, #24)"],
+                "image_url": ["https://d.gr-assets.com/books/1372353196m/16142151.jpg"],
+                "small_image_url": ["https://d.gr-assets.com/books/1372353196s/16142151.jpg"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/16142151-the-companions"],
+                "num_pages": ["378"],
+                "format": ["Hardcover"],
+                "edition_information": [null],
+                "publisher": ["Wizards of the Coast"],
+                "publication_day": ["6"],
+                "publication_year": ["2013"],
+                "publication_month": ["8"],
+                "average_rating": ["4.30"],
+                "ratings_count": ["3146"],
+                "description": ["This latest installment in <em>New York Times</em> best-selling author R.A. Salvatore's beloved fantasy saga, <em>The Companions</em> moves Salvatore's signature hero Drizzt into a new era of the Forgotten Realms. As Drizzt's fate hangs in the balance, he reflects on the lives of the trusted allies who stood by his side throughout his early life--the friends now known as the Companions of the Hall. Meanwhile, the first stirrings of the Sundering begin."],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["1023510"],
+                        "name": ["R.A. Salvatore"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1207159077p5/1023510.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1207159077p2/1023510.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/1023510.R_A_Salvatore"],
+                        "average_rating": ["4.12"],
+                        "ratings_count": ["496698"],
+                        "text_reviews_count": ["8820"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2013"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582389910",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:18:16 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:18:16 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802779286"],
+            "link": ["https://www.goodreads.com/review/show/802779286"],
+            "owned": ["0"]
+          },
+          {
+            "id": ["802777431"],
+            "book": [
+              {
+                "id": [
+                  {
+                    "_": "2890090",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "isbn": ["0553804693"],
+                "isbn13": ["9780553804690"],
+                "text_reviews_count": [
+                  {
+                    "_": "1977",
+                    "$": {"type": "integer"}
+                  }
+                ],
+                "title": ["The Republic of Thieves (Gentleman Bastard, #3)"],
+                "image_url": ["https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"],
+                "small_image_url": ["https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png"],
+                "large_image_url": [null],
+                "link": ["https://www.goodreads.com/book/show/2890090-the-republic-of-thieves"],
+                "num_pages": ["650"],
+                "format": ["Hardcover"],
+                "edition_information": ["First Edition"],
+                "publisher": ["Del Rey"],
+                "publication_day": ["8"],
+                "publication_year": ["2013"],
+                "publication_month": ["10"],
+                "average_rating": ["4.21"],
+                "ratings_count": ["27099"],
+                "description": ["With what should have been the greatest heist of their career gone spectacularly sour, Locke and his trusted partner, Jean, have barely escaped with their lives. Or at least Jean has. But Locke is slowly succumbing to a deadly poison that no alchemist or physiker can cure. Yet just as the end is near, a mysterious Bondsmage offers Locke an opportunity that will either save him or finish him off once and for all.<br><br>Magi political elections are imminent, and the factions are in need of a pawn. If Locke agrees to play the role, sorcery will be used to purge the venom from his body - though the process will be so excruciating he may well wish for death. Locke is opposed, but two factors cause his will to crumble: Jean's imploring - and the Bondsmage's mention of a woman from Locke's past: Sabetha. She is the love of his life, his equal in skill and wit, and now, his greatest rival. <br><br>Locke was smitten with Sabetha from his first glimpse of her as a young fellow orphan and thief-in-training. But after a tumultuous courtship, Sabetha broke away. Now they will reunite in yet another clash of wills. For faced with his one and only match in both love and trickery, Locke must choose whether to fight Sabetha - or to woo her. It is a decision on which both their lives may depend.<br><br>"],
+                "authors": [
+                  {
+                    "author": [
+                      {
+                        "id": ["73149"],
+                        "name": ["Scott Lynch"],
+                        "role": [null],
+                        "image_url": ["\nhttps://d.gr-assets.com/authors/1332432746p5/73149.jpg\n"],
+                        "small_image_url": ["\nhttps://d.gr-assets.com/authors/1332432746p2/73149.jpg\n"],
+                        "link": ["https://www.goodreads.com/author/show/73149.Scott_Lynch"],
+                        "average_rating": ["4.23"],
+                        "ratings_count": ["161594"],
+                        "text_reviews_count": ["11854"]
+                      }
+                    ]
+                  }
+                ],
+                "published": ["2013"]
+              }
+            ],
+            "rating": ["0"],
+            "votes": ["0"],
+            "spoiler_flag": ["false"],
+            "spoilers_state": ["none"],
+            "shelves": [
+              {
+                "shelf": [
+                  {
+                    "$": {
+                      "name": "to-read",
+                      "exclusive": "true",
+                      "review_shelf_id": "582388467",
+                      "sortable": "true"
+                    }
+                  }
+                ]
+              }
+            ],
+            "recommended_for": [null],
+            "recommended_by": [null],
+            "started_at": [null],
+            "read_at": [null],
+            "date_added": ["Sat Dec 28 12:16:25 -0800 2013"],
+            "date_updated": ["Sat Dec 28 12:16:25 -0800 2013"],
+            "read_count": [null],
+            "body": [null],
+            "comments_count": ["0"],
+            "url": ["https://www.goodreads.com/review/show/802777431"],
+            "link": ["https://www.goodreads.com/review/show/802777431"],
+            "owned": ["0"]
+          }
+        ]
+      }
+    ]
+  }
+}
