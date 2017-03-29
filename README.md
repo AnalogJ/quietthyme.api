@@ -1,7 +1,7 @@
 # QuietThyme API
 
 [![CircleCI](https://circleci.com/gh/AnalogJ/quietthyme.api.svg?style=shield)](https://circleci.com/gh/AnalogJ/quietthyme.api)
-[![Coverage Status](https://coveralls.io/repos/github/AnalogJ/quietthyme.api/badge.svg)](https://coveralls.io/github/AnalogJ/quietthyme.api)
+[![Coverage Status](https://coveralls.io/repos/github/AnalogJ/quietthyme.api/badge.svg?branch=beta)](https://coveralls.io/github/AnalogJ/quietthyme.api?branch=beta)
 [![GitHub license](https://img.shields.io/github/license/AnalogJ/quietthyme.api.svg)](https://github.com/AnalogJ/quietthyme.api/blob/master/LICENSE)
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 
