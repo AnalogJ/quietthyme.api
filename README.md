@@ -1,5 +1,10 @@
 # QuietThyme API
 
+[![CircleCI](https://circleci.com/gh/AnalogJ/quietthyme.api.svg?style=shield)](https://circleci.com/gh/AnalogJ/quietthyme.api)
+[![Coverage Status](https://coveralls.io/repos/github/AnalogJ/quietthyme.api/badge.svg)](https://coveralls.io/github/AnalogJ/quietthyme.api)
+[![GitHub license](https://img.shields.io/github/license/AnalogJ/quietthyme.api.svg)](https://github.com/AnalogJ/quietthyme.api/blob/master/LICENSE)
+[![Serverless](https://raw.githubusercontent.com/serverless/assets/master/badges/serverless_badge_v2.svg)]
+
 # TODO:
 - update the cloudformation-resources.json file to generate the Postgres RDS, IAM role & SG's
 - Setup status codes and general wrapper for all responses - https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda
