@@ -15,7 +15,7 @@ authService.createEmailUser = function(db_client, name, email, password){
     return q.spread([SecurityService.generate_catalog_token(), SecurityService.hash_password(password)],
         function(catalog_token, password_hash){
             return db_client('users')
-                .returning(['uid', 'catalog_token','email'])
+                .returning(['uid', 'catalog_token','email', 'name', 'plan'])
                 .insert({
                     "name": name,
                     "email": email,

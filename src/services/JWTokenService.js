@@ -15,13 +15,13 @@ var jwt = require('jsonwebtoken'),
     tokenSecret = process.env.ENCRYPTION_JWT_PASSPHRASE;
 
 // Generates a token from supplied payload
-module.exports.issue = function(payload) {
+module.exports.issue = function(payload, type) {
     debug('Creating JWT: %o', payload);
     return jwt.sign(
         payload,
         tokenSecret, // Token Secret that we sign it with
         {
-            expiresIn : "3h" // Token expires in 3 hours
+            expiresIn : (type == 'calibre' ? "7d" : "3h") // Web expires in 3 hours, Calibre in 7days
         }
     );
 };

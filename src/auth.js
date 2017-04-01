@@ -35,7 +35,13 @@ module.exports = {
             .then(function(user){
                 debug("Newly created user: %o", user);
                 return {
-                    token: JWTokenService.issue({uid: user[0].uid, catalog_token: user[0].catalog_token, name: user[0].name, email: user[0].email })
+                    token: JWTokenService.issue({
+                        uid: user[0].uid,
+                        plan: user.plan,
+                        catalog_token: user[0].catalog_token,
+                        name: user[0].name,
+                        email: user[0].email
+                    })
                 }
             })
             .then(Helpers.successHandler(cb))
@@ -71,7 +77,13 @@ module.exports = {
             })
             .then(function(user){
                 return {
-                    token: JWTokenService.issue({uid: user.uid, catalog_token: user.catalog_token, name: user.name, email: user.email })
+                    token: JWTokenService.issue({
+                        uid: user.uid,
+                        plan: user.plan,
+                        catalog_token: user.catalog_token,
+                        name: user.name,
+                        email: user.email
+                    })
                 }
             })
             .then(Helpers.successHandler(cb))
