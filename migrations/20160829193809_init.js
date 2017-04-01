@@ -9,7 +9,7 @@ exports.up = function(knex, Promise) {
             table.string('email').nullable().unique();
             table.string('password_hash').nullable(); //salt is automatically included
 
-            table.enum('plan',['basic','reader','library']).notNullable().defaultTo('basic');
+            table.enum('plan',['none','basic','reader','library']).notNullable().defaultTo('none');
 
             table.string('library_uuid').nullable().unique();
 
