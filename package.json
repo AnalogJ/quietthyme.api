@@ -34,13 +34,14 @@
     "q": "^1.4.1",
     "q-combinators": "^1.0.0",
     "request": "^2.79.0",
+    "serverless-mocha-plugin": "^1.3.3",
+    "serverless-plugin-optimize": "^1.0.0-rc.15",
+    "serverless-prune-plugin": "^1.0.4",
+    "stripe": "^4.17.0",
     "tmp": "0.0.31",
     "to-markdown": "^3.0.3",
     "xkcd-password": "^1.2.0",
-    "xml-schema": "^2.2.0",
-    "serverless-mocha-plugin": "^1.3.3",
-    "serverless-plugin-optimize": "^1.0.0-rc.15",
-    "serverless-prune-plugin": "^1.0.4"
+    "xml-schema": "^2.2.0"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
