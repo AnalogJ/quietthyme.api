@@ -34,7 +34,8 @@ exports.up = function(knex, Promise) {
             table.json('library_folder'); //this is "library" folder that all author folders are created in.
             table.json('blackhole_folder'); //this is "blackhole" folder that pending books should be copied into.
 
-            table.string('event_cursor')
+            table.string('stripe_sub_id'); //this is the stripe subscription id
+            table.string('event_cursor') //this is the current kloudless cursor for events
             table.unique(['service_type', 'service_id']);
 
             table.enum('calibre_location_code',['main','A','B']); //this location code is used by the calibre plugin to determine which storage providers are available (main, a, b)

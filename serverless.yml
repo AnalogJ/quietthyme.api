@@ -34,6 +34,8 @@ provider:
   #    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
   #    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
   #    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
+
+    STRIPE_SECRET_KEY: ${env:${opt:stage, self:provider.stage}_STRIPE_SECRET_KEY, env:STRIPE_SECRET_KEY}
     OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
     OAUTH_GOODREADS_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_SECRET, env:OAUTH_GOODREADS_CLIENT_SECRET}
 
@@ -216,31 +218,31 @@ functions:
 
 # OAUTH connect & callback endpoints
 
-  callback:
-    handler: src/link.callback
-    timeout: 120
-    events:
-      - http:
-          path: callback/{serviceType}
-          method: get
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-          request:
-            parameters:
-              querystrings:
-                code: true # code querystring parameter is required.
-
-  connect:
-    handler: src/link.connect
-    timeout: 120
-    events:
-      - http:
-          path: connect/{serviceType}
-          method: get
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
+#  callback:
+#    handler: src/link.callback
+#    timeout: 120
+#    events:
+#      - http:
+#          path: callback/{serviceType}
+#          method: get
+#          response: ${self:custom.standardResponses}
+#          integration: lambda
+#          cors: true
+#          request:
+#            parameters:
+#              querystrings:
+#                code: true # code querystring parameter is required.
+#
+#  connect:
+#    handler: src/link.connect
+#    timeout: 120
+#    events:
+#      - http:
+#          path: connect/{serviceType}
+#          method: get
+#          response: ${self:custom.standardResponses}
+#          integration: lambda
+#          cors: true
 
 
 # auth methods (login/register/calibre)
@@ -264,13 +266,12 @@ functions:
           integration: lambda
           cors: true
 
-# Authenticated API Methods
-  authstatus:
-    handler: src/auth.status
+  userplan:
+    handler: src/user.plan
     events:
       - http:
-          path: auth/status
-          method: GET
+          path: user/plan
+          method: POST
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
