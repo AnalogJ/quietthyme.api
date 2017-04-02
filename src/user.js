@@ -48,7 +48,7 @@ module.exports = {
                                 })
                                 .then(function(subscription){
                                     return db_client('users')
-                                        .where({uid:user_data.id})
+                                        .where({uid:user_data.uid})
                                         .update({stripe_sub_id: subscription.id})
                                 })
                         }

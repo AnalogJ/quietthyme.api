@@ -15,6 +15,8 @@ exports.up = function(knex, Promise) {
 
             table.string('catalog_token').nullable().unique();
 
+            table.string('stripe_sub_id'); //this is the stripe subscription id
+
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.timestamp('updated_at').defaultTo(knex.fn.now());
         }),
@@ -34,7 +36,6 @@ exports.up = function(knex, Promise) {
             table.json('library_folder'); //this is "library" folder that all author folders are created in.
             table.json('blackhole_folder'); //this is "blackhole" folder that pending books should be copied into.
 
-            table.string('stripe_sub_id'); //this is the stripe subscription id
             table.string('event_cursor') //this is the current kloudless cursor for events
             table.unique(['service_type', 'service_id']);
 
