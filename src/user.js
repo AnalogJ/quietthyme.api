@@ -61,7 +61,7 @@ module.exports = {
                             })
                             .then(function(){
                                 //return the new token
-                                debug("Updated token: %o", user);
+                                debug("Updated token: %o", user_data);
                                 return {
                                     token: JWTokenService.issue({
                                         uid: user_data.uid,
