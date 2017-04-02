@@ -23,16 +23,17 @@ module.exports = {
                     .where('uid', auth.uid)
                     .then(function(user_data){
                         //we have a valid user/auth data.
+                        var promise = null;
 
                         if(user_data.stripe_sub_id){
                             //already have a subscription id, lets update their plan
-                            return stripe.subscriptions.update(user_data.stripe_sub_id, {
+                            promise = stripe.subscriptions.update(user_data.stripe_sub_id, {
                                 plan: event.body.planId
                             })
                         }
                         else {
                             //lets create a stripe customer and associate the token with it.
-                            return stripe.customers.create({
+                            promise = stripe.customers.create({
                                 email: user_data.email,
                                 source: event.body.token.id,
                                 metadata: {
@@ -46,17 +47,32 @@ module.exports = {
                                             plan: event.body.planId
                                         })
                                 })
-                                .then(function(subscription){
-                                    return db_client('users')
-                                        .where({uid:user_data.uid})
-                                        .update({stripe_sub_id: subscription.id})
-                                })
                         }
+
+
+                        return promise
+                            .then(function(subscription){
+                                return db_client('users')
+                                    .where({uid:user_data.uid})
+                                    .update({
+                                        plan: event.body.planId.split('_')[0],
+                                        stripe_sub_id: subscription.id
+                                    })
+                            })
+                            .then(function(){
+                                //return the new token
+                                debug("Updated token: %o", user);
+                                return {
+                                    token: JWTokenService.issue({
+                                        uid: user_data.uid,
+                                        plan: event.body.planId.split('_')[0],
+                                        catalog_token: user_data.catalog_token,
+                                        name: user_data.name,
+                                        email: user_data.email
+                                    })
+                                }
+                            })
                     })
-            })
-            .then(function(){
-                //TODO: this should send back a new token with updated plan.
-                return {}
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
