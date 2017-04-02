@@ -34,7 +34,7 @@ module.exports = {
                             //lets create a stripe customer and associate the token with it.
                             return stripe.customers.create({
                                 email: user_data.email,
-                                source: event.body.token,
+                                source: event.body.token.id,
                                 metadata: {
                                     user_id: user_data.uid
                                 }
@@ -55,6 +55,7 @@ module.exports = {
                     })
             })
             .then(function(){
+                //TODO: this should send back a new token with updated plan.
                 return {}
             })
             .then(Helpers.successHandler(cb))
