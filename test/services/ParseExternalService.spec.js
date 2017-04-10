@@ -3,6 +3,16 @@ var ParseExternalService = require('../../src/services/ParseExternalService')
 //this is just simple integration testing
 describe('ParseExternalService', function () {
 
+    describe('#read_opf_file()', function(){
+        it('Should correctly read opf file', function(done){
+            ParseExternalService.read_opf_file('./test/fixtures/fatherg-oscard.opf')
+                .then(function(opf_data){
+                    opf_data.title.should.eql('Gatefather')
+                })
+                .then(done, done)
+        })
+    })
+
     describe('#parse_goodreads_book_details()', function () {
         var goodreads_book_basic;
 
