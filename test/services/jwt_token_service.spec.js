@@ -1,5 +1,5 @@
 var should = require('should');
-var JWTokenService = require('../../src/services/JWTokenService')
+var JWTokenService = require('../../src/services/jwt_token_service')
 //this is just simple integration testing
 describe('JWTokenService', function () {
     describe('issue', function(){

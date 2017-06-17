@@ -2,13 +2,14 @@
 const debug = require('debug')('quietthyme:auth');
 
 var q = require('q'),
-    HttpError = require('./common/HttpError'),
-    DBService = require('./services/DBService'),
-    AuthService = require('./services/AuthService'),
-    JWTokenService = require('./services/JWTokenService'),
-    SecurityService = require('./services/SecurityService'),
+    HttpError = require('./common/http_error'),
+    DBService = require('./services/db_service'),
+    AuthService = require('./services/auth_service'),
+    JWTokenService = require('./services/jwt_token_service'),
+    SecurityService = require('./services/security_service'),
     Helpers = require('./common/helpers'),
-    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    nconf = require('./common/nconf'),
+    stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY'));
 
 module.exports = {
     plan: function(event, context, cb){

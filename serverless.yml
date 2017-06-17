@@ -39,20 +39,10 @@ provider:
     OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
     OAUTH_GOODREADS_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_SECRET, env:OAUTH_GOODREADS_CLIENT_SECRET}
 
-    PG_CONNECTION_STRING: ${env:${opt:stage, self:provider.stage}_PG_CONNECTION_STRING, env:PG_CONNECTION_STRING}
     KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
     KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
     DEBUG: ${self:custom.variables.${opt:stage, self:provider.stage}.debug}
     NODE_ENV: production
-
-    # content bucket contains thumbnails and files that will be served directly from S3.
-    QUIETTHYME_CONTENT_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-content
-
-    # upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
-    # - files manually uploaded via WebUI
-    # - files uploaded by Calibre client
-    QUIETTHYME_UPLOAD_BUCKET: ${self:service}-${opt:stage, self:provider.stage}-upload
-
 
 
   #TODO: these vpc rules are required because we've hardcoded postgres connection during testing.
@@ -179,7 +169,7 @@ custom:
       debug: ''
     beta:
       cleanup_enabled: false
-      debug: knex:*,pool2,quietthyme:*
+      debug: quietthyme:*
 
 
 # you can add packaging information here

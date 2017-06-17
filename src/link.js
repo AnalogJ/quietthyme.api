@@ -3,11 +3,10 @@ const debug = require('debug')('quietthyme:link');
 
 var cloudrail = require("cloudrail-si");
 var blocked = require('blocked');
-cloudrail.Settings.setKey(process.env.CLOUDRAIL_API_KEY);
 // var q = require('q');
 // var uuid = require('node-uuid');
 var callback_url = "https://api.quietthyme.com/beta/callback/";
-// var DBService = require('./services/DBService.js');
+// var DBService = require('./services/db_service.js');
 // var Constants = require('./common/constants');
 
 

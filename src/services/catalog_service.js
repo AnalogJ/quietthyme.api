@@ -2,18 +2,19 @@
 const debug = require('debug')('quietthyme:CatalogService');
 
 var XMLSchema = require("xml-schema");
-var schemas = require('../common/schemas');
-var DBService = require('../services/DBService');
-var Base64Service = require('../services/Base64Service');
+var schemas = require('../common/catalog_schemas');
+var DBService = require('../services/db_service');
+var Base64Service = require('../services/base64_service');
 var Constants = require('../common/constants');
+var nconf = require('../common/nconf');
 //private methods
 function web_endpoint(){
-    return 'https://' + (process.env.STAGE == 'master' ? 'www' : 'beta') + '.quietthyme.com'
+    return 'https://' + (nconf.get('STAGE') == 'master' ? 'www' : 'beta') + '.quietthyme.com'
 }
 module.exports.web_endpoint = web_endpoint;
 
 function api_endpoint(){
-    return 'https://api.quietthyme.com/'+process.env.STAGE + '/catalog'
+    return 'https://api.quietthyme.com/'+nconf.get('STAGE') + '/catalog'
 }
 
 function self_link(token, path, type){

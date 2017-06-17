@@ -1,5 +1,5 @@
 var should = require('should');
-var PipelineService = require('../../src/services/PipelineService')
+var PipelineService = require('../../src/services/pipeline_service')
 //this is just simple integration testing
 describe.skip('PipelineService', function () {
     describe('#create_with_pipeline()', function () {

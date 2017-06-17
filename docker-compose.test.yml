@@ -1,0 +1,20 @@
+version: '2.1'
+services:
+  api:
+    build: .
+    environment:
+    #all the environmental variables here should match serverless.yml.
+      - NODE_ENV=test
+      - STAGE=test
+      - TEST_DATABASE_HOSTNAME=database
+    depends_on:
+      database:
+        condition: service_started
+      s3:
+        condition: service_started
+  database:
+    image: "vidsyhq/fake-dynamodb"
+    ports:
+      - 6001:6001
+  s3:
+    image: "lphoward/fake-s3"

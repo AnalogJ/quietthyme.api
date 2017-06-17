@@ -1,5 +1,5 @@
 var should = require('should');
-var PipelineImageService =  require('../../src/services/PipelineImageService')
+var PipelineImageService =  require('../../src/services/pipeline_image_service')
 //this is just simple integration testing
 describe('ImagePipelineService', function () {
 

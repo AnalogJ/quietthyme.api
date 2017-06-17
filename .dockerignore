@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+# ignored files in addition to the .gitignore
+
+.serverless
+node_modules

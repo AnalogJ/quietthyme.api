@@ -38,3 +38,10 @@ api.quietthyme.com/v1/catalog/123456
 - Storage Services:
 	- Register webhooks for Dropbox, Box, GDrive that push events to kloudless.
 
+
+
+
+
+# docker-compose
+
+docker-compose up --build

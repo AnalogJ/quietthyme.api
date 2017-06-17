@@ -2,11 +2,11 @@ machine:
   node:
     version: 4.3.0
 
-general:
-  branches:
-    only:
-      - master
-      - beta
+#general:
+#  branches:
+#    only:
+#      - master
+#      - beta
 
 dependencies:
   override:
@@ -17,7 +17,9 @@ dependencies:
 
 test:
   override:
-    - npm run-script coverage
+    - npm run-script coverage:
+      environment:
+        NODE_ENV=test
 
 deployment:
   deploy:

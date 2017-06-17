@@ -1,5 +1,5 @@
 var should = require('should');
-var Base64Service = require('../../src/services/Base64Service')
+var Base64Service = require('../../src/services/base64_service')
 //this is just simple integration testing
 describe('Base64Service', function () {
     describe('encode', function(){

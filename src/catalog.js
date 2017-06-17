@@ -1,11 +1,11 @@
 'use strict';
 const debug = require('debug')('quietthyme:catalog');
 
-var CatalogService = require('./services/CatalogService'),
-    DBService = require('./services/DBService'),
+var CatalogService = require('./services/catalog_service'),
+    DBService = require('./services/db_service'),
     Helpers = require('./common/helpers'),
-    Base64Service = require('./services/Base64Service'),
-    StorageService = require('./services/StorageService'),
+    Base64Service = require('./services/base64_service'),
+    StorageService = require('./services/storage_service'),
     Constants = require('./common/constants'),
     q = require('q');
 

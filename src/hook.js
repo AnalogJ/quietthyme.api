@@ -3,12 +3,12 @@ const debug = require('debug')('quietthyme:hook');
 
 var crypto = require('crypto');
 var q = require('q');
-var DBService = require('./services/DBService');
-var KloudlessService = require('./services/KloudlessService');
+var DBService = require('./services/db_service');
+var KloudlessService = require('./services/kloudless_service');
 var Helpers = require('./common/helpers');
 var Constants = require('./common/constants');
 var path = require('path');
-
+var nconf = require('./common/nconf');
 var aws = require('aws-sdk');
 var lambda = new aws.Lambda();
 
@@ -24,7 +24,7 @@ module.exports.kloudless = function(event, context, cb){
     }
 
     //immediately validate if this is an authenticated callback.
-    var hash = crypto.createHmac('SHA256', process.env.KLOUDLESS_API_KEY).update(event.body || '').digest('base64');
+    var hash = crypto.createHmac('SHA256', nconf.get('KLOUDLESS_API_KEY')).update(event.body || '').digest('base64');
     if(hash != kloudless_signature_header){
         console.error('invalid - signature headers dont match', hash, kloudless_signature_header);
         return cb({statusCode: 400, body:'Invalid signatures dont match'}, null)
@@ -34,7 +34,7 @@ module.exports.kloudless = function(event, context, cb){
         //this is a test request, just return an empty payload.
         return cb(null, {
             statusCode: 200,
-            body: process.env.KLOUDLESS_API_ID
+            body: nconf.get('KLOUDLESS_API_ID')
         });
     }
 
@@ -98,7 +98,7 @@ module.exports.kloudless = function(event, context, cb){
                 var deferred = q.defer();
                 console.info("Added file to Queue:", kl_event.account, kl_event.metadata.path);
                 lambda.invoke({
-                    FunctionName: 'quietthyme-api-' + process.env.STAGE + '-queueprocessunknownbook',
+                    FunctionName: 'quietthyme-api-' + nconf.get('STAGE') + '-queueprocessunknownbook',
                     Payload: JSON.stringify({
                         credential_id: credential.id,
                         storage_identifier: kl_event.metadata.id,
@@ -119,7 +119,7 @@ module.exports.kloudless = function(event, context, cb){
             //response should always be kloudless API id.
             return {
                 statusCode: 200,
-                body: process.env.KLOUDLESS_API_ID
+                body: nconf.get('KLOUDLESS_API_ID')
             };
         })
         .then(Helpers.successHandler(cb))

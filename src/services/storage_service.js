@@ -1,10 +1,11 @@
 'use strict';
 const debug = require('debug')('quietthyme:StorageService');
 var q = require('q'),
-    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY),
-    JWTokenService = require('./JWTokenService'),
-    DBService = require('./DBService'),
-    KloudlessService = require('./KloudlessService'),
+    nconf = require('../common/nconf'),
+    kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY')),
+    JWTokenService = require('./jwt_token_service'),
+    DBService = require('./db_service'),
+    KloudlessService = require('./kloudless_service'),
     Constants = require('../common/constants'),
     path = require('path'),
     fs = require('fs'),
@@ -204,7 +205,7 @@ StorageService.create_upload_identifier = function(user_id, cred_id, book_id, fi
 //this method takes a user_id (1, 2, etc) and hash's it so it can be used to serve publically accessible content in a
 //semi-secure way.
 function storage_user_hash(user_id){
-    var data = user_id + process.env.STORAGE_SALT;
+    var data = user_id + nconf.get('STORAGE_SALT');
     var crypto = require('crypto');
     return crypto.createHash('md5').update(data).digest("hex")
 }

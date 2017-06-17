@@ -2,13 +2,14 @@
 const debug = require('debug')('quietthyme:auth');
 
 var q = require('q'),
-    HttpError = require('./common/HttpError'),
-    DBService = require('./services/DBService'),
-    AuthService = require('./services/AuthService'),
-    JWTokenService = require('./services/JWTokenService'),
-    SecurityService = require('./services/SecurityService'),
+    nconf = require('./common/nconf'),
+    HttpError = require('./common/http_error'),
+    DBService = require('./services/db_service'),
+    AuthService = require('./services/auth_service'),
+    JWTokenService = require('./services/jwt_token_service'),
+    SecurityService = require('./services/security_service'),
     Helpers = require('./common/helpers'),
-    kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
+    kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 
 module.exports = {
     register: function(event, context, cb){

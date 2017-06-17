@@ -1,12 +1,12 @@
 'use strict';
 const debug = require('debug')('quietthyme:queue');
 
-var StorageService = require('./services/StorageService');
-var DBService = require('./services/DBService');
-var KloudlessService = require('./services/KloudlessService');
-var PipelineMetadataService = require('./services/PipelineMetadataService');
-var PipelineImageService = require('./services/PipelineImageService');
-var PipelineService = require('./services/PipelineService');
+var StorageService = require('./services/storage_service');
+var DBService = require('./services/db_service');
+var KloudlessService = require('./services/kloudless_service');
+var PipelineMetadataService = require('./services/pipeline_metadata_service');
+var PipelineImageService = require('./services/pipeline_image_service');
+var PipelineService = require('./services/pipeline_service');
 var Helpers = require('./common/helpers');
 var q = require('q');
 var path = require('path');

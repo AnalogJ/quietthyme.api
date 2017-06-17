@@ -1,5 +1,26 @@
 'use strict';
+var nconf = require('./nconf');
 module.exports = {
+
+
+
+    deploy_sha: nconf.get('DEPLOY_SHA'),
+    tables: {
+        users : 'quietthyme-api-' + nconf.get('STAGE') + '-users',
+        credentials: 'quietthyme-api-' + nconf.get('STAGE') + '-credentials',
+        books: 'quietthyme-api-' + nconf.get('STAGE') + '-books'
+    },
+    buckets: {
+        // content bucket contains thumbnails and files that will be served directly from S3.
+        content: 'quietthyme-api-' + nconf.get('STAGE') + '-content',
+
+        // upload bucket contains files that are temporarily located in S3, and will need to be processed, ie:
+        // - files manually uploaded via WebUI
+        // - files uploaded by Calibre client
+        upload: 'quietthyme-api-' + nconf.get('STAGE') + '-upload',
+    },
+
+
 
     /*
      * Subset of service types related to storage.
@@ -197,5 +218,4 @@ module.exports = {
             priority:5
         }
     }
-
 };

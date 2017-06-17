@@ -5,13 +5,13 @@ var util = require('util');
 var extend = require('node.extend');
 var _ = require('lodash');
 var qCombinators = require('q-combinators');
-var PipelineMetadataService = require('./PipelineMetadataService');
-var PipelineImageService = require('./PipelineImageService');
-var StorageService = require('./StorageService');
-var DBService = require('./DBService');
+var PipelineMetadataService = require('./pipeline_metadata_service');
+var PipelineImageService = require('./pipeline_image_service');
+var StorageService = require('./storage_service');
+var DBService = require('./db_service');
 var crypto = require('crypto');
 var toMarkdown = require('to-markdown');
-
+var Constants = require('../common/constants')
 q.longStackSupport = true;
 
 
@@ -250,7 +250,7 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
                                 //we dont know the book's actual final name at this point, so lets just store the coverart to a HASH.jpg file in S3.
                                 var image_key = StorageService.create_content_identifier('cover', book.user_id, crypto.randomBytes(20).toString('hex'), '.jpg');
 
-                                return StorageService.upload_file_from_stream(resp.data,'.jpg', process.env.QUIETTHYME_CONTENT_BUCKET, image_key)
+                                return StorageService.upload_file_from_stream(resp.data,'.jpg', Constants.buckets.content, image_key)
                             })
                     }
                     else if(resp.identifier){

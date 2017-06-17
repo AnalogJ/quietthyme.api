@@ -7,7 +7,7 @@
  */
 var q = require('q');
 const debug = require('debug')('quietthyme:AuthService');
-var SecurityService = require('./SecurityService');
+var SecurityService = require('./security_service');
 
 var authService = exports;
 

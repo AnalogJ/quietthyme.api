@@ -1,7 +1,8 @@
 'use strict';
 const debug = require('debug')('quietthyme:KloudlessService');
 var q = require('q');
-var kloudless = require('kloudless')(process.env.KLOUDLESS_API_KEY);
+var nconf = require('../common/nconf');
+var kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 var request = require('request');
 
 var kloudlessService = exports;
@@ -74,7 +75,7 @@ kloudlessService.fileContents = function(account_id, file_identifier, out_filest
         url: 'https://api.kloudless.com/v1/accounts/'+account_id + '/storage/files/' + file_identifier + '/contents',
         method: 'GET',
         headers: {
-            'Authorization': 'ApiKey ' + process.env.KLOUDLESS_API_KEY
+            'Authorization': 'ApiKey ' + nconf.get('KLOUDLESS_API_KEY')
         }
     };
     request(options)
@@ -111,7 +112,7 @@ kloudlessService.convertId = function(account_id, identifier, type){
         url: 'https://api.kloudless.com/v1/accounts/'+account_id + '/storage/convert_id',
         method: 'POST',
         headers: {
-            'Authorization': 'ApiKey ' + process.env.KLOUDLESS_API_KEY
+            'Authorization': 'ApiKey ' + nconf.get('KLOUDLESS_API_KEY')
         },
         json: {
             raw_id: identifier,

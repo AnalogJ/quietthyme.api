@@ -1,11 +1,11 @@
 'use strict';
 const debug = require('debug')('quietthyme:book');
-var JWTokenService = require('./services/JWTokenService'),
-    DBService = require('./services/DBService'),
-    HttpError = require('./common/HttpError'),
+var JWTokenService = require('./services/jwt_token_service'),
+    DBService = require('./services/db_service'),
+    HttpError = require('./common/http_error'),
     Helpers = require('./common/helpers'),
-    PipelineMetadataService = require('./services/PipelineMetadataService'),
-    PipelineService = require('./services/PipelineService'),
+    PipelineMetadataService = require('./services/pipeline_metadata_service'),
+    PipelineService = require('./services/pipeline_service'),
     q = require('q'),
     toMarkdown = require('to-markdown');
 module.exports = {
@@ -128,3 +128,4 @@ module.exports = {
             .done()
     }
 };
+

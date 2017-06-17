@@ -1,5 +1,5 @@
 var should = require('should');
-var ParseExternalService = require('../../src/services/ParseExternalService')
+var ParseExternalService = require('../../src/services/parse_external_service')
 //this is just simple integration testing
 describe('ParseExternalService', function () {
 

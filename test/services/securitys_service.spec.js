@@ -1,5 +1,5 @@
 var should = require('should');
-var SecurityService = require('../../src/services/SecurityService')
+var SecurityService = require('../../src/services/security_service')
 
 //this is just simple integration testing
 describe('SecurityService', function () {

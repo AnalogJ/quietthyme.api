@@ -1,7 +1,8 @@
 'use strict';
 const debug = require('debug')('quietthyme:PipelineMetadataService');
-var ParseExternalService = require('./ParseExternalService');
+var ParseExternalService = require('./parse_external_service');
 var Constants = require('../common/constants');
+var nconf = require('../common/nconf');
 /*#######################################################################
  *#######################################################################
  * The Metadata pipeline service is used to retieve book data from various sources asynchronously. Once the data has been
@@ -114,8 +115,8 @@ PipelineMetadataService.generate_embedded_opf_data_set = function(opf_metadata_p
 PipelineMetadataService.generate_goodreads_data_set = function(goodreads_book_id) {
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
-        'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
-        'client_secret': process.env.OAUTH_GOODREADS_CLIENT_SECRET
+        'client_key': nconf.get('OAUTH_GOODREADS_CLIENT_KEY'),
+        'client_secret': nconf.get('OAUTH_GOODREADS_CLIENT_SECRET')
     });
     return provider.CreateClient()
         .delay(1000) //delay 500 milliseconds between goodreads api calls?
@@ -134,8 +135,8 @@ PipelineMetadataService.generate_goodreads_data_set = function(goodreads_book_id
 PipelineMetadataService.generate_goodreads_data_set_by_isbn = function(isbn) {
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
-        'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
-        'client_secret': process.env.OAUTH_GOODREADS_CLIENT_SECRET
+        'client_key': nconf.get('OAUTH_GOODREADS_CLIENT_KEY'),
+        'client_secret': nconf.get('OAUTH_GOODREADS_CLIENT_SECRET')
     });
     return provider.CreateClient()
         .then(function (client) {
@@ -157,8 +158,8 @@ PipelineMetadataService.generate_goodreads_data_set_by_title_author = function(t
     debug("Searching for Goodreads book id by title and author: %s", clean_title_author);
     var goodreads = require('goodreads.js');
     var provider = new goodreads.provider({
-        'client_key': process.env.OAUTH_GOODREADS_CLIENT_KEY,
-        'client_secret': process.env.OAUTH_GOODREADS_CLIENT_SECRET
+        'client_key': nconf.get('OAUTH_GOODREADS_CLIENT_KEY'),
+        'client_secret': nconf.get('OAUTH_GOODREADS_CLIENT_SECRET')
     });
     return provider.CreateClient()
         .then(function (client) {

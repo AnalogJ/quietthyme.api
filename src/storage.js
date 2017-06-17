@@ -1,14 +1,14 @@
 'use strict';
 const debug = require('debug')('quietthyme:storage');
 
-var StorageService = require('./services/StorageService');
-var DBService = require('./services/DBService');
-var JWTokenService = require('./services/JWTokenService');
-var KloudlessService = require('./services/KloudlessService');
+var StorageService = require('./services/storage_service');
+var DBService = require('./services/db_service');
+var JWTokenService = require('./services/jwt_token_service');
+var KloudlessService = require('./services/kloudless_service');
 var Helpers = require('./common/helpers');
 var q = require('q');
-
-
+var Constants = require('./common/constants');
+var nconf = require('./common/nconf');
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
@@ -115,7 +115,7 @@ module.exports = {
                     'settings': {
                         'main': {
                             'device_store_uuid': '113a769a-cade-11e4-8731-1681e6b88ec1',
-                            'device_name': 'QuietThyme '+ process.env.NODE_ENV,
+                            'device_name': 'QuietThyme '+ nconf.get('STAGE'),
                             'prefix': 'quietthyme://',
                             'storage_type': 'quietthyme',
                             'storage_id': 0,
@@ -185,7 +185,7 @@ module.exports = {
                     var book_data = {
                         'credential_id': credential.id, //this will be the correct 'eventual' storage location, after processing
                         'storage_type': 'quietthyme',
-                        'storage_identifier': process.env.QUIETTHYME_UPLOAD_BUCKET + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                        'storage_identifier': Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
                         'storage_size': event.body.storage_size,
                         'storage_filename': event.body.storage_filename,
                         'storage_format': event.body.storage_format
@@ -195,7 +195,7 @@ module.exports = {
                         .where('id', '=', book.id)
                         .update(book_data)
                         .then(function(){
-                            var params = {Bucket: process.env.QUIETTHYME_UPLOAD_BUCKET, Key: key, Expires: 60};
+                            var params = {Bucket: Constants.buckets.upload, Key: key, Expires: 60};
                             var payload = {
                                 book_data: book_data,
                                 upload_url: s3.getSignedUrl('putObject', params)
@@ -225,14 +225,14 @@ module.exports = {
                         var key = StorageService.create_content_identifier('cover', auth.uid, event.body.filename, event.body.format);
 
                         var book_data = {
-                            'cover': process.env.QUIETTHYME_CONTENT_BUCKET + '/' + encodeURI(key)
+                            'cover': Constants.buckets.content + '/' + encodeURI(key)
                         };
 
                         return db_client('books')
                             .where('id', '=', book.id)
                             .update(book_data)
                             .then(function(){
-                                var params = {Bucket: process.env.QUIETTHYME_CONTENT_BUCKET, Key: key, Expires: 60};
+                                var params = {Bucket: Constants.buckets.content, Key: key, Expires: 60};
                                 var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)};
                                 return payload
                             })

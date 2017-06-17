@@ -1,5 +1,5 @@
 var should = require('should');
-var StorageService = require('../../src/services/StorageService')
+var StorageService = require('../../src/services/storage_service')
 
 //this is just simple integration testing
 describe.skip('StorageService', function () {

@@ -11,8 +11,9 @@ const debug = require('debug')('quietthyme:JWTokenService');
 
 var jwt = require('jsonwebtoken'),
     q = require('q'),
-    HttpError = require('../common/HttpError'),
-    tokenSecret = process.env.ENCRYPTION_JWT_PASSPHRASE;
+    HttpError = require('../common/http_error'),
+    nconf = require('../common/nconf'),
+    tokenSecret = nconf.get('ENCRYPTION_JWT_PASSPHRASE');
 
 // Generates a token from supplied payload
 module.exports.issue = function(payload, type) {
