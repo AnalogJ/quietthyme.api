@@ -4,7 +4,7 @@
   "description": "",
   "main": "serverless.yml",
   "scripts": {
-    "test": "mocha --recursive",
+    "test": "STAGE=test mocha --recursive",
     "coverage": "rm -rf ./coverage && istanbul cover node_modules/.bin/_mocha test/**/*.spec.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/AnalogJ/quietthyme.api#readme",
   "dependencies": {
     "ajv": "^5.1.1",
-    "aws-sdk": "^2.5.3",
+    "aws-sdk": "^2.72.0",
     "bcrypt": "^0.8.7",
     "debug": "^2.6.3",
     "goodreads.js": "^0.0.9",

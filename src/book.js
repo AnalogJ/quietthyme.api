@@ -11,8 +11,8 @@ var JWTokenService = require('./services/jwt_token_service'),
 module.exports = {
     create: function (event, context, cb) {
 
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client) {
+        JWTokenService.verify(event.token)
+            .then(function(auth) {
 
                 debug("Create book params: %o", event.path);
                 debug("Create book query: %o", event.query);

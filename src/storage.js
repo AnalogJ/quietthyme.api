@@ -18,18 +18,17 @@ module.exports = {
     link: function(event, context, cb) {
         // // TODO: VALIDATE the token before saving. https://developers.kloudless.com/docs/v1/authentication
 
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client){
+        JWTokenService.verify(event.token)
+            .then(function(auth){
 
-                return db_client('credentials')
-                    .insert({
-                        "user_id": auth.uid,
-                        "service_type": event.body.account.service,
-                        "service_id": event.body.account.id,
-                        "email": event.body.account.account,
-                        "oauth": event.body
+                return DBService.createCredential({
+                    "user_id": auth.uid,
+                    "service_type": event.body.account.service,
+                    "service_id": event.body.account.id,
+                    "email": event.body.account.account,
+                    "oauth": event.body
 
-                    },['id', 'service_type'])
+                },['id', 'service_type'])
                     .then(function(new_cred){
                         //now we have to create notification webhooks, the QuietThyme folder & subfolders and README.md document
                         return KloudlessService.folderCreate(event.body.account.id,'QuietThyme','root', event.body.account.service)

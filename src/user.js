@@ -15,13 +15,11 @@ module.exports = {
     plan: function(event, context, cb){
 
         //This method will download the
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client){
+        JWTokenService.verify(event.token)
+            .then(function(auth){
 
                 //find the user to determine if they have a stripe customer id already
-                return db_client.first()
-                    .from('users')
-                    .where('uid', auth.uid)
+                return DBService.findUserById(auth.uid)
                     .then(function(user_data){
                         //we have a valid user/auth data.
                         var promise = null;
@@ -53,12 +51,7 @@ module.exports = {
 
                         return promise
                             .then(function(subscription){
-                                return db_client('users')
-                                    .where({uid:user_data.uid})
-                                    .update({
-                                        plan: event.body.planId.split('_')[0],
-                                        stripe_sub_id: subscription.id
-                                    })
+                                return DBService.updateUserPlan(user_data.uid, event.body.planId.split('_')[0], subscription.id)
                             })
                             .then(function(){
                                 //return the new token

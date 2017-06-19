@@ -7,15 +7,21 @@ var userSchema = {
     "properties": {
         "user_id": { "type": "string" },
         "name": { "type": "string" },
-        "email": { "type": "number" },
-        "password_hash": { "type": "number" },
+        "email": { "type": "string" },
+        "password_hash": { "type": "string" },
         "plan": {
             'enum': ['none','basic','reader','library'],
             'default': 'none'
         },
-        "library_uuid": { "type": "string" },
+        "library_uuid": {
+            "type": "string",
+            "default": ""
+        },
         "catalog_token": { "type": "string" },
-        "stripe_sub_id": { "type": "string" },
+        "stripe_sub_id": {
+            "type": "string",
+            "default": ''
+        },
     }
 };
 
@@ -23,20 +29,21 @@ var userSchema = {
 var credentialSchema = {
     "additionalProperties": false,
     "properties": {
+        "id": { "type": "string" },
         "user_id": { "type": "string" },
         "service_type": { "type": "string" },
         "service_id": { "type": "string" },
-        "name": { "type": "string" },
-        "email": { "type": "string" },
+        "name": { "type": "string", "default": "" },
+        "email": { "type": "string", "default": "" },
         "oauth": { "type": "object" },
-        "root_folder": { "type": "object" }, //this is the service specific "QuietThyme" folder that all sub folders are created in.
-        "library_folder": { "type": "object" }, //this is "library" folder that all author folders are created in.
-        "blackhole_folder": { "type": "object" }, //this is "blackhole" folder that pending books should be copied into.
+        "root_folder": { "type": "object", "default": {} }, //this is the service specific "QuietThyme" folder that all sub folders are created in.
+        "library_folder": { "type": "object", "default": {} }, //this is "library" folder that all author folders are created in.
+        "blackhole_folder": { "type": "object", "default": {} }, //this is "blackhole" folder that pending books should be copied into.
 
-        "event_cursor": { "type": "string" },
+        "event_cursor": { "type": "string", "default": "" },
         "calibre_location_code": {
-            'enum': ['main','A','B'], //this location code is used by the calibre plugin to determine which storage providers are available (main, a, b)
-            'default': 'none'
+            'enum': [null, 'main','A','B'], //this location code is used by the calibre plugin to determine which storage providers are available (main, a, b)
+            'default': null
         }
     }
 };
@@ -44,6 +51,7 @@ var credentialSchema = {
 var bookSchema = {
     "additionalProperties": false,
     "properties": {
+        "id": { "type": "string" },
         "user_id": { "type": "string" },
         "credential_id": { "type": "string" },
         "storage_size": { "type": "number" },
@@ -51,53 +59,53 @@ var bookSchema = {
         "storage_filename": { "type": "string" },
         "storage_format": { "type": "string" },
 
-
         "title": { "type": "string" },
-        "average_rating": { "type": "number" },
-        "ratings_count": { "type": "string" },
-        "user_rating": { "type": "string" },
-        "num_pages": { "type": "string" },
-        "short_summary": { "type": "string" },
-        "publisher": { "type": "string" },
+        "average_rating": { "type": "number", "default": null },
+        "ratings_count": { "type": "string", "default": "" },
+        "user_rating": { "type": "string", "default": "" },
+        "num_pages": { "type": "string", "default": "" },
+        "short_summary": { "type": "string", "default": "" },
+        "publisher": { "type": "string", "default": "" },
         "published_date": {
             "type": "string",
             "format": "date"
         },
         "tags": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": { "type": "string" },
+            "default": []
         },
         "authors": { //prefer author names to be unsorted ("firstname lastname" not "lastname, firstname")
             "type": "array",
             "items": { "type": "string" }
         },
         "last_modified": { "type": "string", "format": "date" },
-        "user_categories": { "type": "object" },
-        "user_metadata": { "type": "object" },
-        "series_name": { "type": "string" },
-        "series_number": { "type": "number" },
+        "user_categories": { "type": "object", "default": {} },
+        "user_metadata": { "type": "object", "default": {} },
+        "series_name": { "type": "string", "default": "" },
+        "series_number": { "type": "number", "default": null },
 
         // isbn & isbn13 identifiers
-        "isbn": { "type": "string" },
-        "isbn10": { "type": "string" },
-        "drm_type": { "type": "string" },
+        "isbn": { "type": "string", "default": "" },
+        "isbn10": { "type": "string", "default": "" },
+        "drm_type": { "type": "string", "default": "" },
 
         //identifiers
-        "calibre_id": { "type": "string" },
-        "amazon_id": { "type": "string" },
-        "google_id": { "type": "string" },
-        "goodreads_id": { "type": "string" },
-        "ffiction_id": { "type": "string" },
-        "barnesnoble_id": { "type": "string" },
+        "calibre_id": { "type": "string", "default": "" },
+        "amazon_id": { "type": "string", "default": "" },
+        "google_id": { "type": "string", "default": "" },
+        "goodreads_id": { "type": "string", "default": "" },
+        "ffiction_id": { "type": "string", "default": "" },
+        "barnesnoble_id": { "type": "string", "default": "" },
 
         // cover art urls
-        "cover": { "type": "string" }, //Image is always stored on AWS, identifier does not have leading '/', and is made up of 'bucket_name/s3_key'
-        "thumb": { "type": "string" },
+        "cover": { "type": "string", "default": "" }, //Image is always stored on AWS, identifier does not have leading '/', and is made up of 'bucket_name/s3_key'
+        "thumb": { "type": "string", "default": "" },
 
         //sources determines when and how book_data_sets update the actual book.
         //each field in the book has a source (where the data came from).
         //If the data is manually entered, it is assumed to be of the highest calibre, otherwise it can be overriden
-        'sources': {"type": "object"}
+        'sources': {"type": "object", "default": {}}
     }
 };
 
@@ -109,7 +117,22 @@ var validateCredential = ajv.compile(credentialSchema);
 
 
 module.exports = {
-    User: validateUser,
-    Book: validateBook,
-    Credential: validateCredential
+    User: function(user){
+        if(!validateUser(user)){
+            throw new Error("User is invalid: " + JSON.stringify(validateUser.errors))
+        }
+        return user
+    },
+    Book: function(book){
+        if(!validateBook(book)){
+            throw new Error("Book is invalid: " + JSON.stringify(validateBook.errors))
+        }
+        return book
+    },
+    Credential: function(cred){
+        if(!validateCredential(cred)){
+            throw new Error("Cred is invalid: " + JSON.stringify(validateCredential.errors))
+        }
+        return cred
+    }
 }

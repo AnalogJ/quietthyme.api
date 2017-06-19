@@ -65,27 +65,46 @@ QuietThymeUsersTable:
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
+    - AttributeName: email
+      AttributeType: S
+    - AttributeName: catalog_token
+      AttributeType: S
     KeySchema:
     - AttributeName: user_id
       KeyType: HASH
     ProvisionedThroughput:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
+    GlobalSecondaryIndexes:
+    - IndexName: "emailIndex",
+      KeySchema:
+      - AttributeName: "email",
+        KeyType: "HASH"
+      Projection:
+        ProjectionType: "ALL"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2,
+        WriteCapacityUnits: 2
+    - IndexName: "catalogIndex",
+      KeySchema:
+      - AttributeName: "catalog_token",
+        KeyType: "HASH"
+      Projection:
+        ProjectionType: "ALL"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2,
+        WriteCapacityUnits: 2
     TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
 QuietThymeCredsTable:
   Type: AWS::DynamoDB::Table
   DeletionPolicy: Retain
   Properties:
     AttributeDefinitions:
-    - AttributeName: service_type
-      AttributeType: S
-    - AttributeName: user_id
+    - AttributeName: id
       AttributeType: S
     KeySchema:
-    - AttributeName: service_type
+    - AttributeName: id
       KeyType: HASH
-    - AttributeName: user_id
-      KeyType: RANGE
     ProvisionedThroughput:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
