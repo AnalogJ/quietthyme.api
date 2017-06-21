@@ -117,7 +117,7 @@ before(function(done){
                 AttributeType: "S"
             },
             {
-                AttributeName: "book_id",
+                AttributeName: "id",
                 AttributeType: "S"
             }
         ],
@@ -127,7 +127,7 @@ before(function(done){
                 KeyType: "HASH"
             },
             {
-                AttributeName: "book_id",
+                AttributeName: "id",
                 KeyType: "RANGE"
             }
         ],

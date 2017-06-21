@@ -64,10 +64,7 @@ module.exports = {
                 var book_query = null;
 
                 if(event.query.id){
-                    condition['id'] = event.query.id;
-                    book_query = db_client.first()
-                        .from('books')
-                        .where(condition)
+                    book_query = DBService.findBookById(event.query.id, auth.user_id);
                 }
                 else{
                     if(event.query.storage_id){

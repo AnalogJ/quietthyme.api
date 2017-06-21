@@ -276,6 +276,53 @@ dbService.createBook = function(book /* DBSchema.Book */){
     return db_deferred.promise
 }
 
+dbService.findBookById = function(book_id, user_id /* optional, but recommended */){
+    var params = {
+        TableName : Constants.tables.books,
+        KeyConditionExpression: "id = :id AND user_id = :user_id",
+        ExpressionAttributeValues: {
+            ":id": book_id,
+            ":user_id": user_id
+        }
+    };
+    var db_deferred = q.defer();
+    docClient.query(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data.Items[0]);
+    });
+    return db_deferred.promise
+};
+
+dbService.updateBook = function(book_id, update_data, return_values){
+    var update_expression = [];
+    var expression_attribute_names = {};
+    var expression_attribute_values = {};
+    for(var prop in update_data){
+        update_expression.push('#' + prop + ' = :' + prop)
+        expression_attribute_names['#'+prop] = prop;
+        expression_attribute_values[':'+prop] = update_data[prop]
+    }
+
+    var params = {
+        TableName:Constants.tables.books,
+        Key: { id : book_id },
+        UpdateExpression: 'set ' + update_expression.join(', '),
+        ExpressionAttributeNames: expression_attribute_names,
+        ExpressionAttributeValues: expression_attribute_values
+    };
+    if(return_values){
+        params.ReturnValues = 'ALL_NEW';
+    }
+
+    var db_deferred = q.defer();
+    docClient.update(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data.Attributes ? data.Attributes : {});
+    });
+    return db_deferred.promise
+};
+
+
 // var knex_config = require('../../knexfile.js');
 // var knex        = null;
 //

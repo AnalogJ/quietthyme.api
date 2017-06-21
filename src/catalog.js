@@ -15,7 +15,7 @@ module.exports = {
     index: function (event, context, cb) {
 
         CatalogService.findUserByToken(event.path.catalogToken)
-            .spread(function(user, db_client){
+            .then(function(user){
 
                 //user was found.
                 var id = 'root';
@@ -127,12 +127,12 @@ module.exports = {
 
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var series_query = CatalogService.generatePaginatedSeriesQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var series_query = CatalogService.generatePaginatedSeriesQuery(user.uid, QUERY_LIMIT, page);
                 series_query.orderBy('series_name');
                 return q.all([user, series_query]);
             })
@@ -235,12 +235,12 @@ module.exports = {
         var path = "/books" + + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
@@ -276,12 +276,12 @@ module.exports = {
         var path = "/recent/";
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid);
                 book_query.orderBy("created_at", 'desc');
                 return q.all([user, book_query]);
             })
@@ -312,12 +312,12 @@ module.exports = {
         var path = "/in_series/" + encoded_series_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)});
                 book_query.orderBy("title");
                 return q.all([user, book_query]);
@@ -356,12 +356,12 @@ module.exports = {
         var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id));
                 book_query.orderBy("title");
                 return q.all([user, book_query]);
@@ -400,12 +400,12 @@ module.exports = {
         var path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name));
                 book_query.orderBy("title");
                 return q.all([user, book_query]);
@@ -439,7 +439,7 @@ module.exports = {
         var token = event.path.catalogToken;
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
@@ -463,12 +463,12 @@ module.exports = {
         var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page;
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(db_client, user.uid, QUERY_LIMIT, page);
+                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 book_query.where('title', 'like', query);
                 book_query.orderBy("title");
                 return q.all([user, book_query]);
@@ -504,15 +504,12 @@ module.exports = {
         var path = "/book/" + bookId;
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
+            .then(function(user){
                 if (!user) {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = db_client.first()
-                    .from('books')
-                    .where({user_id: user.uid, id: bookId});
-                return q.all([user, book_query]);
+                return q.all([user, DBService.findBookById(bookId, user.user_id)]);
             })
             .spread(function (user, book) {
                 if (!book) {
@@ -542,15 +539,10 @@ module.exports = {
         var token = event.path.catalogToken;
 
         return CatalogService.findUserByToken(token)
-            .spread(function(user, db_client){
-                return db_client.first()
-                    .from('books')
-                    .where({
-                        user_id: user.uid,
-                        id: bookId
-                    })
+            .then(function(user){
+                return DBService.findBookById(bookId, user.user_id)
                     .then(function(book){
-                        return StorageService.get_download_link(book,user.uid,  db_client)
+                        return StorageService.get_download_link(book,user.user_id)
                     })
                     .then(function(link){
                         var payload = {

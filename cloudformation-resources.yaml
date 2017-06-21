@@ -128,12 +128,12 @@ QuietThymeBooksTable:
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
-    - AttributeName: book_id
+    - AttributeName: id
       AttributeType: S
     KeySchema:
     - AttributeName: user_id
       KeyType: HASH
-    - AttributeName: book_id
+    - AttributeName: id
       KeyType: RANGE
     ProvisionedThroughput:
       ReadCapacityUnits: '5'

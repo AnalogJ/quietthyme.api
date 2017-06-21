@@ -165,12 +165,7 @@ module.exports = {
             .then(function(auth){
                 return q.spread([
                     DBService.findCredentialById(event.body.storage_id, auth.uid),
-                    db_client.first()
-                        .from('books')
-                        .where({
-                            user_id: auth.uid,
-                            id: event.body.book_id
-                        }),
+                    DBService.findBookById(event.body.book_id, auth.uid)
                 ], function(credential, book){
                     var key = StorageService.create_upload_identifier(auth.uid, credential.id, book.id, event.body.storage_filename, event.body.storage_format);
 
@@ -183,9 +178,7 @@ module.exports = {
                         'storage_format': event.body.storage_format
                     };
 
-                    return db_client('books')
-                        .where('id', '=', book.id)
-                        .update(book_data)
+                    return DBService.updateBook(book.id, book_data, true)
                         .then(function(){
                             var params = {Bucket: Constants.buckets.upload, Key: key, Expires: 60};
                             var payload = {
@@ -205,14 +198,9 @@ module.exports = {
     prepare_cover: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
         // TODO: this function should handle quietthyme storage creds
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client){
-                return db_client.first()
-                    .from('books')
-                    .where({
-                        user_id: auth.uid,
-                        id: event.body.book_id
-                    })
+        JWTokenService.verify(event.token)
+            .then(function(auth){
+                return DBService.findBookById(event.body.book_id, auth.uid)
                     .then(function(book){
                         var key = StorageService.create_content_identifier('cover', auth.uid, event.body.filename, event.body.format);
 
@@ -220,9 +208,7 @@ module.exports = {
                             'cover': Constants.buckets.content + '/' + encodeURI(key)
                         };
 
-                        return db_client('books')
-                            .where('id', '=', book.id)
-                            .update(book_data)
+                        return DBService.updateBook(book.id, book_data, true)
                             .then(function(){
                                 var params = {Bucket: Constants.buckets.content, Key: key, Expires: 60};
                                 var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)};
@@ -242,16 +228,11 @@ module.exports = {
         // we can't just redirect th user, we need to return the link location, and have the app do the redirect.
 
 
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client){
-                return db_client.first()
-                    .from('books')
-                    .where({
-                        user_id: auth.uid,
-                        id: event.path.id
-                    })
+        JWTokenService.verify(event.token)
+            .then(function(auth){
+                return DBService.findBookById(event.path.id, auth.uid)
                     .then(function(book){
-                        return StorageService.get_download_link(book, auth.uid, db_client)
+                        return StorageService.get_download_link(book, auth.uid)
                     })
                     .then(function(link){
                         var payload = {

@@ -48,51 +48,41 @@ module.exports = {
             return cb(new Error("Not Implemented. New quietthyme storage cannot be processed yet."), null)
         }
 
-        DBService.get()
-            .then(function(db_client){
-                return [db_client.first()
-                    .from('books')
-                    .where({
-                        user_id: user_id,
-                        id: book_id,
-                        credential_id: cred_id
-                    }),
-                    DBService.findCredentialById(cred_id, user_id)
-                ]
-            })
-            .spread(function(book, credential){
-                // //now we have book information and credential info, lets generate the new book filename.
-                // var clean_filename = book.authors[0]
-                // if(book.series){
-                //     clean_filename += ' - ' + book.series
-                // }
-                // if(book.series_number){
-                //     clean_filename += ' - ' + book.series_number
-                // }
-                // clean_filename += ' - ' + book.title
+        q.spread([
+            DBService.findBookById(book_id, user_id),
+            DBService.findCredentialById(cred_id, user_id)
+        ],
+            function(book, credential){
+            // //now we have book information and credential info, lets generate the new book filename.
+            // var clean_filename = book.authors[0]
+            // if(book.series){
+            //     clean_filename += ' - ' + book.series
+            // }
+            // if(book.series_number){
+            //     clean_filename += ' - ' + book.series_number
+            // }
+            // clean_filename += ' - ' + book.title
 
 
-                //(bearer_token, account_id, filename, parent_id, storage_identifier){
-                return KloudlessService.fileUpload(
-                    credential.oauth.access_token,
-                    credential.service_id,
-                    book.storage_filename + book.storage_format,
-                    credential.library_folder.id,
-                    book.storage_identifier
-                )
-                    .then(function(kloudless_upload_resp){
-                        return db_client('books')
-                            .where('id', '=', book.id)
-                            .update({
-                                'storage_type': credential.service_type,
-                                'storage_identifier': kloudless_upload_resp['id']
-                            })
-                    });
-                //TODO mark the file as can be deleted.
-            })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
-            .done()
+            //(bearer_token, account_id, filename, parent_id, storage_identifier){
+            return KloudlessService.fileUpload(
+                credential.oauth.access_token,
+                credential.service_id,
+                book.storage_filename + book.storage_format,
+                credential.library_folder.id,
+                book.storage_identifier
+            )
+                .then(function(kloudless_upload_resp){
+                    return DBService.updateBook(book.id, {
+                        'storage_type': credential.service_type,
+                        'storage_identifier': kloudless_upload_resp['id']
+                    }, true)
+                });
+            //TODO mark the file as can be deleted.
+        })
+        .then(Helpers.successHandler(cb))
+        .fail(Helpers.errorHandler(cb))
+        .done()
     },
 
 
@@ -180,9 +170,7 @@ module.exports = {
                     storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
                 };
 
-                return db_client('books')
-                    .where('id', '=', book_data.id)
-                    .update(update_data)
+                return DBService.updateBook(book_data.id, update_data, true)
             })
             .then(function(){
                 return {}

@@ -131,15 +131,7 @@ module.exports.toXML = function(feed, type) {
 
 
 module.exports.findUserByToken = function(token){
-    return DBService.get()
-        .then(function(db_client) {
-            return [
-                db_client.first()
-                    .from('users')
-                    .where('catalog_token', token),
-                db_client
-            ]
-        })
+    return DBService.findUserByCatalogToken(token)
 };
 
 //page and limit are optional

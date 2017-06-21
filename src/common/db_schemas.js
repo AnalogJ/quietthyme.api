@@ -60,7 +60,7 @@ var bookSchema = {
         "storage_format": { "type": "string" },
 
         "title": { "type": "string" },
-        "average_rating": { "type": "number", "default": null },
+        "average_rating": { "type": "number", "default": 0 },
         "ratings_count": { "type": "string", "default": "" },
         "user_rating": { "type": "string", "default": "" },
         "num_pages": { "type": "string", "default": "" },
@@ -83,7 +83,7 @@ var bookSchema = {
         "user_categories": { "type": "object", "default": {} },
         "user_metadata": { "type": "object", "default": {} },
         "series_name": { "type": "string", "default": "" },
-        "series_number": { "type": "number", "default": null },
+        "series_number": { "type": "number", "default": 0 },
 
         // isbn & isbn13 identifiers
         "isbn": { "type": "string", "default": "" },

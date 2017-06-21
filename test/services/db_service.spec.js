@@ -306,26 +306,49 @@ describe('DBService', function () {
     describe('createBook', function(){
         it('should correctly create book', function (done) {
             var book = {
-                user_id: '70fa84f3-60bc-4cdf-9804-a71b9328edfe',
-                name: 'test1',
-                email: 'test1@example.com',
-                password_hash: '$2a$10$deIH248Ql0zPgy1qGz8LhOdC6rVimyXwxzPPcmbqvsIv9p5wkm2L6',
-                catalog_token: 'lousing-bobwhite-angled-augers',
-                plan: 'none',
-                library_uuid: '',
-                stripe_sub_id: ''
+                user_id: 'user-id',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1234',
+                storage_filename: 'book',
+                storage_format: 'epub',
+                title: 'this is my book title'
             };
-            DBSchemas.User(user);
-            DBService.createUser(user)
-                .then(function(userresp){
-                    userresp.should.eql({
-                        user_id: '70fa84f3-60bc-4cdf-9804-a71b9328edfe',
-                        name: 'test1',
-                        email: 'test1@example.com',
-                        catalog_token: 'lousing-bobwhite-angled-augers',
-                        plan: 'none',
-                        library_uuid: '',
-                    } )
+            DBSchemas.Book(book);
+            DBService.createBook(book)
+                .then(function(book_data){
+                    book_data.user_id.should.eql('user-id')
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('findBookById', function(){
+        var book_id;
+        before(function(done){
+            var book = {
+                user_id: 'user-id',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1234',
+                storage_filename: 'book',
+                storage_format: 'epub',
+                title: 'this is my book title'
+            };
+            DBSchemas.Book(book);
+            DBService.createBook(book)
+                .then(function(book_data){
+                    book_id = book_data.id;
+                })
+                .then(done, done);
+        });
+        it('should correctly find book', function (done) {
+            DBService.findBookById(book_id, 'user-id')
+                .then(function(book_data){
+                    book_data.user_id.should.eql('user-id');
+                    book_data.id.should.eql(book_id);
+                    // should.not.exist(user.password_hash);
+                    // should.not.exist(user.stripe_sub_id);
                 })
                 .then(done, done);
         });
