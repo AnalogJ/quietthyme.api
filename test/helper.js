@@ -74,8 +74,13 @@ before(function(done){
             {
                 AttributeName: "id",
                 AttributeType: "S"
-            },{
+            },
+            {
                 AttributeName: "service_id",
+                AttributeType: "S"
+            },
+            {
+                AttributeName: "user_id",
                 AttributeType: "S"
             }
         ],
@@ -96,6 +101,26 @@ before(function(done){
                     {
                         AttributeName: "service_id",
                         KeyType: "HASH"
+                    }
+                ],
+                Projection: {
+                    ProjectionType: "ALL"
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 2,
+                    WriteCapacityUnits: 2
+                },
+            },
+            {
+                IndexName: "userIdIndex",
+                KeySchema: [
+                    {
+                        AttributeName: "user_id",
+                        KeyType: "HASH"
+                    },
+                    {
+                        AttributeName: "id",
+                        KeyType: "RANGE"
                     }
                 ],
                 Projection: {

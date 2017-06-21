@@ -224,6 +224,24 @@ dbService.findCredentialByServiceId = function(service_id){
     return db_deferred.promise
 };
 
+dbService.findCredentialsByUserId = function(user_id){
+    var params = {
+        TableName : Constants.tables.credentials,
+        IndexName: 'userIdIndex',
+        KeyConditionExpression: "user_id = :user_id",
+        ExpressionAttributeValues: {
+            ":user_id": user_id,
+            // ":empty": ''
+        }
+    };
+
+    var db_deferred = q.defer();
+    docClient.query(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data.Items);
+    });
+    return db_deferred.promise
+};
 
 dbService.updateCredential = function(credential_id, update_data, return_values){
     var update_expression = [];
@@ -293,6 +311,23 @@ dbService.findBookById = function(book_id, user_id /* optional, but recommended 
     return db_deferred.promise
 };
 
+dbService.findBooksByUserId = function(user_id){
+    var params = {
+        TableName : Constants.tables.books,
+        KeyConditionExpression: "user_id = :user_id",
+        ExpressionAttributeValues: {
+            ":user_id": user_id
+        }
+    };
+
+    var db_deferred = q.defer();
+    docClient.query(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data.Items);
+    });
+    return db_deferred.promise
+};
+
 dbService.updateBook = function(book_id, update_data, return_values){
     var update_expression = [];
     var expression_attribute_names = {};
@@ -322,6 +357,26 @@ dbService.updateBook = function(book_id, update_data, return_values){
     return db_deferred.promise
 };
 
+dbService.deleteBookById = function(book_id, user_id){
+    var params = {
+        TableName : Constants.tables.books,
+        Key: {
+            "id": book_id,
+            "user_id": user_id
+        }
+        // KeyConditionExpression: "id = :id AND user_id = :user_id",
+        // ExpressionAttributeValues: {
+        //     ":id": book_id,
+        //     ":user_id": user_id
+        // }
+    };
+    var db_deferred = q.defer();
+    docClient.delete(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data);
+    });
+    return db_deferred.promise
+};
 
 // var knex_config = require('../../knexfile.js');
 // var knex        = null;

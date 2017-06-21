@@ -36,8 +36,8 @@ describe('DBService', function () {
                 library_uuid: '',
                 stripe_sub_id: ''
             };
-            DBSchemas.User(user);
-            DBService.createUser(user)
+
+            DBService.createUser(DBSchemas.User(user))
                 .then(function (userresp) {
                     should.exist(userresp.user_id);
                     userresp.name.should.eql('test1');
@@ -60,8 +60,7 @@ describe('DBService', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            user = DBSchemas.User(user);
-            DBService.createUser(user)
+            DBService.createUser(DBSchemas.User(user))
                 .then(function(){})
                 .then(done, done);
         });
@@ -84,8 +83,7 @@ describe('DBService', function () {
                 "password_hash": 'testidhash',
                 "catalog_token": 'testidcatalog'
             };
-            user = DBSchemas.User(user);
-            DBService.createUser(user)
+            DBService.createUser(DBSchemas.User(user))
                 .then(function(user_data){
                     user_id = user.user_id
                 })
@@ -114,8 +112,7 @@ describe('DBService', function () {
                 "password_hash": 'test2hash',
                 "catalog_token": 'test2catalog'
             };
-            user = DBSchemas.User(user);
-            DBService.createUser(user)
+            DBService.createUser(DBSchemas.User(user))
                 .then(function(){})
                 .then(done, done);
         });
@@ -141,8 +138,7 @@ describe('DBService', function () {
                 "password_hash": 'test3hash',
                 "catalog_token": 'test3catalog'
             };
-            user = DBSchemas.User(user);
-            DBService.createUser(user)
+            DBService.createUser(DBSchemas.User(user))
                 .then(function(){})
                 .then(done, done);
         });
@@ -190,13 +186,13 @@ describe('DBService', function () {
     describe('findCredentialById', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential({
+            DBService.createCredential(DBSchemas.Credential({
                 "user_id": 'user-id',
                 "service_type": 'dropbox',
                 "service_id": '12345',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            })
+            }))
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -236,13 +232,13 @@ describe('DBService', function () {
     describe('findCredentialByServiceId', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential({
+            DBService.createCredential(DBSchemas.Credential({
                 "user_id": 'user-service-id',
                 "service_type": 'dropbox',
                 "service_id": 'service-id-1234',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            })
+            }))
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -260,16 +256,59 @@ describe('DBService', function () {
         });
     });
 
+    describe('findCredentialsByUserId', function(){
+        before(function(done){
+            DBService.createCredential(DBSchemas.Credential({
+                "user_id": 'user-cred-query-id',
+                "service_type": 'dropbox',
+                "service_id": 'service-id-1234',
+                "email": 'test@test.com',
+                "oauth": {"test": "TEst"}
+            }))
+                .then(function(){
+                    return DBService.createCredential(DBSchemas.Credential({
+                        "user_id": 'user-cred-query-id',
+                        "service_type": 'dropbox',
+                        "service_id": 'service-id-1234',
+                        "email": 'test@test.com',
+                        "oauth": {"test": "TEst"}
+                    }))
+                })
+                .then(function(){
+                    return DBService.createCredential(DBSchemas.Credential({
+                        "user_id": 'user-cred-query-id',
+                        "service_type": 'dropbox',
+                        "service_id": 'service-id-1234',
+                        "email": 'test@test.com',
+                        "oauth": {"test": "TEst"}
+                    }))
+                })
+                .then(function(){})
+                .then(done, done);
+        });
+        it('should correctly find credential', function (done) {
+            DBService.findCredentialsByUserId('user-cred-query-id')
+                .then(function(credentials){
+                    credentials.length.should.eql(3);
+                    credentials[0].user_id.should.eql('user-cred-query-id');
+                    credentials[0].service_type.should.eql('dropbox');
+                    credentials[0].service_id.should.eql('service-id-1234');
+                    credentials[0].email.should.eql('test@test.com');
+                })
+                .then(done, done);
+        });
+    });
+
     describe('updateCredential', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential({
+            DBService.createCredential(DBSchemas.Credential({
                 "user_id": 'user-id',
                 "service_type": 'dropbox',
                 "service_id": '12345',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            })
+            }))
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -314,8 +353,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBSchemas.Book(book);
-            DBService.createBook(book)
+            DBService.createBook(DBSchemas.Book(book))
                 .then(function(book_data){
                     book_data.user_id.should.eql('user-id')
                 })
@@ -335,8 +373,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBSchemas.Book(book);
-            DBService.createBook(book)
+            DBService.createBook(DBSchemas.Book(book))
                 .then(function(book_data){
                     book_id = book_data.id;
                 })
@@ -349,6 +386,63 @@ describe('DBService', function () {
                     book_data.id.should.eql(book_id);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('findBooksByUserId', function(){
+        before(function(done){
+            var book = {
+                user_id: 'find-book-user-id',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1234',
+                storage_filename: 'book',
+                storage_format: 'epub',
+                title: 'this is my book title'
+            };
+            DBService.createBook(DBSchemas.Book(book))
+                .then(function(){
+                    return DBService.createBook(book)
+                })
+                .then(function(){
+                    return DBService.createBook(book)
+                })
+                .then(function(){})
+                .then(done, done);
+        });
+        it('should correctly find book', function (done) {
+            DBService.findBooksByUserId('find-book-user-id')
+                .then(function(books){
+                    books.length.should.eql(3);
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('deleteBookById', function(){
+        var book_id;
+        before(function(done){
+            var book = {
+                user_id: 'book-delete-user-id',
+                credential_id: 'book-delete-credential-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1234',
+                storage_filename: 'book',
+                storage_format: 'epub',
+                title: 'this is my book title'
+            };
+            DBService.createBook(DBSchemas.Book(book))
+                .then(function(book_data){
+                    book_id = book_data.id;
+                })
+                .then(done, done);
+        });
+        it('should correctly delete book', function (done) {
+            DBService.deleteBookById(book_id, 'book-delete-user-id')
+                .then(function(book_data){
+                    book_data.should.eql({});
                 })
                 .then(done, done);
         });

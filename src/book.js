@@ -101,24 +101,15 @@ module.exports = {
 
     destroy: function (event, context, cb) {
         //TODO: we should destroy book storage as well.
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client) {
-
+        JWTokenService.verify(event.token)
+            .then(function(auth) {
                 if(!event.path.id){
                     console.error('No book specified', event.path.id);
                     throw new HttpError('No book specified', 500)
                 }
-
                 var book_data = event.body;
                 book_data.user_id = auth.uid;
-
-                return db_client('books')
-                    .where({
-                        user_id: auth.uid,
-                        id: event.path.id
-                    })
-                    .del()
-
+                return DBService.deleteBookById(event.path.id, auth.user_id)
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))
