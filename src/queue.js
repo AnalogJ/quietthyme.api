@@ -57,16 +57,10 @@ module.exports = {
                         id: book_id,
                         credential_id: cred_id
                     }),
-                    db_client.first()
-                        .from('credentials')
-                        .where({
-                            user_id: user_id,
-                            id: cred_id
-                        }),
-                    db_client
+                    DBService.findCredentialById(cred_id, user_id)
                 ]
             })
-            .spread(function(book, credential, db_client){
+            .spread(function(book, credential){
                 // //now we have book information and credential info, lets generate the new book filename.
                 // var clean_filename = book.authors[0]
                 // if(book.series){
@@ -112,89 +106,86 @@ module.exports = {
     // will determine the book's destination location (dest_storage_type, dest_storage_identifier)
     //
     process_unknown_book: function(event, context, cb){
-        DBService.get()
-            .then(function(db_client){
-                return StorageService.download_book_tmp(db_client, event.filename, event.credential_id, event.storage_identifier)
-                    .spread(function(book_path, credential){
-                        //We've downloaded the book, lets get metadata from it, then process it
+        return StorageService.download_book_tmp(event.filename, event.credential_id, event.storage_identifier)
+            .spread(function(book_path, credential){
+                //We've downloaded the book, lets get metadata from it, then process it
 
-                        var tmp_folder = path.dirname(book_path);
-                        var book_ext = path.extname(book_path);
-                        var book_filename = path.basename(book_path, book_ext);
+                var tmp_folder = path.dirname(book_path);
+                var book_ext = path.extname(book_path);
+                var book_filename = path.basename(book_path, book_ext);
 
-                        var opf_path = tmp_folder + '/'+ book_filename + '.opf';
-                        var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
+                var opf_path = tmp_folder + '/'+ book_filename + '.opf';
+                var cover_path = tmp_folder + '/'+ book_filename + '.jpeg';
 
-                        debug("Begin processing book: %s", book_path);
+                debug("Begin processing book: %s", book_path);
 
-                        var deferred = q.defer();
-                        //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
-                        exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
-                            if (err) return deferred.reject(err);
-                            if(stdout) debug("calibre metadata extract stdout: %s", stdout);
-                            if(stderr) console.error(`calibre metadata extract stderr: ${stderr}`);
-                            return deferred.resolve({
-                                opf_path: opf_path,
-                                cover_path: cover_path,
-                                book_filename: book_filename
-                            })
-                        });
-                        return deferred.promise
-                            .then(function(paths){
-
-                                //parse opf file and create a book
-                                return PipelineMetadataService.generate_embedded_opf_data_set(paths.opf_path)
-                                    .then(function(embedded_opf){
-                                        var primary_criteria = {
-                                            //required criteria
-                                            user_id: credential.user_id,
-
-                                            //optional criteria
-                                            credential_id: credential.id,
-                                            storage_type: credential.service_type,
-                                            storage_identifier: event.storage_identifier,
-                                            storage_filename: path.basename(event.filename, path.extname(event.filename)),
-                                            storage_format: path.extname(event.filename),
-                                            storage_size: fs.statSync(book_path).size
-                                        };
-                                        var metadata_pipeline = [embedded_opf];
-                                        var image_pipeline = [PipelineImageService.generate_file_data_set('embedded', paths.cover_path)];
-                                        return PipelineService.create_with_pipeline(primary_criteria,
-                                            metadata_pipeline,
-                                            image_pipeline)
-                                    })
-                            })
-                            .then(function(inserted_books){
-
-                                //at this point the book data is stored in the Database, and the cover art has been uploaded to S3 already.
-                                // we just need to move the book to permanent storage.
-
-                                debug("Inserted Book: %o", inserted_books);
-                                return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
-                            })
-
-
+                var deferred = q.defer();
+                //var parentDir = path.resolve(process.cwd(), '../opt/calibre-2.80.0/');
+                exec(`opt/calibre-2.80.0/ebook-meta "${book_path}" --to-opf="${opf_path}" --get-cover="${cover_path}"`, {}, function(err, stdout, stderr) {
+                    if (err) return deferred.reject(err);
+                    if(stdout) debug("calibre metadata extract stdout: %s", stdout);
+                    if(stderr) console.error(`calibre metadata extract stderr: ${stderr}`);
+                    return deferred.resolve({
+                        opf_path: opf_path,
+                        cover_path: cover_path,
+                        book_filename: book_filename
                     })
-                    .spread(function(book_data_promise, book_storage_promise){
-                        var book_data = book_data_promise.value;
-                        var book_storage_identifier = book_storage_promise.value;
+                });
+                return deferred.promise
+                    .then(function(paths){
 
+                        //parse opf file and create a book
+                        return PipelineMetadataService.generate_embedded_opf_data_set(paths.opf_path)
+                            .then(function(embedded_opf){
+                                var primary_criteria = {
+                                    //required criteria
+                                    user_id: credential.user_id,
 
-                        console.info("Book storage identifier:", book_storage_identifier);
-
-                        //update book with new storage information and cover info.
-                        var update_data = {
-                            storage_identifier: book_storage_identifier.id,
-                            storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
-                        };
-
-                        return db_client('books')
-                            .where('id', '=', book_data.id)
-                            .update(update_data)
+                                    //optional criteria
+                                    credential_id: credential.id,
+                                    storage_type: credential.service_type,
+                                    storage_identifier: event.storage_identifier,
+                                    storage_filename: path.basename(event.filename, path.extname(event.filename)),
+                                    storage_format: path.extname(event.filename),
+                                    storage_size: fs.statSync(book_path).size
+                                };
+                                var metadata_pipeline = [embedded_opf];
+                                var image_pipeline = [PipelineImageService.generate_file_data_set('embedded', paths.cover_path)];
+                                return PipelineService.create_with_pipeline(primary_criteria,
+                                    metadata_pipeline,
+                                    image_pipeline)
+                            })
                     })
-                    .then(function(){
-                        return {}
+                    .then(function(inserted_books){
+
+                        //at this point the book data is stored in the Database, and the cover art has been uploaded to S3 already.
+                        // we just need to move the book to permanent storage.
+
+                        debug("Inserted Book: %o", inserted_books);
+                        return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
                     })
+
+
+            })
+            .spread(function(book_data_promise, book_storage_promise){
+                var book_data = book_data_promise.value;
+                var book_storage_identifier = book_storage_promise.value;
+
+
+                console.info("Book storage identifier:", book_storage_identifier);
+
+                //update book with new storage information and cover info.
+                var update_data = {
+                    storage_identifier: book_storage_identifier.id,
+                    storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
+                };
+
+                return db_client('books')
+                    .where('id', '=', book_data.id)
+                    .update(update_data)
+            })
+            .then(function(){
+                return {}
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

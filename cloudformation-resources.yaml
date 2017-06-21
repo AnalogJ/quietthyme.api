@@ -102,12 +102,24 @@ QuietThymeCredsTable:
     AttributeDefinitions:
     - AttributeName: id
       AttributeType: S
+    - AttributeName: service_id
+      AttributeType: S
     KeySchema:
     - AttributeName: id
       KeyType: HASH
     ProvisionedThroughput:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
+    GlobalSecondaryIndexes:
+    - IndexName: "serviceIdIndex",
+      KeySchema:
+      - AttributeName: "service_id",
+        KeyType: "HASH"
+      Projection:
+        ProjectionType: "ALL"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2,
+        WriteCapacityUnits: 2
     TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
 QuietThymeBooksTable:
   Type: AWS::DynamoDB::Table

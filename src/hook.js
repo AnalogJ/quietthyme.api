@@ -40,26 +40,18 @@ module.exports.kloudless = function(event, context, cb){
 
 
     //retrieve the current cursor and and then do a request for the latest events
-    DBService.get()
-        .then(function(db_client){
-            return db_client.first()
-                .from('credentials')
-                .where({
-                    service_id: event.body.split('=')[1],
-                })
-                .then(function(credential){
-                    return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
-                })
-                .spread(function(kloudless_events, credential){
-                    //store the new cursor in the db
-                    return [db_client('credentials')
-                        .where({id:credential.id})
-                        .update({event_cursor: kloudless_events.cursor})
-                        .then(function(){
-                            debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor);
-                            return kloudless_events;
-                        }), credential]
-                })
+    DBService.findCredentialByServiceId(event.body.split('=')[1])
+        .then(function(credential){
+            return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
+        })
+        .spread(function(kloudless_events, credential){
+            //store the new cursor in the db
+            return [
+                DBService.updateCredential(credential.id, {event_cursor: kloudless_events.cursor}, true)
+                    .then(function(){
+                        debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor);
+                        return kloudless_events;
+                    }), credential]
         })
         .spread(function(events, credential){
             var blackhole_folder = credential.blackhole_folder;

@@ -212,6 +212,88 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+
+        it('should correctly find credential if user_id is specified', function (done) {
+            DBService.findCredentialById(credential_id, 'user-id')
+                .then(function(credential){
+                    credential.user_id.should.eql('user-id');
+                    credential.id.should.eql(credential_id);
+                    // should.not.exist(user.password_hash);
+                    // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+
+        it('should correctly filter all credential if unknown user_id is specified', function (done) {
+            DBService.findCredentialById(credential_id, 'does-not-exist-user-id')
+                .then(function(credential){
+                    should.not.exist(credential)
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('findCredentialByServiceId', function(){
+        var credential_id;
+        before(function(done){
+            DBService.createCredential({
+                "user_id": 'user-service-id',
+                "service_type": 'dropbox',
+                "service_id": 'service-id-1234',
+                "email": 'test@test.com',
+                "oauth": {"test": "TEst"}
+            })
+                .then(function(credential_data){
+                    credential_id = credential_data.id;
+                })
+                .then(done, done);
+        });
+        it('should correctly find credential', function (done) {
+            DBService.findCredentialByServiceId('service-id-1234')
+                .then(function(credential){
+                    credential.user_id.should.eql('user-service-id');
+                    credential.id.should.eql(credential_id);
+                    // should.not.exist(user.password_hash);
+                    // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('updateCredential', function(){
+        var credential_id;
+        before(function(done){
+            DBService.createCredential({
+                "user_id": 'user-id',
+                "service_type": 'dropbox',
+                "service_id": '12345',
+                "email": 'test@test.com',
+                "oauth": {"test": "TEst"}
+            })
+                .then(function(credential_data){
+                    credential_id = credential_data.id;
+                })
+                .then(done, done);
+        });
+        it('should correctly update credential', function (done) {
+            DBService.updateCredential(credential_id, {event_cursor: 'event-cursor'})
+                .then(function(credential){
+                    credential.should.eql({});
+                    // should.not.exist(user.password_hash);
+                    // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+
+        it('should correctly update credential and return values', function (done) {
+            DBService.updateCredential(credential_id, {event_cursor: 'event-cursor-value'}, true)
+                .then(function(credential){
+                    credential.event_cursor.should.eql('event-cursor-value');
+                    // should.not.exist(user.password_hash);
+                    // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
     });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

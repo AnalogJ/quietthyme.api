@@ -42,13 +42,11 @@ module.exports = {
                             .spread(function(root_folder, library_folder, blackhole_folder){
                                 debug("root_folder: %s, library_folder: %s, blackhole_folder: %s", root_folder, library_folder, blackhole_folder);
 
-                                return db_client('credentials')
-                                    .where('id', '=', new_cred[0].id)
-                                    .update({
-                                        'root_folder': {id: root_folder.id, raw_id: root_folder.raw_id, path_id: root_folder.path_id}, //this is the service specific "QuietThyme" folder that all sub folders are created in.
-                                        'library_folder': {id: library_folder.id, raw_id: library_folder.raw_id, path_id: library_folder.path_id}, //this is "library" folder that all author folders are created in.
-                                        'blackhole_folder': {id: blackhole_folder.id, raw_id: blackhole_folder.raw_id, path_id: blackhole_folder.path_id}
-                                    })
+                                return DBService.updateCredential(new_cred.id,{
+                                    'root_folder': {id: root_folder.id, raw_id: root_folder.raw_id, path_id: root_folder.path_id}, //this is the service specific "QuietThyme" folder that all sub folders are created in.
+                                    'library_folder': {id: library_folder.id, raw_id: library_folder.raw_id, path_id: library_folder.path_id}, //this is "library" folder that all author folders are created in.
+                                    'blackhole_folder': {id: blackhole_folder.id, raw_id: blackhole_folder.raw_id, path_id: blackhole_folder.path_id}
+                                })
                             })
 
                     })
@@ -163,15 +161,10 @@ module.exports = {
         // this function will create the Author folder for this book, in storage_type specfied
         // TODO: this function shoulc check if the book file already exists.
         // TODO: this function should handle quietthyme storage creds
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client){
+        JWTokenService.verify(event.token)
+            .then(function(auth){
                 return q.spread([
-                    db_client.first()
-                    .from('credentials')
-                    .where({
-                        user_id: auth.uid,
-                        id: event.body.storage_id
-                    }),
+                    DBService.findCredentialById(event.body.storage_id, auth.uid),
                     db_client.first()
                         .from('books')
                         .where({

@@ -24,13 +24,13 @@ authService.createEmailUser = function(name, email, password){
         })
 };
 
-authService.createCalibreUser = function(db_client, library_uuid){
-    return SecurityService.generate_catalog_token()
-        .then(function(catalog_token){
-            return db_client('users')
-                .insert({
-                    "library_uuid": library_uuid,
-                    "catalog_token": catalog_token
-                })
-        })
-};
+// authService.createCalibreUser = function(db_client, library_uuid){
+//     return SecurityService.generate_catalog_token()
+//         .then(function(catalog_token){
+//             return db_client('users')
+//                 .insert({
+//                     "library_uuid": library_uuid,
+//                     "catalog_token": catalog_token
+//                 })
+//         })
+// };

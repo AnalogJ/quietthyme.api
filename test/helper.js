@@ -74,6 +74,9 @@ before(function(done){
             {
                 AttributeName: "id",
                 AttributeType: "S"
+            },{
+                AttributeName: "service_id",
+                AttributeType: "S"
             }
         ],
         KeySchema: [
@@ -86,6 +89,24 @@ before(function(done){
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
         },
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: "serviceIdIndex",
+                KeySchema: [
+                    {
+                        AttributeName: "service_id",
+                        KeyType: "HASH"
+                    }
+                ],
+                Projection: {
+                    ProjectionType: "ALL"
+                },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 2,
+                    WriteCapacityUnits: 2
+                },
+            }
+        ],
         TableName: 'quietthyme-api-' + nconf.get('STAGE') + '-credentials'
     };
 

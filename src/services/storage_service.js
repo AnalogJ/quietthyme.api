@@ -42,12 +42,10 @@ StorageService.move_to_perm_storage = function(credential, book){
     return KloudlessService.fileMove(credential.service_id, book.storage_identifier, credential.library_folder.id, filename)
 };
 
-StorageService.download_book_tmp = function(db_client, filename, credential_id, storage_identifier){
+StorageService.download_book_tmp = function(filename, credential_id, storage_identifier){
     //TODO: this function should also handle downloading books from S3.
 
-    return q(db_client.first()
-        .from('credentials')
-        .where('id', credential_id))
+    return DBService.findCredentialById(credential_id)
         .then(function(credential){
 
             var tmpDir = tmp.dirSync();
@@ -96,7 +94,7 @@ StorageService.get_user_storage = function(token){
         })
 };
 
-StorageService.get_download_link = function(book, user_id, db_client){
+StorageService.get_download_link = function(book, user_id){
     //check if the book storage_type is populated, if not, then we need to return
     if(!book.storage_type || !book.storage_identifier){
         return q.reject(new Error('Could not find storage'))
@@ -113,12 +111,7 @@ StorageService.get_download_link = function(book, user_id, db_client){
 
 
         //find the credential for this book
-        return db_client.first()
-            .from('credentials')
-            .where({
-                user_id: user_id,
-                id: book.credential_id
-            })
+        return DBService.findCredentialById(book.credential_id, user_id)
             .then(function(credential){
                 return KloudlessService.linkCreate(credential.service_id, book.storage_identifier)
             })

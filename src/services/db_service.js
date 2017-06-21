@@ -45,6 +45,9 @@ dbService.listTables = function(){
 }
 
 dbService.createTable = function(params){
+    if(nconf.get('STAGE') != 'test'){
+        throw new Error("Creating tables is only allowed in test environment.")
+    }
     var db_deferred = q.defer();
     var db = new AWS.DynamoDB({apiVersion: '2012-08-10'});
     db.createTable(params, function(err, data) {
@@ -55,6 +58,9 @@ dbService.createTable = function(params){
 }
 
 dbService.deleteTable = function(params){
+    if(nconf.get('STAGE') != 'test'){
+        throw new Error("Deleting tables is only allowed in test environment.")
+    }
     var db_deferred = q.defer();
     var db = new AWS.DynamoDB({apiVersion: '2012-08-10'});
     db.deleteTable(params, function(err, data) {
@@ -179,7 +185,7 @@ dbService.createCredential = function(credential /* DBSchema.Credential */){
     return db_deferred.promise
 };
 
-dbService.findCredentialById = function(credential_id){
+dbService.findCredentialById = function(credential_id, user_id /* optional, but recommended */){
     var params = {
         TableName : Constants.tables.credentials,
         KeyConditionExpression: "id = :id",
@@ -187,6 +193,11 @@ dbService.findCredentialById = function(credential_id){
             ":id": credential_id
         }
     };
+    if(user_id){
+        params.FilterExpression = "user_id = :user_id"
+        params.ExpressionAttributeValues[":user_id"] = user_id
+    }
+
     var db_deferred = q.defer();
     docClient.query(params, function(err, data) {
         if (err)  return db_deferred.reject(err);
@@ -195,7 +206,26 @@ dbService.findCredentialById = function(credential_id){
     return db_deferred.promise
 };
 
-dbService.updateCredential = function(credential_id, update_data){
+dbService.findCredentialByServiceId = function(service_id){
+    var params = {
+        TableName : Constants.tables.credentials,
+        IndexName: 'serviceIdIndex',
+        KeyConditionExpression: "service_id = :service_id",
+        ExpressionAttributeValues: {
+            ":service_id": service_id
+        }
+    };
+
+    var db_deferred = q.defer();
+    docClient.query(params, function(err, data) {
+        if (err)  return db_deferred.reject(err);
+        return db_deferred.resolve(data.Items[0]);
+    });
+    return db_deferred.promise
+};
+
+
+dbService.updateCredential = function(credential_id, update_data, return_values){
     var update_expression = [];
     var expression_attribute_names = {};
     var expression_attribute_values = {};
@@ -212,10 +242,14 @@ dbService.updateCredential = function(credential_id, update_data){
         ExpressionAttributeNames: expression_attribute_names,
         ExpressionAttributeValues: expression_attribute_values
     };
+    if(return_values){
+        params.ReturnValues = 'ALL_NEW';
+    }
+
     var db_deferred = q.defer();
     docClient.update(params, function(err, data) {
         if (err)  return db_deferred.reject(err);
-        return db_deferred.resolve(data);
+        return db_deferred.resolve(data.Attributes ? data.Attributes : {});
     });
     return db_deferred.promise
 };
