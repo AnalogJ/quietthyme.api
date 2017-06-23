@@ -8,7 +8,7 @@ dependencies:
   override:
     - npm install -g serverless
     - npm install
-#    - npm ls
+    - npm ls || true
 # pull docker images needed for tests.
     - docker pull vidsyhq/fake-dynamodb
     - docker pull lphoward/fake-s3
