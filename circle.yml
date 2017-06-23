@@ -18,7 +18,8 @@ test:
     - docker run -d -p 6001:6001 vidsyhq/fake-dynamodb
     - docker run -d lphoward/fake-s3
     - sleep 2
-    - unset AWS_ACCESS_KEY_ID && unset AWS_SECRET_ACCESS_KEY && npm test
+    - curl localhost:6001
+    - npm test
 
 deployment:
   deploy:
