@@ -65,7 +65,7 @@ module.exports = {
             .then(function(user){
                 return {
                     token: JWTokenService.issue({
-                        uid: user.user_id,
+                        uid: user.uid,
                         plan: user.plan,
                         catalog_token: user.catalog_token,
                         name: user.name,

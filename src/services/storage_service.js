@@ -65,11 +65,10 @@ StorageService.download_book_tmp = function(filename, credential_id, storage_ide
 
 StorageService.get_user_storage = function(token){
 
-    return q.spread([JWTokenService.verify(token), DBService.get()],
-        function(auth, db_client){
-            return q(db_client.select()
-                .from('credentials')
-                .where('user_id', auth.uid))
+    return JWTokenService.verify(token)
+        .then(function(auth){
+
+            return DBService.findCredentialsByUserId(auth.uid)
                 .then(function(credentials){
                     debug("Found credentials for user: %s", auth.uid);
                     var credential_info_promises = credentials.map(function(cred){

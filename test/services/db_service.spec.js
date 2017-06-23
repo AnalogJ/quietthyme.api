@@ -4,7 +4,7 @@ var DBSchemas = require('../../src/common/db_schemas')
 
 //this is just simple integration testing
 describe('DBService', function () {
-    describe('listTables', function(){
+    describe('#listTables()', function(){
         it('should correctly list all tables', function (done) {
             DBService.listTables()
                 .then(function(tables){
@@ -25,7 +25,7 @@ describe('DBService', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    describe('createUser', function(){
+    describe('#createUser()', function(){
         it('should correctly createUser', function (done) {
             var user = {
                 name: 'test1',
@@ -39,7 +39,7 @@ describe('DBService', function () {
 
             DBService.createUser(DBSchemas.User(user))
                 .then(function (userresp) {
-                    should.exist(userresp.user_id);
+                    should.exist(userresp.uid);
                     userresp.name.should.eql('test1');
                     userresp.email.should.eql('test1@example.com');
                     userresp.catalog_token.should.eql('lousing-bobwhite-angled-augers');
@@ -52,7 +52,7 @@ describe('DBService', function () {
     });
 
 
-    describe('updateUserPlan', function(){
+    describe('#updateUserPlan()', function(){
         before(function(done){
             var user = {
                 "name": 'testplan',
@@ -74,8 +74,8 @@ describe('DBService', function () {
         });
     });
 
-    describe('findUserById', function(){
-        var user_id;
+    describe('#findUserById()', function(){
+        var uid;
         before(function(done){
             var user = {
                 "name": 'testid',
@@ -85,18 +85,18 @@ describe('DBService', function () {
             };
             DBService.createUser(DBSchemas.User(user))
                 .then(function(user_data){
-                    user_id = user.user_id
+                    uid = user.uid
                 })
                 .then(done, done);
         });
         it('should correctly find user', function (done) {
 
-            DBService.findUserById(user_id)
+            DBService.findUserById(uid)
                 .then(function(user){
-                    user.user_id.should.eql(user_id)
+                    user.uid.should.eql(uid)
                     user.plan.should.eql('none');
                     user.email.should.eql('testid@example.com');
-                    should.exist(user.user_id);
+                    should.exist(user.uid);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
                 })
@@ -104,7 +104,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findUserByEmail', function(){
+    describe('#findUserByEmail()', function(){
         before(function(done){
             var user = {
                 "name": 'test2',
@@ -122,7 +122,7 @@ describe('DBService', function () {
                 .then(function(user){
                     user.plan.should.eql('none');
                     user.email.should.eql('test2@example.com');
-                    should.exist(user.user_id);
+                    should.exist(user.uid);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
                 })
@@ -130,7 +130,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findUserByCatalogToken', function(){
+    describe('#findUserByCatalogToken()', function(){
         before(function(done){
             var user = {
                 "name": 'test3',
@@ -147,7 +147,7 @@ describe('DBService', function () {
                 .then(function(user){
                     user.plan.should.eql('none');
                     user.email.should.eql('test3@example.com');
-                    should.exist(user.user_id);
+                    should.exist(user.uid);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
                 })
@@ -161,7 +161,7 @@ describe('DBService', function () {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    describe('createCredential', function(){
+    describe('#createCredential()', function(){
         it('should correctly create credential', function (done) {
             var credential = {
                 "user_id": "123-456-789",
@@ -183,7 +183,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findCredentialById', function(){
+    describe('#findCredentialById()', function(){
         var credential_id;
         before(function(done){
             DBService.createCredential(DBSchemas.Credential({
@@ -229,7 +229,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findCredentialByServiceId', function(){
+    describe('#findCredentialByServiceId()', function(){
         var credential_id;
         before(function(done){
             DBService.createCredential(DBSchemas.Credential({
@@ -256,7 +256,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findCredentialsByUserId', function(){
+    describe('#findCredentialsByUserId()', function(){
         before(function(done){
             DBService.createCredential(DBSchemas.Credential({
                 "user_id": 'user-cred-query-id',
@@ -299,7 +299,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('updateCredential', function(){
+    describe('#updateCredential()', function(){
         var credential_id;
         before(function(done){
             DBService.createCredential(DBSchemas.Credential({
@@ -342,7 +342,7 @@ describe('DBService', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    describe('createBook', function(){
+    describe('#createBook()', function(){
         it('should correctly create book', function (done) {
             var book = {
                 user_id: 'user-id',
@@ -361,7 +361,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findBookById', function(){
+    describe('#findBookById()', function(){
         var book_id;
         before(function(done){
             var book = {
@@ -391,7 +391,7 @@ describe('DBService', function () {
         });
     });
 
-    describe('findBooksByUserId', function(){
+    describe('#findBooksByUserId()', function(){
         before(function(done){
             var book = {
                 user_id: 'find-book-user-id',
@@ -414,14 +414,120 @@ describe('DBService', function () {
         });
         it('should correctly find book', function (done) {
             DBService.findBooksByUserId('find-book-user-id')
-                .then(function(books){
-                    books.length.should.eql(3);
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(3);
                 })
                 .then(done, done);
         });
     });
 
-    describe('deleteBookById', function(){
+
+    describe('#findBooks()', function(){
+        before(function(done){
+            var book1 = {
+                user_id: 'find-book',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1',
+                storage_filename: 'book2',
+                storage_format: 'epub',
+                title: 'title1'
+            };
+            var book2 = {
+                user_id: 'find-book',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/2',
+                storage_filename: 'book1',
+                storage_format: 'pdf',
+                title: 'title2'
+            };
+            var book3 = {
+                user_id: 'find-book',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/3',
+                storage_filename: 'book2',
+                storage_format: 'pdf',
+                title: 'title3'
+            };
+            var book4 = {
+                user_id: 'find-book',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/4',
+                storage_filename: 'book1',
+                storage_format: 'epub',
+                title: 'title4'
+            };
+            DBService.createBook(DBSchemas.Book(book1))
+                .then(function(){
+
+                    return DBService.createBook(book2)
+                })
+                .then(function(){
+                    return DBService.createBook(book3)
+                })
+                .then(function(){
+                    return DBService.createBook(book4)
+                })
+                .then(function(){})
+                .then(done, done);
+        });
+        it('should correctly find book after filtering', function (done) {
+            DBService.findBooks('find-book', {'storage_format': 'pdf'})
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(2);
+                })
+                .then(function(){
+                    return DBService.findBooks('find-book', {'title': 'title4'})
+                })
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(1);
+                })
+                .then(done, done);
+        });
+
+        it('should correctly handle empty filter', function (done) {
+            DBService.findBooks('find-book', {})
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(4);
+                })
+                .then(done, done);
+        });
+
+        it('should correctly handle multiple filters', function (done) {
+            DBService.findBooks('find-book', {'storage_format': 'pdf', 'storage_identifier': 'storage-id/test/2', 'storage_filename': 'book1'})
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(1);
+                })
+                .then(done, done);
+        });
+
+        it('should correctly paginate with page limits', function (done) {
+
+            var found_items = [];
+            function paginate(resp_data){
+                found_items = found_items.concat(resp_data.Items)
+                if(resp_data.LastEvaluatedKey){
+                    return DBService.findBooks('find-book', {'storage_filename': 'book2'}, resp_data.LastEvaluatedKey.id, 1)
+                        .then(paginate)
+                }
+                else{
+                    return found_items
+                }
+            }
+
+            DBService.findBooks('find-book', {'storage_filename': 'book2'}, null, 1)
+                .then(paginate)
+                .then(function(items){
+                    items.length.should.eql(2);
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('#deleteBookById()', function(){
         var book_id;
         before(function(done){
             var book = {

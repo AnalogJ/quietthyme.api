@@ -1,25 +1,24 @@
 machine:
+  services:
+    - docker
   node:
     version: 4.3.0
-
-#general:
-#  branches:
-#    only:
-#      - master
-#      - beta
 
 dependencies:
   override:
     - npm install -g serverless
-    - npm install -g knex
     - npm install
 #    - npm ls
+# pull docker images needed for tests.
+    - docker pull vidsyhq/fake-dynamodb
+    - docker pull lphoward/fake-s3
 
 test:
   override:
-    - npm run-script coverage:
-      environment:
-        NODE_ENV=test
+    - docker run -d -p 6001:6001 vidsyhq/fake-dynamodb
+    - docker run -d lphoward/fake-s3
+    - sleep 2
+    - npm test
 
 deployment:
   deploy:
@@ -27,5 +26,4 @@ deployment:
     commands:
       - npm prune --production #prune node_modules directory to only contain production modules
       - sls prune -n 4
-      - NODE_ENV=$CIRCLE_BRANCH knex migrate:latest
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1

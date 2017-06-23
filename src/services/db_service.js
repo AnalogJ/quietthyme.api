@@ -76,12 +76,12 @@ dbService.deleteTable = function(params){
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-dbService.findUserById = function(user_id){
+dbService.findUserById = function(uid){
     var params = {
         TableName : Constants.tables.users,
-        KeyConditionExpression: "user_id = :user_id",
+        KeyConditionExpression: "uid = :uid",
         ExpressionAttributeValues: {
-            ":user_id": user_id
+            ":uid": uid
         }
     };
     var db_deferred = q.defer();
@@ -130,7 +130,7 @@ dbService.findUserByCatalogToken = function(catalog_token){
 }
 
 dbService.createUser = function(user /* DBSchema.User */){
-    user.user_id = uuid.v4()
+    user.uid = uuid.v4()
     var params = {
         TableName:Constants.tables.users,
         Item: user
@@ -145,10 +145,10 @@ dbService.createUser = function(user /* DBSchema.User */){
     return db_deferred.promise
 }
 
-dbService.updateUserPlan = function(user_id, plan, stripe_sub_id){
+dbService.updateUserPlan = function(uid, plan, stripe_sub_id){
     var params = {
         TableName:Constants.tables.users,
-        Key: { user_id : user_id },
+        Key: { uid : uid },
         UpdateExpression: 'set #plan = :plan, #stripe_sub_id = :stripe_sub_id',
         ExpressionAttributeNames: {'#plan' : 'plan', '#stripe_sub_id': 'stripe_sub_id'},
         ExpressionAttributeValues: {
@@ -312,18 +312,67 @@ dbService.findBookById = function(book_id, user_id /* optional, but recommended 
 };
 
 dbService.findBooksByUserId = function(user_id){
+    // var params = {
+    //     TableName : Constants.tables.books,
+    //     KeyConditionExpression: "user_id = :user_id",
+    //     ExpressionAttributeValues: {
+    //         ":user_id": user_id
+    //     }
+    // };
+    //
+    // var db_deferred = q.defer();
+    // docClient.query(params, function(err, data) {
+    //     if (err)  return db_deferred.reject(err);
+    //     return db_deferred.resolve(data.Items);
+    // });
+    // return db_deferred.promise
+    return dbService.findBooks(user_id)
+};
+
+dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direction){
+    var filter_expression = [];
+    var expression_attribute_names = {
+    };
+    var expression_attribute_values = {
+        ":user_id": user_id
+    };
+    for(var prop in filter_data || {}){
+        filter_expression.push('#' + prop + ' = :' + prop)
+        expression_attribute_names['#'+prop] = prop;
+        expression_attribute_values[':'+prop] = filter_data[prop]
+    }
+
     var params = {
         TableName : Constants.tables.books,
-        KeyConditionExpression: "user_id = :user_id",
-        ExpressionAttributeValues: {
-            ":user_id": user_id
-        }
+        KeyConditionExpression:  "user_id = :user_id",
+        ExpressionAttributeValues: expression_attribute_values,
+        Limit: 20
     };
+    if(filter_data && Object.keys(filter_data).length != 0){
+        params.ExpressionAttributeValues = expression_attribute_values;
+        params.ExpressionAttributeNames = expression_attribute_names;
+        params.FilterExpression = filter_expression.join(' and ');
+    }
+
+    if(page){
+        params.ExclusiveStartKey = {
+            "user_id": user_id,
+            "id": page,
+        };
+    }
+
+    if(limit != null ){
+        params.Limit = limit;
+    }
+
+    if(reverse_direction){
+        params.ScanIndexForward = false;
+    }
 
     var db_deferred = q.defer();
     docClient.query(params, function(err, data) {
         if (err)  return db_deferred.reject(err);
-        return db_deferred.resolve(data.Items);
+        return db_deferred.resolve(data);
     });
     return db_deferred.promise
 };

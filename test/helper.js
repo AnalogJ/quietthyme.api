@@ -10,7 +10,7 @@ before(function(done){
     var usersTable = {
         AttributeDefinitions: [
             {
-                AttributeName: "user_id",
+                AttributeName: "uid",
                 AttributeType: "S"
             },
             {
@@ -24,7 +24,7 @@ before(function(done){
         ],
         KeySchema: [
             {
-                AttributeName: "user_id",
+                AttributeName: "uid",
                 KeyType: "HASH"
             }
         ],

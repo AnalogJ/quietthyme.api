@@ -52,35 +52,26 @@ module.exports = {
             .done()
     },
     find: function (event, context, cb) {
-        q.spread([JWTokenService.verify(event.token), DBService.get()],
-            function(auth, db_client) {
+        JWTokenService.verify(event.token)
+            .then(function(auth) {
 
                 if(!event.query.storage_id) {
                     console.warn('No storage_id present, returning books from all storage providers.', event.query.storage_id)
                 }
 
-                var condition = {'user_id': auth.uid};
-
                 var book_query = null;
 
                 if(event.query.id){
-                    book_query = DBService.findBookById(event.query.id, auth.user_id);
+                    book_query = DBService.findBookById(event.query.id, auth.uid);
                 }
                 else{
+                    var condition = {};
                     if(event.query.storage_id){
                         condition['credential_id'] = event.query.storage_id;
                     }
+                    // book_query.orderBy(event.query.sort ? event.query.sort : 'title')
 
-                    book_query = db_client.select()
-                        .from('books')
-                        .where(condition);
-
-                    if(event.query.page || event.query.page === 0){
-                        book_query.limit(50);
-                        book_query.offset(event.query.page * 50)
-                    }
-
-                    book_query.orderBy(event.query.sort ? event.query.sort : 'title')
+                    book_query = DBService.findBooks(auth.uid, condition, event.query.page, 50);
                 }
 
                 return book_query;
@@ -109,7 +100,7 @@ module.exports = {
                 }
                 var book_data = event.body;
                 book_data.user_id = auth.uid;
-                return DBService.deleteBookById(event.path.id, auth.user_id)
+                return DBService.deleteBookById(event.path.id, auth.uid)
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

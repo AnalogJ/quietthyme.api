@@ -509,7 +509,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                return q.all([user, DBService.findBookById(bookId, user.user_id)]);
+                return q.all([user, DBService.findBookById(bookId, user.uid)]);
             })
             .spread(function (user, book) {
                 if (!book) {
@@ -540,9 +540,9 @@ module.exports = {
 
         return CatalogService.findUserByToken(token)
             .then(function(user){
-                return DBService.findBookById(bookId, user.user_id)
+                return DBService.findBookById(bookId, user.uid)
                     .then(function(book){
-                        return StorageService.get_download_link(book,user.user_id)
+                        return StorageService.get_download_link(book,user.uid)
                     })
                     .then(function(link){
                         var payload = {

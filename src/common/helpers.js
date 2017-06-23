@@ -1,5 +1,4 @@
 'use strict';
-var DBService = require('../services/db_service');
 const debug = require('debug')('quietthyme:helpers');
 const nconf = require('./nconf')
 module.exports = {
@@ -9,9 +8,7 @@ module.exports = {
         var _cb = cb;
         return function(resp_data){
             debug("Returning Successful data: %o", resp_data);
-            DBService.destroy().then(function(){
-                return _cb(null, resp_data)
-            })
+            return _cb(null, resp_data)
         }
     },
 
@@ -54,9 +51,7 @@ module.exports = {
 
             //added cleanup method for database, so that we dont timeout in Lambda
             console.error("Returning Failure data:", err);
-            return DBService.destroy().then(function(){
-                return _cb(JSON.stringify(err, whitelisted_props),null);
-            })
+            return _cb(JSON.stringify(err, whitelisted_props),null);
         }
     }
 };

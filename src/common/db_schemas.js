@@ -5,7 +5,7 @@ var ajv = new Ajv({ useDefaults: true, removeAdditional: true }); // options can
 var userSchema = {
     "additionalProperties": false,
     "properties": {
-        "user_id": { "type": "string" },
+        "uid": { "type": "string" },
         "name": { "type": "string" },
         "email": { "type": "string" },
         "password_hash": { "type": "string" },

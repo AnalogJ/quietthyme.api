@@ -6,7 +6,7 @@ var q = require('q');
 //this is just simple integration testing
 describe('AuthService', function () {
 
-    describe('createEmailUser', function(){
+    describe('#createEmailUser()', function(){
         it('should correctly create user', function (done) {
             AuthService.createEmailUser('testAuthCreate', 'testAuthCreate@example.com','testAuthPassword')
                 .then(function(user){

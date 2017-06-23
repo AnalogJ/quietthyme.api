@@ -63,14 +63,14 @@ QuietThymeUsersTable:
   DeletionPolicy: Retain
   Properties:
     AttributeDefinitions:
-    - AttributeName: user_id
+    - AttributeName: uid
       AttributeType: S
     - AttributeName: email
       AttributeType: S
     - AttributeName: catalog_token
       AttributeType: S
     KeySchema:
-    - AttributeName: user_id
+    - AttributeName: uid
       KeyType: HASH
     ProvisionedThroughput:
       ReadCapacityUnits: '5'
@@ -83,16 +83,16 @@ QuietThymeUsersTable:
       Projection:
         ProjectionType: "ALL"
       ProvisionedThroughput:
-        ReadCapacityUnits: 2,
+        ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-    - IndexName: "catalogIndex",
+    - IndexName: "catalogIndex"
       KeySchema:
       - AttributeName: "catalog_token",
         KeyType: "HASH"
       Projection:
         ProjectionType: "ALL"
       ProvisionedThroughput:
-        ReadCapacityUnits: 2,
+        ReadCapacityUnits: 2
         WriteCapacityUnits: 2
     TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
 QuietThymeCredsTable:
@@ -120,7 +120,7 @@ QuietThymeCredsTable:
       Projection:
         ProjectionType: "ALL"
       ProvisionedThroughput:
-        ReadCapacityUnits: 2,
+        ReadCapacityUnits: 2
         WriteCapacityUnits: 2
     - IndexName: "userIdIndex",
       KeySchema:
@@ -131,7 +131,7 @@ QuietThymeCredsTable:
       Projection:
         ProjectionType: "ALL"
       ProvisionedThroughput:
-        ReadCapacityUnits: 2,
+        ReadCapacityUnits: 2
         WriteCapacityUnits: 2
     TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
 QuietThymeBooksTable:
