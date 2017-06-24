@@ -76,9 +76,9 @@ QuietThymeUsersTable:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
     GlobalSecondaryIndexes:
-    - IndexName: "emailIndex",
+    - IndexName: "emailIndex"
       KeySchema:
-      - AttributeName: "email",
+      - AttributeName: "email"
         KeyType: "HASH"
       Projection:
         ProjectionType: "ALL"
@@ -87,7 +87,7 @@ QuietThymeUsersTable:
         WriteCapacityUnits: 2
     - IndexName: "catalogIndex"
       KeySchema:
-      - AttributeName: "catalog_token",
+      - AttributeName: "catalog_token"
         KeyType: "HASH"
       Projection:
         ProjectionType: "ALL"
@@ -113,20 +113,20 @@ QuietThymeCredsTable:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
     GlobalSecondaryIndexes:
-    - IndexName: "serviceIdIndex",
+    - IndexName: "serviceIdIndex"
       KeySchema:
-      - AttributeName: "service_id",
+      - AttributeName: "service_id"
         KeyType: "HASH"
       Projection:
         ProjectionType: "ALL"
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-    - IndexName: "userIdIndex",
+    - IndexName: "userIdIndex"
       KeySchema:
-      - AttributeName: "user_id",
+      - AttributeName: "user_id"
         KeyType: "HASH"
-      - AttributeName: "id",
+      - AttributeName: "id"
         KeyType: "RANGE"
       Projection:
         ProjectionType: "ALL"

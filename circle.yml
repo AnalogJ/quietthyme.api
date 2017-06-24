@@ -19,7 +19,7 @@ test:
     - docker run -d lphoward/fake-s3
     - sleep 2
     - curl localhost:6001
-    - npm test
+    - npm run-script coveralls
 
 deployment:
   deploy:

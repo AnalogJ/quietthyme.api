@@ -1,3 +1,4 @@
 --require should
 --ui bdd
 --no-colors
+--recursive
