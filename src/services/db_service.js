@@ -16,7 +16,7 @@ if(!nconf.get('STAGE')){
 }
 if(nconf.get('STAGE') == 'test'){
     AWS.config.update({
-        endpoint: "http://"+nconf.get('TEST_DATABASE_HOSTNAME')+":6001"
+        endpoint: "http://"+nconf.get('TEST_DYNAMODB_HOSTNAME')+":6001"
     });
 }
 

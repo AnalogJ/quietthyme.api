@@ -10,8 +10,19 @@ var q = require('q'),
     path = require('path'),
     fs = require('fs'),
     tmp = require('tmp'),
-    AWS = require('aws-sdk'),
-    s3 = new AWS.S3({apiVersion: '2006-03-01'});
+    AWS = require('aws-sdk')
+
+
+if(!nconf.get('STAGE')){
+    throw new Error('STAGE not provided!');
+}
+var config = {apiVersion: '2006-03-01'};
+if(nconf.get('STAGE') == 'test'){
+    config.s3ForcePathStyle = true;
+    config.endpoint =  new AWS.Endpoint("http://"+nconf.get('TEST_S3_HOSTNAME')+":4569")
+}
+
+var s3 = new AWS.S3(config);
 
 
 //ALL MEthods in here should support Kloudless storage and s3 storage transparently.

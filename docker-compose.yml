@@ -18,3 +18,5 @@ services:
       - 6001:6001
   s3:
     image: "lphoward/fake-s3"
+    ports:
+      - 4569:4569

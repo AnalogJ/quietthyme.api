@@ -16,9 +16,10 @@ dependencies:
 test:
   override:
     - docker run -d -p 6001:6001 vidsyhq/fake-dynamodb
-    - docker run -d lphoward/fake-s3
+    - docker run -d -p 4569:4569 lphoward/fake-s3
     - sleep 2
     - curl localhost:6001
+    - curl localhost:4569
     - npm run-script coveralls
 
 deployment:
