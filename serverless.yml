@@ -50,13 +50,9 @@ provider:
   # because of issues like: https://github.com/serverless/serverless/issues/2780 on first deploy make sure to comment out
   # the vpc section, and uncomment it after a successful deploy.
   iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "ec2:CreateNetworkInterface"
-        - "ec2:DescribeNetworkInterfaces"
-        - "ec2:DetachNetworkInterface"
-        - "ec2:DeleteNetworkInterface"
-      Resource: "*"
+    - Effect: Allow
+      Action: dynamodb:*
+      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:*/${self:service}-${opt:stage, self:provider.stage}-*
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
