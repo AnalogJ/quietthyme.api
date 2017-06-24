@@ -73,7 +73,7 @@ module.exports = {
                 book.storage_identifier
             )
                 .then(function(kloudless_upload_resp){
-                    return DBService.updateBook(book.id, {
+                    return DBService.updateBook(book.id, user_id, {
                         'storage_type': credential.service_type,
                         'storage_identifier': kloudless_upload_resp['id']
                     }, true)
@@ -154,23 +154,22 @@ module.exports = {
                         debug("Inserted Book: %o", inserted_books);
                         return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
                     })
+                    .spread(function(book_data_promise, book_storage_promise){
+                        var book_data = book_data_promise.value;
+                        var book_storage_identifier = book_storage_promise.value;
 
 
-            })
-            .spread(function(book_data_promise, book_storage_promise){
-                var book_data = book_data_promise.value;
-                var book_storage_identifier = book_storage_promise.value;
+                        console.info("Book storage identifier:", book_storage_identifier);
 
+                        //update book with new storage information and cover info.
+                        var update_data = {
+                            storage_identifier: book_storage_identifier.id,
+                            storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
+                        };
 
-                console.info("Book storage identifier:", book_storage_identifier);
-
-                //update book with new storage information and cover info.
-                var update_data = {
-                    storage_identifier: book_storage_identifier.id,
-                    storage_filename: path.basename(book_storage_identifier.name, book_data.storage_format)
-                };
-
-                return DBService.updateBook(book_data.id, update_data, true)
+                        //TODO: figure out how to get the USERID and pass it in below (NULL)
+                        return DBService.updateBook(book_data.id, credential.user_id , update_data, true)
+                    })
             })
             .then(function(){
                 return {}

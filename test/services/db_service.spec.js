@@ -102,6 +102,23 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+
+        it('should return null when user does not exist', function (done) {
+
+            DBService.findUserById('doesnotexist')
+                .then(function(user){
+                    should.not.exist(user);
+                })
+                .then(done, done);
+        });
+
+        it('should raise an error when user id is null', function (done) {
+            DBService.findUserById('')
+                .fail(function(error){
+                    error.should.be.an.Error
+                })
+                .then(done, done);
+        });
     });
 
     describe('#findUserByEmail()', function(){
@@ -128,6 +145,21 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+        it('should return null when user does not exist', function (done) {
+
+            DBService.findUserByEmail('doesnotexist@example.com')
+                .then(function(user){
+                    should.not.exist(user);
+                })
+                .then(done, done);
+        });
+        it('should raise an error when user email is null', function (done) {
+            DBService.findUserByEmail('')
+                .fail(function(error){
+                    error.should.be.an.Error
+                })
+                .then(done, done);
+        });
     });
 
     describe('#findUserByCatalogToken()', function(){
@@ -150,6 +182,21 @@ describe('DBService', function () {
                     should.exist(user.uid);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+        it('should return null when user does not exist', function (done) {
+
+            DBService.findUserByCatalogToken('doesnotexist')
+                .then(function(user){
+                    should.not.exist(user);
+                })
+                .then(done, done);
+        });
+        it('should raise an error when user email is null', function (done) {
+            DBService.findUserByCatalogToken('')
+                .fail(function(error){
+                    error.should.be.an.Error
                 })
                 .then(done, done);
         });
@@ -227,6 +274,15 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+
+        it('should raise an error when credential id is null', function (done) {
+            DBService.findCredentialById('')
+                .fail(function(error){
+                    error.should.an.Error
+                })
+                .then(done, done);
+        });
+
     });
 
     describe('#findCredentialByServiceId()', function(){
@@ -251,6 +307,14 @@ describe('DBService', function () {
                     credential.id.should.eql(credential_id);
                     // should.not.exist(user.password_hash);
                     // should.not.exist(user.stripe_sub_id);
+                })
+                .then(done, done);
+        });
+
+        it('should raise an error when service id is null', function (done) {
+            DBService.findCredentialByServiceId('')
+                .fail(function(error){
+                    error.should.an.Error
                 })
                 .then(done, done);
         });
@@ -294,6 +358,14 @@ describe('DBService', function () {
                     credentials[0].service_type.should.eql('dropbox');
                     credentials[0].service_id.should.eql('service-id-1234');
                     credentials[0].email.should.eql('test@test.com');
+                })
+                .then(done, done);
+        });
+
+        it('should raise an error when user id is null', function (done) {
+            DBService.findCredentialsByUserId('')
+                .fail(function(error){
+                    error.should.an.Error
                 })
                 .then(done, done);
         });
@@ -389,6 +461,14 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+
+        it('should raise an error when book id is null', function (done) {
+            DBService.findBookById('')
+                .fail(function(error){
+                    error.should.an.Error
+                })
+                .then(done, done);
+        });
     });
 
     describe('#findBooksByUserId()', function(){
@@ -419,8 +499,15 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
-    });
 
+        it('should raise an error when user id is null', function (done) {
+            DBService.findBooksByUserId('')
+                .fail(function(error){
+                    error.should.an.Error
+                })
+                .then(done, done);
+        });
+    });
 
     describe('#findBooks()', function(){
         before(function(done){
@@ -525,6 +612,49 @@ describe('DBService', function () {
                 })
                 .then(done, done);
         });
+
+        it('should raise an error when user id is null', function (done) {
+            DBService.findBooks('')
+                .fail(function(error){
+                    error.should.an.Error
+                })
+                .then(done, done);
+        });
+    });
+
+    describe('#updateBook()', function(){
+        var book_id;
+        before(function(done){
+            var book = {
+                user_id: 'update-user-id',
+                credential_id: 'credential-create-id',
+                storage_size: 123456,
+                storage_identifier: 'storage-id/test/1234',
+                storage_filename: 'book',
+                storage_format: 'epub',
+                title: 'this is my book title'
+            };
+            DBService.createBook(DBSchemas.Book(book))
+                .then(function(book_data){
+                    book_id = book_data.id;
+                })
+                .then(done, done);
+        });
+        it('should correctly update book', function (done) {
+            DBService.updateBook(book_id,'update-user-id', {storage_filename: 'updated_book_filename'})
+                .then(function(book){
+                    book.should.eql({});
+                })
+                .then(done, done);
+        });
+
+        it('should correctly update book and return values', function (done) {
+            DBService.updateBook(book_id,'update-user-id', {storage_filename: 'updated_book_filename_2'}, true)
+                .then(function(book){
+                    book.storage_filename.should.eql('updated_book_filename_2');
+                })
+                .then(done, done);
+        });
     });
 
     describe('#deleteBookById()', function(){
@@ -549,6 +679,14 @@ describe('DBService', function () {
             DBService.deleteBookById(book_id, 'book-delete-user-id')
                 .then(function(book_data){
                     book_data.should.eql({});
+                })
+                .then(done, done);
+        });
+
+        it('should raise an error when book id is null', function (done) {
+            DBService.deleteBookById('')
+                .fail(function(error){
+                    error.should.an.Error
                 })
                 .then(done, done);
         });

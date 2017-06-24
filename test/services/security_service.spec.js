@@ -13,6 +13,14 @@ describe('SecurityService', function () {
                .then(done, done);
         });
 
+        it('Should raise an error if password is empty', function (done) {
+            SecurityService.hash_password('')
+                .fail(function(error){
+                    error.should.eql("Password cannot be empty");
+                })
+                .then(done, done);
+        });
+
     })
     describe('#compare_password()', function(){
         it('Should correctly compare & validate a password', function (done) {

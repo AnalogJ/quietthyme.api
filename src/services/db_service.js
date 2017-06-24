@@ -377,7 +377,7 @@ dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direct
     return db_deferred.promise
 };
 
-dbService.updateBook = function(book_id, update_data, return_values){
+dbService.updateBook = function(book_id, user_id, update_data, return_values){
     var update_expression = [];
     var expression_attribute_names = {};
     var expression_attribute_values = {};
@@ -389,7 +389,7 @@ dbService.updateBook = function(book_id, update_data, return_values){
 
     var params = {
         TableName:Constants.tables.books,
-        Key: { id : book_id },
+        Key: { id : book_id, user_id: user_id },
         UpdateExpression: 'set ' + update_expression.join(', '),
         ExpressionAttributeNames: expression_attribute_names,
         ExpressionAttributeValues: expression_attribute_values

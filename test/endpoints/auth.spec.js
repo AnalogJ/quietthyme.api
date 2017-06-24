@@ -87,10 +87,26 @@ describe('Auth Endpoints', function () {
             authHandler.login(event, context, callback)
         })
 
-        it('should return an error if user already exists', function (done) {
+        it('should return an error if user password is incorrect', function (done) {
             var event={
                 body:{
                     email: 'loginmyuser@example.com',
+                    password: 'incorrectpassword'
+                }
+            };
+            var context={};
+            function callback(ctx, data){
+                JSON.parse(ctx).message.should.exist;
+                should.not.exist(data);
+                done()
+            }
+            authHandler.login(event, context, callback)
+        })
+
+        it('should return an error if user does not exist', function (done) {
+            var event={
+                body:{
+                    email: 'doesnotexist@example.com',
                     password: 'incorrectpassword'
                 }
             };

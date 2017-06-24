@@ -178,7 +178,7 @@ module.exports = {
                         'storage_format': event.body.storage_format
                     };
 
-                    return DBService.updateBook(book.id, book_data, true)
+                    return DBService.updateBook(book.id, auth.uid, book_data, true)
                         .then(function(){
                             var params = {Bucket: Constants.buckets.upload, Key: key, Expires: 60};
                             var payload = {
@@ -208,7 +208,7 @@ module.exports = {
                             'cover': Constants.buckets.content + '/' + encodeURI(key)
                         };
 
-                        return DBService.updateBook(book.id, book_data, true)
+                        return DBService.updateBook(book.id, auth.uid, book_data, true)
                             .then(function(){
                                 var params = {Bucket: Constants.buckets.content, Key: key, Expires: 60};
                                 var payload = {book_data: book_data, upload_url: s3.getSignedUrl('putObject', params)};

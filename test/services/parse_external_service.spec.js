@@ -2,7 +2,7 @@ var should = require('should');
 var ParseExternalService = require('../../src/services/parse_external_service')
 //this is just simple integration testing
 describe('ParseExternalService', function () {
-
+    
     describe('#read_opf_file()', function(){
         it('Should correctly read opf file', function(done){
             ParseExternalService.read_opf_file('./test/fixtures/fatherg-oscard.opf')

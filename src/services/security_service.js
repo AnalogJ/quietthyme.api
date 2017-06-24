@@ -7,6 +7,10 @@ var bcrypt = require('bcrypt');
 
 // These methods are related to verifying users and hashing passwords.
 module.exports.hash_password = function(password) {
+    if(!password){
+        return q.reject('Password cannot be empty')
+    }
+
     var deferred = q.defer();
     bcrypt.genSalt(10, function(err, salt) {
         if (err) return deferred.reject(err);
