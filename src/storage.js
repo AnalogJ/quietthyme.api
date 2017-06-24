@@ -24,7 +24,7 @@ module.exports = {
                 return DBService.createCredential({
                     "user_id": auth.uid,
                     "service_type": event.body.account.service,
-                    "service_id": event.body.account.id,
+                    "service_id": event.body.account.id.toString(),
                     "email": event.body.account.account,
                     "oauth": event.body
 
