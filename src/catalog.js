@@ -122,7 +122,7 @@ module.exports = {
     // # /catalog/{{token}}/series/{{page}} -- alphabetical list of series names.
     series: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var page = (event.query.page | 0);
+        var page = event.query.page;
         var path = "/series" + CatalogService.page_suffix(page);
 
 
@@ -231,7 +231,7 @@ module.exports = {
     //#  /catalog/{{token}}/books/{{page}} -- alphabetical list of books
     books: function (event, context, cb) {
         var token = event.path.catalogToken;
-        var page = (event.query.page | 0);
+        var page = event.query.page;
         var path = "/books" + + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
@@ -241,7 +241,6 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -308,7 +307,7 @@ module.exports = {
     seriesid: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_series_id = event.path.seriesId;
-        var page = (event.query.page | 0);
+        var page = event.query.page;;
         var path = "/in_series/" + encoded_series_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
@@ -352,7 +351,7 @@ module.exports = {
     authorid: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_author_id = event.path.authorId;
-        var page = (event.query.page | 0);
+        var page = event.query.page;;
         var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
@@ -396,7 +395,7 @@ module.exports = {
     tagname: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_tag_name = event.path.tagName;
-        var page = (event.query.page | 0);
+        var page = event.query.page;;
         var path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
@@ -459,7 +458,7 @@ module.exports = {
     search: function (event, context, cb) {
         var token = event.path.catalogToken;
         var query = event.query.query;
-        var page = (event.query.page | 0);
+        var page = event.query.page;;
         var path = "/search?query=" + encodeURIComponent(query) + "&page=" + page;
 
         return CatalogService.findUserByToken(token)

@@ -166,6 +166,8 @@ describe('Book Endpoints', function () {
             }
             bookHandler.find(event, context, callback)
         })
+
+        //TODO test out pagination.
     })
 
     describe('#destroy()', function () {

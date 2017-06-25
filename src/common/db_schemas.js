@@ -62,7 +62,7 @@ var bookSchema = {
         "title": { "type": "string" },
         "average_rating": { "type": "number", "default": 0 },
         "ratings_count": { "type": "number", "default": 0 },
-        "user_rating": { "type": "string", "default": "" },
+        "user_rating": { "type": "number", "default": 0 },
         "num_pages": { "type": "number", "default": 0 },
         "short_summary": { "type": "string", "default": "" },
         "publisher": { "type": "string", "default": "" },
