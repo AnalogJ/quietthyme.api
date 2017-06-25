@@ -5,7 +5,7 @@ var crypto = require('crypto');
 var q = require('q');
 var DBService = require('./services/db_service');
 var KloudlessService = require('./services/kloudless_service');
-var Helpers = require('./common/helpers');
+var Utilities = require('./common/utilities');
 var Constants = require('./common/constants');
 var path = require('path');
 var nconf = require('./common/nconf');
@@ -114,8 +114,8 @@ module.exports.kloudless = function(event, context, cb){
                 body: nconf.get('KLOUDLESS_API_ID')
             };
         })
-        .then(Helpers.successHandler(cb))
-        .fail(Helpers.errorHandler(cb))
+        .then(Utilities.successHandler(cb))
+        .fail(Utilities.errorHandler(cb))
         .done()
 
 

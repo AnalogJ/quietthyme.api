@@ -13,6 +13,7 @@ var DBSchemas = require('../common/db_schemas');
 var crypto = require('crypto');
 var toMarkdown = require('to-markdown');
 var Constants = require('../common/constants')
+var Utilities = require('../common/utilities')
 q.longStackSupport = true;
 
 
@@ -280,18 +281,6 @@ PipelineService.create_with_pipeline = function(primary_criteria, metadata_pipel
 
 // Private functions
 function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_bookPromise, coverPromise){
-    function ISODateString(d){
-        if(typeof(d) == 'string'){
-            d = new Date(d)
-        }
-        function pad(n){return n<10 ? '0'+n : n}
-        return d.getUTCFullYear()+'-'
-            + pad(d.getUTCMonth()+1)+'-'
-            + pad(d.getUTCDate())+'T'
-            + pad(d.getUTCHours())+':'
-            + pad(d.getUTCMinutes())+':'
-            + pad(d.getUTCSeconds())+'Z'
-    }
 
     var parsed_book = parsed_bookPromise.value;
 
@@ -324,10 +313,10 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
     }]}) : null;
 
     if(typeof final_book.published_date !== 'string'){
-        final_book.published_date = ISODateString(final_book.published_date)
+        final_book.published_date = Utilities.ISODateString(final_book.published_date)
     }
     if(typeof final_book.last_modified !== 'string'){
-        final_book.last_modified = ISODateString(final_book.last_modified)
+        final_book.last_modified = Utilities.ISODateString(final_book.last_modified)
     }
 
     console.info("Merged final book data: ", final_book);

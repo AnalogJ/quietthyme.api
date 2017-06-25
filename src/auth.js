@@ -8,7 +8,7 @@ var q = require('q'),
     AuthService = require('./services/auth_service'),
     JWTokenService = require('./services/jwt_token_service'),
     SecurityService = require('./services/security_service'),
-    Helpers = require('./common/helpers'),
+    Utilities = require('./common/utilities'),
     kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 
 module.exports = {
@@ -38,8 +38,8 @@ module.exports = {
                     })
                 }
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
 
     },
@@ -73,8 +73,8 @@ module.exports = {
                     })
                 }
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
     //this function should check the status of a JWT Token for validity

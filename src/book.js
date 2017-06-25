@@ -3,7 +3,7 @@ const debug = require('debug')('quietthyme:book');
 var JWTokenService = require('./services/jwt_token_service'),
     DBService = require('./services/db_service'),
     HttpError = require('./common/http_error'),
-    Helpers = require('./common/helpers'),
+    Utilities = require('./common/utilities'),
     PipelineMetadataService = require('./services/pipeline_metadata_service'),
     PipelineService = require('./services/pipeline_service'),
     q = require('q'),
@@ -47,8 +47,8 @@ module.exports = {
             .then(function(book_result){
                 return {id: book_result.id}
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
     find: function (event, context, cb) {
@@ -85,8 +85,8 @@ module.exports = {
                 // })
                 // .done()
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -102,8 +102,8 @@ module.exports = {
                 book_data.user_id = auth.uid;
                 return DBService.deleteBookById(event.path.id, auth.uid)
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     }
 };

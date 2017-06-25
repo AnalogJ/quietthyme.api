@@ -7,7 +7,7 @@ var KloudlessService = require('./services/kloudless_service');
 var PipelineMetadataService = require('./services/pipeline_metadata_service');
 var PipelineImageService = require('./services/pipeline_image_service');
 var PipelineService = require('./services/pipeline_service');
-var Helpers = require('./common/helpers');
+var Utilities = require('./common/utilities');
 var q = require('q');
 var path = require('path');
 var exec = require('child_process').exec;
@@ -80,8 +80,8 @@ module.exports = {
                 });
             //TODO mark the file as can be deleted.
         })
-        .then(Helpers.successHandler(cb))
-        .fail(Helpers.errorHandler(cb))
+        .then(Utilities.successHandler(cb))
+        .fail(Utilities.errorHandler(cb))
         .done()
     },
 
@@ -174,8 +174,8 @@ module.exports = {
             .then(function(){
                 return {}
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     }
 };

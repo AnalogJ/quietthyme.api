@@ -1,21 +1,9 @@
 'use strict';
-function ISODateString(d){
-    if(typeof(d) == 'string'){
-        d = new Date(d)
-    }
-    function pad(n){return n<10 ? '0'+n : n}
-    return d.getUTCFullYear()+'-'
-        + pad(d.getUTCMonth()+1)+'-'
-        + pad(d.getUTCDate())+'T'
-        + pad(d.getUTCHours())+':'
-        + pad(d.getUTCMinutes())+':'
-        + pad(d.getUTCSeconds())+'Z'
-}
-
+var Utilities = require('./utilities')
 
 var DATE = {
     transform: function(d) {
-        return ISODateString(d);
+        return Utilities.ISODateString(d);
     }
 };
 
@@ -120,12 +108,12 @@ var ENTRY = {
         issued: {
             tag: "dcterms:issued",
             transform: function(d) {
-                return ISODateString(d);
+                return Utilities.ISODateString(d);
             }
         },
         published: {
             transform: function(d) {
-                return ISODateString(d);
+                return Utilities.ISODateString(d);
             }
         },
         publisher: {
@@ -180,12 +168,12 @@ var FULL_ENTRY = {
         issued: {
             tag: "dcterms:issued",
             transform: function(d) {
-                return ISODateString(d);
+                return Utilities.ISODateString(d);
             }
         },
         published: {
             transform: function(d) {
-                return ISODateString(d);
+                return Utilities.ISODateString(d);
             }
         },
         publisher: {

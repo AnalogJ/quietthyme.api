@@ -3,6 +3,9 @@ var DBService = require('../../src/services/db_service');
 var JWTTokenService = require('../../src/services/jwt_token_service');
 var DBSchemas = require('../../src/common/db_schemas');
 var should = require('should');
+var fs = require('fs');
+var path = require('path');
+var q = require('q');
 
 describe('Book Endpoints', function () {
     describe('#create()', function () {
@@ -168,6 +171,76 @@ describe('Book Endpoints', function () {
         })
 
         //TODO test out pagination.
+        describe.skip("after loading 100 books", function (){
+            before(function(done){
+                this.timeout(10000)
+
+                var books_file = path.resolve(path.resolve(__dirname,'../fixtures/100_books.json'));
+                var fake_books = JSON.parse(fs.readFileSync(books_file, 'utf8'));
+                var promises = []
+                for(var ndx in fake_books){
+                    var fake_book = fake_books[ndx];
+
+                    fake_book.user_id = user_id;
+                    fake_book.credential_id = 'find-book-credential-id'
+                    promises.push(DBService.createBook(DBSchemas.Book(fake_book)))
+                }
+
+                q.allSettled(promises)
+                    .then(function(){})
+                    // .delay(1000)
+                    .then(done,done)
+            });
+
+            it('should correctly paginate all books from db', function (done) {
+                function callback(data){
+                    return done()
+                }
+
+                var found_items = [];
+                var max_pages = 4; //only request 5*50 books
+                var current_page = 1;
+                function paginate(ctx, resp_data){
+                    should.not.exist(ctx)
+                    current_page++;
+
+                    found_items = found_items.concat(resp_data.Items)
+                    if(resp_data.LastEvaluatedKey && current_page < max_pages){
+                        resp_data.Items.length.should.eql(50)
+                        current_page.should.not.eql(4)
+
+                        // return DBService.findBooks('find-book', {'storage_filename': 'book2'}, resp_data.LastEvaluatedKey.id, 1)
+                        //     .then(paginate)
+
+                        var pageinated_event={
+                            token: token,
+                            path: {},
+                            query: {page: resp_data.LastEvaluatedKey.id},
+                            body:{}
+                        };
+                        var paginated_context={};
+
+                        bookHandler.find(pageinated_event, paginated_context, paginate)
+
+                    }
+                    else{
+                        return callback(found_items)
+                    }
+                }
+
+
+
+                var event={
+                    token: token,
+                    path: {},
+                    query: {},
+                    body:{}
+                };
+                var context={};
+                bookHandler.find(event, context, paginate)
+
+            })
+        })
     })
 
     describe('#destroy()', function () {

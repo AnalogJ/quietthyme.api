@@ -5,7 +5,7 @@ var StorageService = require('./services/storage_service');
 var DBService = require('./services/db_service');
 var JWTokenService = require('./services/jwt_token_service');
 var KloudlessService = require('./services/kloudless_service');
-var Helpers = require('./common/helpers');
+var Utilities = require('./common/utilities');
 var q = require('q');
 var Constants = require('./common/constants');
 var nconf = require('./common/nconf');
@@ -56,8 +56,8 @@ module.exports = {
                     service_type: event.body.account.service
                 }
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -152,8 +152,8 @@ module.exports = {
                 debug("Calibre User storage quotas %o", status_obj);
                 return status_obj
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -189,8 +189,8 @@ module.exports = {
                         })
                 })
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
 
     },
@@ -216,8 +216,8 @@ module.exports = {
                             })
                     })
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -243,8 +243,8 @@ module.exports = {
                     })
             })
 
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
 
     }

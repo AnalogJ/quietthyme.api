@@ -49,7 +49,7 @@ describe('Catalog Endpoints', function () {
 
     describe('#series()', function () {})
     describe('#books()', function () {
-        var token;
+        var token = 'test-token-catalog-books';
         var user_id;
         before(function(done){
             var user = {
@@ -57,23 +57,15 @@ describe('Catalog Endpoints', function () {
                 "plan": 'none',
                 "email": 'catalog-index@example.com',
                 "password_hash": 'testplanhash',
-                "catalog_token": 'testplancatalogbooks'
+                "catalog_token": token
             };
 
 
             DBService.createUser(DBSchemas.User(user))
                 .then(function(user_data){
                     user_id = user_data.uid;
-                    return JWTTokenService.issue({
-                        uid: user_data.uid,
-                        plan: user_data.plan,
-                        catalog_token: user_data.catalog_token,
-                        name: user_data.name,
-                        email: user_data.email
-                    })
                 })
-                .then(function(_token){
-                    token = _token;
+                .then(function(){
                     //create a 4 books for this user.
 
                     var book = {
@@ -100,13 +92,14 @@ describe('Catalog Endpoints', function () {
                             return DBService.createBook(DBSchemas.Book(book))
                         })
                         .then(function(){})
+                        .delay(1000)
                 })
                 .then(done, done);
         });
 
         it('should correctly generate books catalog', function (done) {
             var event={
-                path: {catalogToken: 'testplancatalogbooks'},
+                path: {catalogToken: token},
                 query: {},
                 body:{}
             };

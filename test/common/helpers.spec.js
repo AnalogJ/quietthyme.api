@@ -1,4 +1,4 @@
-var helpers = require('../../src/common/helpers')
+var Utilities = require('../../src/common/utilities')
 var should = require('should');
 
 //this is just simple integration testing
@@ -9,7 +9,7 @@ describe('Helpers', function () {
                 JSON.parse(err).should.eql({"message":"[400] this is a test error"})
                 done()
             }
-            helpers.errorHandler(cb)('this is a test error')
+            Utilities.errorHandler(cb)('this is a test error')
         })
 
         it('should correctly handle error objects', function (done) {
@@ -17,7 +17,7 @@ describe('Helpers', function () {
                 JSON.parse(err).should.eql({"message":"[400] this is a test error"})
                 done()
             }
-            helpers.errorHandler(cb)(new Error('this is a test error'))
+            Utilities.errorHandler(cb)(new Error('this is a test error'))
         })
 
         it('should correctly handle error objects with embedded error codes', function (done) {
@@ -27,7 +27,7 @@ describe('Helpers', function () {
             }
             var error = new Error('this is a test error')
             error.code = 500
-            helpers.errorHandler(cb)(error)
+            Utilities.errorHandler(cb)(error)
         })
     })
 });

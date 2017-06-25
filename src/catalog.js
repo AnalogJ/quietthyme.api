@@ -3,7 +3,7 @@ const debug = require('debug')('quietthyme:catalog');
 
 var CatalogService = require('./services/catalog_service'),
     DBService = require('./services/db_service'),
-    Helpers = require('./common/helpers'),
+    Utilities = require('./common/utilities'),
     Base64Service = require('./services/base64_service'),
     StorageService = require('./services/storage_service'),
     Constants = require('./common/constants'),
@@ -114,8 +114,8 @@ module.exports = {
                 ];
                 return CatalogService.toXML(opds_catalog);
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -157,8 +157,8 @@ module.exports = {
 
 
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -244,27 +244,27 @@ module.exports = {
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
                 //user was found.
                 var id = 'root:' + token + ':books';
                 var next_path = null;
-                if (books.length >= QUERY_LIMIT) {
-                    next_path = "/books" + + CatalogService.page_suffix(page + 1);
+                if (books.LastEvaluatedKey) {
+                    next_path = "/books" + + CatalogService.page_suffix(books.LastEvaluatedKey.id);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
 
 
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
     //# /catalog/{{token}}/search?q={{search_term}} -- search
@@ -281,11 +281,11 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid);
-                book_query.orderBy("created_at", 'desc');
+                //TODO: book_query.orderBy("created_at", 'desc');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
@@ -293,13 +293,13 @@ module.exports = {
                 var id = 'root:' + token + ':recent';
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path);
                 opds_catalog.title = 'QuietThyme - Recent';
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -317,33 +317,33 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)});
-                book_query.orderBy("title");
+                //TODO: book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)});
+                //TODO: book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
                 //user was found.
                 var id = 'root:' + token + ':in_series:' + encoded_series_id;
                 var next_path = null;
-                if (books.length >= QUERY_LIMIT) {
-                    next_path = "/in_series/" + encoded_series_id + + CatalogService.page_suffix(page + 1)
+                if (books.LastEvaluatedKey) {
+                    next_path = "/in_series/" + encoded_series_id + + CatalogService.page_suffix(books.LastEvaluatedKey.id)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - In Series';
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
 
 
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -361,33 +361,33 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id));
-                book_query.orderBy("title");
+                //TODO: book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id));
+                //TODO: book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
                 //user was found.
                 var id = 'root:' + token + ':by_author:' + encoded_author_id;
                 var next_path = null;
-                if (books.length >= QUERY_LIMIT) {
-                    next_path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page + 1)
+                if (books.LastEvaluatedKey) {
+                    next_path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(books.LastEvaluatedKey.id)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - By Author';
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
 
 
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -405,31 +405,31 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name));
-                book_query.orderBy("title");
+                //TODO:book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name));
+                //TODO:book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
                 //user was found.
                 var id = 'root:' + token + ':tagged_with:' + encoded_tag_name;
                 var next_path = null;
-                if (books.length >= QUERY_LIMIT) {
-                    next_path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(page + 1)
+                if (books.LastEvaluatedKey) {
+                    next_path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(books.LastEvaluatedKey.id)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - Tagged With';
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -449,8 +449,8 @@ module.exports = {
                 return CatalogService.toXML(CatalogService.search_description_feed(token),'SEARCH_DESCRIPTION')
 
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -468,31 +468,31 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                book_query.where('title', 'like', query);
-                book_query.orderBy("title");
+                //TODO:book_query.where('title', 'like', query);
+                //TODO:book_query.orderBy("title");
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
-                if (!books.length) {
+                if (!books.Items.length) {
                     return q.reject(new Error("No Books found"))
                 }
 
                 //user was found.
                 var id = 'root:' + token + ':search';
                 var next_path = null;
-                if (books.length >= QUERY_LIMIT) {
-                    next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (page + 1);
+                if (books.LastEvaluatedKey) {
+                    next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (books.LastEvaluatedKey.id);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
                 opds_catalog.title = 'QuietThyme - Search Results';
-                opds_catalog.entries = books.map(function(book){
+                opds_catalog.entries = books.Items.map(function(book){
                     return CatalogService.bookToPartialEntry(id, token, book)
                 });
                 return CatalogService.toXML(opds_catalog);
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -523,8 +523,8 @@ module.exports = {
 
                 return CatalogService.toXML(opds_entry, 'FULL_ENTRY');
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     },
 
@@ -553,8 +553,8 @@ module.exports = {
                         return payload
                     })
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     }
 };

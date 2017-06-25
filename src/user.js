@@ -7,7 +7,7 @@ var q = require('q'),
     AuthService = require('./services/auth_service'),
     JWTokenService = require('./services/jwt_token_service'),
     SecurityService = require('./services/security_service'),
-    Helpers = require('./common/helpers'),
+    Utilities = require('./common/utilities'),
     nconf = require('./common/nconf'),
     stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY'));
 
@@ -68,8 +68,8 @@ module.exports = {
                             })
                     })
             })
-            .then(Helpers.successHandler(cb))
-            .fail(Helpers.errorHandler(cb))
+            .then(Utilities.successHandler(cb))
+            .fail(Utilities.errorHandler(cb))
             .done()
     }
 }

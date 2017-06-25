@@ -2,6 +2,7 @@
 const debug = require('debug')('quietthyme:DBService');
 var q = require('q');
 var Constants = require('../common/constants');
+var Utilities = require('../common/utilities');
 var nconf = require('../common/nconf');
 var uuid = require('node-uuid');
 
@@ -131,6 +132,8 @@ dbService.findUserByCatalogToken = function(catalog_token){
 
 dbService.createUser = function(user /* DBSchema.User */){
     user.uid = uuid.v4()
+    user.created_at = Utilities.ISODateString(new Date());
+    user.updated_at = Utilities.ISODateString(new Date());
     var params = {
         TableName:Constants.tables.users,
         Item: user
@@ -149,11 +152,12 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id){
     var params = {
         TableName:Constants.tables.users,
         Key: { uid : uid },
-        UpdateExpression: 'set #plan = :plan, #stripe_sub_id = :stripe_sub_id',
-        ExpressionAttributeNames: {'#plan' : 'plan', '#stripe_sub_id': 'stripe_sub_id'},
+        UpdateExpression: 'set #plan = :plan, #stripe_sub_id = :stripe_sub_id, #updated_at = :updated_at',
+        ExpressionAttributeNames: {'#plan' : 'plan', '#stripe_sub_id': 'stripe_sub_id', '#updated_at': 'updated_at'},
         ExpressionAttributeValues: {
             ':plan' : plan,
-            ':stripe_sub_id': stripe_sub_id
+            ':stripe_sub_id': stripe_sub_id,
+            ':updated_at': Utilities.ISODateString(new Date())
         }
     };
     var db_deferred = q.defer();
@@ -172,7 +176,8 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id){
 
 dbService.createCredential = function(credential /* DBSchema.Credential */){
     credential.id = uuid.v4()
-
+    credential.created_at = Utilities.ISODateString(new Date());
+    credential.updated_at = Utilities.ISODateString(new Date());
     var params = {
         TableName:Constants.tables.credentials,
         Item: credential
@@ -244,6 +249,7 @@ dbService.findCredentialsByUserId = function(user_id){
 };
 
 dbService.updateCredential = function(credential_id, update_data, return_values){
+    update_data.updated_at = Utilities.ISODateString(new Date());
     var update_expression = [];
     var expression_attribute_names = {};
     var expression_attribute_values = {};
@@ -281,7 +287,8 @@ dbService.updateCredential = function(credential_id, update_data, return_values)
 
 dbService.createBook = function(book /* DBSchema.Book */){
     book.id = uuid.v4();
-
+    book.created_at = Utilities.ISODateString(new Date());
+    book.updated_at = Utilities.ISODateString(new Date());
     var params = {
         TableName:Constants.tables.books,
         Item: book
@@ -378,6 +385,7 @@ dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direct
 };
 
 dbService.updateBook = function(book_id, user_id, update_data, return_values){
+    update_data.updated_at = Utilities.ISODateString(new Date());
     var update_expression = [];
     var expression_attribute_names = {};
     var expression_attribute_values = {};

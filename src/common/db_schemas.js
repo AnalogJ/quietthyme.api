@@ -22,6 +22,8 @@ var userSchema = {
             "type": "string",
             "default": ''
         },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
     }
 };
 
@@ -44,7 +46,9 @@ var credentialSchema = {
         "calibre_location_code": {
             'enum': [null, 'main','A','B'], //this location code is used by the calibre plugin to determine which storage providers are available (main, a, b)
             'default': null
-        }
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
     }
 };
 
@@ -105,7 +109,9 @@ var bookSchema = {
         //sources determines when and how book_data_sets update the actual book.
         //each field in the book has a source (where the data came from).
         //If the data is manually entered, it is assumed to be of the highest calibre, otherwise it can be overriden
-        'sources': {"type": "object", "default": {}}
+        "sources": {"type": "object", "default": {}},
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": "string", "format": "date-time" }
     }
 };
 
