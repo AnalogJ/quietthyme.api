@@ -32,6 +32,7 @@ describe('Book Endpoints', function () {
         });
 
         it('should correctly create new book from calibre', function (done) {
+            this.timeout(5000);
             var event={
                 token: token,
                 path: {},
