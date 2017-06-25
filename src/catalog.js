@@ -241,6 +241,7 @@ module.exports = {
                 }
 
                 var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
+                //TODO: sort by title
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {

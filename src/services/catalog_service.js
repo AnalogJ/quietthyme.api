@@ -130,9 +130,7 @@ module.exports.toXML = function(feed, type) {
 };
 
 
-module.exports.findUserByToken = function(token){
-    return DBService.findUserByCatalogToken(token)
-};
+module.exports.findUserByToken = DBService.findUserByCatalogToken
 
 //page and limit are optional
 module.exports.generatePaginatedBookQuery = function(user_id, limit, page){
