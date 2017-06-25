@@ -60,9 +60,9 @@ QuietThymeUploadBucketPolicy:
 
 QuietThymeUsersTable:
   Type: AWS::DynamoDB::Table
-  TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
   DeletionPolicy: Retain
   Properties:
+    TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
     AttributeDefinitions:
     - AttributeName: uid
       AttributeType: S
@@ -97,9 +97,9 @@ QuietThymeUsersTable:
         WriteCapacityUnits: 2
 QuietThymeCredsTable:
   Type: AWS::DynamoDB::Table
-  TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
   DeletionPolicy: Retain
   Properties:
+    TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
     AttributeDefinitions:
     - AttributeName: id
       AttributeType: S
@@ -136,9 +136,9 @@ QuietThymeCredsTable:
         WriteCapacityUnits: 2
 QuietThymeBooksTable:
   Type: AWS::DynamoDB::Table
-  TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
   DeletionPolicy: Retain
   Properties:
+    TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
