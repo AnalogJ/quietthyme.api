@@ -186,7 +186,7 @@ ParseExternalService.parse_goodreads_search_results = function (goodreads_respon
                 author: item.best_book[0].author[0].name[0],
                 image_url: item.best_book[0].image_url[0],
                 average_rating: parseFloat(item.average_rating[0]),
-                ratings_count: item.ratings_count[0]['_'].toString(),
+                ratings_count: item.ratings_count[0]['_'],
                 publication_year: item.original_publication_year[0]['_']
 
             };
@@ -237,7 +237,7 @@ ParseExternalService.parse_goodreads_book_details = function (response) {
     parsed_book.amazon_id = goodreads_book.asin[0] || null; //if the asin is an empty string, return null
     parsed_book.num_pages = (goodreads_book.num_pages[0] | 0);
     parsed_book.average_rating = parseFloat(goodreads_book.average_rating[0]);
-    parsed_book.ratings_count = (goodreads_book.ratings_count[0] | 0).toString();
+    parsed_book.ratings_count = (goodreads_book.ratings_count[0] | 0);
     parsed_book.goodreads_id = goodreads_book.id[0];
 
     if (goodreads_book.series_works && goodreads_book.series_works[0] && goodreads_book.series_works[0].series_work && (goodreads_book.series_works[0].series_work[0])) {
