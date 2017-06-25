@@ -31,7 +31,7 @@ describe('SecurityService', function () {
                 .then(done, done);
         });
 
-        it('Should correctly compare & validate a password', function (done) {
+        it('Should correctly compare & validate a password again', function (done) {
             SecurityService.compare_password('mypassword', '$2a$10$aBaP8g47puhMbHnQM1bzvODWpPsx80/o67QhpOdnZTczAhBSG5hei')
                 .then(function(matches){
                     matches.should.be.true;

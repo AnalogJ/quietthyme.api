@@ -1,0 +1,77 @@
+[
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "GET",
+        "path": "/v1//accounts/231987328/events?cursor=after-auth",
+        "body": {
+            "account_id": "231987328",
+            "queryParams": {
+                "cursor": "after-auth"
+            }
+        },
+        "status": 200,
+        "response": {
+            "cursor": "689074369",
+            "count": 1,
+            "objects": [
+                {
+                    "id": "689074369",
+                    "account": 231987328,
+                    "action": "+",
+                    "ip": null,
+                    "modified": null,
+                    "type": "add",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "my-test-folder",
+                        "parent": {
+                            "name": "Dropbox",
+                            "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                        },
+                        "created": null,
+                        "modified": null,
+                        "can_upload_files": true,
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA0Q",
+                        "can_create_folders": true,
+                        "path": "/my-test-folder",
+                        "type": "folder",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZsvf3vjdfR0FvQ1nACB07KU=",
+                        "size": null
+                    }
+                }
+            ],
+            "remaining": 0
+        },
+        "rawHeaders": [
+            "Allow",
+            "GET, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Sun, 25 Jun 2017 01:59:41 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "2d997a53-7eb7-40cb-8332-7bd1e7cdc7ca",
+            "X-Kloudless-Stats-Influx",
+            "{\"fields\": {\"duration\": 40.580034255981445, \"start\": 1498355981.43, \"remote_address\": \"10.0.0.57\", \"query\": \"cursor=after-auth\"}, \"tags\": {\"status\": 200, \"application_id\": \"mddXeszdchTlRQEFN3LGhxLzqaTjgYwbXGLHCeXOqJdrzRyd\", \"credential_ids\": [231987328], \"path\": \"/v1/accounts/231987328/events\", \"method\": \"GET\", \"x_forwarded_for\": \"136.24.156.11\"}, \"time\": 1498355981.470648, \"measurement\": \"api_request\"}",
+            "Content-Length",
+            "572",
+            "Connection",
+            "Close"
+        ]
+    }
+]

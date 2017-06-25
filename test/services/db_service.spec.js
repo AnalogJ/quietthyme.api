@@ -415,7 +415,7 @@ describe('DBService', function () {
 
 
     describe('#createBook()', function(){
-        it('should correctly create book', function (done) {
+        it('should correctly create minimal book', function (done) {
             var book = {
                 user_id: 'user-id',
                 credential_id: 'credential-create-id',
@@ -424,6 +424,53 @@ describe('DBService', function () {
                 storage_filename: 'book',
                 storage_format: 'epub',
                 title: 'this is my book title'
+            };
+            DBService.createBook(DBSchemas.Book(book))
+                .then(function(book_data){
+                    book_data.user_id.should.eql('user-id')
+                })
+                .then(done, done);
+        });
+        it('should correctly create full book from calibre', function (done) {
+            var book = {
+                user_id: 'user-id',
+                // credential_id: 'credential-create-id',
+                // storage_size: 123456,
+                // storage_identifier: 'storage-id/test/1234',
+                // storage_filename: 'book',
+                // storage_format: 'epub',
+                // title: 'this is my book title'
+
+
+                amazon_id: '0061840254',
+                authors: [ 'Ian Douglas' ],
+                average_rating: 8,
+                barnesnoble_id: 'w/earth-strike-ian-douglas/1018819002',
+                calibre_id: '2ac79e4a-b0f3-4307-8f92-f58ea050d38d',
+                google_id: 'i2b2zhEjxvkC',
+                isbn: '9780061840258',
+                last_modified: '2017-03-04T20:17:51Z',
+                published_date: '2017-03-04T20:17:51Z',
+                publisher: 'HarperCollins',
+                series_name: 'Star Carrier',
+                series_number: 1,
+                short_summary: '<blockquote><p>The first book in the epic saga of humankind\'s war of transcendence</p><p>There is a milestone in the evolution of every sentient race, a Tech Singularity Event, when the species achieves transcendence through its technological advances. Now the creatures known as humans are near this momentous turning point.</p><p>But an armed threat is approaching from deepest space, determined to prevent humankind from crossing over that boundary—by total annihilation if necessary.</p></blockquote><p>To the Sh\'daar, the driving technologies of transcendent change are anathema and must be obliterated from the universe—along with those who would employ them. As their great warships destroy everything in their path en route to the Sol system, the human Confederation government falls into dangerous disarray. There is but one hope, and it rests with a rogue Navy Admiral, commander of the kilometer-long star carrier America, as he leads his courageous fighters deep into enemy space towards humankind\'s greatest conflict—and quite possibly its last.</p>',
+                tags:
+                    [ 'Fiction - Science Fiction',
+                        'American Science Fiction And Fantasy',
+                        'Space warfare',
+                        'Science Fiction - Military',
+                        'Fiction',
+                        'Science Fiction',
+                        'Science Fiction - General',
+                        'Human-Alien Encounters',
+                        'Adventure',
+                        'Military',
+                        'General',
+                        'Science Fiction And Fantasy' ],
+                title: 'Earth Strike',
+                user_categories: {},
+                user_metadata: {}
             };
             DBService.createBook(DBSchemas.Book(book))
                 .then(function(book_data){

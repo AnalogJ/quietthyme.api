@@ -58,7 +58,6 @@ kloudlessService.fileUpload = function(bearer_token, account_id, filename, paren
             url: 'https://s3.amazonaws.com/' + storage_identifier
         }
     };
-
     request(options, function (error, response, body) {
         if(error){
             return deferred.reject(error)

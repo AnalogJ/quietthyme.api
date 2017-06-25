@@ -1,0 +1,97 @@
+[
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "POST",
+        "path": "/v1//accounts/231987328/storage/folders",
+        "body": {
+            "account_id": "231987328",
+            "parent_id": "root",
+            "name": "my-test-folder"
+        },
+        "status": 201,
+        "response": {
+            "account": 231987328,
+            "ancestors": [
+                {
+                    "name": "Dropbox",
+                    "id": "root"
+                }
+            ],
+            "name": "my-test-folder",
+            "parent": {
+                "name": "Dropbox",
+                "id": "root"
+            },
+            "created": null,
+            "modified": null,
+            "can_upload_files": true,
+            "raw_id": "id:O87-C4lF9iAAAAAAAAAA0Q",
+            "can_create_folders": true,
+            "path": "/my-test-folder",
+            "type": "folder",
+            "id": "FicKnmotZ4UrkH0cT-bOeZsvf3vjdfR0FvQ1nACB07KU=",
+            "size": null
+        },
+        "rawHeaders": [
+            "Allow",
+            "POST, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Sun, 25 Jun 2017 01:49:32 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "b2b453d2-d6fc-4cb8-bed4-c1c4f6f1f704",
+            "X-Kloudless-Stats-Influx",
+            "{\"fields\": {\"duration\": 735.6829643249512, \"start\": 1498355372.02, \"remote_address\": \"10.0.0.57\", \"query\": \"\"}, \"tags\": {\"status\": 201, \"application_id\": \"mddXeszdchTlRQEFN3LGhxLzqaTjgYwbXGLHCeXOqJdrzRyd\", \"credential_ids\": [231987328], \"path\": \"/v1/accounts/231987328/storage/folders\", \"method\": \"POST\", \"x_forwarded_for\": \"136.24.156.11\"}, \"time\": 1498355372.755725, \"measurement\": \"api_request\"}",
+            "Content-Length",
+            "354",
+            "Connection",
+            "Close"
+        ]
+    },
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "POST",
+        "path": "/v1/accounts/231987328/storage/convert_id",
+        "body": {
+            "raw_id": "/my-test-folder",
+            "type": "folder"
+        },
+        "status": 200,
+        "response": {
+            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+        },
+        "rawHeaders": [
+            "Allow",
+            "POST, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Sun, 25 Jun 2017 01:49:32 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "fc2e914e-15de-4336-93f0-ca385c1f4519",
+            "X-Kloudless-Stats-Influx",
+            "{\"fields\": {\"duration\": 28.467178344726562, \"start\": 1498355372.84, \"remote_address\": \"10.0.0.57\", \"query\": \"\"}, \"tags\": {\"status\": 200, \"application_id\": \"mddXeszdchTlRQEFN3LGhxLzqaTjgYwbXGLHCeXOqJdrzRyd\", \"credential_ids\": [231987328], \"path\": \"/v1/accounts/231987328/storage/convert_id\", \"method\": \"POST\", \"x_forwarded_for\": \"136.24.156.11\"}, \"time\": 1498355372.868503, \"measurement\": \"api_request\"}",
+            "Content-Length",
+            "34",
+            "Connection",
+            "Close"
+        ]
+    }
+]

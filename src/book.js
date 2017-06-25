@@ -45,7 +45,7 @@ module.exports = {
                 //     .insert(book_data)
             })
             .then(function(book_result){
-                return {id: book_result[0]}
+                return {id: book_result.id}
             })
             .then(Helpers.successHandler(cb))
             .fail(Helpers.errorHandler(cb))

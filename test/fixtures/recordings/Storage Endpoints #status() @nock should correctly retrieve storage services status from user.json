@@ -1,0 +1,61 @@
+[
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "GET",
+        "path": "/v1//accounts/231987328?retrieve_full=true",
+        "body": {
+            "account_id": "231987328",
+            "queryParams": {
+                "retrieve_full": true
+            }
+        },
+        "status": 200,
+        "response": {
+            "id": 231987328,
+            "account": "jk17@ualberta.ca",
+            "active": true,
+            "service": "dropbox",
+            "created": "2017-02-09T04:07:22.710868Z",
+            "modified": "2017-06-24T02:48:54.392203Z",
+            "service_name": "Dropbox",
+            "admin": false,
+            "apis": [
+                "storage"
+            ],
+            "effective_scope": "dropbox:normal.storage.default",
+            "quota": {
+                "total": 25197281280,
+                "used": 12128828482
+            },
+            "properties": {
+                "requirements": {},
+                "capabilities": {},
+                "configurations": {}
+            }
+        },
+        "rawHeaders": [
+            "Allow",
+            "GET, PATCH, DELETE, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Sun, 25 Jun 2017 06:35:14 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "a9190359-5615-4270-b858-12af61141f06",
+            "X-Kloudless-Stats-Influx",
+            "{\"fields\": {\"duration\": 672.8260517120361, \"start\": 1498372514.19, \"remote_address\": \"10.0.3.143\", \"query\": \"retrieve_full=true\"}, \"tags\": {\"status\": 200, \"application_id\": \"mddXeszdchTlRQEFN3LGhxLzqaTjgYwbXGLHCeXOqJdrzRyd\", \"credential_ids\": [231987328], \"path\": \"/v1/accounts/231987328\", \"method\": \"GET\", \"x_forwarded_for\": \"136.24.156.11\"}, \"time\": 1498372514.862906, \"measurement\": \"api_request\"}",
+            "Content-Length",
+            "389",
+            "Connection",
+            "Close"
+        ]
+    }
+]

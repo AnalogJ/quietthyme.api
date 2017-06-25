@@ -32,20 +32,26 @@ module.exports = {
                 //this is an object or something other than an error obj
                 //do nothing for now.
             }
+            try {
+                if(!err.status && !err.code){
+                    err.code = 400;
+                }
 
-            if(!err.status && !err.code){
-                err.code = 400;
+                var whitelisted_props = Object.getOwnPropertyNames(err);
+                if (nconf.get('STAGE') != 'beta'){
+                    whitelisted_props = ["message","status"]
+                }
+
+                //prepend the error code infront of the message, so that it will be caught by the
+                //serverless/lambda regex for errors
+
+                err.message = `[${err.code}] ${err.message}`;
             }
-
-            var whitelisted_props = Object.getOwnPropertyNames(err);
-            if (nconf.get('STAGE') != 'beta'){
-                whitelisted_props = ["message","status"]
+            catch(e) {
+                //you cant set the .message/.code on some Error types (like AssertionError)
+                err = new Error(`[${err.code}] ${err.message}`)
+                err.code = 400
             }
-
-            //prepend the error code infront of the message, so that it will be caught by the
-            //serverless/lambda regex for errors
-            err.message = `[${err.code}] ${err.message}`;
-
             //added cleanup method for database, so that we dont timeout in Lambda
             debug("Returning Failure data: %o", err);
             return _cb(JSON.stringify(err, whitelisted_props),null);

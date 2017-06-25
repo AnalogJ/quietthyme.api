@@ -2,10 +2,19 @@
 var should = require('should');
 var DBService = require('../src/services/db_service')
 var nconf = require('../src/common/nconf');
+var path = require('path');
+var nock = require('nock');
+var sanitize = require('sanitize-filename');
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Before & After full test suite
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 before(function(done){
-
-
     // These tables should match the tabels in cloudformation-resources.yml
     var usersTable = {
         AttributeDefinitions: [
@@ -216,3 +225,106 @@ after(function(done) {
         .then(done, done);
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Before & After each test
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///This is from https://github.com/porchdotcom/nock-back-mocha with some modifications
+
+var nockFixtureDirectory = path.resolve(path.resolve(__dirname,'fixtures/recordings'));
+
+var filenames = [];
+
+
+//this function filters/transforms the request so that it matches the data in the recording.
+function afterLoad(recording){
+    nock.enableNetConnect('localhost')
+    recording.transformPathFunction = function(path){
+        return removeSensitiveData(path);
+    }
+
+    // recording.scopeOptions.filteringScope = function(scope) {
+    //
+    //     console.log("SCOPE", scope)
+    //     return /^https:\/\/api[0-9]*.dropbox.com/.test(scope);
+    // };
+    // recording.scope = recording.scope.replace(/^https:\/\/api[0-9]*.dropbox.com/, 'https://api.dropbox.com')
+}
+
+//this function removes any sensitive data from the recording so that it will not be included in git repo.
+function afterRecord(recordings) {
+    console.log('>>>> Removing sensitive data from recording');
+    // console.dir(recordings);
+
+    for(var ndx in recordings){
+        var recording = recordings[ndx]
+
+        recording.path = removeSensitiveData(recording.path)
+        recording.response = removeSensitiveData(recording.response)
+    }
+    return recordings
+};
+
+
+function removeSensitiveData(rawString){
+    var encoded = false
+    if(typeof rawString !== 'string'){
+        rawString = JSON.stringify(rawString);
+        encoded = true;
+    }
+
+    if(process.env.OAUTH_GOODREADS_CLIENT_KEY) {
+        rawString = rawString.replace(new RegExp(process.env.OAUTH_GOODREADS_CLIENT_KEY, 'g') , 'PLACEHOLDER_CLIENT_KEY')
+    }
+
+    if(process.env.OAUTH_GOODREADS_CLIENT_SECRET){
+        rawString = rawString.replace(new RegExp( process.env.OAUTH_GOODREADS_CLIENT_SECRET, "g"), 'PLACEHOLDER_CLIENT_SECRET' )
+    }
+
+    if(encoded){
+        rawString = JSON.parse(rawString)
+    }
+    return rawString
+}
+
+
+beforeEach(function (done) {
+    var fullTitle = this.currentTest.fullTitle();
+    if(!fullTitle.includes('@nock')){
+        nock.cleanAll();
+        nock.enableNetConnect();
+        return done()
+    }
+
+    nock.enableNetConnect('localhost');
+    var filename = sanitize(this.currentTest.fullTitle() + '.json');
+    // make sure we're not reusing the nock file
+    if (filenames.indexOf(filename) !== -1) {
+        return done(new Error('Nock does not support multiple tests with the same name. `' + filename + '` cannot be reused.'));
+    }
+    filenames.push(filename);
+
+    var previousFixtures = nock.back.fixtures;
+    nock.back.fixtures = nockFixtureDirectory;
+    nock.back.setMode('record');
+    nock.back(filename, {
+        after: afterLoad,
+        afterRecord: afterRecord
+    }, function (nockDone) {
+        this.currentTest.nockDone = function () {
+            nockDone();
+            nock.back.fixtures = previousFixtures;
+        };
+        done();
+    }.bind(this));
+});
+
+afterEach(function () {
+    var fullTitle = this.currentTest.fullTitle();
+    if(!fullTitle.includes('@nock')){
+        return
+    }
+
+    this.currentTest.nockDone();
+});

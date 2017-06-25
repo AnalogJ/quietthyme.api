@@ -68,7 +68,7 @@ var bookSchema = {
         "publisher": { "type": "string", "default": "" },
         "published_date": {
             "type": "string",
-            "format": "date"
+            "format": "date-time"
         },
         "tags": {
             "type": "array",
@@ -79,7 +79,7 @@ var bookSchema = {
             "type": "array",
             "items": { "type": "string" }
         },
-        "last_modified": { "type": "string", "format": "date" },
+        "last_modified": { "type": "string", "format": "date-time" },
         "user_categories": { "type": "object", "default": {} },
         "user_metadata": { "type": "object", "default": {} },
         "series_name": { "type": "string", "default": "" },

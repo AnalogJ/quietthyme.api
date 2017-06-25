@@ -18,7 +18,7 @@ module.exports = {
         return DBService.findUserByEmail(event.body.email)
             .then(function(user){
                 if(user){
-                    console.error('User already exists, cant re-register');
+                    debug('User already exists, cant re-register');
                     throw 'User already exists'
                 }
                 else{
