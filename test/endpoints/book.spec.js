@@ -171,7 +171,7 @@ describe('Book Endpoints', function () {
         })
 
         //TODO test out pagination.
-        describe.skip("after loading 100 books", function (){
+        describe("after loading 100 books", function (){
             before(function(done){
                 this.timeout(10000)
 
@@ -215,7 +215,7 @@ describe('Book Endpoints', function () {
                         var pageinated_event={
                             token: token,
                             path: {},
-                            query: {page: resp_data.LastEvaluatedKey.id},
+                            query: {page: resp_data.LastEvaluatedKey},
                             body:{}
                         };
                         var paginated_context={};

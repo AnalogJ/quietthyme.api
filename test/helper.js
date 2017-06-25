@@ -150,6 +150,14 @@ before(function(done){
             {
                 AttributeName: "id",
                 AttributeType: "S"
+            },
+            {
+                AttributeName: "title",
+                AttributeType: "S"
+            },
+            {
+                AttributeName: "updated_at",
+                AttributeType: "S"
             }
         ],
         KeySchema: [
@@ -166,6 +174,40 @@ before(function(done){
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
         },
+        LocalSecondaryIndexes: [
+            {
+                IndexName: "updated_atSort",
+                KeySchema: [
+                    {
+                        AttributeName: "user_id",
+                        KeyType: "HASH"
+                    },
+                    {
+                        AttributeName: "updated_at",
+                        KeyType: "RANGE"
+                    }
+                ],
+                Projection: {
+                    ProjectionType: "ALL"
+                }
+            },
+            {
+                IndexName: "titleSort",
+                KeySchema: [
+                    {
+                        AttributeName: "user_id",
+                        KeyType: "HASH"
+                    },
+                    {
+                        AttributeName: "title",
+                        KeyType: "RANGE"
+                    }
+                ],
+                Projection: {
+                    ProjectionType: "ALL"
+                }
+            }
+        ],
         TableName: 'quietthyme-api-' + nconf.get('STAGE') + '-books'
     };
 

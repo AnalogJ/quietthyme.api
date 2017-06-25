@@ -253,7 +253,7 @@ module.exports = {
                 var id = 'root:' + token + ':books';
                 var next_path = null;
                 if (books.LastEvaluatedKey) {
-                    next_path = "/books" + + CatalogService.page_suffix(books.LastEvaluatedKey.id);
+                    next_path = "/books" + + CatalogService.page_suffix(books.LastEvaluatedKey);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -331,7 +331,7 @@ module.exports = {
                 var id = 'root:' + token + ':in_series:' + encoded_series_id;
                 var next_path = null;
                 if (books.LastEvaluatedKey) {
-                    next_path = "/in_series/" + encoded_series_id + + CatalogService.page_suffix(books.LastEvaluatedKey.id)
+                    next_path = "/in_series/" + encoded_series_id + + CatalogService.page_suffix(books.LastEvaluatedKey)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -375,7 +375,7 @@ module.exports = {
                 var id = 'root:' + token + ':by_author:' + encoded_author_id;
                 var next_path = null;
                 if (books.LastEvaluatedKey) {
-                    next_path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(books.LastEvaluatedKey.id)
+                    next_path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(books.LastEvaluatedKey)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -419,7 +419,7 @@ module.exports = {
                 var id = 'root:' + token + ':tagged_with:' + encoded_tag_name;
                 var next_path = null;
                 if (books.LastEvaluatedKey) {
-                    next_path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(books.LastEvaluatedKey.id)
+                    next_path = "/tagged_with/" + encoded_tag_name + CatalogService.page_suffix(books.LastEvaluatedKey)
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);
@@ -482,7 +482,7 @@ module.exports = {
                 var id = 'root:' + token + ':search';
                 var next_path = null;
                 if (books.LastEvaluatedKey) {
-                    next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (books.LastEvaluatedKey.id);
+                    next_path = "/search?query=" + encodeURIComponent(query) + "&page=" + (books.LastEvaluatedKey);
                 }
 
                 var opds_catalog = CatalogService.acquisition_feed(token, id, path, next_path, page, QUERY_LIMIT);

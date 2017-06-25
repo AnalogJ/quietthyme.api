@@ -644,7 +644,7 @@ describe('DBService', function () {
             function paginate(resp_data){
                 found_items = found_items.concat(resp_data.Items)
                 if(resp_data.LastEvaluatedKey){
-                    return DBService.findBooks('find-book', {'storage_filename': 'book2'}, resp_data.LastEvaluatedKey.id, 1)
+                    return DBService.findBooks('find-book', {'storage_filename': 'book2'}, resp_data.LastEvaluatedKey, 1)
                         .then(paginate)
                 }
                 else{

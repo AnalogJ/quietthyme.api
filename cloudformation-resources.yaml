@@ -60,6 +60,7 @@ QuietThymeUploadBucketPolicy:
 
 QuietThymeUsersTable:
   Type: AWS::DynamoDB::Table
+  TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
   DeletionPolicy: Retain
   Properties:
     AttributeDefinitions:
@@ -94,9 +95,9 @@ QuietThymeUsersTable:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-    TableName: "${self:service}-${opt:stage, self:provider.stage}-users"
 QuietThymeCredsTable:
   Type: AWS::DynamoDB::Table
+  TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
   DeletionPolicy: Retain
   Properties:
     AttributeDefinitions:
@@ -133,15 +134,19 @@ QuietThymeCredsTable:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-    TableName: "${self:service}-${opt:stage, self:provider.stage}-credentials"
 QuietThymeBooksTable:
   Type: AWS::DynamoDB::Table
+  TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
   DeletionPolicy: Retain
   Properties:
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
     - AttributeName: id
+      AttributeType: S
+    - AttributeName: updated_at
+      AttributeType: S
+    - AttributeName: title
       AttributeType: S
     KeySchema:
     - AttributeName: user_id
@@ -151,4 +156,21 @@ QuietThymeBooksTable:
     ProvisionedThroughput:
       ReadCapacityUnits: '5'
       WriteCapacityUnits: '5'
-    TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
+    LocalSecondaryIndexes:
+    - IndexName: "updated_atSort"
+      KeySchema:
+      - AttributeName: "user_id"
+        KeyType: "HASH"
+      - AttributeName: "updated_at"
+        KeyType: "RANGE"
+      Projection:
+        ProjectionType: "ALL"
+
+    - IndexName: "titleSort"
+      KeySchema:
+      - AttributeName: "user_id"
+        KeyType: "HASH"
+      - AttributeName: "title"
+        KeyType: "RANGE"
+      Projection:
+        ProjectionType: "ALL"

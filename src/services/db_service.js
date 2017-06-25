@@ -5,6 +5,7 @@ var Constants = require('../common/constants');
 var Utilities = require('../common/utilities');
 var nconf = require('../common/nconf');
 var uuid = require('node-uuid');
+var Base64Service = require('./base64_service');
 
 // from http://www.dancorman.com/knex-your-sql-best-friend/
 // http://blog.rowanudell.com/database-connections-in-lambda/
@@ -336,7 +337,8 @@ dbService.findBooksByUserId = function(user_id){
     return dbService.findBooks(user_id)
 };
 
-dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direction){
+//This is the main function for retrieving books.
+dbService.findBooks = function(user_id, filter_data, page, limit, sort_by, reverse_direction){
     var filter_expression = [];
     var expression_attribute_names = {
     };
@@ -362,10 +364,8 @@ dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direct
     }
 
     if(page){
-        params.ExclusiveStartKey = {
-            "user_id": user_id,
-            "id": page,
-        };
+        //page should be a base64 url encoded JSON blob, lets decode it.
+        params.ExclusiveStartKey = JSON.parse(Base64Service.urlDecode(page))
     }
 
     if(limit != null ){
@@ -376,10 +376,21 @@ dbService.findBooks = function(user_id, filter_data, page, limit, reverse_direct
         params.ScanIndexForward = false;
     }
 
+    if(sort_by){
+        params.IndexName = sort_by+'Sort';
+    }
+
     var db_deferred = q.defer();
     docClient.query(params, function(err, data) {
         if (err)  return db_deferred.reject(err);
-        return db_deferred.resolve(data);
+
+        //transform data.
+        var payload = {
+            Items: data.Items,
+            LastEvaluatedKey: Base64Service.urlEncode(JSON.stringify(data.LastEvaluatedKey))
+        };
+
+        return db_deferred.resolve(payload);
     });
     return db_deferred.promise
 };

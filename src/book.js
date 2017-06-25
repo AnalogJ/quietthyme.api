@@ -69,9 +69,7 @@ module.exports = {
                     if(event.query.storage_id){
                         condition['credential_id'] = event.query.storage_id;
                     }
-                    // book_query.orderBy(event.query.sort ? event.query.sort : 'title')
-
-                    book_query = DBService.findBooks(auth.uid, condition, event.query.page, 50);
+                    book_query = DBService.findBooks(auth.uid, condition, event.query.page, 50, 'title');
                 }
 
                 return book_query;
