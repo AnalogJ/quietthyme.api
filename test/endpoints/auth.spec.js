@@ -67,6 +67,7 @@ describe('Auth Endpoints', function () {
                     DBService.createUser(DBSchemas.User(user))
 
                 })
+                .delay(1000)
                 .then(function(){})
                 .then(done, done);
         });

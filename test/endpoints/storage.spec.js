@@ -105,5 +105,9 @@ describe('Storage Endpoints', function () {
             storageHandler.status(event, context, callback)
         })
     });
+
+    describe.skip('#prepare_book()', function () {});
+    describe.skip('#prepare_cover()', function () {});
+    describe.skip('#download()', function () {});
 });
 
