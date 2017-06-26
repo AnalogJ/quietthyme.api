@@ -157,6 +157,7 @@ module.exports = {
             .done()
     },
 
+    //this function generates a signed url for the upload bucket, which can be used by clients (calibre, web) to upload book files to s3
     prepare_book: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
         // TODO: this function shoulc check if the book file already exists.
@@ -195,6 +196,7 @@ module.exports = {
 
     },
 
+    //this function generates a signed url for the conten bucket, which can be used by clients (calibre, web) to upload cover/thumbnail images to s3
     prepare_cover: function (event, context, cb) {
         // this function will create the Author folder for this book, in storage_type specfied
         // TODO: this function should handle quietthyme storage creds

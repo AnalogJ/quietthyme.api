@@ -6,6 +6,8 @@ var should = require('should');
 
 describe('Storage Endpoints', function () {
     var token;
+    var user_id;
+    var credential_id;
     before(function(done){
         var user = {
             "name": 'testplan',
@@ -16,6 +18,7 @@ describe('Storage Endpoints', function () {
         };
         DBService.createUser(DBSchemas.User(user))
             .then(function(user_data){
+                user_id = user_data.uid;
                 return JWTTokenService.issue({
                     uid: user_data.uid,
                     plan: user_data.plan,
@@ -24,7 +27,7 @@ describe('Storage Endpoints', function () {
                     email: user_data.email
                 })
             })
-            .then(function(_token){
+            .then(function(_token) {
                 token = _token;
             })
             .then(done, done);
@@ -106,8 +109,139 @@ describe('Storage Endpoints', function () {
         })
     });
 
-    describe.skip('#prepare_book()', function () {});
-    describe.skip('#prepare_cover()', function () {});
+    describe('#prepare_book()', function () {
+        var book_id;
+        var credential_id;
+        before(function(done){
+
+            var credential = {
+                "user_id": user_id,
+                "service_type": 'google',
+                "service_id": 'google-service',
+                "email": 'test2@test.com',
+                "oauth": {"test":"TEst"}
+            };
+            DBService.createCredential(DBSchemas.Credential(credential))
+                .then(function(credential_resp) {
+                    credential_id = credential_resp.id;
+
+                    var book = {
+                        user_id: user_id,
+                        credential_id: credential_id,
+                        storage_size: 123456,
+                        storage_identifier: 'storage-id/test/1234',
+                        storage_filename: 'book',
+                        storage_format: 'epub',
+                        title: 'this is my book title'
+                    };
+                    return DBService.createBook(DBSchemas.Book(book))
+                })
+                .then(function(book_data){
+                    book_id = book_data.id;
+                })
+                .then(done, done);
+        });
+
+        it('should correctly generate signed url for uploading book file to S3', function (done) {
+            var event={
+                token: token,
+                path: {},
+                query: {source: 'calibre'},
+                body:{
+                    storage_id: credential_id,
+                    book_id: book_id,
+                    storage_size: 123456,
+                    storage_filename: 'testbook',
+                    storage_format: 'epub'
+                }
+            };
+            var context={};
+            function callback(ctx, data){
+                should.not.exist(ctx)
+
+                /*
+                *
+                * {
+                 book_data: {
+                 credential_id: '7dac915f-8c46-4155-b653-e7d79a327d39',
+                 storage_type: 'quietthyme',
+                 storage_identifier: 'quietthyme-api-test-upload/4c4cc2af3882d69b0e28902939e7cd54/18a6aa38-834b-4d10-80fd-2f2f685a09b1/7dac915f-8c46-4155-b653-e7d79a327d39/3d26b848-35e6-4785-bceb-eb42ff21a713/testbookepub',
+                 storage_size: 123456,
+                 storage_filename: 'testbook',
+                 storage_format: 'epub',
+                 updated_at: '2017-06-26T01:32:48Z'
+                 },
+                 upload_url: 'http://quietthyme-api-test-upload.localhost:6001/4c4cc2af3882d69b0e28902939e7cd54/18a6aa38-834b-4d10-80fd-2f2f685a09b1/7dac915f-8c46-4155-b653-e7d79a327d39/3d26b848-35e6-4785-bceb-eb42ff21a713/testbookepub?AWSAccessKeyId=test&Expires=1498440828&Signature=aQAcH9Du%2BTGANUoRJ0O2krjTh5A%3D'
+                 }
+                * */
+
+                data.book_data.credential_id.should.eql(credential_id);
+                data.book_data.storage_type.should.eql('quietthyme');
+                data.book_data.storage_identifier.should.exist;
+                data.upload_url.should.exist;
+
+                done()
+            }
+            storageHandler.prepare_book(event, context, callback)
+        })
+    });
+    describe('#prepare_cover()', function () {
+        var book_id;
+        var credential_id;
+        before(function(done){
+
+            var credential = {
+                "user_id": user_id,
+                "service_type": 'google',
+                "service_id": 'google-service',
+                "email": 'test2@test.com',
+                "oauth": {"test":"TEst"}
+            };
+            DBService.createCredential(DBSchemas.Credential(credential))
+                .then(function(credential_resp) {
+                    credential_id = credential_resp.id;
+
+                    var book = {
+                        user_id: user_id,
+                        credential_id: credential_id,
+                        storage_size: 123456,
+                        storage_identifier: 'storage-id/test/1234',
+                        storage_filename: 'book',
+                        storage_format: 'epub',
+                        title: 'this is my book title'
+                    };
+                    return DBService.createBook(DBSchemas.Book(book))
+                })
+                .then(function(book_data){
+                    book_id = book_data.id;
+                })
+                .then(done, done);
+        });
+
+        it('should correctly generate signed url for uploading cover file to S3', function (done) {
+            var event={
+                token: token,
+                path: {},
+                query: {source: 'calibre'},
+                body:{
+                    book_id: book_id,
+                    filename: 'testcover',
+                    format: 'jpeg'
+                }
+            };
+            var context={};
+            function callback(ctx, data){
+                should.not.exist(ctx)
+
+                data.book_data.cover.should.exist;
+                data.upload_url.should.exist;
+
+                done()
+            }
+            storageHandler.prepare_cover(event, context, callback)
+        })
+
+    });
     describe.skip('#download()', function () {});
 });
 
