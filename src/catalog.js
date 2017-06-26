@@ -240,8 +240,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                //TODO: sort by title
+                var book_query = DBService.findBooks(user.uid,{},page,QUERY_LIMIT, 'title');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -281,7 +280,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid);
+                var book_query = DBService.findBooks(user.uid,{},null,QUERY_LIMIT, 'updated_at');
                 //TODO: book_query.orderBy("created_at", 'desc');
                 return q.all([user, book_query]);
             })
@@ -317,9 +316,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                //TODO: book_query.where({series_name: Base64Service.urlDecode(encoded_series_id)});
-                //TODO: book_query.orderBy("title");
+                var book_query = DBService.findBooks(user.uid,{series_name: Base64Service.urlDecode(encoded_series_id)},null,QUERY_LIMIT, 'title');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {

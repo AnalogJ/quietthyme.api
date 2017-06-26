@@ -79,7 +79,7 @@ function common_feed(feed_type, token, id, current_path, next_path, page, limit 
     };
 
     if(next_path){
-        common.link.push({
+        common.links.push({
             rel: "next",
             type: "application/atom+xml;profile=opds-catalog;kind=acquisition",
             href: token_endpoint(token) + next_path,
