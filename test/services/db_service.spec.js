@@ -1,7 +1,9 @@
 var should = require('should');
 var DBService = require('../../src/services/db_service')
 var DBSchemas = require('../../src/common/db_schemas')
-
+var q = require('q')
+var fs = require('fs')
+var path = require('path');
 //this is just simple integration testing
 describe('DBService', function () {
     describe('#listTables()', function(){
@@ -592,6 +594,7 @@ describe('DBService', function () {
                 storage_identifier: 'storage-id/test/4',
                 storage_filename: 'book1',
                 storage_format: 'epub',
+                authors: ["test author", "hello world"],
                 title: 'title4'
             };
             DBService.createBook(DBSchemas.Book(book1))
@@ -638,6 +641,15 @@ describe('DBService', function () {
                 .then(done, done);
         });
 
+        it('should correctly handle author contains complex filter', function (done) {
+            DBService.findBooks('find-book', {'authors': {'contains': "test author"}})
+                .then(function(resp_data){
+                    resp_data.Items.length.should.eql(1);
+                    resp_data.Items[0].title.should.eql('title4');
+                })
+                .then(done, done);
+        });
+
         it('should correctly paginate with page limits', function (done) {
 
             var found_items = [];
@@ -666,6 +678,85 @@ describe('DBService', function () {
                     error.should.an.Error
                 })
                 .then(done, done);
+        });
+
+        describe("after loading 100 books", function () {
+            before(function (done) {
+                this.timeout(10000)
+
+                var books_file = path.resolve(path.resolve(__dirname, '../fixtures/100_books.json'));
+                var fake_books = JSON.parse(fs.readFileSync(books_file, 'utf8'));
+                var promises = []
+                for (var ndx in fake_books) {
+                    var fake_book = fake_books[ndx];
+
+                    fake_book.user_id = 'find-books-100';
+                    fake_book.credential_id = 'find-books-100-credential-id'
+                    promises.push(DBService.createBook(DBSchemas.Book(fake_book)))
+                }
+
+                q.allSettled(promises)
+                    .then(function (promises) {
+                    })
+                    .delay(1000)
+                    .then(done, done)
+            });
+
+
+
+
+
+            it('should correctly handle simple filters', function (done) {
+                var found_items = [];
+                function paginateBooks(user_id, query_data, page){
+                    return DBService.findBooks(user_id, query_data, page)
+                        .then(function(book_data){
+                            found_items = found_items.concat(book_data.Items);
+                            if(book_data.LastEvaluatedKey){
+                                return paginateBooks(user_id, query_data, book_data.LastEvaluatedKey)
+                            }
+                            else{
+                                return q(found_items);
+                            }
+
+                        })
+                }
+
+
+                paginateBooks('find-books-100', {"publisher": "integrate"})
+                    .then(function(_found_items){
+                        _found_items.length.should.eql(1)
+                        _found_items[0].title.should.eql('compress withdrawal generating')
+
+                    })
+                    .then(done, done);
+            });
+
+            it('should correctly handle author contains complex filter', function (done) {
+                var found_items = [];
+                function paginateBooks(user_id, query_data, page){
+                    return DBService.findBooks(user_id, query_data, page)
+                        .then(function(book_data){
+                            found_items = found_items.concat(book_data.Items);
+                            if(book_data.LastEvaluatedKey){
+                                return paginateBooks(user_id, query_data, book_data.LastEvaluatedKey)
+                            }
+                            else{
+                                return q(found_items);
+                            }
+
+                        })
+                }
+
+
+                paginateBooks('find-books-100', {'authors': {'contains': "Miss Gino Lang"}})
+                    .then(function(_found_items){
+                        _found_items.length.should.eql(1)
+                        _found_items[0].title.should.eql('Baby overriding transmitting')
+
+                    })
+                    .then(done, done);
+            });
         });
     });
 

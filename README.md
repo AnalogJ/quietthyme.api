@@ -40,8 +40,11 @@ api.quietthyme.com/v1/catalog/123456
 
 
 
+# Local Development
 
+- docker-compose up --build
+- npm test
 
-# docker-compose
+# Debugging
 
-docker-compose up --build
+- Access the DynamoDB shell at http://localhost:6001/shell

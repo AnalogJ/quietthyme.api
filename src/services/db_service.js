@@ -337,18 +337,37 @@ dbService.findBooksByUserId = function(user_id){
     return dbService.findBooks(user_id)
 };
 
-//This is the main function for retrieving books.
+/*
+This is the main function for retrieving books.
+filter_data can be simple or complex.
+
+simple_filter_data = {"storage_identifier" = "test-storage/identifier"}
+
+complex_filter_data = {"authors":{"CONTAINS": "Jim Smith"}}
+
+
+ */
 dbService.findBooks = function(user_id, filter_data, page, limit, sort_by, reverse_direction){
+    filter_data = filter_data || {}
     var filter_expression = [];
     var expression_attribute_names = {
     };
     var expression_attribute_values = {
         ":user_id": user_id
     };
-    for(var prop in filter_data || {}){
-        filter_expression.push('#' + prop + ' = :' + prop)
-        expression_attribute_names['#'+prop] = prop;
-        expression_attribute_values[':'+prop] = filter_data[prop]
+    for(var attribute_name in filter_data){
+        //handle complex queries
+        var comparison = '=';
+        if(typeof filter_data[attribute_name] === 'object'){
+            var comparison  = Object.keys(filter_data[attribute_name])[0]
+            filter_expression.push(`${comparison}(#${attribute_name}, :${attribute_name})`)
+        }
+        else{
+            filter_expression.push(`#${attribute_name} ${comparison} :${attribute_name}`)
+        }
+
+        expression_attribute_names['#'+attribute_name] = attribute_name;
+        expression_attribute_values[':'+attribute_name] = comparison == '=' ? filter_data[attribute_name] : filter_data[attribute_name][comparison]
     }
 
     var params = {
@@ -445,32 +464,3 @@ dbService.deleteBookById = function(book_id, user_id){
     });
     return db_deferred.promise
 };
-
-// var knex_config = require('../../knexfile.js');
-// var knex        = null;
-//
-// module.exports = {
-//     get: function(){
-//         if(knex){
-//             return q(knex)
-//         }
-//         else{
-//             knex = require('knex')(knex_config[process.env.STAGE]);
-//             knex.client.initializePool(knex.client.config);
-//             return q(knex)
-//         }
-//     },
-//     destroy: function(){
-//         if(knex){
-//             return knex.destroy()
-//                 .then(function(){
-//                     knex = null
-//                 })
-//         }
-//         else{
-//             return q({})
-//         }
-//     }
-// };
-
-// knex.migrate.latest([config]);
