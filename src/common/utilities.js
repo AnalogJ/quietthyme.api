@@ -4,6 +4,7 @@ const nconf = require('./nconf')
 module.exports = {
 
     ISODateString: function (d){
+        if(!d){return ''}
         if(typeof(d) == 'string'){
             d = new Date(d)
         }
