@@ -119,8 +119,81 @@ describe('Catalog Endpoints', function () {
                 data.should.be.a.String
                 done()
             }
-            catalogHandler.recent(event, context, callback)
+            catalogHandler.seriesid(event, context, callback)
         })
+
+    })
+
+    describe('#authorid()', function () {
+
+        it('should correctly generate author catalog when given a specific authorId', function (done) {
+            var event={
+                path: {
+                    catalogToken: token,
+                    authorId: Base64Service.urlEncode("Miss Eladio Osinski")
+                },
+                query: {},
+                body:{}
+            };
+            var context={};
+            function callback(ctx, data){
+                should.not.exist(ctx)
+                data.should.be.a.String
+                done()
+            }
+            catalogHandler.authorid(event, context, callback)
+        })
+    })
+
+    describe('#tagname()', function () {
+
+        it('should correctly generate tag catalog when given a specific tagname', function (done) {
+            var event={
+                path: {
+                    catalogToken: token,
+                    tagName: Base64Service.urlEncode("Turkey GB")
+                },
+                query: {},
+                body:{}
+            };
+            var context={};
+            function callback(ctx, data){
+                should.not.exist(ctx)
+                data.should.be.a.String
+                done()
+            }
+            catalogHandler.tagname(event, context, callback)
+        })
+
+    })
+
+    describe('#search_definition()', function () {})
+
+    describe('#search()', function () {})
+
+    describe.skip('#book()', function () {
+
+        it('should correctly generate book details catalog when given a specific book_id', function (done) {
+            var event={
+                path: {
+                    catalogToken: token,
+                    bookId: ''
+                },
+                query: {},
+                body:{}
+            };
+            var context={};
+            function callback(ctx, data){
+                should.not.exist(ctx)
+                data.should.be.a.String
+                done()
+            }
+            catalogHandler.book(event, context, callback)
+        })
+
+    })
+
+    describe.skip('#download()', function () {
 
     })
 });

@@ -349,7 +349,7 @@ module.exports = {
     authorid: function (event, context, cb) {
         var token = event.path.catalogToken;
         var encoded_author_id = event.path.authorId;
-        var page = event.query.page;;
+        var page = event.query.page;
         var path = "/by_author/" + encoded_author_id + CatalogService.page_suffix(page);
 
         return CatalogService.findUserByToken(token)
@@ -358,9 +358,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                //TODO: book_query.where('authors', '@>', Base64Service.urlDecode(encoded_author_id));
-                //TODO: book_query.orderBy("title");
+                var book_query = DBService.findBooks(user.uid,{authors: {'contains': Base64Service.urlDecode(encoded_author_id)}},null,QUERY_LIMIT, 'title');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -402,9 +400,7 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
-                //TODO:book_query.where('tags', '@>', Base64Service.urlDecode(encoded_tag_name));
-                //TODO:book_query.orderBy("title");
+                var book_query = DBService.findBooks(user.uid,{tags: {'contains': Base64Service.urlDecode(encoded_tag_name)}},null,QUERY_LIMIT, 'title');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
@@ -465,9 +461,11 @@ module.exports = {
                     return q.reject(new Error("No User found"));
                 }
 
-                var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
+                //var book_query = CatalogService.generatePaginatedBookQuery(user.uid, QUERY_LIMIT, page);
                 //TODO:book_query.where('title', 'like', query);
                 //TODO:book_query.orderBy("title");
+
+                var book_query = DBService.findBooks(user.uid,{title: {'contains': Base64Service.urlDecode(query)}},null,QUERY_LIMIT, 'title');
                 return q.all([user, book_query]);
             })
             .spread(function (user, books) {
