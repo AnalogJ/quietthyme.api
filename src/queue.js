@@ -152,7 +152,7 @@ module.exports = {
                         // we just need to move the book to permanent storage.
 
                         debug("Inserted Book: %o", inserted_books);
-                        return q.allSettled([inserted_books[0], StorageService.move_to_perm_storage(credential, inserted_books[0])])
+                        return q.allSettled([inserted_books, StorageService.move_to_perm_storage(credential, inserted_books)])
                     })
                     .spread(function(book_data_promise, book_storage_promise){
                         var book_data = book_data_promise.value;
