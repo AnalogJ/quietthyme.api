@@ -57,7 +57,7 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
         }
         else if(data_set._type && data_set.promise){
             return function(){
-                console.ubfi('downloading image via data promise');
+                console.info('downloading image via data promise');
                 return data_set.promise;
             }
         }
