@@ -1,6 +1,5 @@
 var should = require('should');
 var DBService = require('../../src/services/db_service')
-var DBSchemas = require('../../src/common/db_schemas')
 var q = require('q')
 var fs = require('fs')
 var path = require('path');
@@ -39,14 +38,14 @@ describe('DBService', function () {
                 stripe_sub_id: ''
             };
 
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function (userresp) {
                     should.exist(userresp.uid);
                     userresp.name.should.eql('test1');
                     userresp.email.should.eql('test1@example.com');
                     userresp.catalog_token.should.eql('lousing-bobwhite-angled-augers');
                     userresp.plan.should.eql('none');
-                    userresp.library_uuid.should.eql('');
+                    should.not.exist(userresp.library_uuid); //empty strings are converted to null.
                 })
 
                 .then(done, done);
@@ -62,7 +61,7 @@ describe('DBService', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(){})
                 .then(done, done);
         });
@@ -85,9 +84,9 @@ describe('DBService', function () {
                 "password_hash": 'testidhash',
                 "catalog_token": 'testidcatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(user_data){
-                    uid = user.uid
+                    uid = user_data.uid
                 })
                 .then(done, done);
         });
@@ -131,7 +130,7 @@ describe('DBService', function () {
                 "password_hash": 'test2hash',
                 "catalog_token": 'test2catalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(){})
                 .then(done, done);
         });
@@ -172,7 +171,7 @@ describe('DBService', function () {
                 "password_hash": 'test3hash',
                 "catalog_token": 'test3catalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(){})
                 .then(done, done);
         });
@@ -219,7 +218,7 @@ describe('DBService', function () {
                 "email": 'test@test.com',
                 "oauth": {"test":"TEst"}
             };
-            DBService.createCredential(DBSchemas.Credential(credential))
+            DBService.createCredential(credential)
                 .then(function(credential_resp){
                     should.exist(credential_resp.id)
                     credential_resp.user_id.should.eql("123-456-789");
@@ -235,13 +234,13 @@ describe('DBService', function () {
     describe('#findCredentialById()', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential(DBSchemas.Credential({
+            DBService.createCredential({
                 "user_id": 'user-id',
                 "service_type": 'dropbox',
                 "service_id": '12345',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            }))
+            })
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -290,13 +289,13 @@ describe('DBService', function () {
     describe('#findCredentialByServiceId()', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential(DBSchemas.Credential({
+            DBService.createCredential({
                 "user_id": 'user-service-id',
                 "service_type": 'dropbox',
                 "service_id": 'service-id-1234',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            }))
+            })
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -324,30 +323,30 @@ describe('DBService', function () {
 
     describe('#findCredentialsByUserId()', function(){
         before(function(done){
-            DBService.createCredential(DBSchemas.Credential({
+            DBService.createCredential({
                 "user_id": 'user-cred-query-id',
                 "service_type": 'dropbox',
                 "service_id": 'service-id-1234',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            }))
+            })
                 .then(function(){
-                    return DBService.createCredential(DBSchemas.Credential({
+                    return DBService.createCredential({
                         "user_id": 'user-cred-query-id',
                         "service_type": 'dropbox',
                         "service_id": 'service-id-1234',
                         "email": 'test@test.com',
                         "oauth": {"test": "TEst"}
-                    }))
+                    })
                 })
                 .then(function(){
-                    return DBService.createCredential(DBSchemas.Credential({
+                    return DBService.createCredential({
                         "user_id": 'user-cred-query-id',
                         "service_type": 'dropbox',
                         "service_id": 'service-id-1234',
                         "email": 'test@test.com',
                         "oauth": {"test": "TEst"}
-                    }))
+                    })
                 })
                 .then(function(){})
                 .then(done, done);
@@ -376,13 +375,13 @@ describe('DBService', function () {
     describe('#updateCredential()', function(){
         var credential_id;
         before(function(done){
-            DBService.createCredential(DBSchemas.Credential({
+            DBService.createCredential({
                 "user_id": 'user-id',
                 "service_type": 'dropbox',
                 "service_id": '12345',
                 "email": 'test@test.com',
                 "oauth": {"test": "TEst"}
-            }))
+            })
                 .then(function(credential_data){
                     credential_id = credential_data.id;
                 })
@@ -427,7 +426,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(book_data){
                     book_data.user_id.should.eql('user-id')
                 })
@@ -474,9 +473,135 @@ describe('DBService', function () {
                 user_categories: {},
                 user_metadata: {}
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(book_data){
                     book_data.user_id.should.eql('user-id')
+                })
+                .then(done, done);
+        });
+
+        it('should correctly create another complex book from calibre', function (done) {
+            var book = {
+                    user_id: 'e67e74f3-b221-48c5-8316-b14651f81a7c',
+                    credential_id: 'b43acf58-81a3-4117-952d-7d2566c65321',
+                    storage_type: 'dropbox',
+                    storage_identifier: 'FicKnmotZ4UrkH0cT-bOeZhiZV1GV1LQginsbwdXnL0M=',
+                    storage_filename: 'Gibson, William - The Peripheral (2014)',
+                    storage_format: '.mobi',
+                    storage_size: 792300,
+                    title: 'The Peripheral',
+                    published_date: '2014-11-28T00:00:00Z',
+                    authors: [ 'William Gibson' ],
+                    isbn: '9780399158445',
+                    isbn10: '0399158448',
+                    num_pages: 485,
+                    average_rating: 3.94,
+                    ratings_count: 8648,
+                    goodreads_id: '20821159',
+                    short_summary: '**William Gibson returns with his first novel since 2010’s _New York Times_–bestselling _Zero History_.** \n\nWhere Flynne and her brother, Burton, live, jobs outside the drug business are rare. Fortunately, Burton has his veteran’s benefits, for neural damage he suffered from implants during his time in the USMC’s elite Haptic Recon force. Then one night Burton has to go out, but there’s a job he’s supposed to do—a job Flynne didn’t know he had. Beta-testing part of a new game, he tells her. The job seems to be simple: work a perimeter around the image of a tower building. Little buglike things turn up. He’s supposed to get in their way, edge them back. That’s all there is to it. He’s offering Flynne a good price to take over for him. What she sees, though, isn’t what Burton told her to expect. It might be a game, but it might also be murder.',
+                    tags: [ 'sci-fi',
+                            'fiction',
+                            'cyberpunk',
+                            'scifi',
+                            'sf',
+                            'owned',
+                            'science-fiction',
+                            'favorites',
+                            'library',
+                            'time-travel',
+                            'kindle',
+                            'abandoned',
+                            'sci-fi-fantasy',
+                            'to-buy',
+                            'audiobook',
+                            'dystopia',
+                            'read-in-2015',
+                            'audio',
+                            'dystopian',
+                            'thriller',
+                            'audiobooks',
+                            'speculative-fiction',
+                            'novels',
+                            'books-i-own',
+                            'ebooks',
+                            'to-read-fiction',
+                            'fantasy',
+                            'mystery',
+                            'didn-t-finish',
+                            'unfinished',
+                            'scifi-fantasy',
+                            'book-club',
+                            'science-fiction-fantasy',
+                            'william-gibson',
+                            'near-future',
+                            'wish-list',
+                            'adult',
+                            'speculative',
+                            'did-not-finish',
+                            'sff',
+                            'literature',
+                            'owned-books',
+                            'never-finished',
+                            'audible',
+                            'technology',
+                            'novel',
+                            'read-in-2014',
+                            'e-book',
+                            'post-apocalyptic',
+                            'signed',
+                            'library-book',
+                            'gave-up',
+                            'recommended',
+                            'read-2015',
+                            'to-get',
+                            'london',
+                            'calibre',
+                            'couldn-t-finish',
+                            'read-2014',
+                            'first-reads',
+                            'gave-up-on',
+                            'on-hold',
+                            'fantasy-sci-fi',
+                            'fiction-to-read',
+                            'fantasy-scifi',
+                            'sciencefiction',
+                            'on-deck',
+                            'audio-book',
+                            'english',
+                            'sci-fi-and-fantasy',
+                            'books',
+                            'sf-fantasy',
+                            'read-in-2017',
+                            'read-2016',
+                            'read-in-2016',
+                            'shelfari-wishlist',
+                            'books-read-2015',
+                            'my-library',
+                            'contemporary',
+                            'hardcover',
+                            'post-apocalypse',
+                            'reviewed',
+                            'dnf',
+                            'ciencia-ficción',
+                            'to-read-scifi',
+                            'e-books',
+                            'paused',
+                            'hardback',
+                            'dystopian-sci-fi',
+                            'library-books',
+                            'owned-but-unread',
+                            'owned-to-read',
+                            'borrowed',
+                            'nanotechnology',
+                            'spec-fic',
+                            'cyber-punk',
+                            'dropped' ],
+                    cover: 'quietthyme-api-beta-content/58882a48d919c2198e333347d66b1700/covers/8b42b9d134f0992cc29d3b3241f85f8bd59ac7ff.jpg',
+                    last_modified: ''
+            };
+            DBService.createBook(book)
+                .then(function(book_data){
+                    book_data.user_id.should.eql('e67e74f3-b221-48c5-8316-b14651f81a7c')
                 })
                 .then(done, done);
         });
@@ -494,7 +619,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(book_data){
                     book_id = book_data.id;
                 })
@@ -531,7 +656,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(){
                     return DBService.createBook(book)
                 })
@@ -597,7 +722,7 @@ describe('DBService', function () {
                 authors: ["test author", "hello world"],
                 title: 'title4'
             };
-            DBService.createBook(DBSchemas.Book(book1))
+            DBService.createBook(book1)
                 .then(function(){
 
                     return DBService.createBook(book2)
@@ -692,7 +817,7 @@ describe('DBService', function () {
 
                     fake_book.user_id = 'find-books-100';
                     fake_book.credential_id = 'find-books-100-credential-id'
-                    promises.push(DBService.createBook(DBSchemas.Book(fake_book)))
+                    promises.push(DBService.createBook(fake_book))
                 }
 
                 q.allSettled(promises)
@@ -772,7 +897,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(book_data){
                     book_id = book_data.id;
                 })
@@ -807,7 +932,7 @@ describe('DBService', function () {
                 storage_format: 'epub',
                 title: 'this is my book title'
             };
-            DBService.createBook(DBSchemas.Book(book))
+            DBService.createBook(book)
                 .then(function(book_data){
                     book_id = book_data.id;
                 })

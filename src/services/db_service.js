@@ -6,6 +6,7 @@ var Utilities = require('../common/utilities');
 var nconf = require('../common/nconf');
 var uuid = require('node-uuid');
 var Base64Service = require('./base64_service');
+var DBSchemas = require('../common/db_schemas');
 
 // from http://www.dancorman.com/knex-your-sql-best-friend/
 // http://blog.rowanudell.com/database-connections-in-lambda/
@@ -131,7 +132,14 @@ dbService.findUserByCatalogToken = function(catalog_token){
     return db_deferred.promise
 }
 
-dbService.createUser = function(user /* DBSchema.User */){
+dbService.createUser = function(user){
+    try{
+        user = DBSchemas.createUser(Utilities.stripEmpty(user))
+    }
+    catch(e){
+        return q.reject(e)
+    }
+
     user.uid = uuid.v4()
     user.created_at = Utilities.ISODateString(new Date());
     user.updated_at = Utilities.ISODateString(new Date());
@@ -150,6 +158,7 @@ dbService.createUser = function(user /* DBSchema.User */){
 }
 
 dbService.updateUserPlan = function(uid, plan, stripe_sub_id){
+
     var params = {
         TableName:Constants.tables.users,
         Key: { uid : uid },
@@ -176,6 +185,13 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 dbService.createCredential = function(credential /* DBSchema.Credential */){
+    try{
+        credential = DBSchemas.createCredential(Utilities.stripEmpty(credential))
+    }
+    catch(e){
+        return q.reject(e)
+    }
+
     credential.id = uuid.v4()
     credential.created_at = Utilities.ISODateString(new Date());
     credential.updated_at = Utilities.ISODateString(new Date());
@@ -250,6 +266,13 @@ dbService.findCredentialsByUserId = function(user_id){
 };
 
 dbService.updateCredential = function(credential_id, update_data, return_values){
+    try{
+        update_data = DBSchemas.updateCredential(Utilities.stripEmpty(update_data))
+    }
+    catch(e){
+        return q.reject(e)
+    }
+
     update_data.updated_at = Utilities.ISODateString(new Date());
     var update_expression = [];
     var expression_attribute_names = {};
@@ -287,6 +310,13 @@ dbService.updateCredential = function(credential_id, update_data, return_values)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 dbService.createBook = function(book /* DBSchema.Book */){
+    try{
+        book = DBSchemas.createBook(Utilities.stripEmpty(book))
+    }
+    catch(e){
+        return q.reject(e)
+    }
+
     book.id = uuid.v4();
     book.created_at = Utilities.ISODateString(new Date());
     book.updated_at = Utilities.ISODateString(new Date());
@@ -415,6 +445,13 @@ dbService.findBooks = function(user_id, filter_data, page, limit, sort_by, rever
 };
 
 dbService.updateBook = function(book_id, user_id, update_data, return_values){
+    try{
+        update_data = DBSchemas.updateBook(Utilities.stripEmpty(update_data))
+    }
+    catch(e){
+        return q.reject(e)
+    }
+
     update_data.updated_at = Utilities.ISODateString(new Date());
     var update_expression = [];
     var expression_attribute_names = {};

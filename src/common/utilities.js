@@ -1,6 +1,7 @@
 'use strict';
 const debug = require('debug')('quietthyme:utilities');
 const nconf = require('./nconf')
+var _ = require('lodash');
 module.exports = {
 
     ISODateString: function (d){
@@ -16,6 +17,13 @@ module.exports = {
             + pad(d.getUTCMinutes())+':'
             + pad(d.getUTCSeconds())+'Z'
     },
+
+    stripEmpty: function(object){
+        return _.omitBy(object, function(i){
+            return (i === null || i === '')
+        });
+    },
+
 
     successHandler: function(cb){
         var _cb = cb;

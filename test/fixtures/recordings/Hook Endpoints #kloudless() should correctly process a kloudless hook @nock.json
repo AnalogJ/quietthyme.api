@@ -1,0 +1,469 @@
+[
+    {
+        "scope": "http://localhost:6001",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "TableName": "quietthyme-api-test-credentials",
+            "IndexName": "serviceIdIndex",
+            "KeyConditionExpression": "service_id = :service_id",
+            "ExpressionAttributeValues": {
+                ":service_id": {
+                    "S": "231987328"
+                }
+            }
+        },
+        "status": 200,
+        "response": {
+            "Items": [
+                {
+                    "service_id": {
+                        "S": "231987328"
+                    },
+                    "root_folder": {
+                        "M": {}
+                    },
+                    "oauth": {
+                        "M": {
+                            "test": {
+                                "S": "TEst"
+                            }
+                        }
+                    },
+                    "calibre_location_code": {
+                        "NULL": true
+                    },
+                    "service_type": {
+                        "S": "dropbox"
+                    },
+                    "blackhole_folder": {
+                        "M": {}
+                    },
+                    "library_folder": {
+                        "M": {}
+                    },
+                    "id": {
+                        "S": "ff1da4ea-711f-4428-bcfb-6c35b8764fde"
+                    },
+                    "updated_at": {
+                        "S": "2017-06-26T05:43:08Z"
+                    },
+                    "email": {
+                        "S": "test2@test.com"
+                    },
+                    "name": {
+                        "NULL": true
+                    },
+                    "event_cursor": {
+                        "NULL": true
+                    },
+                    "created_at": {
+                        "S": "2017-06-26T05:43:08Z"
+                    },
+                    "user_id": {
+                        "S": "f988b931-6339-40d7-b927-7e61907c6bb2"
+                    }
+                }
+            ],
+            "Count": 1,
+            "ScannedCount": 1
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/x-amz-json-1.0",
+            "x-amz-crc32",
+            "716055126",
+            "x-amzn-RequestId",
+            "7015a069-d0fc-4811-98f6-a3b8cafd16d2",
+            "Connection",
+            "close",
+            "Server",
+            "Jetty(8.1.12.v20130726)"
+        ]
+    },
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "GET",
+        "path": "/v1//accounts/231987328/events?cursor=after-auth",
+        "body": {
+            "account_id": "231987328",
+            "queryParams": {
+                "cursor": "after-auth"
+            }
+        },
+        "status": 200,
+        "response": {
+            "cursor": "689082527",
+            "count": 7,
+            "objects": [
+                {
+                    "id": "689082436",
+                    "account": 231987328,
+                    "action": "+",
+                    "ip": null,
+                    "modified": "2017-06-25T02:07:59Z",
+                    "type": "add",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename.epub",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:07:59Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA0g",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename.epub",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZu1Z1ipYvTUeZe6yq34z1Wg=",
+                        "mime_type": "application/octet-stream",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082452",
+                    "account": 231987328,
+                    "action": "+",
+                    "ip": null,
+                    "modified": "2017-06-25T02:10:12Z",
+                    "type": "add",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename (1).epub",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:10:12Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA0w",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename (1).epub",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZiC41A_LOrX8eBKEXMD1N8I=",
+                        "mime_type": "application/octet-stream",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082490",
+                    "account": 231987328,
+                    "action": "-",
+                    "ip": null,
+                    "modified": "2017-06-25T02:13:25.857697Z",
+                    "type": "delete",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename.epub",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:07:59Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA0g",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename.epub",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZu1Z1ipYvTUeZe6yq34z1Wg=",
+                        "mime_type": "application/octet-stream",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082491",
+                    "account": 231987328,
+                    "action": "-",
+                    "ip": null,
+                    "modified": "2017-06-25T02:13:25.857697Z",
+                    "type": "delete",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename (1).epub",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:10:12Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA0w",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename (1).epub",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZiC41A_LOrX8eBKEXMD1N8I=",
+                        "mime_type": "application/octet-stream",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082499",
+                    "account": 231987328,
+                    "action": "+",
+                    "ip": null,
+                    "modified": "2017-06-25T02:14:12Z",
+                    "type": "add",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename.jpg",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:14:12Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA1A",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename.jpg",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZhVB73cIdg9ipIFD5uklANQ=",
+                        "mime_type": "image/jpeg",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082526",
+                    "account": 231987328,
+                    "action": "+",
+                    "ip": null,
+                    "modified": "2017-06-25T02:18:26Z",
+                    "type": "add",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename (1).jpg",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:18:26Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA1Q",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename (1).jpg",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZtEKQDdjfRZjyKRJDa1d85w=",
+                        "mime_type": "image/jpeg",
+                        "size": 22559
+                    }
+                },
+                {
+                    "id": "689082527",
+                    "account": 231987328,
+                    "action": "-",
+                    "ip": null,
+                    "modified": "2017-06-25T02:18:30.813338Z",
+                    "type": "delete",
+                    "user_id": null,
+                    "metadata": {
+                        "account": 231987328,
+                        "ancestors": [
+                            {
+                                "name": "my-test-folder",
+                                "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                            },
+                            {
+                                "name": "Dropbox",
+                                "id": "FbOHF9CrtPQkhUlEkquzMdA=="
+                            }
+                        ],
+                        "name": "testfilename.jpg",
+                        "parent": {
+                            "name": "my-test-folder",
+                            "id": "FYAnOY5mtWYzk9oLdliADbQ=="
+                        },
+                        "created": null,
+                        "modified": "2017-06-25T02:14:12Z",
+                        "raw_id": "id:O87-C4lF9iAAAAAAAAAA1A",
+                        "downloadable": true,
+                        "path": "/my-test-folder/testfilename.jpg",
+                        "type": "file",
+                        "id": "FicKnmotZ4UrkH0cT-bOeZhVB73cIdg9ipIFD5uklANQ=",
+                        "mime_type": "image/jpeg",
+                        "size": 22559
+                    }
+                }
+            ],
+            "remaining": 0
+        },
+        "rawHeaders": [
+            "Allow",
+            "GET, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Mon, 26 Jun 2017 05:43:09 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "3ba1b70e-5833-4132-90c5-965e4616b03c",
+            "X-Kloudless-Stats-Influx",
+            "{\"fields\": {\"duration\": 62.65997886657715, \"start\": 1498455789.5, \"remote_address\": \"10.0.0.125\", \"query\": \"cursor=after-auth\"}, \"tags\": {\"status\": 200, \"application_id\": \"mddXeszdchTlRQEFN3LGhxLzqaTjgYwbXGLHCeXOqJdrzRyd\", \"credential_ids\": [231987328], \"path\": \"/v1/accounts/231987328/events\", \"method\": \"GET\", \"x_forwarded_for\": \"136.24.156.11\"}, \"time\": 1498455789.562749, \"measurement\": \"api_request\"}",
+            "Content-Length",
+            "4579",
+            "Connection",
+            "Close"
+        ]
+    },
+    {
+        "scope": "http://localhost:6001",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "TableName": "quietthyme-api-test-credentials",
+            "Key": {
+                "id": {
+                    "S": "ff1da4ea-711f-4428-bcfb-6c35b8764fde"
+                }
+            },
+            "UpdateExpression": "set #event_cursor = :event_cursor, #updated_at = :updated_at",
+            "ExpressionAttributeNames": {
+                "#event_cursor": "event_cursor",
+                "#updated_at": "updated_at"
+            },
+            "ExpressionAttributeValues": {
+                ":event_cursor": {
+                    "S": "689082527"
+                },
+                ":updated_at": {
+                    "S": "2017-06-26T05:43:09Z"
+                }
+            },
+            "ReturnValues": "ALL_NEW"
+        },
+        "status": 200,
+        "response": {
+            "Attributes": {
+                "root_folder": {
+                    "M": {}
+                },
+                "service_id": {
+                    "S": "231987328"
+                },
+                "oauth": {
+                    "M": {
+                        "test": {
+                            "S": "TEst"
+                        }
+                    }
+                },
+                "calibre_location_code": {
+                    "NULL": true
+                },
+                "service_type": {
+                    "S": "dropbox"
+                },
+                "blackhole_folder": {
+                    "M": {}
+                },
+                "library_folder": {
+                    "M": {}
+                },
+                "id": {
+                    "S": "ff1da4ea-711f-4428-bcfb-6c35b8764fde"
+                },
+                "updated_at": {
+                    "S": "2017-06-26T05:43:09Z"
+                },
+                "email": {
+                    "S": "test2@test.com"
+                },
+                "name": {
+                    "NULL": true
+                },
+                "event_cursor": {
+                    "S": "689082527"
+                },
+                "created_at": {
+                    "S": "2017-06-26T05:43:08Z"
+                },
+                "user_id": {
+                    "S": "f988b931-6339-40d7-b927-7e61907c6bb2"
+                }
+            }
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/x-amz-json-1.0",
+            "x-amz-crc32",
+            "394168125",
+            "x-amzn-RequestId",
+            "3db2a992-84ab-4efa-aac5-3f25c8ee475c",
+            "Connection",
+            "close",
+            "Server",
+            "Jetty(8.1.12.v20130726)"
+        ]
+    }
+]

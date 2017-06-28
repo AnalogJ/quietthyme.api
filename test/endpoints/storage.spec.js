@@ -1,7 +1,6 @@
 var storageHandler = require('../../src/storage');
 var DBService = require('../../src/services/db_service');
 var JWTTokenService = require('../../src/services/jwt_token_service');
-var DBSchemas = require('../../src/common/db_schemas');
 var should = require('should');
 
 describe('Storage Endpoints', function () {
@@ -16,7 +15,7 @@ describe('Storage Endpoints', function () {
             "password_hash": 'testplanhash',
             "catalog_token": 'testplancatalog'
         };
-        DBService.createUser(DBSchemas.User(user))
+        DBService.createUser(user)
             .then(function(user_data){
                 user_id = user_data.uid;
                 return JWTTokenService.issue({
@@ -121,7 +120,7 @@ describe('Storage Endpoints', function () {
                 "email": 'test2@test.com',
                 "oauth": {"test":"TEst"}
             };
-            DBService.createCredential(DBSchemas.Credential(credential))
+            DBService.createCredential(credential)
                 .then(function(credential_resp) {
                     credential_id = credential_resp.id;
 
@@ -134,7 +133,7 @@ describe('Storage Endpoints', function () {
                         storage_format: 'epub',
                         title: 'this is my book title'
                     };
-                    return DBService.createBook(DBSchemas.Book(book))
+                    return DBService.createBook(book)
                 })
                 .then(function(book_data){
                     book_id = book_data.id;
@@ -197,7 +196,7 @@ describe('Storage Endpoints', function () {
                 "email": 'test2@test.com',
                 "oauth": {"test":"TEst"}
             };
-            DBService.createCredential(DBSchemas.Credential(credential))
+            DBService.createCredential(credential)
                 .then(function(credential_resp) {
                     credential_id = credential_resp.id;
 
@@ -210,7 +209,7 @@ describe('Storage Endpoints', function () {
                         storage_format: 'epub',
                         title: 'this is my book title'
                     };
-                    return DBService.createBook(DBSchemas.Book(book))
+                    return DBService.createBook(book)
                 })
                 .then(function(book_data){
                     book_id = book_data.id;

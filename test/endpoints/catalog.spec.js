@@ -2,7 +2,6 @@ var catalogHandler = require('../../src/catalog');
 var DBService = require('../../src/services/db_service');
 var JWTTokenService = require('../../src/services/jwt_token_service');
 var Base64Service = require('../../src/services/base64_service');
-var DBSchemas = require('../../src/common/db_schemas');
 var should = require('should');
 var q = require('q');
 var path = require('path');
@@ -24,7 +23,7 @@ describe('Catalog Endpoints', function () {
         };
 
 
-        DBService.createUser(DBSchemas.User(user))
+        DBService.createUser(user)
             .then(function(user_data){
                 user_id = user_data.uid;
 
@@ -36,7 +35,7 @@ describe('Catalog Endpoints', function () {
 
                     fake_book.user_id = user_id;
                     fake_book.credential_id = 'catalog-credential-id'
-                    promises.push(DBService.createBook(DBSchemas.Book(fake_book)))
+                    promises.push(DBService.createBook(fake_book))
                 }
 
                 return q.allSettled(promises)

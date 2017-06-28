@@ -9,7 +9,6 @@ var PipelineMetadataService = require('./pipeline_metadata_service');
 var PipelineImageService = require('./pipeline_image_service');
 var StorageService = require('./storage_service');
 var DBService = require('./db_service');
-var DBSchemas = require('../common/db_schemas');
 var crypto = require('crypto');
 var toMarkdown = require('to-markdown');
 var Constants = require('../common/constants')
@@ -306,21 +305,24 @@ function _populate_book_with_parsed_data(bookPromise,sourcesPromise, parsed_book
 
     var final_book = extend(true, bookPromise.value,parsed_book);
 
+
     //cleanup book
+    final_book = Utilities.stripEmpty(final_book);
     final_book.short_summary = final_book.short_summary ? toMarkdown(final_book.short_summary, {converters: [{
         filter: 'div',
         replacement: function (innerHTML) { return innerHTML }
     }]}) : null;
 
-    if(typeof final_book.published_date !== 'string'){
+
+    if(final_book.published_date instanceof Date){
         final_book.published_date = Utilities.ISODateString(final_book.published_date)
     }
-    if(typeof final_book.last_modified !== 'string'){
+    if(final_book.last_modified instanceof Date){
         final_book.last_modified = Utilities.ISODateString(final_book.last_modified)
     }
 
     console.info("Merged final book data: ", final_book);
     // throw "RAISING ERROR FOR TESTING!!"
 
-    return DBService.createBook(DBSchemas.Book(final_book))
+    return DBService.createBook(final_book)
 }

@@ -1,7 +1,6 @@
 var bookHandler = require('../../src/book');
 var DBService = require('../../src/services/db_service');
 var JWTTokenService = require('../../src/services/jwt_token_service');
-var DBSchemas = require('../../src/common/db_schemas');
 var should = require('should');
 var fs = require('fs');
 var path = require('path');
@@ -18,7 +17,7 @@ describe('Book Endpoints', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(user_data){
                     return JWTTokenService.issue({
                         uid: user_data.uid,
@@ -93,7 +92,7 @@ describe('Book Endpoints', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(user_data){
                     user_id = user_data.uid;
                     return JWTTokenService.issue({
@@ -117,19 +116,19 @@ describe('Book Endpoints', function () {
                         storage_format: 'epub',
                         title: 'this is my book title'
                     };
-                    return DBService.createBook(DBSchemas.Book(book))
+                    return DBService.createBook(book)
                         .then(function(){
                             book.storage_identifier = 'storage-id/test/2';
-                            return DBService.createBook(DBSchemas.Book(book))
+                            return DBService.createBook(book)
                         })
                         .then(function(){
                             book.storage_identifier = 'storage-id/test/3';
-                            return DBService.createBook(DBSchemas.Book(book))
+                            return DBService.createBook(book)
                         })
                         .then(function(book_data){
                             book_id = book_data.id;
                             book.storage_identifier = 'storage-id/test/4';
-                            return DBService.createBook(DBSchemas.Book(book))
+                            return DBService.createBook(book)
                         })
                         .then(function(){})
                 })
@@ -183,7 +182,7 @@ describe('Book Endpoints', function () {
 
                     fake_book.user_id = user_id;
                     fake_book.credential_id = 'find-book-credential-id'
-                    promises.push(DBService.createBook(DBSchemas.Book(fake_book)))
+                    promises.push(DBService.createBook(fake_book))
                 }
 
                 q.allSettled(promises)
@@ -255,7 +254,7 @@ describe('Book Endpoints', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(user_data){
                     user_id = user_data.uid;
                     return JWTTokenService.issue({
@@ -279,7 +278,7 @@ describe('Book Endpoints', function () {
                         storage_format: 'epub',
                         title: 'this is my book title'
                     };
-                    return DBService.createBook(DBSchemas.Book(book))
+                    return DBService.createBook(book)
                         .then(function(book_data){
                             book_id = book_data.id;
                         })

@@ -1,7 +1,6 @@
 var authHandler = require('../../src/auth');
 var DBService = require('../../src/services/db_service');
 var SecurityService = require('../../src/services/security_service');
-var DBSchemas = require('../../src/common/db_schemas');
 var should = require('should');
 
 describe('Auth Endpoints', function () {
@@ -13,7 +12,7 @@ describe('Auth Endpoints', function () {
                 "password_hash": 'testplanhash',
                 "catalog_token": 'testplancatalog'
             };
-            DBService.createUser(DBSchemas.User(user))
+            DBService.createUser(user)
                 .then(function(){})
                 .then(done, done);
         });
@@ -64,7 +63,7 @@ describe('Auth Endpoints', function () {
                         "password_hash": password,
                         "catalog_token": 'testplancatalog'
                     };
-                    DBService.createUser(DBSchemas.User(user))
+                    DBService.createUser(user)
 
                 })
                 .delay(1000)
