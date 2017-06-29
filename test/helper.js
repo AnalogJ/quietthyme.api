@@ -5,7 +5,8 @@ var nconf = require('../src/common/nconf');
 var path = require('path');
 var nock = require('nock');
 var sanitize = require('sanitize-filename');
-
+var yaml = require('js-yaml');
+var fs   = require('fs');
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Before & After full test suite
@@ -13,208 +14,18 @@ var sanitize = require('sanitize-filename');
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 before(function(done){
     // These tables should match the tabels in cloudformation-resources.yml
-    var usersTable = {
-        AttributeDefinitions: [
-            {
-                AttributeName: "uid",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "email",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "catalog_token",
-                AttributeType: "S"
-            }
-        ],
-        KeySchema: [
-            {
-                AttributeName: "uid",
-                KeyType: "HASH"
-            }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-        },
-        GlobalSecondaryIndexes: [
-            {
-                IndexName: "emailIndex",
-                KeySchema: [
-                    {
-                        AttributeName: "email",
-                        KeyType: "HASH"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                },
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 2,
-                    WriteCapacityUnits: 2
-                },
-            },
-            {
-                IndexName: "catalogIndex",
-                KeySchema: [
-                    {
-                        AttributeName: "catalog_token",
-                        KeyType: "HASH"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                },
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 2,
-                    WriteCapacityUnits: 2
-                },
-            }
-        ],
-        TableName: 'quietthyme-api-' + nconf.get('STAGE') + '-users'
-    };
-
-    var credsTable = {
-        AttributeDefinitions: [
-            {
-                AttributeName: "id",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "service_id",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "user_id",
-                AttributeType: "S"
-            }
-        ],
-        KeySchema: [
-            {
-                AttributeName: "id",
-                KeyType: "HASH"
-            }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-        },
-        GlobalSecondaryIndexes: [
-            {
-                IndexName: "serviceIdIndex",
-                KeySchema: [
-                    {
-                        AttributeName: "service_id",
-                        KeyType: "HASH"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                },
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 2,
-                    WriteCapacityUnits: 2
-                },
-            },
-            {
-                IndexName: "userIdIndex",
-                KeySchema: [
-                    {
-                        AttributeName: "user_id",
-                        KeyType: "HASH"
-                    },
-                    {
-                        AttributeName: "id",
-                        KeyType: "RANGE"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                },
-                ProvisionedThroughput: {
-                    ReadCapacityUnits: 2,
-                    WriteCapacityUnits: 2
-                },
-            }
-        ],
-        TableName: 'quietthyme-api-' + nconf.get('STAGE') + '-credentials'
-    };
-
-    var booksTable = {
-        AttributeDefinitions: [
-            {
-                AttributeName: "user_id",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "id",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "title",
-                AttributeType: "S"
-            },
-            {
-                AttributeName: "updated_at",
-                AttributeType: "S"
-            }
-        ],
-        KeySchema: [
-            {
-                AttributeName: "user_id",
-                KeyType: "HASH"
-            },
-            {
-                AttributeName: "id",
-                KeyType: "RANGE"
-            }
-        ],
-        ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-        },
-        LocalSecondaryIndexes: [
-            {
-                IndexName: "updated_atSort",
-                KeySchema: [
-                    {
-                        AttributeName: "user_id",
-                        KeyType: "HASH"
-                    },
-                    {
-                        AttributeName: "updated_at",
-                        KeyType: "RANGE"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                }
-            },
-            {
-                IndexName: "titleSort",
-                KeySchema: [
-                    {
-                        AttributeName: "user_id",
-                        KeyType: "HASH"
-                    },
-                    {
-                        AttributeName: "title",
-                        KeyType: "RANGE"
-                    }
-                ],
-                Projection: {
-                    ProjectionType: "ALL"
-                }
-            }
-        ],
-        TableName: 'quietthyme-api-' + nconf.get('STAGE') + '-books'
-    };
+    var cfData = yaml.safeLoad(fs.readFileSync('./cloudformation-resources.yaml', 'utf8'));
+    var usersTable = cfData.QuietThymeUsersTable.Properties;
+    usersTable.TableName = 'quietthyme-api-' + nconf.get('STAGE') + '-users'
+    var credsTable = cfData.QuietThymeCredsTable.Properties;
+    credsTable.TableName = 'quietthyme-api-' + nconf.get('STAGE') + '-credentials'
+    var booksTable = cfData.QuietThymeBooksTable.Properties;
+    booksTable.TableName = 'quietthyme-api-' + nconf.get('STAGE') + '-books'
 
     DBService.createTable(usersTable)
-        // .fail(function(){
-        //     console.log("Users Table already exists")
-        // })
+    // .fail(function(){
+    //     console.log("Users Table already exists")
+    // })
         .then(function(){
             return DBService.createTable(credsTable)
         })

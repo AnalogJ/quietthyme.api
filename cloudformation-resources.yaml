@@ -174,3 +174,5 @@ QuietThymeBooksTable:
         KeyType: "RANGE"
       Projection:
         ProjectionType: "ALL"
+
+
