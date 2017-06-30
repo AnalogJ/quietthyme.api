@@ -59,6 +59,7 @@ var bookSchema = {
         "storage_identifier": { "type": "string" },
         "storage_filename": { "type": "string" },
         "storage_format": { "type": "string" },
+        "storage_type": { "type": "string" },
 
         "title": { "type": "string" },
         "average_rating": { "type": ["number","null"], "default": null },
