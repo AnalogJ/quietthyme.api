@@ -152,12 +152,21 @@ module.exports = {
                         // we just need to move the book to permanent storage.
 
                         debug("Inserted Book: %o", inserted_books);
+                        debug("Credential: %o", credential) //TODO: we must remove this.
                         return q.allSettled([inserted_books, StorageService.move_to_perm_storage(credential, inserted_books)])
                     })
                     .spread(function(book_data_promise, book_storage_promise){
+                        if(book_data_promise.state != "fulfilled"){
+                            debug("book_data_promise failed: %o", book_data_promise.reason)
+                            return q.reject(book_data_promise.reason)
+                        }
+                        if(book_storage_promise.state != "fulfilled"){
+                            debug("book_storage_promise failed: %o", book_storage_promise.reason)
+                            return q.reject(book_storage_promise.reason)
+                        }
+
                         var book_data = book_data_promise.value;
                         var book_storage_identifier = book_storage_promise.value;
-
 
                         console.info("Book storage identifier:", book_storage_identifier);
 
