@@ -6,6 +6,7 @@ var Utilities = require('../common/utilities');
 var nconf = require('../common/nconf');
 var uuid = require('node-uuid');
 var Base64Service = require('./base64_service');
+var KloudlessService = require('./kloudless_service');
 var DBSchemas = require('../common/db_schemas');
 
 // from http://www.dancorman.com/knex-your-sql-best-friend/
@@ -265,7 +266,7 @@ dbService.findCredentialsByUserId = function(user_id){
     return db_deferred.promise
 };
 
-dbService.updateCredential = function(credential_id, update_data, return_values){
+dbService.updateCredential = function(credential_id, update_data, return_values, conditional_update_data){
     try{
         update_data = DBSchemas.updateCredential(Utilities.stripEmpty(update_data))
     }
@@ -293,6 +294,20 @@ dbService.updateCredential = function(credential_id, update_data, return_values)
     if(return_values){
         params.ReturnValues = 'ALL_NEW';
     }
+    if(conditional_update_data){
+        // we're attempting to do an atomic write. ie, we need to make sure that the data we're updating hasn't changed
+        // from under us.
+
+        var condition_expression = []
+        for(var prop in conditional_update_data){
+            condition_expression.push('#cond' + prop + ' = :cond' + prop)
+            expression_attribute_names['#cond'+prop] = prop;
+            expression_attribute_values[':cond'+prop] = conditional_update_data[prop]
+        }
+
+        params.ConditionExpression = condition_expression.join(', ')
+    }
+
 
     var db_deferred = q.defer();
     docClient.update(params, function(err, data) {
@@ -301,6 +316,32 @@ dbService.updateCredential = function(credential_id, update_data, return_values)
     });
     return db_deferred.promise
 };
+
+
+dbService.atomicCredentialCursorEvents = function(serviceId, maxRetries){
+    if(maxRetries == 0){
+        debug("Error. Maximum retry limit reached");
+        return q.reject("Error. Maximum retry limit reached")
+    }
+
+    return dbService.findCredentialByServiceId(serviceId)
+        .then(function(credential){
+            return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
+        })
+        .spread(function(kloudless_events, credential){
+            //store the new cursor in the db, only if we have the latest cursor.
+            return [
+                dbService.updateCredential(credential.id, {event_cursor: kloudless_events.cursor}, true, {event_cursor: credential.event_cursor})
+                    .then(function(){
+                        debug("Attempting (%s) to update cursor from %s to %s",maxRetries, credential.event_cursor,  kloudless_events.cursor);
+                        return kloudless_events;
+                    }), credential]
+        })
+        .fail(function(err){
+            debug("An error occured while updating cursor", err);
+            return dbService.atomicCredentialCursorEvents(serviceId, maxRetries -1)
+        })
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

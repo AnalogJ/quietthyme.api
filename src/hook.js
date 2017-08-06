@@ -40,19 +40,9 @@ module.exports.kloudless = function(event, context, cb){
 
 
     //retrieve the current cursor and and then do a request for the latest events
-    DBService.findCredentialByServiceId(event.body.split('=')[1])
-        .then(function(credential){
-            return [KloudlessService.eventsGet(credential.service_id, credential.event_cursor), credential]
-        })
-        .spread(function(kloudless_events, credential){
-            //store the new cursor in the db
-            return [
-                DBService.updateCredential(credential.id, {event_cursor: kloudless_events.cursor}, true)
-                    .then(function(){
-                        debug("Updating cursor from %s to %s",credential.event_cursor,  kloudless_events.cursor);
-                        return kloudless_events;
-                    }), credential]
-        })
+    //http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.03.html#GettingStarted.NodeJs.03.05
+    //https://en.wikipedia.org/wiki/Read-modify-write
+    DBService.atomicCredentialCursorEvents(event.body.split('=')[1], 5)
         .spread(function(events, credential){
             var blackhole_folder = credential.blackhole_folder;
             //begin filtering the events, and start invoking new lambda's
@@ -117,9 +107,7 @@ module.exports.kloudless = function(event, context, cb){
         .then(Utilities.successHandler(cb))
         .fail(Utilities.errorHandler(cb))
         .done()
-
-
-
-
-
 };
+
+
+f
