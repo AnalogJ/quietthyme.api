@@ -108,6 +108,3 @@ module.exports.kloudless = function(event, context, cb){
         .fail(Utilities.errorHandler(cb))
         .done()
 };
-
-
-f
