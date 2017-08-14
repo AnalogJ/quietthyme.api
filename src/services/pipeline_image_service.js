@@ -78,6 +78,10 @@ PipelineImageService.process_image_pipeline = function(current_sources, image_pi
 
 
 PipelineImageService.generate_download_cover_promise = function (url, type){
+    if(type == 'goodreads' && url.indexOf("nophoto") != -1){
+        return q.reject("goodreads is returning an empty placeholder image.")
+    }
+
     var deferred = q.defer();
     var request = require('request');
     console.info('downloading '+type+' image from: '+url);
