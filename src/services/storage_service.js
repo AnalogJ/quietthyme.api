@@ -50,7 +50,7 @@ StorageService.move_to_perm_storage = function(credential, book){
 
     //filename
     var filename = StorageService.book_filename(book) + book.storage_format;
-    return KloudlessService.fileMove(credential.service_id, book.storage_identifier, credential.library_folder.id, filename)
+    return KloudlessService.fileMoveRetry(credential.service_id, book.storage_identifier, credential.library_folder.id, filename)
 };
 
 StorageService.download_book_tmp = function(filename, credential_id, storage_identifier){
