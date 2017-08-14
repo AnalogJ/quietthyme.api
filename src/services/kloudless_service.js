@@ -123,7 +123,7 @@ kloudlessService.fileMoveRetry = function(account_id, identifier, dest_parent_id
                 // wait before retrying the request. If the upstream service does not provide this information,
                 // this header will not be present. The status code for this error response will be 429.
                 var seconds = response.getHeader('Retry-After') | 0 //convert to integer
-
+                console.log(`Retrying fileMove request. Retries left: #${retry}, Waiting ${seconds} seconds`)
                 q.delay(seconds * 1000)
                     .then(function(){
                         return kloudlessService.fileMoveRetry(account_id, identifier, dest_parent_id, dest_filename, retry - 1)
