@@ -113,6 +113,7 @@ kloudlessService.fileMoveRetry = function(account_id, identifier, dest_parent_id
     return promise
         .fail(function(errArgs){
             //check if this is a retry-able error, with a
+            console.dir(errArgs)
             var err = errArgs[0];
             var respData = errArgs[1];
             var response = errArgs[2];
