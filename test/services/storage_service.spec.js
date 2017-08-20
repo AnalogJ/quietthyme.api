@@ -16,6 +16,15 @@ describe('StorageService', function () {
                 series_number: 5
             }).should.eql('book author1 - book series name - 5 - book title')
         });
+
+        it('Should correctly clean special characters from string. ', function () {
+            StorageService.book_filename({
+                title: 'book titlewith\'quote',
+                authors: ['book author1'],
+                series_name: 'book series name',
+                series_number: 5
+            }).should.eql('book author1 - book series name - 5 - book titlewithquote')
+        });
     })
 
     describe.skip('#move_to_perm_storage()', function(){

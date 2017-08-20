@@ -34,6 +34,10 @@ var s3 = new AWS.S3(config);
 var StorageService = module.exports;
 
 
+StorageService.clean_filename = function(filename){
+    return filename.replace(/[^0-9a-zA-Z_\s-]/gi, '')
+}
+
 StorageService.book_filename = function(book){
     var filename = book.authors[0];
     if(book.series_name){
@@ -43,6 +47,9 @@ StorageService.book_filename = function(book){
         filename += ` - ${book.series_number}`
     }
     filename += ` - ${book.title}`;
+
+
+    filename = StorageService.clean_filename(filename);
     return filename
 };
 
