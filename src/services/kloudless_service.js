@@ -123,7 +123,7 @@ kloudlessService.fileMoveRetry = function(account_id, identifier, dest_parent_id
                 //Retry-After: If the error is due to rate limiting, this provides the time in seconds to
                 // wait before retrying the request. If the upstream service does not provide this information,
                 // this header will not be present. The status code for this error response will be 429.
-                var seconds = response.getHeader('Retry-After') | 0 //convert to integer
+                var seconds = response.headers['retry-after'] | 0 //convert to integer
                 console.log(`Retrying fileMove request. Retries left: #${retry}, Waiting ${seconds} seconds`)
                 return q.delay(seconds * 1000)
                     .then(function(){
