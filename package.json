@@ -25,7 +25,7 @@
     "debug": "^2.6.3",
     "goodreads.js": "^0.0.9",
     "jsonwebtoken": "^7.1.9",
-    "kloudless": "^1.0.2",
+    "kloudless": "^1.0.3",
     "lodash": "^4.17.4",
     "nconf": "^0.8.4",
     "node-uuid": "^1.4.7",

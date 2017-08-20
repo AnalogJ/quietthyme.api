@@ -96,8 +96,8 @@ kloudlessService.fileMove = function(account_id, identifier, dest_parent_id, des
         payload['name'] = dest_filename;
     }
     var deferred = q.defer();
-    kloudless.files.move(payload, function(err, res, response){
-        if (err) return deferred.reject(arguments);
+    kloudless.files.move(payload, function(err, res){
+        if (err) return deferred.reject(err);
         return deferred.resolve(res)
     });
     return deferred.promise;
@@ -111,14 +111,13 @@ kloudlessService.fileMoveRetry = function(account_id, identifier, dest_parent_id
     var promise = kloudlessService.fileMove(account_id, identifier, dest_parent_id, dest_filename)
 
     return promise
-        .fail(function(errArgs){
+        .fail(function(err){
             //check if this is a retry-able error, with a
-            var err = errArgs[0];
-            var response = errArgs[1];
+            var response = err.raw.response;
             // console.log("error:", JSON.stringify(err));
-            console.log("response:", JSON.stringify(response));
+            console.log(`type: ${err.type}, statusCode: ${response.statusCode}, response: ${JSON.stringify(response)}`);
 
-            if(err.type == 'KloudlessAPIError' && err.status == 429 && retry >= 0){
+            if(err.type == 'KloudlessAPIError' && response.statusCode == 429 && retry >= 0){
                 //we should retry this request, after the Retry-After header has elapsed.
 
                 //Retry-After: If the error is due to rate limiting, this provides the time in seconds to
