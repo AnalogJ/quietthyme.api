@@ -129,6 +129,10 @@ custom:
         template:
           application/json: ${self:custom.errorResponseTemplate}
         pattern: '.*\[400\].*'
+      401:
+        template:
+          application/json: ${self:custom.errorResponseTemplate}
+        pattern: '.*\[401\].*'
       404:
         template:
           application/json: ${self:custom.errorResponseTemplate}
