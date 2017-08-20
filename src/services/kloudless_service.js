@@ -115,7 +115,7 @@ kloudlessService.fileMoveRetry = function(account_id, identifier, dest_parent_id
             //check if this is a retry-able error, with a
             var response = err.raw.response;
             // console.log("error:", JSON.stringify(err));
-            console.log(`type: ${err.type}, statusCode: ${response.statusCode}, response: ${JSON.stringify(response)}`);
+            console.log(`type: ${err.type}, statusCode: ${response.statusCode}`);
 
             if(err.type == 'KloudlessAPIError' && response.statusCode == 429 && retry >= 0){
                 //we should retry this request, after the Retry-After header has elapsed.
