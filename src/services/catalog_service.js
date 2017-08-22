@@ -171,7 +171,10 @@ module.exports.seriesToPartialEntry = function (id, token, series_name){
 
 function bookToBaseEntry(id, token, book){
 
-    var storage_extension = (book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format );
+    var storage_extension = '';
+    if(book.storage_format){
+        storage_extension = book.storage_format[0] == '.' ? book.storage_format.substr(1) : book.storage_format;
+    };
 
     var entry = {
         id: id +':' + book.id,
