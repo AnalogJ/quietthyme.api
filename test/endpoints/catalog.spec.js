@@ -5,195 +5,190 @@ var Base64Service = require('../../src/services/base64_service');
 var should = require('should');
 var q = require('q');
 var path = require('path');
-var fs = require('fs')
+var fs = require('fs');
 
-describe('Catalog Endpoints', function () {
+describe('Catalog Endpoints', function() {
+  var token = 'test-token-catalog';
+  var user_id;
+  before(function(done) {
+    this.timeout(10000);
 
-    var token = 'test-token-catalog';
-    var user_id;
-    before(function(done){
-        this.timeout(10000)
+    var user = {
+      name: 'testplan',
+      plan: 'none',
+      email: 'catalog-books@example.com',
+      password_hash: 'testplanhash',
+      catalog_token: token,
+    };
 
-        var user = {
-            "name": 'testplan',
-            "plan": 'none',
-            "email": 'catalog-books@example.com',
-            "password_hash": 'testplanhash',
-            "catalog_token": token
-        };
+    DBService.createUser(user)
+      .then(function(user_data) {
+        user_id = user_data.uid;
 
+        var books_file = path.resolve(
+          path.resolve(__dirname, '../fixtures/100_books.json')
+        );
+        var fake_books = JSON.parse(fs.readFileSync(books_file, 'utf8'));
+        var promises = [];
+        for (var ndx in fake_books) {
+          var fake_book = fake_books[ndx];
 
-        DBService.createUser(user)
-            .then(function(user_data){
-                user_id = user_data.uid;
+          fake_book.user_id = user_id;
+          fake_book.credential_id = 'catalog-credential-id';
+          promises.push(DBService.createBook(fake_book));
+        }
 
-                var books_file = path.resolve(path.resolve(__dirname,'../fixtures/100_books.json'));
-                var fake_books = JSON.parse(fs.readFileSync(books_file, 'utf8'));
-                var promises = [];
-                for(var ndx in fake_books){
-                    var fake_book = fake_books[ndx];
+        return q.allSettled(promises);
+      })
+      .then(function() {})
+      // .delay(1000)
+      .then(done, done);
+  });
 
-                    fake_book.user_id = user_id;
-                    fake_book.credential_id = 'catalog-credential-id'
-                    promises.push(DBService.createBook(fake_book))
-                }
-
-                return q.allSettled(promises)
-            })
-            .then(function(){})
-            // .delay(1000)
-            .then(done,done)
+  describe('#index()', function() {
+    it('should correctly retrieve catalog index', function(done) {
+      var event = {
+        path: { catalogToken: token },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.index(event, context, callback);
     });
+  });
 
-    describe('#index()', function () {
-
-        it('should correctly retrieve catalog index', function (done) {
-            var event={
-                path: {catalogToken: token},
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.index(event, context, callback)
-        })
+  describe('#series()', function() {});
+  describe('#books()', function() {
+    it('should correctly generate books catalog', function(done) {
+      var event = {
+        path: { catalogToken: token },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.books(event, context, callback);
     });
+  });
+  describe('#recent()', function() {
+    it('should correctly generate recent catalog', function(done) {
+      var event = {
+        path: { catalogToken: token },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.recent(event, context, callback);
+    });
+  });
 
-    describe('#series()', function () {})
-    describe('#books()', function () {
+  describe('#seriesid()', function() {
+    it('should correctly generate seriesid catalog when given a specific seriesId', function(
+      done
+    ) {
+      var event = {
+        path: {
+          catalogToken: token,
+          seriesId: Base64Service.urlEncode(
+            'Granite Practical Concrete Keyboard'
+          ),
+        },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.seriesid(event, context, callback);
+    });
+  });
 
-        it('should correctly generate books catalog', function (done) {
-            var event={
-                path: {catalogToken: token},
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.books(event, context, callback)
-        })
+  describe('#authorid()', function() {
+    it('should correctly generate author catalog when given a specific authorId', function(
+      done
+    ) {
+      var event = {
+        path: {
+          catalogToken: token,
+          authorId: Base64Service.urlEncode('Miss Eladio Osinski'),
+        },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.authorid(event, context, callback);
+    });
+  });
 
-    })
-    describe('#recent()', function () {
+  describe('#tagname()', function() {
+    it('should correctly generate tag catalog when given a specific tagname', function(
+      done
+    ) {
+      var event = {
+        path: {
+          catalogToken: token,
+          tagName: Base64Service.urlEncode('Turkey GB'),
+        },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.tagname(event, context, callback);
+    });
+  });
 
-        it('should correctly generate recent catalog', function (done) {
-            var event={
-                path: {catalogToken: token},
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.recent(event, context, callback)
-        })
+  describe('#search_definition()', function() {});
 
-    })
+  describe('#search()', function() {});
 
-    describe('#seriesid()', function () {
+  describe.skip('#book()', function() {
+    it('should correctly generate book details catalog when given a specific book_id', function(
+      done
+    ) {
+      var event = {
+        path: {
+          catalogToken: token,
+          bookId: '',
+        },
+        query: {},
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        data.should.be.a.String;
+        done();
+      }
+      catalogHandler.book(event, context, callback);
+    });
+  });
 
-        it('should correctly generate seriesid catalog when given a specific seriesId', function (done) {
-            var event={
-                path: {
-                    catalogToken: token,
-                    seriesId: Base64Service.urlEncode("Granite Practical Concrete Keyboard")
-                },
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.seriesid(event, context, callback)
-        })
-
-    })
-
-    describe('#authorid()', function () {
-
-        it('should correctly generate author catalog when given a specific authorId', function (done) {
-            var event={
-                path: {
-                    catalogToken: token,
-                    authorId: Base64Service.urlEncode("Miss Eladio Osinski")
-                },
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.authorid(event, context, callback)
-        })
-    })
-
-    describe('#tagname()', function () {
-
-        it('should correctly generate tag catalog when given a specific tagname', function (done) {
-            var event={
-                path: {
-                    catalogToken: token,
-                    tagName: Base64Service.urlEncode("Turkey GB")
-                },
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.tagname(event, context, callback)
-        })
-
-    })
-
-    describe('#search_definition()', function () {})
-
-    describe('#search()', function () {})
-
-    describe.skip('#book()', function () {
-
-        it('should correctly generate book details catalog when given a specific book_id', function (done) {
-            var event={
-                path: {
-                    catalogToken: token,
-                    bookId: ''
-                },
-                query: {},
-                body:{}
-            };
-            var context={};
-            function callback(ctx, data){
-                should.not.exist(ctx)
-                data.should.be.a.String
-                done()
-            }
-            catalogHandler.book(event, context, callback)
-        })
-
-    })
-
-    describe.skip('#download()', function () {
-
-    })
+  describe.skip('#download()', function() {});
 });
-

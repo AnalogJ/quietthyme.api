@@ -10,32 +10,32 @@ const debug = require('debug')('quietthyme:JWTokenService');
  */
 
 var jwt = require('jsonwebtoken'),
-    q = require('q'),
-    HttpError = require('../common/http_error'),
-    nconf = require('../common/nconf'),
-    tokenSecret = nconf.get('ENCRYPTION_JWT_PASSPHRASE');
+  q = require('q'),
+  HttpError = require('../common/http_error'),
+  nconf = require('../common/nconf'),
+  tokenSecret = nconf.get('ENCRYPTION_JWT_PASSPHRASE');
 
 // Generates a token from supplied payload
 module.exports.issue = function(payload, type) {
-    debug('Creating JWT: %o', payload);
-    return jwt.sign(
-        payload,
-        tokenSecret, // Token Secret that we sign it with
-        {
-            expiresIn : (type == 'calibre' ? "7d" : "3h") // Web expires in 3 hours, Calibre in 7days
-        }
-    );
+  debug('Creating JWT: %o', payload);
+  return jwt.sign(
+    payload,
+    tokenSecret, // Token Secret that we sign it with
+    {
+      expiresIn: type == 'calibre' ? '7d' : '3h', // Web expires in 3 hours, Calibre in 7days
+    }
+  );
 };
 
 // Verifies token on a request
 module.exports.verify = function(token) {
-    var deferred = q.defer();
-    jwt.verify(token, tokenSecret, function(err, decoded) {
-        if (err) {
-            err.code = 401;
-            return deferred.reject(err);
-        }
-        return deferred.resolve(decoded);
-    });
-    return deferred.promise
+  var deferred = q.defer();
+  jwt.verify(token, tokenSecret, function(err, decoded) {
+    if (err) {
+      err.code = 401;
+      return deferred.reject(err);
+    }
+    return deferred.resolve(decoded);
+  });
+  return deferred.promise;
 };

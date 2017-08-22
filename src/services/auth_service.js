@@ -8,19 +8,24 @@
 var q = require('q');
 const debug = require('debug')('quietthyme:AuthService');
 var SecurityService = require('./security_service');
-var DBService = require('./db_service')
+var DBService = require('./db_service');
 var authService = exports;
 
-authService.createEmailUser = function(name, email, password){
-    return q.spread([SecurityService.generate_catalog_token(), SecurityService.hash_password(password)],
-        function(catalog_token, password_hash){
-            return DBService.createUser({
-                "name": name,
-                "email": email,
-                "password_hash": password_hash,
-                "catalog_token": catalog_token
-            })
-        })
+authService.createEmailUser = function(name, email, password) {
+  return q.spread(
+    [
+      SecurityService.generate_catalog_token(),
+      SecurityService.hash_password(password),
+    ],
+    function(catalog_token, password_hash) {
+      return DBService.createUser({
+        name: name,
+        email: email,
+        password_hash: password_hash,
+        catalog_token: catalog_token,
+      });
+    }
+  );
 };
 
 // authService.createCalibreUser = function(db_client, library_uuid){
