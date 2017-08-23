@@ -188,9 +188,9 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var quietThymeStorageCredential = {
-  id: '0',
+  id: 'quietthyme',
   service_type: 'quietthyme',
-  service_id: '0',
+  service_id: 'quietthyme',
   oauth: {}
 }
 
@@ -221,7 +221,7 @@ dbService.findCredentialById = function(
   user_id /* optional, but recommended */
 ) {
   //handle "quietthyme" credentials (always 0)
-  if(credential_id == 0 || credential_id == '0'){
+  if(credential_id == 'quietthyme'){
     return q(quietThymeStorageCredential)
   }
 
@@ -246,7 +246,7 @@ dbService.findCredentialById = function(
 };
 
 dbService.findCredentialByServiceId = function(service_id) {
-  if(service_id == 0 || service_id == '0'){
+  if(service_id == 'quietthyme'){
     return q(quietThymeStorageCredential)
   }
   var params = {
