@@ -147,7 +147,7 @@ module.exports = {
               device_name: 'QuietThyme ' + nconf.get('STAGE'),
               prefix: 'quietthyme://',
               storage_type: 'quietthyme',
-              storage_id: 0,
+              storage_id: 'quietthyme',
               location_code: 'main',
               last_library_uuid: event.query.library_uuid,
               free_space: 0,
