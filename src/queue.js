@@ -35,7 +35,7 @@ module.exports = {
     var is_new_book = book_id == 'NEW';
 
     //check if the book destination is quietthyme storage
-    var is_quietthyme_storage = cred_id == '0';
+    var is_quietthyme_storage = cred_id == 'quietthyme';
 
     if (is_new_book) {
       return cb(
