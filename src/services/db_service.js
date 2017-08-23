@@ -187,6 +187,13 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+var quietThymeStorageCredential = {
+  id: '0',
+  service_type: 'quietthyme',
+  service_id: '0',
+  oauth: {}
+}
+
 dbService.createCredential = function(credential /* DBSchema.Credential */) {
   try {
     credential = DBSchemas.createCredential(Utilities.stripEmpty(credential));
@@ -213,6 +220,11 @@ dbService.findCredentialById = function(
   credential_id,
   user_id /* optional, but recommended */
 ) {
+  //handle "quietthyme" credentials (always 0)
+  if(credential_id == 0 || credential_id == '0'){
+    return q(quietThymeStorageCredential)
+  }
+
   var params = {
     TableName: Constants.tables.credentials,
     KeyConditionExpression: 'id = :id',
@@ -234,6 +246,9 @@ dbService.findCredentialById = function(
 };
 
 dbService.findCredentialByServiceId = function(service_id) {
+  if(service_id == 0 || service_id == '0'){
+    return q(quietThymeStorageCredential)
+  }
   var params = {
     TableName: Constants.tables.credentials,
     IndexName: 'serviceIdIndex',

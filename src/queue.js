@@ -44,7 +44,7 @@ module.exports = {
       );
       // newly uploaded books should only be
     }
-    
+
     q.spread(
         [
           DBService.findBookById(book_id, user_id),
@@ -86,13 +86,13 @@ module.exports = {
           }
 
 
-          return uploadToPermStoragePromise.then(function(kloudless_upload_resp) {
+          return uploadToPermStoragePromise.then(function(destination_storage_resp) {
             return DBService.updateBook(
               book.id,
               user_id,
               {
                 storage_type: credential.service_type,
-                storage_identifier: kloudless_upload_resp['id'],
+                storage_identifier: destination_storage_resp['id'],
               },
               true
             );
@@ -108,7 +108,7 @@ module.exports = {
   // this function gets called in 2 cases.
   //
   // 1. a book is added to a blackhole folder.
-  // 2. a book is NEW book (manually uploaded via the WebUI) and is stored in upload bucket. (triggered by storage.process_book method)
+  // 2. a book is NEW book (manually uploaded via the WebUI) and is stored in upload bucket. (triggered by queue.process_s3_uploaded_book method)
   //
   // Then the following steps will occur:
   // will determine the book's current location. (source_storage_type, source_storage_identifier)
