@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/AnalogJ/quietthyme.api/badge.svg?branch=beta)](https://coveralls.io/github/AnalogJ/quietthyme.api?branch=beta)
 [![GitHub license](https://img.shields.io/github/license/AnalogJ/quietthyme.api.svg)](https://github.com/AnalogJ/quietthyme.api/blob/master/LICENSE)
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 # TODO:
 - update the cloudformation-resources.json file to generate the Postgres RDS, IAM role & SG's

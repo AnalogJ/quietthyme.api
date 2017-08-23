@@ -76,6 +76,8 @@ kloudlessService.fileUpload = function(
       url: 'https://s3.amazonaws.com/' + storage_identifier,
     },
   };
+  //TODO: should we use  "X-Kloudless-Async: true" header to ensure that large file uploads
+  //dont time out? https://developers.kloudless.com/docs/v1/storage#files-upload-a-file
   request(options, function(error, response, body) {
     if (error) {
       return deferred.reject(error);

@@ -8,6 +8,7 @@ var PipelineMetadataService = require('./services/pipeline_metadata_service');
 var PipelineImageService = require('./services/pipeline_image_service');
 var PipelineService = require('./services/pipeline_service');
 var Utilities = require('./common/utilities');
+var Constants = require('./common/constants');
 var q = require('q');
 var path = require('path');
 var exec = require('child_process').exec;
@@ -43,18 +44,8 @@ module.exports = {
       );
       // newly uploaded books should only be
     }
-
-    if (is_quietthyme_storage) {
-      return cb(
-        new Error(
-          'Not Implemented. New quietthyme storage cannot be processed yet.'
-        ),
-        null
-      );
-    }
-
-    q
-      .spread(
+    
+    q.spread(
         [
           DBService.findBookById(book_id, user_id),
           DBService.findCredentialById(cred_id, user_id),
@@ -71,13 +62,31 @@ module.exports = {
           // clean_filename += ' - ' + book.title
 
           //(bearer_token, account_id, filename, parent_id, storage_identifier){
-          return KloudlessService.fileUpload(
-            credential.oauth.access_token,
-            credential.service_id,
-            book.storage_filename + book.storage_format,
-            credential.library_folder.id,
-            book.storage_identifier
-          ).then(function(kloudless_upload_resp) {
+          var uploadToPermStoragePromise;
+          if(is_quietthyme_storage){
+            uploadToPermStoragePromise = StorageService.move_to_quietthyme_perm_storage(
+              `${upload_bucket}/${upload_key}`,
+              Constants.buckets.content,
+              StorageService.create_content_identifier(
+                'book',
+                user_id,
+                book_id, //this should be the filename, but honestly, its dirty and the user wont see this filename anyways.
+                book.storage_format
+              )
+            )
+          }
+          else {
+            uploadToPermStoragePromise = KloudlessService.fileUpload(
+              credential.oauth.access_token,
+              credential.service_id,
+              book.storage_filename + book.storage_format,
+              credential.library_folder.id,
+              book.storage_identifier
+            )
+          }
+
+
+          return uploadToPermStoragePromise.then(function(kloudless_upload_resp) {
             return DBService.updateBook(
               book.id,
               user_id,

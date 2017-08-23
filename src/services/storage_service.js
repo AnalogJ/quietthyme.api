@@ -51,6 +51,8 @@ StorageService.book_filename = function(book) {
   return filename;
 };
 
+
+//Move a book between blackhole directory and library directory on Kloudless cloud provider storage.
 StorageService.move_to_perm_storage = function(credential, book) {
   //filename
   var filename = StorageService.book_filename(book) + book.storage_format;
@@ -62,6 +64,24 @@ StorageService.move_to_perm_storage = function(credential, book) {
   );
 };
 
+//move a book from upload bucket to content bucket.
+StorageService.move_to_quietthyme_perm_storage = function(upload_identifier, content_bucket, content_key){
+
+  var deferred = q.defer();
+  var params = {
+    Bucket: content_bucket,
+    CopySource: `/${upload_identifier}`,
+    Key: content_key
+  };
+  s3.copyObject(params, function(err, data) {
+    if (err) {deferred.reject(err)}
+    deferred.resolve({id: `${content_bucket}/${content_key}`}); //must return the same syntax as KloudlessService.fileUpload
+  });
+  return deferred.promise;
+
+}
+
+//Download a file from cloud provider into local /tmp directory for processing.
 StorageService.download_book_tmp = function(
   filename,
   credential_id,
@@ -88,6 +108,7 @@ StorageService.download_book_tmp = function(
   });
 };
 
+//get storage status for all the user's cloud storages
 StorageService.get_user_storage = function(token) {
   return JWTokenService.verify(token).then(function(auth) {
     return DBService.findCredentialsByUserId(auth.uid).then(function(
@@ -121,6 +142,8 @@ StorageService.get_user_storage = function(token) {
   });
 };
 
+
+//generate link to a cloud storage/s3 bucket file. Useful when downloading books.
 StorageService.get_download_link = function(book, user_id) {
   //check if the book storage_type is populated, if not, then we need to return
   if (!book.storage_type || !book.storage_identifier) {
@@ -151,6 +174,7 @@ StorageService.get_download_link = function(book, user_id) {
   }
 };
 
+//upload a file from local directory to s3.
 StorageService.upload_file_from_path = function(filepath, bucket, key) {
   console.info('Uploading file from ' + filepath, bucket, key);
   if (!filepath) {
