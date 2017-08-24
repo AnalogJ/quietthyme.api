@@ -18,7 +18,7 @@ var lambda = new aws.Lambda();
 
 module.exports = {
   //must handle 2 types of events:
-  // - books uploaded via webui to bucketname/USERHASH/user_id/cred_id/NEW/filename
+  // - NEW books uploaded via webui to bucketname/USERHASH/user_id/cred_id/NEW/filename
   // - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
 
   // if its a new book, we need to process it, if its a calibre book we just need to move it to correct location
@@ -41,6 +41,11 @@ module.exports = {
 
     if (is_new_book) {
       //this is a new book, lets call process_unknown_book lamda.
+      console.log("Queueing up NEW/UNKNOWN book that was uploaded to S3",
+        upload_bucket,
+        upload_key,
+        dirty_filename);
+
       return lambda.invoke(
         {
           FunctionName:
