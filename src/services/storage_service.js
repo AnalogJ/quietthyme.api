@@ -52,20 +52,76 @@ StorageService.book_filename = function(book) {
 };
 
 
+//There are 3 types of move operations:
+// - kloudless blackhole -> kloudless library
+// - s3 upload bucket -> kloudless library
+// - s3 upload bucket -> s3 content bucket
+
 //Move a book between blackhole directory and library directory on Kloudless cloud provider storage.
-StorageService.move_to_perm_storage = function(credential, book) {
+//
+// source_data.source_storage_type
+// source_data.source_cred_id
+// source_data.source_storage_identifier
+// dest_data.dest_storage_type
+// dest_data.dest_cred_id
+// dest_data.credential  -- optional (only needed for kloudless destinations)
+//
+// All move_* methods shoudl return {id: <storage_identifier>, basename: <clean filename>} where storage_identifier is valid for dest_storage_type;
+StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, book_data) {
   //filename
-  var filename = StorageService.book_filename(book) + book.storage_format;
+  var clean_basename = StorageService.book_filename(book_data);
+  var dest_filename = clean_basename + book_data.storage_format;
+  var promise;
+  if(source_data.source_storage_type == "quietthyme" && dest_data.dest_storage_type == "quietthyme"){
+    //this is a s3 book that needs to be copied from upload bucket to content bucket.
+    promise = StorageService.move_s3_upload_to_s3_content(source_data.source_storage_identifier, Constants.buckets.content,
+      StorageService.create_content_identifier(
+        'book',
+        user_id,
+        clean_basename, //this should be the filename, but honestly, its dirty and the user wont see this filename anyways.
+        book_data.storage_format
+      ))
+  }
+  else if(source_data.source_storage_type == "quietthyme"){
+    promise = KloudlessService.fileUpload(
+      dest_data.credential.oauth.access_token,
+      dest_data.credential.service_id,
+      dest_filename,
+      dest_data.credential.library_folder.id,
+      source_data.source_storage_identifier
+    )
+  }
+  else { // this must be a kloudless -> kloudless move
+    promise = StorageService.move_kloudless_blackhole_to_kloudless_library(dest_data.credential, source_data.source_storage_identifier, dest_filename)
+  }
+
+  return promise.then(function(move_data){
+    return move_data.basename = clean_basename
+  })
+};
+// StorageService.move_to_perm_storage = function(credential, book) {
+//   //filename
+//   var filename = StorageService.book_filename(book) + book.storage_format;
+//   return KloudlessService.fileMoveRetry(
+//     credential.service_id,
+//     book.storage_identifier,
+//     credential.library_folder.id,
+//     dest_filename
+//   );
+// };
+
+StorageService.move_kloudless_blackhole_to_kloudless_library = function(credential, source_storage_identifier, dest_filename){
   return KloudlessService.fileMoveRetry(
     credential.service_id,
-    book.storage_identifier,
+    source_storage_identifier,
     credential.library_folder.id,
-    filename
+    dest_filename
   );
-};
+}
+
 
 //move a book from upload bucket to content bucket.
-StorageService.move_to_quietthyme_perm_storage = function(upload_identifier, content_bucket, content_key){
+StorageService.move_s3_upload_to_s3_content = function(upload_identifier, content_bucket, content_key){
 
   var deferred = q.defer();
   var params = {
@@ -85,27 +141,46 @@ StorageService.move_to_quietthyme_perm_storage = function(upload_identifier, con
 StorageService.download_book_tmp = function(
   filename,
   credential_id,
-  storage_identifier
+  storage_identifier,
+  stored_in_s3_bucket
 ) {
-  //TODO: this function should also handle downloading books from S3.
 
+
+  //this book is stored on a third party cloud storage system, need to download it via cloudless.
   return DBService.findCredentialById(credential_id).then(function(credential) {
     var tmpDir = tmp.dirSync();
 
     //we need to keep the filename intact because we'll be sending it to Calibre to detect metadata.
     var filepath = tmpDir.name + '/' + filename;
     var writeStream = fs.createWriteStream(filepath);
-    return [
-      KloudlessService.fileContents(
-        credential.service_id,
-        storage_identifier,
-        writeStream
-      ).then(function() {
-        return filepath;
-      }),
-      credential,
-    ];
+
+
+    if(stored_in_s3_bucket){
+      //this book is temporarily stored in S3, we need to download it from there into the local tmp dir.
+      var s3_parts = storage_identifier.split('/');
+      var s3_bucket = s3_parts.shift()
+
+      return [
+        download_s3_file(s3_bucket, s3_parts.join('/'), writeStream).then(function() {
+          return filepath;
+        }),
+        credential
+      ]
+    }
+    else {
+      return [
+        KloudlessService.fileContents(
+          credential.service_id,
+          storage_identifier,
+          writeStream
+        ).then(function() {
+          return filepath;
+        }),
+        credential,
+      ];
+    }
   });
+
 };
 
 //get storage status for all the user's cloud storages
@@ -270,6 +345,22 @@ StorageService.create_upload_identifier = function(
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper/Shared private methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function download_s3_file(bucket, key, writeStream){
+  var deferred = q.defer();
+  s3.GetObject({ Bucket: bucket, Key: key }, { stream : true }, function(err, data) {
+    if(err){
+      return deferred.reject(err);
+    }
+    // stream this file to stdout
+    data.Stream.pipe(writeStream);
+    data.Stream.on('end', function() {
+      return deferred.resolve({});
+    });
+  });
+  return deferred.promise;
+}
+
 
 //this method takes a user_id (1, 2, etc) and hash's it so it can be used to serve publically accessible content in a
 //semi-secure way.

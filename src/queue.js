@@ -13,6 +13,8 @@ var q = require('q');
 var path = require('path');
 var exec = require('child_process').exec;
 var fs = require('fs');
+var aws = require('aws-sdk');
+var lambda = new aws.Lambda();
 
 module.exports = {
   //must handle 2 types of events:
@@ -38,11 +40,30 @@ module.exports = {
     var is_quietthyme_storage = cred_id == 'quietthyme';
 
     if (is_new_book) {
-      return cb(
-        new Error('Not Implemented. New books cannot be processed yet.'),
-        null
+      //this is a new book, lets call process_unknown_book lamda.
+      return lambda.invoke(
+        {
+          FunctionName:
+          'quietthyme-api-' +
+          nconf.get('STAGE') +
+          '-queueprocessunknownbook',
+          Payload: JSON.stringify(
+            {
+              credential_id: cred_id, //destination storage
+              storage_identifier: `${upload_bucket}/${upload_key}`, //s3 info
+              filename: dirty_filename,
+              stored_in_s3_bucket: true
+            },
+            null,
+            2
+          ),
+          InvocationType: 'Event',
+        },
+        function(err, data) {
+          if (err) return cb(err, null);
+          return cb(null, data.Payload);
+        }
       );
-      // newly uploaded books should only be
     }
 
     q.spread(
@@ -64,7 +85,7 @@ module.exports = {
           //(bearer_token, account_id, filename, parent_id, storage_identifier){
           var uploadToPermStoragePromise;
           if(is_quietthyme_storage){
-            uploadToPermStoragePromise = StorageService.move_to_quietthyme_perm_storage(
+            uploadToPermStoragePromise = StorageService.move_s3_upload_to_s3_content(
               `${upload_bucket}/${upload_key}`,
               Constants.buckets.content,
               StorageService.create_content_identifier(
@@ -107,20 +128,85 @@ module.exports = {
 
   // this function gets called in 2 cases.
   //
-  // 1. a book is added to a blackhole folder.
-  // 2. a book is NEW book (manually uploaded via the WebUI) and is stored in upload bucket. (triggered by queue.process_s3_uploaded_book method)
+  // 1. a book is added to a blackhole folder. (kloudless -> kloudless)
+  // 2. a book is NEW book (manually uploaded via the WebUI) and is stored in upload bucket. (triggered by queue.process_s3_uploaded_book method) (s3 -> s3, s3 -> kloudless)
   //
   // Then the following steps will occur:
-  // will determine the book's current location. (source_storage_type, source_storage_identifier)
-  // will determine the book's destination location (dest_storage_type, dest_storage_identifier)
+  // will determine the book's current location. (source_storage_type, source_cred_id, source_storage_identifier)
+  // will determine the book's destination location (dest_storage_type, dest_cred_id, dest_storage_identifier)
   //
+  // only the following parameters are sent via event payload:
+  // event.filename
+  // event.credential_id - destination storage credential
+  // event.storage_identifier - current storage identifier
+  // event.upload_bucket - specifies if the current storage identifier is actually the s3 upload bucket.
+  //
+  //There are 3 types of move operations:
+  // - kloudless blackhole -> kloudless library
+  // - s3 upload bucket -> kloudless library
+  // - s3 upload bucket -> s3 content bucket
   process_unknown_book: function(event, context, cb) {
     return StorageService.download_book_tmp(
       event.filename,
       event.credential_id,
-      event.storage_identifier
+      event.storage_identifier,
+      event.stored_in_s3_bucket
     )
       .spread(function(book_path, credential) {
+
+        // ##############################################
+        // Determine User ID (Book owner)
+        // ##############################################
+        //before we do anything, lets determine the user for these operations.
+        var book_user_id = credential.user_id
+
+        // if book was uploaded to S3, then the final destination may be QuietThyme storage, in which case we do not
+        // know the actual user_id. Instead we need to parse it from the storage_identifier path.
+        if(event.stored_in_s3_bucket && credential.id == "quietthyme"){
+          //book_user_id should be empty/null at this point. //TODO, raise an error if its not.
+
+          //bucketname/USERHASH/user_id/cred_id/NEW/filename
+          //0         /1       /2      /3      /4  /5
+
+          var upload_key_parts = event.storage_identifier.split('/');
+          book_user_id = upload_key_parts[2];
+        }
+
+        // ##############################################
+        // Determine Source Data
+        // ##############################################
+        var source_storage_type;
+        var source_cred_id;
+        var source_storage_identifier;
+
+        source_storage_identifier = event.storage_identifier
+        if(event.stored_in_s3_bucket){
+          source_storage_type = "quietthyme";
+          source_cred_id = "quietthyme";
+        }
+        else{
+          source_storage_type = credential.service_type;
+          source_cred_id = credential.id;
+        }
+
+        // ##############################################
+        // Determine Destination Data
+        // ##############################################
+        var dest_storage_type;
+        var dest_cred_id;
+        var dest_storage_identifier; //this should be calculated later on, dependent on book data. Will be returned by fileMove operations.
+
+        if(event.credential_id == "quietthyme"){
+          dest_cred_id = "quietthyme";
+          dest_storage_type = "quietthyme";
+        }
+        else {
+          dest_cred_id = credential.id;
+          dest_storage_type = credential.service_type;
+        }
+
+
+
         //We've downloaded the book, lets get metadata from it, then process it
 
         var tmp_folder = path.dirname(book_path);
@@ -157,12 +243,12 @@ module.exports = {
             ).then(function(embedded_opf) {
               var primary_criteria = {
                 //required criteria
-                user_id: credential.user_id,
+                user_id: book_user_id,
 
-                //optional criteria
-                credential_id: credential.id,
-                storage_type: credential.service_type,
-                storage_identifier: event.storage_identifier,
+                //create a book with the current (source) information
+                credential_id: source_cred_id,
+                storage_type: source_storage_type,
+                storage_identifier: source_storage_identifier,
                 storage_filename: path.basename(
                   event.filename,
                   path.extname(event.filename)
@@ -192,7 +278,19 @@ module.exports = {
             debug('Credential: %o', credential); //TODO: we must remove this.
             return q.allSettled([
               inserted_books,
-              StorageService.move_to_perm_storage(credential, inserted_books),
+              StorageService.move_to_perm_storage(book_user_id,
+                {
+                  source_storage_type: source_storage_type,
+                  source_cred_id: source_cred_id,
+                  source_storage_identifier: source_storage_identifier,
+                },
+                {
+                  dest_storage_type: dest_storage_type,
+                  dest_cred_id: dest_cred_id,
+                  credential: credential
+                },
+                inserted_books
+              )
             ]);
           })
           .spread(function(book_data_promise, book_storage_promise) {
@@ -225,7 +323,7 @@ module.exports = {
             //TODO: figure out how to get the USERID and pass it in below (NULL)
             return DBService.updateBook(
               book_data.id,
-              credential.user_id,
+              book_user_id,
               update_data,
               true
             );

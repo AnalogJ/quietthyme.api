@@ -42,7 +42,7 @@ module.exports.kloudless = function(event, context, cb) {
       body: nconf.get('KLOUDLESS_API_ID'),
     });
   }
-
+  console.log("Processing Kloudless events:", event.body)
   //retrieve the current cursor and and then do a request for the latest events
   //http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.03.html#GettingStarted.NodeJs.03.05
   //https://en.wikipedia.org/wiki/Read-modify-write

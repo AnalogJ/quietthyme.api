@@ -20,6 +20,7 @@ provider:
   region: us-east-1
   timeout: 40 # optional, default is 6
   runtime: nodejs4.3
+  memorySize: 256
   environment:
     DOMAIN: api.quietthyme.com
     DEPLOY_SHA: ${env:CIRCLE_SHA1}
@@ -493,6 +494,7 @@ functions:
   # it will then look up the book data in DB and migrate it to the correct
   # storage provider.
   queueprocesss3uploaded_book:
+    memorySize: 256
     handler: src/queue.process_s3_uploaded_book
     events:
       - s3:
