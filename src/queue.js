@@ -1,6 +1,5 @@
 'use strict';
 const debug = require('debug')('quietthyme:queue');
-
 var StorageService = require('./services/storage_service');
 var DBService = require('./services/db_service');
 var KloudlessService = require('./services/kloudless_service');
@@ -14,6 +13,7 @@ var path = require('path');
 var exec = require('child_process').exec;
 var fs = require('fs');
 var aws = require('aws-sdk');
+var nconf = require('./common/nconf');
 var lambda = new aws.Lambda();
 
 module.exports = {
