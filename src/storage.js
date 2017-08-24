@@ -217,7 +217,7 @@ module.exports = {
                 Bucket: Constants.buckets.upload,
                 Expires: 60,
                 Fields: {
-                  key: key
+                  key: encodeURI(key)
                 }
 
               };

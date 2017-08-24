@@ -69,6 +69,8 @@ module.exports.kloudless = function(event, context, cb) {
         }
 
         //we only care about files in the blackhole_folder that we can download
+        //TODO: check if the GRANDPARENT is blackhole folder (they might drag a directory of books into the blackhole folder)
+        //TODO: cleanup empty directories on a schedule.
         if (
           !(
             kl_event.metadata.type == 'file' &&
