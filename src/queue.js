@@ -314,7 +314,7 @@ module.exports = {
             //update book with new storage information and cover info.
             var update_data = {
               storage_identifier: book_storage_identifier.id,
-              storage_filename: path.basename(
+              storage_filename: book_storage_identifier.basename || path.basename(
                 book_storage_identifier.name,
                 book_data.storage_format
               ),

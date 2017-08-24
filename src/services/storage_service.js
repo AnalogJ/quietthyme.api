@@ -82,6 +82,7 @@ StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, 
         book_data.storage_format
       ))
   }
+  // this is a s3 book that needs to be uplaoded to kloudless.
   else if(source_data.source_storage_type == "quietthyme"){
     promise = KloudlessService.fileUpload(
       dest_data.credential.oauth.access_token,
@@ -96,7 +97,8 @@ StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, 
   }
 
   return promise.then(function(move_data){
-    return move_data.basename = clean_basename
+    move_data.basename = clean_basename
+    return move_data
   })
 };
 // StorageService.move_to_perm_storage = function(credential, book) {
