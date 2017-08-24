@@ -19,7 +19,7 @@ var lambda = new aws.Lambda();
 module.exports = {
   //must handle 2 types of events:
   // - books uploaded via webui to bucketname/USERHASH/user_id/cred_id/NEW/filename
-  // (DONE) - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
+  // - books uploaded via calibre to bucketname/USERHASH/user_id/cred_id/book_id/filename
 
   // if its a new book, we need to process it, if its a calibre book we just need to move it to correct location
   process_s3_uploaded_book: function(event, context, cb) {

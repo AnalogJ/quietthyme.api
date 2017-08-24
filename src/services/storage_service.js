@@ -348,16 +348,11 @@ StorageService.create_upload_identifier = function(
 
 function download_s3_file(bucket, key, writeStream){
   var deferred = q.defer();
-  s3.GetObject({ Bucket: bucket, Key: key }, { stream : true }, function(err, data) {
-    if(err){
-      return deferred.reject(err);
-    }
-    // stream this file to stdout
-    data.Stream.pipe(writeStream);
-    data.Stream.on('end', function() {
+  var readStream = s3.getObject({ Bucket: bucket, Key: key }).createReadStream()
+  readStream.pipe(writeStream)
+    .on('finish', function() {
       return deferred.resolve({});
     });
-  });
   return deferred.promise;
 }
 
