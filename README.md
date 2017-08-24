@@ -40,7 +40,6 @@ api.quietthyme.com/v1/catalog/123456
 	- Register webhooks for Dropbox, Box, GDrive that push events to kloudless.
 
 
-
 # Local Development
 
 - docker-compose up --build

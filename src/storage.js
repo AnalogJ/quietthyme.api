@@ -231,14 +231,38 @@ module.exports = {
               book_data,
               true
             ).then(function() {
-              var params = {
-                Bucket: Constants.buckets.upload,
-                Key: key,
-                Expires: 60,
-              };
+
+              //determine what kind of signedUrl we are sending back. If this is the web we need to use a postSignedUrl, for calibre a getSignedUrl call is enough.
+              // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property
+              // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createPresignedPost-property
+
+
+              //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
+              // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
+              var signed_url;
+              if(event.query.source == "web"){
+                var params = {
+                  Bucket: Constants.buckets.upload,
+                  Expires: 60,
+                  Fields: {
+                    key: key
+                  }
+                  //TODO: add conditions here limiting the size of uploaded files?
+                }
+                signed_url = s3.createPresignedPost(params)
+              }
+              else {
+                var params = {
+                  Bucket: Constants.buckets.upload,
+                  Key: key,
+                  Expires: 60,
+                };
+                signed_url = s3.getSignedUrl('putObject', params)
+              }
+
               var payload = {
                 book_data: book_data,
-                upload_url: s3.getSignedUrl('putObject', params),
+                upload_url: signed_url
               };
               return payload;
             });
