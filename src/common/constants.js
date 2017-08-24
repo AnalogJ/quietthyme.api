@@ -20,7 +20,7 @@ module.exports = {
   /*
      * Subset of service types related to storage.
      * */
-  storage_types: ['google', 'dropbox', 'box', 'skydrive'],
+  storage_types: ['gdrive', 'dropbox', 'box', 'skydrive'],
 
   /*
      * List of extensions (including period) that can be stored/parsed by the application, listed in alphabetical order.

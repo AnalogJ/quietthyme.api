@@ -169,19 +169,19 @@ module.exports = {
           status_obj.settings[location_code] = location_settings;
         }
         /*
-                 'A': {
-                 'device_store_uuid': '113a70d2-cade-11f4-8731-1681e6b88ec1',
-                 'device_name': 'Dropbox',
-                 'prefix': 'dropbox://',
-                 'storage_type': 'dropbox',
-                 'location_code': 'A',
-                 'last_library_uuid': req.query.library_uuid,
-                 'free_space': 100,
-                 'total_space': 10000,
-                 'calibre_version': '2.6.0',
-                 'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
-                 }
-                 * */
+         'A': {
+         'device_store_uuid': '113a70d2-cade-11f4-8731-1681e6b88ec1',
+         'device_name': 'Dropbox',
+         'prefix': 'dropbox://',
+         'storage_type': 'dropbox',
+         'location_code': 'A',
+         'last_library_uuid': req.query.library_uuid,
+         'free_space': 100,
+         'total_space': 10000,
+         'calibre_version': '2.6.0',
+         'date_last_connected': '2014-12-18T16:24:59.541905+00:00'
+         }
+         * */
         debug('Calibre User storage quotas %o', status_obj);
         return status_obj;
       })
@@ -190,84 +190,89 @@ module.exports = {
       .done();
   },
 
-  //this function generates a signed url for the upload bucket, which can be used by clients (calibre, web) to upload book files to s3
+  // determine what kind of signedUrl we are sending back. If this is the web we need to use a postSignedUrl, for calibre a getSignedUrl call is enough.
+  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property
+  // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createPresignedPost-property
+  // this function generates a signed url for the upload bucket, which can be used by clients (calibre, web) to upload book files to s3
+  // All books sent with source == "Web" are "NEW" books, while all books sent via "calibre" are existing books and need to be verified in WebUI.
   prepare_book: function(event, context, cb) {
     // this function will create the Author folder for this book, in storage_type specfied
     // TODO: this function shoulc check if the book file already exists.
     JWTokenService.verify(event.token)
       .then(function(auth) {
 
-        var promises = [DBService.findCredentialById(event.body.storage_id, auth.uid)];
-        if(event.body.book_id == 'NEW'){
-          promises.push(q({id: event.body.book_id}))
-        } else {
-          promises.push(DBService.findBookById(event.body.book_id, auth.uid))
-        }
+        //if this is a book to be uploaded via webUI it must be new, so we can skip alot of steps.
+        if(event.query.source == "web"){
+          //we still need to check the credential sent is tied to the current user.
+          return DBService.findCredentialById(event.body.storage_id, auth.uid)
+            .then(function(credential){
+              var key = StorageService.create_upload_identifier(
+                auth.uid,
+                credential.id,
+                'NEW',
+                event.body.storage_filename,
+                event.body.storage_format
+              );
+              var params = {
+                Bucket: Constants.buckets.upload,
+                Expires: 60,
+                Fields: {
+                  key: key
+                }
 
-        return q.spread(
-          promises,
-          function(credential, book) {
-            var key = StorageService.create_upload_identifier(
-              auth.uid,
-              credential.id,
-              book.id,
-              event.body.storage_filename,
-              event.body.storage_format
-            );
-
-            var book_data = {
-              credential_id: credential.id, //this will be the correct 'eventual' storage location, after processing
-              storage_type: 'quietthyme',
-              storage_identifier:
-                Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
-              storage_size: event.body.storage_size,
-              storage_filename: event.body.storage_filename,
-              storage_format: event.body.storage_format,
-            };
-
-            return DBService.updateBook(
-              book.id,
-              auth.uid,
-              book_data,
-              true
-            ).then(function() {
-
-              //determine what kind of signedUrl we are sending back. If this is the web we need to use a postSignedUrl, for calibre a getSignedUrl call is enough.
-              // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getSignedUrl-property
-              // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createPresignedPost-property
-
+              };
 
               //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
               // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
-              var signed_url;
-              if(event.query.source == "web"){
-                var params = {
-                  Bucket: Constants.buckets.upload,
-                  Expires: 60,
-                  Fields: {
-                    key: key
-                  }
-                  //TODO: add conditions here limiting the size of uploaded files?
-                }
-                signed_url = s3.createPresignedPost(params)
-              }
-              else {
+              var signed_url = s3.createPresignedPost(params);
+              return {
+                upload_url: signed_url
+              };
+
+            })
+        }
+        else {
+          return q.spread(
+            [DBService.findCredentialById(event.body.storage_id, auth.uid), DBService.findBookById(event.body.book_id, auth.uid)],
+            function(credential, book) {
+              var key = StorageService.create_upload_identifier(
+                auth.uid,
+                credential.id,
+                book.id,
+                event.body.storage_filename,
+                event.body.storage_format
+              );
+
+              var book_data = {
+                credential_id: credential.id, //this will be the correct 'eventual' storage location, after processing
+                storage_type: 'quietthyme', //temporary storage type.
+                storage_identifier:
+                Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                storage_size: event.body.storage_size,
+                storage_filename: event.body.storage_filename,
+                storage_format: event.body.storage_format,
+              };
+
+              return DBService.updateBook(
+                book.id,
+                auth.uid,
+                book_data,
+                true
+              ).then(function() {
                 var params = {
                   Bucket: Constants.buckets.upload,
                   Key: key,
                   Expires: 60,
                 };
-                signed_url = s3.getSignedUrl('putObject', params)
-              }
 
-              var payload = {
-                book_data: book_data,
-                upload_url: signed_url
-              };
-              return payload;
-            });
-          }
-        );
+                return {
+                  book_data: book_data,
+                  upload_url: s3.getSignedUrl('putObject', params)
+                };
+              });
+            }
+          );
+        }
       })
       .then(Utilities.successHandler(cb))
       .fail(Utilities.errorHandler(cb))
