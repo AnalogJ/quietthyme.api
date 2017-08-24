@@ -161,7 +161,7 @@ StorageService.download_book_tmp = function(
       //this book is temporarily stored in S3, we need to download it from there into the local tmp dir.
       var s3_parts = storage_identifier.split('/');
       var s3_bucket = s3_parts.shift()
-      var s3_key = s3_parts.join('/')
+      var s3_key = encodeURI(s3_parts.join('/'))
 
       console.log("Attempting to download file from s3", s3_bucket, s3_key)
       return [
