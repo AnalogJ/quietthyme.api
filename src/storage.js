@@ -194,14 +194,18 @@ module.exports = {
   prepare_book: function(event, context, cb) {
     // this function will create the Author folder for this book, in storage_type specfied
     // TODO: this function shoulc check if the book file already exists.
-    // TODO: this function should handle quietthyme storage creds
     JWTokenService.verify(event.token)
       .then(function(auth) {
+
+        var promises = [DBService.findCredentialById(event.body.storage_id, auth.uid)];
+        if(event.body.book_id == 'NEW'){
+          promises.push(q({id: event.body.book_id}))
+        } else {
+          promises.push(DBService.findBookById(event.body.book_id, auth.uid))
+        }
+
         return q.spread(
-          [
-            DBService.findCredentialById(event.body.storage_id, auth.uid),
-            DBService.findBookById(event.body.book_id, auth.uid),
-          ],
+          promises,
           function(credential, book) {
             var key = StorageService.create_upload_identifier(
               auth.uid,
