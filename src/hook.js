@@ -48,6 +48,8 @@ module.exports.kloudless = function(event, context, cb) {
   //https://en.wikipedia.org/wiki/Read-modify-write
   DBService.atomicCredentialCursorEvents(event.body.split('=')[1], 5)
     .spread(function(events, credential) {
+      console.log(`Processing ${credential.service_type} events from credential: ${credential.id}`)
+
       var blackhole_folder = credential.blackhole_folder;
       //begin filtering the events, and start invoking new lambda's
 
@@ -61,9 +63,10 @@ module.exports.kloudless = function(event, context, cb) {
           )
         ) {
           debug(
-            'SKIPPING (invalid type): %s %s',
+            'SKIPPING (invalid type): %s %s %o',
             kl_event.account,
-            kl_event.metadata.path
+            kl_event.metadata.path,
+            kl_event.metadata
           );
           return false;
         }
@@ -80,9 +83,10 @@ module.exports.kloudless = function(event, context, cb) {
           )
         ) {
           debug(
-            'SKIPPING (invalid file/parent): %s %s',
+            'SKIPPING (invalid file/parent): %s %s %o',
             kl_event.account,
             kl_event.metadata.path
+            kl_event.metadata
           );
           return false;
         }
