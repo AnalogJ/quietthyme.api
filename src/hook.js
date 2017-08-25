@@ -100,7 +100,7 @@ module.exports.kloudless = function(event, context, cb) {
             'SKIPPING (invalid ext):',
             ext,
             kl_event.account,
-            kl_event.metadata.path
+            kl_event.metadata.path || kl_event.metadata.name
           );
           return false;
         }
@@ -116,7 +116,7 @@ module.exports.kloudless = function(event, context, cb) {
         console.info(
           'Added file to Queue:',
           kl_event.account,
-          kl_event.metadata.path
+          kl_event.metadata.path || kl_event.metadata.name
         );
         lambda.invoke(
           {
