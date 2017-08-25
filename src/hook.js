@@ -85,7 +85,7 @@ module.exports.kloudless = function(event, context, cb) {
           debug(
             'SKIPPING (invalid file/parent): %s %s %o',
             kl_event.account,
-            kl_event.metadata.path
+            kl_event.metadata.path,
             kl_event.metadata
           );
           return false;
