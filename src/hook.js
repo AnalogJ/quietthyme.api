@@ -65,7 +65,7 @@ module.exports.kloudless = function(event, context, cb) {
           debug(
             'SKIPPING (invalid type): %s %s %o',
             kl_event.account,
-            kl_event.metadata.path,
+            kl_event.metadata.path || kl_event.metadata.name,
             kl_event.metadata
           );
           return false;
@@ -77,7 +77,7 @@ module.exports.kloudless = function(event, context, cb) {
         if (
           !(
             kl_event.metadata.type == 'file' &&
-            kl_event.metadata.downloadable &&
+            // kl_event.metadata.downloadable && # downloadable doesnt seem to be available from GDrive metadata.
             (kl_event.metadata.parent.id == blackhole_folder.id ||
               kl_event.metadata.parent.id == blackhole_folder.path_id)
           )
@@ -85,7 +85,7 @@ module.exports.kloudless = function(event, context, cb) {
           debug(
             'SKIPPING (invalid file/parent): %s %s %o',
             kl_event.account,
-            kl_event.metadata.path,
+            kl_event.metadata.path || kl_event.metadata.name,
             kl_event.metadata
           );
           return false;
