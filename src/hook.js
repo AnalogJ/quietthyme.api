@@ -64,7 +64,7 @@ module.exports.kloudless = function(event, context, cb) {
         ) {
           debug(
             'SKIPPING (invalid type): %s %s %o',
-            kl_event.account,
+            kl_event.type,
             kl_event.metadata.path || kl_event.metadata.name,
             kl_event.metadata
           );
@@ -84,7 +84,7 @@ module.exports.kloudless = function(event, context, cb) {
         ) {
           debug(
             'SKIPPING (invalid file/parent): %s %s %o',
-            kl_event.account,
+            kl_event.metadata.type,
             kl_event.metadata.path || kl_event.metadata.name,
             kl_event.metadata
           );
@@ -98,6 +98,7 @@ module.exports.kloudless = function(event, context, cb) {
           //lets log the files that we don't process in the blackhole folder
           console.error(
             'SKIPPING (invalid ext):',
+            ext,
             kl_event.account,
             kl_event.metadata.path
           );
