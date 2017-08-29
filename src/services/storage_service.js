@@ -235,8 +235,6 @@ StorageService.get_download_link = function(book, user_id) {
       'https://s3.amazonaws.com/' + encodeURI(book.storage_identifier)
     );
   } else {
-    //TODO: handle storage download requests from other services.
-    //throw new Error("Storage service download not supported yet.")
 
     //find the credential for this book
     return DBService.findCredentialById(book.credential_id, user_id)
@@ -378,27 +376,3 @@ function storage_identifier_from_filename(filename, type) {
   }
   return 'library/' + filename;
 }
-//
-////TODO:download the file to adata buffer?
-//exports.download_file_in_container = function(storage_full_identifier){
-//
-////    var deferred = q.defer();
-////    var storageAccount = sails.config.nconf.get("AZURE:ACCOUNT_NAME");
-////    var storageAccessKey = sails.config.nconf.get("AZURE:ACCESS_KEY");
-////
-////    var blobService = azure.createBlobService(storageAccount, storageAccessKey);
-////
-////    storage_identifier_parts = storage_full_identifier.split('/');
-////    storage_container = storage_full_identifier.slice(0,1);
-////    storage_identifier = storage_full_identifier.slice(1).join('/');
-////
-////    blobService.getBlobProperties(storage_container, storage_identifier, function (err, blobInfo) {
-////        if (err === null) {
-////            res.header('content-type', blobInfo.contentType);
-////            res.header('content-disposition', 'attachment; filename=' + blobInfo.metadata.filename);
-////            blobClient.getBlobToStream(containerName, req.params.id, res, function () { });
-////        } else {
-////            helpers.renderError(res);
-////        }
-////    });
-//}

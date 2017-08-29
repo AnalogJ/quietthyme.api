@@ -41,16 +41,6 @@ module.exports = {
           image_pipeline
         );
 
-        // ///TODO: validate that the book properties match the database columns.
-        // var book_data = event.body;
-        // book_data.user_id = auth.uid;
-        // book_data.short_summary = toMarkdown(book_data.short_summary, {converters: [{
-        //     filter: 'div',
-        //     replacement: function (innerHTML) { return innerHTML }
-        // }]})
-        // return db_client('books')
-        //     .returning('id')
-        //     .insert(book_data)
       })
       .then(function(book_result) {
         return { id: book_result.id };
@@ -89,7 +79,6 @@ module.exports = {
 
         return book_query;
         // .then(function(books){
-        //     //todo: possibly filter out books that dont have a bookstorage.
         //     return res.json({success:true, data:books});
         // })
         // .fail(function(err){
