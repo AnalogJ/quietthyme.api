@@ -113,12 +113,12 @@ StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, 
 // };
 
 StorageService.move_kloudless_blackhole_to_kloudless_library = function(credential, source_storage_identifier, dest_filename){
-  return KloudlessService.fileMoveRetry(
+  return KloudlessService.genericRetry(KloudlessService.fileMove,[
     credential.service_id,
     source_storage_identifier,
     credential.library_folder.id,
     dest_filename
-  );
+  ]);
 }
 
 

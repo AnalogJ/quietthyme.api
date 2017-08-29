@@ -53,6 +53,19 @@ kloudlessService.folderCreate = function(
   }
 };
 
+kloudlessService.folderGet = function(
+  account_id,
+  folder_identifier
+) {
+  var deferred = q.defer();
+  kloudless.folders.get({account_id: account_id, folder_id: folder_identifier}, function(err, res) {
+    if (err) return deferred.reject(err);
+    return deferred.resolve(res);
+  });
+
+  return deferred.promise;
+};
+
 kloudlessService.fileUpload = function(
   bearer_token,
   account_id,
@@ -135,59 +148,6 @@ kloudlessService.fileMove = function(
   return deferred.promise;
 };
 
-kloudlessService.fileMoveRetry = function(
-  account_id,
-  identifier,
-  dest_parent_id,
-  dest_filename,
-  retry
-) {
-  if (typeof query === 'undefined') {
-    retry = 5;
-  }
-
-  var promise = kloudlessService.fileMove(
-    account_id,
-    identifier,
-    dest_parent_id,
-    dest_filename
-  );
-
-  return promise.fail(function(err) {
-    //check if this is a retry-able error, with a
-    var response = err.raw.response;
-    // console.log("error:", JSON.stringify(err));
-    console.log(`type: ${err.type}, statusCode: ${response.statusCode}`);
-
-    if (
-      err.type == 'KloudlessAPIError' &&
-      response.statusCode == 429 &&
-      retry >= 0
-    ) {
-      //we should retry this request, after the Retry-After header has elapsed.
-
-      //Retry-After: If the error is due to rate limiting, this provides the time in seconds to
-      // wait before retrying the request. If the upstream service does not provide this information,
-      // this header will not be present. The status code for this error response will be 429.
-      var seconds = response.headers['retry-after'] | 0; //convert to integer
-      console.log(
-        `Retrying fileMove request. Retries left: #${retry}, Waiting ${seconds} seconds`
-      );
-      return q.delay(seconds * 1000).then(function() {
-        return kloudlessService.fileMoveRetry(
-          account_id,
-          identifier,
-          dest_parent_id,
-          dest_filename,
-          retry - 1
-        );
-      });
-    } else {
-      return q.reject(err);
-    }
-  });
-};
-
 kloudlessService.convertId = function(account_id, identifier, type) {
   var deferred = q.defer();
 
@@ -258,4 +218,81 @@ kloudlessService.linkCreate = function(account_id, file_id) {
     }
   );
   return deferred.promise;
+};
+
+//Get the folder's ancestors, all the way back to the root.
+// if response.ancestors is ever populated, we're just going to concat that with the current list and return
+kloudlessService.folderAncestors = function(account_id, folder_id, ancestors_list){
+  if(!ancestors_list){
+    ancestors_list = []
+  }
+  console.log("Getting folder ancestors", folder_id);
+  return kloudlessService.genericRetry(kloudlessService.folderGet, [account_id, folder_id])
+    .then(function(res){
+      if(res.ancestors){
+        console.log("Found ancestors list, returning");
+        return ancestors_list.concat(res.ancestors)
+      }
+      else if(res.parent){
+        ancestors_list.push(res.parent)
+
+        if(res.parent.id != 'root'){
+          return kloudlessService.folderAncestors(account_id, res.parent.id, ancestors_list)
+        }
+        else{
+          //the parent of this folder is root, we can return the current list
+          return ancestors_list
+        }
+      }
+
+      return ancestors_list
+    })
+}
+
+// Generic Kloudless retry method.
+kloudlessService.genericRetry = function(
+  kloudlessServicePromiseFunction,
+  functionArgs,
+  retry
+) {
+  if (typeof retry === 'undefined') {
+    retry = 5;
+  }
+
+  var promise = kloudlessServicePromiseFunction.apply(kloudlessService, functionArgs );
+
+  return promise.fail(function(err) {
+    //check if this is a retry-able error, with a
+    var response = err.raw.response;
+    // console.log("error:", JSON.stringify(err));
+    console.log(`type: ${err.type}, statusCode: ${response.statusCode}`);
+
+    if (
+      err.type == 'KloudlessAPIError' &&
+      response.statusCode == 429 &&
+      retry >= 0
+    ) {
+      //we should retry this request, after the Retry-After header has elapsed.
+
+      //Retry-After: If the error is due to rate limiting, this provides the time in seconds to
+      // wait before retrying the request. If the upstream service does not provide this information,
+      // this header will not be present. The status code for this error response will be 429.
+      var seconds = response.headers['retry-after'] | 0; //convert to integer
+      if(seconds == 0){
+        seconds = 1 //wait one second if the retry-after header is not present.
+      }
+      console.log(
+        `Retrying fileMove request. Retries left: #${retry}, Waiting ${seconds} seconds`
+      );
+      return q.delay(seconds * 1000).then(function() {
+        return kloudlessService.genericRetry(
+          kloudlessServicePromiseFunction,
+          functionArgs,
+          retry - 1
+        );
+      });
+    } else {
+      return q.reject(err);
+    }
+  });
 };
