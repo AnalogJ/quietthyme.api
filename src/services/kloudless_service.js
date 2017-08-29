@@ -226,7 +226,6 @@ kloudlessService.folderAncestors = function(account_id, folder_id, ancestors_lis
   if(!ancestors_list){
     ancestors_list = []
   }
-  console.log("Getting folder ancestors", folder_id);
   return kloudlessService.genericRetry(kloudlessService.folderGet, [account_id, folder_id])
     .then(function(res){
       if(res.ancestors){

@@ -110,7 +110,7 @@ module.exports.kloudless = function(event, context, cb) {
       //we're not going to do this in parallel because then we'd probalby hit rate limits on kloudless & the upstream cloud api.
       // so instead we'll process each file (and its ancestors one by one)
       return filtered_events.reduce(function (blackhole_filtered_events, kl_event) {
-        if(kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.raw_id){
+        if(kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.path_id){ //this must be pathid, not raw_id. 
           //this file was directly placed in the blackhole folder, we need to keep it.
           return blackhole_filtered_events.then(function(arr){arr.push(kl_event); return arr})
         }
@@ -120,7 +120,7 @@ module.exports.kloudless = function(event, context, cb) {
             return KloudlessService.folderAncestors(credential.service_id, kl_event.metadata.parent.id)
               .then(function(ancestors_arr){
                 for (let ancestor of ancestors_arr){
-                  if(ancestor.id == blackhole_folder.id || ancestor.id == blackhole_folder.raw_id){
+                  if(ancestor.id == blackhole_folder.id || ancestor.id == blackhole_folder.path_id){ //this must be pathid, not raw_id.
                     arr.push(kl_event)
                     return arr;
                   }
