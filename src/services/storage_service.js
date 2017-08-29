@@ -34,7 +34,7 @@ var s3 = new AWS.S3(config);
 var StorageService = module.exports;
 
 StorageService.clean_filename = function(filename) {
-  return filename.replace(/[^0-9a-zA-Z_\s-]/gi, '');
+  return filename.replace(/[^0-9a-zA-Z_\.\s-]/gi, '');
 };
 
 StorageService.book_filename = function(book) {
