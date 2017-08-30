@@ -2,7 +2,7 @@
 const debug = require('debug')('quietthyme:SecurityService');
 var xkcdPassword = require('xkcd-password');
 var q = require('q');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 // These methods are related to verifying users and hashing passwords.
 module.exports.hash_password = function(password) {
