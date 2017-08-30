@@ -330,19 +330,16 @@ StorageService.create_upload_identifier = function(
   filename,
   extension
 ) {
-  return (
-    storage_user_hash(user_id) +
-    '/' +
-    user_id +
-    '/' +
-    cred_id +
-    '/' +
-    (book_id || 'NEW') +
-    '/' +
-    filename +
-    extension
-  );
+  return `${StorageService.create_upload_folder_identifier(user_id, cred_id, book_id)}/${filename+extension}`;
 };
+
+StorageService.create_upload_folder_identifier = function(
+  user_id,
+  cred_id,
+  book_id
+){
+  return `${storage_user_hash(user_id)}/${user_id}/${cred_id}/${(book_id || 'NEW')}`;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper/Shared private methods

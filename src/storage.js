@@ -206,28 +206,17 @@ module.exports = {
           //we still need to check the credential sent is tied to the current user.
           return DBService.findCredentialById(event.body.storage_id, auth.uid)
             .then(function(credential){
-              var key = StorageService.create_upload_identifier(
-                auth.uid,
-                credential.id,
-                'NEW',
-                event.body.storage_filename,
-                event.body.storage_format
-              );
               var params = {
                 Bucket: Constants.buckets.upload,
-                Expires: 60,
-                Fields: {
-                  key: encodeURI(key)
-                }
-
+                Expires: 60*60, //1 hour in seconds
+                Conditions: [
+                  ['starts-with', '$key', encodeURI(StorageService.create_upload_folder_identifier(auth.uid, credential.id, 'NEW') + '/')]
+                ]
               };
 
               //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
               // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
-              var signed_url = s3.createPresignedPost(params);
-              return {
-                upload_url: signed_url
-              };
+              return s3.createPresignedPost(params)
 
             })
         }
