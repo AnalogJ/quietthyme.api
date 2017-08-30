@@ -257,12 +257,12 @@ functions:
           integration: lambda
           cors: true
 
-  userplan:
-    handler: src/user.plan
+  user:
+    handler: src/user.router
     events:
       - http:
-          path: user/plan
-          method: POST
+          path: user/{action+}
+          method: ANY
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
@@ -520,3 +520,4 @@ plugins:
    - serverless-prune-plugin
    - serverless-mocha-plugin
 #   - serverless-plugin-optimize
+#   - serverless-offline

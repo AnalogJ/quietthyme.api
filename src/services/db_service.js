@@ -181,6 +181,61 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id) {
   return db_deferred.promise;
 };
 
+dbService.updateUser = function(user_id, update_data, return_values) {
+
+  //valid auth token,
+  //next lets filter the updated user object so it only contains properties that we allow users to update via the API.
+  var whitelist = ["name", "library_uuid", "catalog_token"];
+
+  function filter(orig, whitelist){
+    var result = {};
+
+    for (var prop in orig) {
+      if (orig.hasOwnProperty(prop) && whitelist.contains(prop)) {
+        result[prop] = orig[prop];
+      }
+    }
+
+    return result;
+  }
+
+  var update_data = filter(update_data, whitelist)
+
+  try {
+    update_data = DBSchemas.updateUser(Utilities.stripEmpty(update_data));
+  } catch (e) {
+    return q.reject(e);
+  }
+
+  update_data.updated_at = Utilities.ISODateString(new Date());
+  var update_expression = [];
+  var expression_attribute_names = {};
+  var expression_attribute_values = {};
+  for (var prop in update_data) {
+    update_expression.push('#' + prop + ' = :' + prop);
+    expression_attribute_names['#' + prop] = prop;
+    expression_attribute_values[':' + prop] = update_data[prop];
+  }
+
+  var params = {
+    TableName: Constants.tables.users,
+    Key: { user_id: uid },
+    UpdateExpression: 'set ' + update_expression.join(', '),
+    ExpressionAttributeNames: expression_attribute_names,
+    ExpressionAttributeValues: expression_attribute_values,
+  };
+  if (return_values) {
+    params.ReturnValues = 'ALL_NEW';
+  }
+
+  var db_deferred = q.defer();
+  docClient.update(params, function(err, data) {
+    if (err) return db_deferred.reject(err);
+    return db_deferred.resolve(data.Attributes ? data.Attributes : {});
+  });
+  return db_deferred.promise;
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Credential Table Methods
