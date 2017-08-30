@@ -235,8 +235,7 @@ module.exports = {
               var book_data = {
                 credential_id: credential.id, //this will be the correct 'eventual' storage location, after processing
                 storage_type: 'quietthyme', //temporary storage type.
-                storage_identifier:
-                Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                storage_identifier: Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
                 storage_size: event.body.storage_size,
                 storage_filename: event.body.storage_filename,
                 storage_format: event.body.storage_format,
