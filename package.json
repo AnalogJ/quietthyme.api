@@ -22,7 +22,7 @@
   "dependencies": {
     "ajv": "^5.1.1",
     "aws-sdk": "^2.72.0",
-    "bcrypt": "0.8.7",
+    "bcrypt": "^1.0.3",
     "debug": "^2.6.3",
     "goodreads.js": "^0.0.9",
     "jsonwebtoken": "^7.1.9",
