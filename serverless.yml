@@ -191,14 +191,14 @@ package:
 functions:
 # UNAUTHENTICATED METHODS
 # TODO: we should re-enable this endpoint once serverless figures out how to get around 200 CF limit.
-#  version:
-#    handler: src/version.handler
-#    events:
-#      - http:
-#          path: version
-#          method: get
-#          response: ${self:custom.standardResponses}
-#          integration: lambda
+  version:
+    handler: src/version.handler
+    events:
+      - http:
+          path: version
+          method: get
+          response: ${self:custom.standardResponses}
+          integration: lambda
 
 # hooks are for notifications about events like books being moved, and maybe payments.
   hookkloudlessevent:
