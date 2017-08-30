@@ -29,7 +29,7 @@ deployment:
     commands:
       - npm prune --production #prune node_modules directory to only contain production modules
       - sls prune -n 4
-      - docker run -e CIRCLE_SHA1 -e AWS_ACCESS_KEY_ID -e AWS_REGION -e AWS_SECRET_ACCESS_KEY -e ENCRYPTION_JWT_PASSPHRASE -e ENCRYPTION_PASSPHRASE -e OAUTH_GOODREADS_CLIENT_KEY -e OAUTH_GOODREADS_CLIENT_SECRET -e beta_KLOUDLESS_API_ID -e beta_KLOUDLESS_API_KEY -e beta_STORAGE_SALT -e beta_STRIPE_SECRET_KEY analogj/docker-amazonlinux-node npm install --prod && serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
+      - docker run -v `pwd`:/var/task -e CIRCLE_SHA1 -e AWS_ACCESS_KEY_ID -e AWS_REGION -e AWS_SECRET_ACCESS_KEY -e ENCRYPTION_JWT_PASSPHRASE -e ENCRYPTION_PASSPHRASE -e OAUTH_GOODREADS_CLIENT_KEY -e OAUTH_GOODREADS_CLIENT_SECRET -e beta_KLOUDLESS_API_ID -e beta_KLOUDLESS_API_KEY -e beta_STORAGE_SALT -e beta_STRIPE_SECRET_KEY analogj/docker-amazonlinux-node npm install --prod && serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
       - aws s3api put-bucket-lifecycle-configuration  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --lifecycle-configuration file://scripts/bucket.lifecycle.json
       - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --cors-configuration file://scripts/bucket.cors.json
       - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-content --cors-configuration file://scripts/bucket.readonly.cors.json
