@@ -19,7 +19,7 @@ AuthEndpoint.router = function(event, context, cb){
   if(event.path.action == 'login' && event.method == 'POST'){
     AuthEndpoint.login(event,context, cb)
   }
-  if(event.path.action == 'register' && event.method == 'POST'){
+  else if(event.path.action == 'register' && event.method == 'POST'){
     AuthEndpoint.register(event,context, cb)
   }
   else if(event.path.action == 'status' && event.method == 'GET'){
