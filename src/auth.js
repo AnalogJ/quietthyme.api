@@ -11,77 +11,99 @@ var q = require('q'),
   Utilities = require('./common/utilities'),
   kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 
-module.exports = {
-  register: function(event, context, cb) {
-    //this function should check if an existing user with registered email already exists.
-    return DBService.findUserByEmail(event.body.email)
-      .then(function(user) {
-        if (user) {
-          debug('User already exists, cant re-register');
-          throw 'User already exists';
-        } else {
-          return AuthService.createEmailUser(
-            event.body.name,
-            event.body.email,
-            event.body.password
-          );
-        }
-      })
-      .then(function(user) {
-        debug('Newly created user: %o', user);
-        return {
-          token: JWTokenService.issue({
-            uid: user.uid,
-            plan: user.plan,
-            catalog_token: user.catalog_token,
-            name: user.name,
-            email: user.email,
-          }),
-        };
-      })
-      .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
-      .done();
-  },
-  login: function(event, context, cb) {
-    //this function should check if an existing user with registered email already exists.
-    return DBService.findUserByEmail(event.body.email)
-      .then(function(user) {
-        if (user) {
-          return SecurityService.compare_password(
-            event.body.password,
-            user.password_hash
-          ).then(function(matched) {
-            if (matched) {
-              return user;
-            } else {
-              throw new Error('Email or Password is incorrect');
-            }
-          });
-        } else {
-          throw new Error('Email or Password is incorrect');
-        }
-      })
-      .then(function(user) {
-        return {
-          token: JWTokenService.issue({
-            uid: user.uid,
-            plan: user.plan,
-            catalog_token: user.catalog_token,
-            name: user.name,
-            email: user.email,
-          }),
-        };
-      })
-      .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
-      .done();
-  },
-  //this function should check the status of a JWT Token for validity
-  status: function(event, context, cb) {
-    cb(null, {
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      event: event,
-    });
-  },
-};
+
+var AuthEndpoint = module.exports
+
+AuthEndpoint.router = function(event, context, cb){
+  debug('AuthEndpoint router event: %o', event)
+  if(event.path.action == 'login' && event.method == 'POST'){
+    AuthEndpoint.login(event,context, cb)
+  }
+  if(event.path.action == 'register' && event.method == 'POST'){
+    AuthEndpoint.register(event,context, cb)
+  }
+  else if(event.path.action == 'status' && event.method == 'GET'){
+    AuthEndpoint.status(event, context, cb)
+  }
+  else{
+    Utilities.errorHandler(cb)(new Error(`Unknown API endpoint: ${event.path.action}`))
+  }
+}
+
+
+AuthEndpoint.register = function(event, context, cb) {
+  //this function should check if an existing user with registered email already exists.
+  return DBService.findUserByEmail(event.body.email)
+    .then(function(user) {
+      if (user) {
+        debug('User already exists, cant re-register');
+        throw 'User already exists';
+      } else {
+        return AuthService.createEmailUser(
+          event.body.name,
+          event.body.email,
+          event.body.password
+        );
+      }
+    })
+    .then(function(user) {
+      debug('Newly created user: %o', user);
+      return {
+        token: JWTokenService.issue({
+          uid: user.uid,
+          plan: user.plan,
+          catalog_token: user.catalog_token,
+          name: user.name,
+          email: user.email,
+        }),
+      };
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
+AuthEndpoint.login = function(event, context, cb) {
+  //this function should check if an existing user with registered email already exists.
+  return DBService.findUserByEmail(event.body.email)
+    .then(function(user) {
+      if (user) {
+        return SecurityService.compare_password(
+          event.body.password,
+          user.password_hash
+        ).then(function(matched) {
+          if (matched) {
+            return user;
+          } else {
+            throw new Error('Email or Password is incorrect');
+          }
+        });
+      } else {
+        throw new Error('Email or Password is incorrect');
+      }
+    })
+    .then(function(user) {
+      return {
+        token: JWTokenService.issue({
+          uid: user.uid,
+          plan: user.plan,
+          catalog_token: user.catalog_token,
+          name: user.name,
+          email: user.email,
+        }),
+      };
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
+//this function should check the status of a JWT Token for validity
+AuthEndpoint.status = function(event, context, cb) {
+  JWTokenService.verify(event.token)
+    .then(function(auth_data){
+      return {valid: true};
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
+

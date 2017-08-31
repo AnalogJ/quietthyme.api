@@ -27,14 +27,14 @@ provider:
     STAGE: ${opt:stage, self:provider.stage}
     STORAGE_SALT: ${env:${opt:stage, self:provider.stage}_STORAGE_SALT, env:STORAGE_SALT}
     ENCRYPTION_JWT_PASSPHRASE: ${env:${opt:stage, self:provider.stage}_ENCRYPTION_JWT_PASSPHRASE, env:ENCRYPTION_JWT_PASSPHRASE}
-  #    OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
-  #    OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
-  #    OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
-  #    OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
-  #    OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
-  #    OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
-  #    OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
-  #    OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
+    # OAUTH_BOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_KEY, env:OAUTH_BOX_CLIENT_KEY}
+    # OAUTH_BOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_BOX_CLIENT_SECRET, env:OAUTH_BOX_CLIENT_SECRET}
+    # OAUTH_DROPBOX_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_KEY, env:OAUTH_DROPBOX_CLIENT_KEY}
+    # OAUTH_DROPBOX_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_DROPBOX_CLIENT_SECRET, env:OAUTH_DROPBOX_CLIENT_SECRET}
+    # OAUTH_GOOGLE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_KEY, env:OAUTH_GOOGLE_CLIENT_KEY}
+    # OAUTH_GOOGLE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_GOOGLE_CLIENT_SECRET, env:OAUTH_GOOGLE_CLIENT_SECRET}
+    # OAUTH_SKYDRIVE_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_KEY, env:OAUTH_SKYDRIVE_CLIENT_KEY}
+    # OAUTH_SKYDRIVE_CLIENT_SECRET: ${env:${opt:stage, self:provider.stage}_OAUTH_SKYDRIVE_CLIENT_SECRET, env:OAUTH_SKYDRIVE_CLIENT_SECRET}
 
     STRIPE_SECRET_KEY: ${env:${opt:stage, self:provider.stage}_STRIPE_SECRET_KEY, env:STRIPE_SECRET_KEY}
     OAUTH_GOODREADS_CLIENT_KEY: ${env:${opt:stage, self:provider.stage}_OAUTH_GOODREADS_CLIENT_KEY, env:OAUTH_GOODREADS_CLIENT_KEY}
@@ -236,27 +236,18 @@ functions:
 #          cors: true
 
 
-# auth methods (login/register/calibre)
-  authregister:
-    handler: src/auth.register
+# auth methods (login/register/status)
+  auth:
+    handler: src/auth.router
     events:
       - http:
-          path: auth/register
-          method: POST
+          path: auth/{action+}
+          method: ANY
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
 
-  authlogin:
-    handler: src/auth.login
-    events:
-      - http:
-          path: auth/login
-          method: POST
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
+  # user methods (plan/update)
   user:
     handler: src/user.router
     events:
