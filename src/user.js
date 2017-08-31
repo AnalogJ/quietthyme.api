@@ -14,6 +14,7 @@ var q = require('q'),
 var UserEndpoint = module.exports
 
 UserEndpoint.router = function(event, context, cb){
+  debug('UserEndpoint router event: %o', event)
   if(event.path.action == 'plan' && event.method == 'POST'){
     UserEndpoint.plan(event,context, cb)
   }
