@@ -525,4 +525,4 @@ plugins:
    - serverless-prune-plugin
    - serverless-mocha-plugin
 #   - serverless-plugin-optimize
-   - serverless-offline
+#   - serverless-offline
