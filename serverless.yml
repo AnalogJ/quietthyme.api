@@ -259,34 +259,18 @@ functions:
           integration: lambda
           cors: true
 
-  bookcreate:
-    handler: src/book.create
+  book:
+    handler: src/book.router
     events:
       - http:
-          path: book
-          method: POST
+          path: 'book'
+          method: ANY
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
           integration: lambda
           cors: true
-
-  bookfind:
-    handler: src/book.find
-    memorySize: 128
-    events:
       - http:
-          path: book
-          method: GET
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  bookdestroy:
-    handler: src/book.destroy
-    events:
-      - http:
-          path: book/{id}
+          path: 'book/{id}'
           method: DELETE
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
