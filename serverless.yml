@@ -259,6 +259,7 @@ functions:
           integration: lambda
           cors: true
 
+  # book methods (create/find/delete)
   book:
     handler: src/book.router
     events:
