@@ -264,7 +264,7 @@ functions:
     handler: src/user.plan
     events:
       - http:
-          path: user/{plan
+          path: user/plan
           method: POST
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
