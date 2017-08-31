@@ -199,11 +199,6 @@ functions:
           method: get
           response: ${self:custom.standardResponses}
           integration: lambda
-      - http:
-          path: version/{action+}
-          method: any
-          response: ${self:custom.standardResponses}
-          integration: lambda
 
 # hooks are for notifications about events like books being moved, and maybe payments.
   hookkloudlessevent:
@@ -262,11 +257,11 @@ functions:
           integration: lambda
           cors: true
 
-  userplan:
-    handler: src/user.plan
+  user:
+    handler: src/user.router
     events:
       - http:
-          path: user/plan
+          path: user/{action+}
           method: POST
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
