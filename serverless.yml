@@ -202,6 +202,8 @@ functions:
       - http:
           path: version/{action+}
           method: any
+          response: ${self:custom.standardResponses}
+          integration: lambda
 
 # hooks are for notifications about events like books being moved, and maybe payments.
   hookkloudlessevent:
@@ -523,4 +525,4 @@ plugins:
    - serverless-prune-plugin
    - serverless-mocha-plugin
 #   - serverless-plugin-optimize
-#   - serverless-offline
+   - serverless-offline
