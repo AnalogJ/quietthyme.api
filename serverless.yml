@@ -241,7 +241,7 @@ functions:
     handler: src/auth.router
     events:
       - http:
-          path: auth/{action+}
+          path: 'auth/{action+}'
           method: ANY
           response: ${self:custom.standardResponses}
           integration: lambda
@@ -252,7 +252,7 @@ functions:
     handler: src/user.router
     events:
       - http:
-          path: user/{action+}
+          path: 'user/{action+}'
           method: POST
           request: ${self:custom.standardRequests}
           response: ${self:custom.standardResponses}
