@@ -8,7 +8,7 @@ var uuid = require('node-uuid');
 var Base64Service = require('./base64_service');
 var KloudlessService = require('./kloudless_service');
 var DBSchemas = require('../common/db_schemas');
-
+var _ = require('lodash');
 // from http://www.dancorman.com/knex-your-sql-best-friend/
 // http://blog.rowanudell.com/database-connections-in-lambda/
 // http://theburningmonk.com/2016/05/aws-lambda-constant-timeout-when-using-bluebird-promise/ - ugh is this the reason that cloudrails is timing out?1
@@ -188,7 +188,7 @@ dbService.updateUser = function(user_id, update_data, return_values) {
   var whitelist = ["name", "library_uuid", "catalog_token"];
 
 
-  var update_data = filter(update_data, whitelist)
+  var update_data = filter(update_data, whitelist);
 
   try {
     update_data = DBSchemas.updateUser(Utilities.stripEmpty(update_data));
@@ -654,7 +654,7 @@ function filter(orig, whitelist){
   var result = {};
 
   for (var prop in orig) {
-    if (orig.hasOwnProperty(prop) && whitelist.includes(prop)) {
+    if (orig.hasOwnProperty(prop) && _.includes(whitelist, prop)) {
       result[prop] = orig[prop];
     }
   }
