@@ -208,7 +208,7 @@ dbService.updateUser = function(user_id, update_data, return_values) {
 
   var params = {
     TableName: Constants.tables.users,
-    Key: { user_id: uid },
+    Key: { uid: user_id },
     UpdateExpression: 'set ' + update_expression.join(', '),
     ExpressionAttributeNames: expression_attribute_names,
     ExpressionAttributeValues: expression_attribute_values,
