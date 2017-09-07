@@ -187,17 +187,6 @@ dbService.updateUser = function(user_id, update_data, return_values) {
   //next lets filter the updated user object so it only contains properties that we allow users to update via the API.
   var whitelist = ["name", "library_uuid", "catalog_token"];
 
-  function filter(orig, whitelist){
-    var result = {};
-
-    for (var prop in orig) {
-      if (orig.hasOwnProperty(prop) && whitelist.contains(prop)) {
-        result[prop] = orig[prop];
-      }
-    }
-
-    return result;
-  }
 
   var update_data = filter(update_data, whitelist)
 
@@ -653,3 +642,22 @@ dbService.deleteBookById = function(book_id, user_id) {
   });
   return db_deferred.promise;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Helper Methods
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function filter(orig, whitelist){
+  var result = {};
+
+  for (var prop in orig) {
+    if (orig.hasOwnProperty(prop) && whitelist.includes(prop)) {
+      result[prop] = orig[prop];
+    }
+  }
+
+  return result;
+}
