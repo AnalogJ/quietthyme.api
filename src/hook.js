@@ -42,13 +42,15 @@ module.exports.kloudless = function(event, context, cb) {
       body: nconf.get('KLOUDLESS_API_ID'),
     });
   }
-  console.log("Processing Kloudless events:", event.body)
+  console.log('Processing Kloudless events:', event.body);
   //retrieve the current cursor and and then do a request for the latest events
   //http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.03.html#GettingStarted.NodeJs.03.05
   //https://en.wikipedia.org/wiki/Read-modify-write
   DBService.atomicCredentialCursorEvents(event.body.split('=')[1], 5)
     .spread(function(events, credential) {
-      console.log(`Processing ${credential.service_type} events from credential: ${credential.id}`)
+      console.log(
+        `Processing ${credential.service_type} events from credential: ${credential.id}`
+      );
 
       var blackhole_folder = credential.blackhole_folder;
       //begin filtering the events, and start invoking new lambda's
@@ -72,13 +74,13 @@ module.exports.kloudless = function(event, context, cb) {
           return false;
         }
 
-        if(kl_event.metadata.type != 'file'){
+        if (kl_event.metadata.type != 'file') {
           debug(
             'SKIPPING (not a file): %s %s',
             kl_event.metadata.type,
             kl_event.metadata.path || kl_event.metadata.name
           );
-          return false
+          return false;
         }
 
         //we only care about certain file extensions (ones we can process)
@@ -99,94 +101,103 @@ module.exports.kloudless = function(event, context, cb) {
         return true;
       });
 
-
-
-
-
       // we still need to validate that the events are in the blackhole folder. Unfortunately events are not guaranteed to contain the
       // ancestors of the file, so we'll need to look the ancestors up for each file, and filter out any files that are in a
       // subdirectory of the blackhole folder
 
       //we're not going to do this in parallel because then we'd probalby hit rate limits on kloudless & the upstream cloud api.
       // so instead we'll process each file (and its ancestors one by one)
-      return filtered_events.reduce(function (blackhole_filtered_events, kl_event) {
-        if(kl_event.metadata.parent.id == blackhole_folder.id || kl_event.metadata.parent.id == blackhole_folder.path_id){ //this must be pathid, not raw_id.
-          //this file was directly placed in the blackhole folder, we need to keep it.
-          return blackhole_filtered_events.then(function(arr){arr.push(kl_event); return arr})
-        }
-        else {
-          // we have to look up the file's ancestors, which will happen async, and then determine if one of the ancestor folders is the blackhole folder.
-          return blackhole_filtered_events.then(function(arr){
-            return KloudlessService.folderAncestors(credential.service_id, kl_event.metadata.parent.id)
-              .then(function(ancestors_arr){
-                for (let ancestor of ancestors_arr){
-                  if(ancestor.id == blackhole_folder.id || ancestor.id == blackhole_folder.path_id){ //this must be pathid, not raw_id.
-                    arr.push(kl_event)
-                    return arr;
-                  }
-                }
-
-                // could not find an ancestor that matched the blackhole folder. skipping event.
-                debug(
-                  'SKIPPING (no ancestor in blackhole folder): %s %o %o',
-                  kl_event.metadata.path || kl_event.metadata.name,
-                  ancestors_arr,
-                  kl_event
-                );
+      return (filtered_events
+          .reduce(function(blackhole_filtered_events, kl_event) {
+            if (
+              kl_event.metadata.parent.id == blackhole_folder.id ||
+              kl_event.metadata.parent.id == blackhole_folder.path_id
+            ) {
+              //this must be pathid, not raw_id.
+              //this file was directly placed in the blackhole folder, we need to keep it.
+              return blackhole_filtered_events.then(function(arr) {
+                arr.push(kl_event);
                 return arr;
-              })
-              .fail(function(err){
-                console.error("An error occurred while attempting to retrieve this books ancestors. We can't continue so we'll skip it and process it again later")
-                console.error("The failed event was:", kl_event)
-                console.error("The error message was::", err)
+              });
+            } else {
+              // we have to look up the file's ancestors, which will happen async, and then determine if one of the ancestor folders is the blackhole folder.
+              return blackhole_filtered_events.then(function(arr) {
+                return KloudlessService.folderAncestors(
+                  credential.service_id,
+                  kl_event.metadata.parent.id
+                )
+                  .then(function(ancestors_arr) {
+                    for (let ancestor of ancestors_arr) {
+                      if (
+                        ancestor.id == blackhole_folder.id ||
+                        ancestor.id == blackhole_folder.path_id
+                      ) {
+                        //this must be pathid, not raw_id.
+                        arr.push(kl_event);
+                        return arr;
+                      }
+                    }
 
-                return arr
-              })
-          });
-        }
-      }, q([]))
+                    // could not find an ancestor that matched the blackhole folder. skipping event.
+                    debug(
+                      'SKIPPING (no ancestor in blackhole folder): %s %o %o',
+                      kl_event.metadata.path || kl_event.metadata.name,
+                      ancestors_arr,
+                      kl_event
+                    );
+                    return arr;
+                  })
+                  .fail(function(err) {
+                    console.error(
+                      "An error occurred while attempting to retrieve this books ancestors. We can't continue so we'll skip it and process it again later"
+                    );
+                    console.error('The failed event was:', kl_event);
+                    console.error('The error message was::', err);
 
-      //TODO: cleanup empty directories on a schedule.
+                    return arr;
+                  });
+              });
+            }
+          }, q([]))
+          //TODO: cleanup empty directories on a schedule.
 
-        .then(function(filtered_events){
+          .then(function(filtered_events) {
+            // we should trigger new lambda invocations for each event we find.
+            // http://stackoverflow.com/a/31745774
+            var promises = filtered_events.map(function(kl_event) {
+              var deferred = q.defer();
+              console.info(
+                'Added file to Queue:',
+                kl_event.account,
+                kl_event.metadata.path || kl_event.metadata.name
+              );
+              lambda.invoke(
+                {
+                  FunctionName:
+                    'quietthyme-api-' +
+                    nconf.get('STAGE') +
+                    '-queueprocessunknownbook',
+                  Payload: JSON.stringify(
+                    {
+                      credential_id: credential.id,
+                      storage_identifier: kl_event.metadata.id,
+                      filename: kl_event.metadata.name,
+                    },
+                    null,
+                    2
+                  ),
+                  InvocationType: 'Event',
+                },
+                function(err, data) {
+                  if (err) return deferred.reject(err);
+                  return deferred.resolve(data.Payload);
+                }
+              );
+              return deferred.promise;
+            });
 
-          // we should trigger new lambda invocations for each event we find.
-          // http://stackoverflow.com/a/31745774
-          var promises = filtered_events.map(function(kl_event) {
-            var deferred = q.defer();
-            console.info(
-              'Added file to Queue:',
-              kl_event.account,
-              kl_event.metadata.path || kl_event.metadata.name
-            );
-            lambda.invoke(
-              {
-                FunctionName:
-                'quietthyme-api-' +
-                nconf.get('STAGE') +
-                '-queueprocessunknownbook',
-                Payload: JSON.stringify(
-                  {
-                    credential_id: credential.id,
-                    storage_identifier: kl_event.metadata.id,
-                    filename: kl_event.metadata.name,
-                  },
-                  null,
-                  2
-                ),
-                InvocationType: 'Event',
-              },
-              function(err, data) {
-                if (err) return deferred.reject(err);
-                return deferred.resolve(data.Payload);
-              }
-            );
-            return deferred.promise;
-          });
-
-          return q.allSettled(promises);
-
-        })
+            return q.allSettled(promises);
+          }) );
     })
     .then(function(promises) {
       console.dir(promises);

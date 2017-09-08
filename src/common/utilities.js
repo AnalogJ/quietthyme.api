@@ -57,14 +57,15 @@ module.exports = {
       if (typeof err === 'string') {
         //this is a string error message, wrap it in an error obj
         err = new Error(err);
-      } else if (err.code == "ValidationException"){
+      } else if (err.code == 'ValidationException') {
         // this is a DynamoDB error.
-        var newErr = new Error("An error occurred while communicating with the Database.");
-        newErr.code = err.statusCode
-        newErr.stack = err.stack
+        var newErr = new Error(
+          'An error occurred while communicating with the Database.'
+        );
+        newErr.code = err.statusCode;
+        newErr.stack = err.stack;
 
         err = newErr;
-
       } else if (!err instanceof Error) {
         //this is an object or something other than an error obj
         //do nothing for now.

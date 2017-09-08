@@ -9,7 +9,7 @@ describe('DBSchemas', function() {
         plan: 'none',
         library_uuid: null,
         stripe_sub_id: null,
-        push_notifications: {}
+        push_notifications: {},
       });
       user.plan.should.eql('none');
     });
@@ -17,7 +17,12 @@ describe('DBSchemas', function() {
     it('should remove any invalid keys from data', function() {
       var user = DBSchemas.createUser({
         invalid_key: true,
-      }).should.eql({ plan: 'none', library_uuid: null, stripe_sub_id: null, push_notifications: {} });
+      }).should.eql({
+        plan: 'none',
+        library_uuid: null,
+        stripe_sub_id: null,
+        push_notifications: {},
+      });
 
       should.not.exist(user.invalid_key);
     });

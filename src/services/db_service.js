@@ -181,12 +181,15 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id) {
   return db_deferred.promise;
 };
 
-dbService.updateUser = function(user_id, update_data, return_values, whitelist) {
-
+dbService.updateUser = function(
+  user_id,
+  update_data,
+  return_values,
+  whitelist
+) {
   //valid auth token,
   //next lets filter the updated user object so it only contains properties that we allow users to update via the API.
-  whitelist = whitelist || ["name", "library_uuid", "catalog_token"];
-
+  whitelist = whitelist || ['name', 'library_uuid', 'catalog_token'];
 
   var update_data = filter(update_data, whitelist);
 
@@ -235,8 +238,8 @@ var quietThymeStorageCredential = {
   id: 'quietthyme',
   service_type: 'quietthyme',
   service_id: 'quietthyme',
-  oauth: {}
-}
+  oauth: {},
+};
 
 dbService.createCredential = function(credential /* DBSchema.Credential */) {
   try {
@@ -265,8 +268,8 @@ dbService.findCredentialById = function(
   user_id /* optional, but recommended */
 ) {
   //handle "quietthyme" credentials (always 0)
-  if(credential_id == 'quietthyme'){
-    return q(quietThymeStorageCredential)
+  if (credential_id == 'quietthyme') {
+    return q(quietThymeStorageCredential);
   }
 
   var params = {
@@ -290,8 +293,8 @@ dbService.findCredentialById = function(
 };
 
 dbService.findCredentialByServiceId = function(service_id) {
-  if(service_id == 'quietthyme'){
-    return q(quietThymeStorageCredential)
+  if (service_id == 'quietthyme') {
+    return q(quietThymeStorageCredential);
   }
   var params = {
     TableName: Constants.tables.credentials,
@@ -649,8 +652,7 @@ dbService.deleteBookById = function(book_id, user_id) {
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-function filter(orig, whitelist){
+function filter(orig, whitelist) {
   var result = {};
 
   for (var prop in orig) {

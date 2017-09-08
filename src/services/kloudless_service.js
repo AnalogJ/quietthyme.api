@@ -53,15 +53,15 @@ kloudlessService.folderCreate = function(
   }
 };
 
-kloudlessService.folderGet = function(
-  account_id,
-  folder_identifier
-) {
+kloudlessService.folderGet = function(account_id, folder_identifier) {
   var deferred = q.defer();
-  kloudless.folders.get({account_id: account_id, folder_id: folder_identifier}, function(err, res) {
-    if (err) return deferred.reject(err);
-    return deferred.resolve(res);
-  });
+  kloudless.folders.get(
+    { account_id: account_id, folder_id: folder_identifier },
+    function(err, res) {
+      if (err) return deferred.reject(err);
+      return deferred.resolve(res);
+    }
+  );
 
   return deferred.promise;
 };
@@ -222,31 +222,38 @@ kloudlessService.linkCreate = function(account_id, file_id) {
 
 //Get the folder's ancestors, all the way back to the root.
 // if response.ancestors is ever populated, we're just going to concat that with the current list and return
-kloudlessService.folderAncestors = function(account_id, folder_id, ancestors_list){
-  if(!ancestors_list){
-    ancestors_list = []
+kloudlessService.folderAncestors = function(
+  account_id,
+  folder_id,
+  ancestors_list
+) {
+  if (!ancestors_list) {
+    ancestors_list = [];
   }
-  return kloudlessService.genericRetry(kloudlessService.folderGet, [account_id, folder_id])
-    .then(function(res){
-      if(res.ancestors){
-        console.log("Found ancestors list, returning");
-        return ancestors_list.concat(res.ancestors)
-      }
-      else if(res.parent){
-        ancestors_list.push(res.parent)
+  return kloudlessService
+    .genericRetry(kloudlessService.folderGet, [account_id, folder_id])
+    .then(function(res) {
+      if (res.ancestors) {
+        console.log('Found ancestors list, returning');
+        return ancestors_list.concat(res.ancestors);
+      } else if (res.parent) {
+        ancestors_list.push(res.parent);
 
-        if(res.parent.id != 'root'){
-          return kloudlessService.folderAncestors(account_id, res.parent.id, ancestors_list)
-        }
-        else{
+        if (res.parent.id != 'root') {
+          return kloudlessService.folderAncestors(
+            account_id,
+            res.parent.id,
+            ancestors_list
+          );
+        } else {
           //the parent of this folder is root, we can return the current list
-          return ancestors_list
+          return ancestors_list;
         }
       }
 
-      return ancestors_list
-    })
-}
+      return ancestors_list;
+    });
+};
 
 // Generic Kloudless retry method.
 kloudlessService.genericRetry = function(
@@ -258,7 +265,10 @@ kloudlessService.genericRetry = function(
     retry = 5;
   }
 
-  var promise = kloudlessServicePromiseFunction.apply(kloudlessService, functionArgs );
+  var promise = kloudlessServicePromiseFunction.apply(
+    kloudlessService,
+    functionArgs
+  );
 
   return promise.fail(function(err) {
     //check if this is a retry-able error, with a
@@ -277,8 +287,8 @@ kloudlessService.genericRetry = function(
       // wait before retrying the request. If the upstream service does not provide this information,
       // this header will not be present. The status code for this error response will be 429.
       var seconds = response.headers['retry-after'] | 0; //convert to integer
-      if(seconds == 0){
-        seconds = 1 //wait one second if the retry-after header is not present.
+      if (seconds == 0) {
+        seconds = 1; //wait one second if the retry-after header is not present.
       }
       console.log(
         `Retrying fileMove request. Retries left: #${retry}, Waiting ${seconds} seconds`

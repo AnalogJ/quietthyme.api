@@ -41,23 +41,23 @@ module.exports = {
 
     if (is_new_book) {
       //this is a new book, lets call process_unknown_book lamda.
-      console.log("Queueing up NEW/UNKNOWN book that was uploaded to S3",
+      console.log(
+        'Queueing up NEW/UNKNOWN book that was uploaded to S3',
         upload_bucket,
         upload_key,
-        dirty_filename);
+        dirty_filename
+      );
 
       return lambda.invoke(
         {
           FunctionName:
-          'quietthyme-api-' +
-          nconf.get('STAGE') +
-          '-queueprocessunknownbook',
+            'quietthyme-api-' + nconf.get('STAGE') + '-queueprocessunknownbook',
           Payload: JSON.stringify(
             {
               credential_id: cred_id, //destination storage
               storage_identifier: `${upload_bucket}/${upload_key}`, //s3 info
               filename: dirty_filename,
-              stored_in_s3_bucket: true
+              stored_in_s3_bucket: true,
             },
             null,
             2
@@ -89,7 +89,7 @@ module.exports = {
 
           //(bearer_token, account_id, filename, parent_id, storage_identifier){
           var uploadToPermStoragePromise;
-          if(is_quietthyme_storage){
+          if (is_quietthyme_storage) {
             uploadToPermStoragePromise = StorageService.move_s3_upload_to_s3_content(
               `${upload_bucket}/${upload_key}`,
               Constants.buckets.content,
@@ -99,20 +99,20 @@ module.exports = {
                 book_id, //this should be the filename, but honestly, its dirty and the user wont see this filename anyways.
                 book.storage_format
               )
-            )
-          }
-          else {
+            );
+          } else {
             uploadToPermStoragePromise = KloudlessService.fileUpload(
               credential.oauth.access_token,
               credential.service_id,
               book.storage_filename + book.storage_format,
               credential.library_folder.id,
               book.storage_identifier
-            )
+            );
           }
 
-
-          return uploadToPermStoragePromise.then(function(destination_storage_resp) {
+          return uploadToPermStoragePromise.then(function(
+            destination_storage_resp
+          ) {
             return DBService.updateBook(
               book.id,
               user_id,
@@ -158,16 +158,15 @@ module.exports = {
       event.stored_in_s3_bucket
     )
       .spread(function(book_path, credential) {
-
         // ##############################################
         // Determine User ID (Book owner)
         // ##############################################
         //before we do anything, lets determine the user for these operations.
-        var book_user_id = credential.user_id
+        var book_user_id = credential.user_id;
 
         // if book was uploaded to S3, then the final destination may be QuietThyme storage, in which case we do not
         // know the actual user_id. Instead we need to parse it from the storage_identifier path.
-        if(event.stored_in_s3_bucket && credential.id == "quietthyme"){
+        if (event.stored_in_s3_bucket && credential.id == 'quietthyme') {
           //book_user_id should be empty/null at this point. //TODO, raise an error if its not.
 
           //bucketname/USERHASH/user_id/cred_id/NEW/filename
@@ -184,12 +183,11 @@ module.exports = {
         var source_cred_id;
         var source_storage_identifier;
 
-        source_storage_identifier = event.storage_identifier
-        if(event.stored_in_s3_bucket){
-          source_storage_type = "quietthyme";
-          source_cred_id = "quietthyme";
-        }
-        else{
+        source_storage_identifier = event.storage_identifier;
+        if (event.stored_in_s3_bucket) {
+          source_storage_type = 'quietthyme';
+          source_cred_id = 'quietthyme';
+        } else {
           source_storage_type = credential.service_type;
           source_cred_id = credential.id;
         }
@@ -201,16 +199,13 @@ module.exports = {
         var dest_cred_id;
         var dest_storage_identifier; //this should be calculated later on, dependent on book data. Will be returned by fileMove operations.
 
-        if(event.credential_id == "quietthyme"){
-          dest_cred_id = "quietthyme";
-          dest_storage_type = "quietthyme";
-        }
-        else {
+        if (event.credential_id == 'quietthyme') {
+          dest_cred_id = 'quietthyme';
+          dest_storage_type = 'quietthyme';
+        } else {
           dest_cred_id = credential.id;
           dest_storage_type = credential.service_type;
         }
-
-
 
         //We've downloaded the book, lets get metadata from it, then process it
 
@@ -283,7 +278,8 @@ module.exports = {
             debug('Credential: %o', credential); //TODO: we must remove this.
             return q.allSettled([
               inserted_books,
-              StorageService.move_to_perm_storage(book_user_id,
+              StorageService.move_to_perm_storage(
+                book_user_id,
                 {
                   source_storage_type: source_storage_type,
                   source_cred_id: source_cred_id,
@@ -292,10 +288,10 @@ module.exports = {
                 {
                   dest_storage_type: dest_storage_type,
                   dest_cred_id: dest_cred_id,
-                  credential: credential
+                  credential: credential,
                 },
                 inserted_books
-              )
+              ),
             ]);
           })
           .spread(function(book_data_promise, book_storage_promise) {
@@ -321,10 +317,12 @@ module.exports = {
               storage_type: dest_storage_type,
               credential_id: dest_cred_id,
               storage_identifier: book_storage_identifier.id,
-              storage_filename: book_storage_identifier.basename || path.basename(
-                book_storage_identifier.name,
-                book_data.storage_format
-              ),
+              storage_filename:
+                book_storage_identifier.basename ||
+                path.basename(
+                  book_storage_identifier.name,
+                  book_data.storage_format
+                ),
             };
 
             //TODO: figure out how to get the USERID and pass it in below (NULL)

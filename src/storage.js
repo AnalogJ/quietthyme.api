@@ -200,31 +200,37 @@ module.exports = {
     // TODO: this function shoulc check if the book file already exists.
     JWTokenService.verify(event.token)
       .then(function(auth) {
-
         //if this is a book to be uploaded via webUI it must be new, so we can skip alot of steps.
-        if(event.query.source == "web"){
+        if (event.query.source == 'web') {
           //we still need to check the credential sent is tied to the current user.
-          return DBService.findCredentialById(event.body.storage_id, auth.uid)
-            .then(function(credential){
-              var key = StorageService.create_upload_folder_identifier(auth.uid, credential.id, 'NEW') + '/';
-              var params = {
-                Bucket: Constants.buckets.upload,
-                Expires: 60*60, //1 hour in seconds
-                Conditions: [
-                  ['starts-with', '$key', encodeURI(key)]
-                ]
-              };
+          return DBService.findCredentialById(
+            event.body.storage_id,
+            auth.uid
+          ).then(function(credential) {
+            var key =
+              StorageService.create_upload_folder_identifier(
+                auth.uid,
+                credential.id,
+                'NEW'
+              ) + '/';
+            var params = {
+              Bucket: Constants.buckets.upload,
+              Expires: 60 * 60, //1 hour in seconds
+              Conditions: [['starts-with', '$key', encodeURI(key)]],
+            };
 
-              //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
-              // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
-              var policy = s3.createPresignedPost(params)
-              policy.fields.key = key;
-              return policy;
-            })
-        }
-        else {
+            //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
+            // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
+            var policy = s3.createPresignedPost(params);
+            policy.fields.key = key;
+            return policy;
+          });
+        } else {
           return q.spread(
-            [DBService.findCredentialById(event.body.storage_id, auth.uid), DBService.findBookById(event.body.book_id, auth.uid)],
+            [
+              DBService.findCredentialById(event.body.storage_id, auth.uid),
+              DBService.findBookById(event.body.book_id, auth.uid),
+            ],
             function(credential, book) {
               var key = StorageService.create_upload_identifier(
                 auth.uid,
@@ -237,7 +243,8 @@ module.exports = {
               var book_data = {
                 credential_id: credential.id, //this will be the correct 'eventual' storage location, after processing
                 storage_type: 'quietthyme', //temporary storage type.
-                storage_identifier: Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
+                storage_identifier:
+                  Constants.buckets.upload + '/' + encodeURI(key), //this is the temporary file path in s3, it will almost immediately be stored in s3.
                 storage_size: event.body.storage_size,
                 storage_filename: event.body.storage_filename,
                 storage_format: event.body.storage_format,
@@ -257,7 +264,7 @@ module.exports = {
 
                 return {
                   book_data: book_data,
-                  upload_url: s3.getSignedUrl('putObject', params)
+                  upload_url: s3.getSignedUrl('putObject', params),
                 };
               });
             }

@@ -51,7 +51,6 @@ StorageService.book_filename = function(book) {
   return filename;
 };
 
-
 //There are 3 types of move operations:
 // - kloudless blackhole -> kloudless library
 // - s3 upload bucket -> kloudless library
@@ -67,39 +66,53 @@ StorageService.book_filename = function(book) {
 // dest_data.credential  -- optional (only needed for kloudless destinations)
 //
 // All move_* methods shoudl return {id: <storage_identifier>, basename: <clean filename>} where storage_identifier is valid for dest_storage_type;
-StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, book_data) {
+StorageService.move_to_perm_storage = function(
+  user_id,
+  source_data,
+  dest_data,
+  book_data
+) {
   //filename
   var clean_basename = StorageService.book_filename(book_data);
   var dest_filename = clean_basename + book_data.storage_format;
   var promise;
-  if(source_data.source_storage_type == "quietthyme" && dest_data.dest_storage_type == "quietthyme"){
+  if (
+    source_data.source_storage_type == 'quietthyme' &&
+    dest_data.dest_storage_type == 'quietthyme'
+  ) {
     //this is a s3 book that needs to be copied from upload bucket to content bucket.
-    promise = StorageService.move_s3_upload_to_s3_content(source_data.source_storage_identifier, Constants.buckets.content,
+    promise = StorageService.move_s3_upload_to_s3_content(
+      source_data.source_storage_identifier,
+      Constants.buckets.content,
       StorageService.create_content_identifier(
         'book',
         user_id,
         clean_basename, //this should be the filename, but honestly, its dirty and the user wont see this filename anyways.
         book_data.storage_format
-      ))
-  }
-  // this is a s3 book that needs to be uplaoded to kloudless.
-  else if(source_data.source_storage_type == "quietthyme"){
+      )
+    );
+  } else if (source_data.source_storage_type == 'quietthyme') {
+    // this is a s3 book that needs to be uplaoded to kloudless.
     promise = KloudlessService.fileUpload(
       dest_data.credential.oauth.access_token,
       dest_data.credential.service_id,
       dest_filename,
       dest_data.credential.library_folder.id,
       source_data.source_storage_identifier
-    )
-  }
-  else { // this must be a kloudless -> kloudless move
-    promise = StorageService.move_kloudless_blackhole_to_kloudless_library(dest_data.credential, source_data.source_storage_identifier, dest_filename)
+    );
+  } else {
+    // this must be a kloudless -> kloudless move
+    promise = StorageService.move_kloudless_blackhole_to_kloudless_library(
+      dest_data.credential,
+      source_data.source_storage_identifier,
+      dest_filename
+    );
   }
 
-  return promise.then(function(move_data){
-    move_data.basename = clean_basename
-    return move_data
-  })
+  return promise.then(function(move_data) {
+    move_data.basename = clean_basename;
+    return move_data;
+  });
 };
 // StorageService.move_to_perm_storage = function(credential, book) {
 //   //filename
@@ -112,32 +125,39 @@ StorageService.move_to_perm_storage = function(user_id, source_data, dest_data, 
 //   );
 // };
 
-StorageService.move_kloudless_blackhole_to_kloudless_library = function(credential, source_storage_identifier, dest_filename){
-  return KloudlessService.genericRetry(KloudlessService.fileMove,[
+StorageService.move_kloudless_blackhole_to_kloudless_library = function(
+  credential,
+  source_storage_identifier,
+  dest_filename
+) {
+  return KloudlessService.genericRetry(KloudlessService.fileMove, [
     credential.service_id,
     source_storage_identifier,
     credential.library_folder.id,
-    dest_filename
+    dest_filename,
   ]);
-}
-
+};
 
 //move a book from upload bucket to content bucket.
-StorageService.move_s3_upload_to_s3_content = function(upload_identifier, content_bucket, content_key){
-
+StorageService.move_s3_upload_to_s3_content = function(
+  upload_identifier,
+  content_bucket,
+  content_key
+) {
   var deferred = q.defer();
   var params = {
     Bucket: content_bucket,
     CopySource: `/${upload_identifier}`,
-    Key: content_key
+    Key: content_key,
   };
   s3.copyObject(params, function(err, data) {
-    if (err) {deferred.reject(err)}
-    deferred.resolve({id: `${content_bucket}/${content_key}`}); //must return the same syntax as KloudlessService.fileUpload
+    if (err) {
+      deferred.reject(err);
+    }
+    deferred.resolve({ id: `${content_bucket}/${content_key}` }); //must return the same syntax as KloudlessService.fileUpload
   });
   return deferred.promise;
-
-}
+};
 
 //Download a file from cloud provider into local /tmp directory for processing.
 StorageService.download_book_tmp = function(
@@ -146,8 +166,6 @@ StorageService.download_book_tmp = function(
   storage_identifier,
   stored_in_s3_bucket
 ) {
-
-
   //this book is stored on a third party cloud storage system, need to download it via cloudless.
   return DBService.findCredentialById(credential_id).then(function(credential) {
     var tmpDir = tmp.dirSync();
@@ -156,22 +174,20 @@ StorageService.download_book_tmp = function(
     var filepath = tmpDir.name + '/' + filename;
     var writeStream = fs.createWriteStream(filepath);
 
-
-    if(stored_in_s3_bucket){
+    if (stored_in_s3_bucket) {
       //this book is temporarily stored in S3, we need to download it from there into the local tmp dir.
       var s3_parts = storage_identifier.split('/');
-      var s3_bucket = s3_parts.shift()
-      var s3_key = decodeURI(s3_parts.join('/'))
+      var s3_bucket = s3_parts.shift();
+      var s3_key = decodeURI(s3_parts.join('/'));
 
-      console.log("Attempting to download file from s3", s3_bucket, s3_key)
+      console.log('Attempting to download file from s3', s3_bucket, s3_key);
       return [
         download_s3_file(s3_bucket, s3_key, writeStream).then(function() {
           return filepath;
         }),
-        credential
-      ]
-    }
-    else {
+        credential,
+      ];
+    } else {
       return [
         KloudlessService.fileContents(
           credential.service_id,
@@ -184,7 +200,6 @@ StorageService.download_book_tmp = function(
       ];
     }
   });
-
 };
 
 //get storage status for all the user's cloud storages
@@ -221,7 +236,6 @@ StorageService.get_user_storage = function(token) {
   });
 };
 
-
 //generate link to a cloud storage/s3 bucket file. Useful when downloading books.
 StorageService.get_download_link = function(book, user_id) {
   //check if the book storage_type is populated, if not, then we need to return
@@ -235,7 +249,6 @@ StorageService.get_download_link = function(book, user_id) {
       'https://s3.amazonaws.com/' + encodeURI(book.storage_identifier)
     );
   } else {
-
     //find the credential for this book
     return DBService.findCredentialById(book.credential_id, user_id)
       .then(function(credential) {
@@ -330,31 +343,36 @@ StorageService.create_upload_identifier = function(
   filename,
   extension
 ) {
-  return `${StorageService.create_upload_folder_identifier(user_id, cred_id, book_id)}/${filename+extension}`;
+  return `${StorageService.create_upload_folder_identifier(
+    user_id,
+    cred_id,
+    book_id
+  )}/${filename + extension}`;
 };
 
 StorageService.create_upload_folder_identifier = function(
   user_id,
   cred_id,
   book_id
-){
-  return `${storage_user_hash(user_id)}/${user_id}/${cred_id}/${(book_id || 'NEW')}`;
-}
+) {
+  return `${storage_user_hash(user_id)}/${user_id}/${cred_id}/${book_id ||
+    'NEW'}`;
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Helper/Shared private methods
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function download_s3_file(bucket, key, writeStream){
+function download_s3_file(bucket, key, writeStream) {
   var deferred = q.defer();
-  var readStream = s3.getObject({ Bucket: bucket, Key: key }).createReadStream()
-  readStream.pipe(writeStream)
-    .on('finish', function() {
-      return deferred.resolve({});
-    });
+  var readStream = s3
+    .getObject({ Bucket: bucket, Key: key })
+    .createReadStream();
+  readStream.pipe(writeStream).on('finish', function() {
+    return deferred.resolve({});
+  });
   return deferred.promise;
 }
-
 
 //this method takes a user_id (1, 2, etc) and hash's it so it can be used to serve publically accessible content in a
 //semi-secure way.

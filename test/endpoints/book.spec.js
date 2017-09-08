@@ -190,8 +190,10 @@ describe('Book Endpoints', function() {
           promises.push(DBService.createBook(fake_book));
         }
 
-        q.allSettled(promises).then(function() {})// .delay(1000)
-        .then(done, done);
+        q
+          .allSettled(promises)
+          .then(function() {}) // .delay(1000)
+          .then(done, done);
       });
 
       it('should correctly paginate all books from db', function(done) {

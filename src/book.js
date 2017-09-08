@@ -9,25 +9,22 @@ var JWTokenService = require('./services/jwt_token_service'),
   q = require('q'),
   toMarkdown = require('to-markdown');
 
-var BookEndpoint = module.exports
+var BookEndpoint = module.exports;
 
-BookEndpoint.router = function(event, context, cb){
-  debug('UserEndpoint router event: %o', event)
-  if(event.method == 'POST'){
-    BookEndpoint.create(event,context, cb)
+BookEndpoint.router = function(event, context, cb) {
+  debug('UserEndpoint router event: %o', event);
+  if (event.method == 'POST') {
+    BookEndpoint.create(event, context, cb);
+  } else if (event.method == 'GET') {
+    BookEndpoint.find(event, context, cb);
+  } else if (event.method == 'DELETE' && event.path.id) {
+    BookEndpoint.destroy(event, context, cb);
+  } else {
+    Utilities.errorHandler(cb)(
+      new Error(`Unknown API endpoint: ${event.path.action}`)
+    );
   }
-  else if(event.method == 'GET'){
-    BookEndpoint.find(event, context, cb)
-  }
-  else if(event.method == 'DELETE' && event.path.id){
-    BookEndpoint.destroy(event, context, cb)
-  }
-  else{
-    Utilities.errorHandler(cb)(new Error(`Unknown API endpoint: ${event.path.action}`))
-  }
-}
-
-
+};
 
 BookEndpoint.create = function(event, context, cb) {
   JWTokenService.verify(event.token)
@@ -60,7 +57,6 @@ BookEndpoint.create = function(event, context, cb) {
         metadata_pipeline,
         image_pipeline
       );
-
     })
     .then(function(book_result) {
       return { id: book_result.id };
@@ -68,7 +64,7 @@ BookEndpoint.create = function(event, context, cb) {
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
+};
 BookEndpoint.find = function(event, context, cb) {
   JWTokenService.verify(event.token)
     .then(function(auth) {
@@ -101,7 +97,7 @@ BookEndpoint.find = function(event, context, cb) {
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
+};
 
 BookEndpoint.destroy = function(event, context, cb) {
   //TODO: we should destroy book storage as well.
@@ -118,5 +114,4 @@ BookEndpoint.destroy = function(event, context, cb) {
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
-
+};

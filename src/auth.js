@@ -11,25 +11,22 @@ var q = require('q'),
   Utilities = require('./common/utilities'),
   kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 
+var AuthEndpoint = module.exports;
 
-var AuthEndpoint = module.exports
-
-AuthEndpoint.router = function(event, context, cb){
-  debug('AuthEndpoint router event: %o', event)
-  if(event.path.action == 'login' && event.method == 'POST'){
-    AuthEndpoint.login(event,context, cb)
+AuthEndpoint.router = function(event, context, cb) {
+  debug('AuthEndpoint router event: %o', event);
+  if (event.path.action == 'login' && event.method == 'POST') {
+    AuthEndpoint.login(event, context, cb);
+  } else if (event.path.action == 'register' && event.method == 'POST') {
+    AuthEndpoint.register(event, context, cb);
+  } else if (event.path.action == 'status' && event.method == 'GET') {
+    AuthEndpoint.status(event, context, cb);
+  } else {
+    Utilities.errorHandler(cb)(
+      new Error(`Unknown API endpoint: ${event.path.action}`)
+    );
   }
-  else if(event.path.action == 'register' && event.method == 'POST'){
-    AuthEndpoint.register(event,context, cb)
-  }
-  else if(event.path.action == 'status' && event.method == 'GET'){
-    AuthEndpoint.status(event, context, cb)
-  }
-  else{
-    Utilities.errorHandler(cb)(new Error(`Unknown API endpoint: ${event.path.action}`))
-  }
-}
-
+};
 
 AuthEndpoint.register = function(event, context, cb) {
   //this function should check if an existing user with registered email already exists.
@@ -61,7 +58,7 @@ AuthEndpoint.register = function(event, context, cb) {
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
+};
 AuthEndpoint.login = function(event, context, cb) {
   //this function should check if an existing user with registered email already exists.
   return DBService.findUserByEmail(event.body.email)
@@ -95,15 +92,14 @@ AuthEndpoint.login = function(event, context, cb) {
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
+};
 //this function should check the status of a JWT Token for validity
 AuthEndpoint.status = function(event, context, cb) {
   JWTokenService.verify(event.token)
-    .then(function(auth_data){
-      return {valid: true};
+    .then(function(auth_data) {
+      return { valid: true };
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
     .done();
-}
-
+};
