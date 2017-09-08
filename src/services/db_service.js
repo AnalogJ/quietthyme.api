@@ -181,11 +181,11 @@ dbService.updateUserPlan = function(uid, plan, stripe_sub_id) {
   return db_deferred.promise;
 };
 
-dbService.updateUser = function(user_id, update_data, return_values) {
+dbService.updateUser = function(user_id, update_data, return_values, whitelist) {
 
   //valid auth token,
   //next lets filter the updated user object so it only contains properties that we allow users to update via the API.
-  var whitelist = ["name", "library_uuid", "catalog_token", "password_hash"];
+  whitelist = whitelist || ["name", "library_uuid", "catalog_token"];
 
 
   var update_data = filter(update_data, whitelist);

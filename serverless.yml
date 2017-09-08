@@ -42,6 +42,10 @@ provider:
 
     KLOUDLESS_API_ID: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_ID, env:KLOUDLESS_API_ID}
     KLOUDLESS_API_KEY: ${env:${opt:stage, self:provider.stage}_KLOUDLESS_API_KEY, env:KLOUDLESS_API_KEY}
+
+    PUSH_NOTIFY_PUBLIC_KEY: ${env:${opt:stage, self:provider.stage}_PUSH_NOTIFY_PUBLIC_KEY, env:PUSH_NOTIFY_PUBLIC_KEY}
+    PUSH_NOTIFY_PRIVATE_KEY: ${env:${opt:stage, self:provider.stage}_PUSH_NOTIFY_PRIVATE_KEY, env:PUSH_NOTIFY_PRIVATE_KEY}
+
     DEBUG: ${self:custom.variables.${opt:stage, self:provider.stage}.debug}
     NODE_ENV: production
 

@@ -9,7 +9,14 @@ var q = require('q'),
   SecurityService = require('./services/security_service'),
   Utilities = require('./common/utilities'),
   nconf = require('./common/nconf'),
-  stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY'));
+  stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY')),
+  webPush = require('web-push')
+
+webPush.setVapidDetails(
+  'mailto:hello@quietthyme.com',
+  nconf.get('PUSH_NOTIFY_PUBLIC_KEY'),
+  nconf.get('PUSH_NOTIFY_PRIVATE_KEY'),
+);
 
 var UserEndpoint = module.exports
 
@@ -26,6 +33,12 @@ UserEndpoint.router = function(event, context, cb){
   }
   else if(event.path.action == 'password' && event.method == 'POST'){
     UserEndpoint.password(event, context, cb)
+  }
+  else if(event.path.action == 'pushnotify/subscribe' && event.method == 'POST'){
+    UserEndpoint.pushNotifySubscribe(event, context, cb)
+  }
+  else if(event.path.action == 'pushnotify/test' && event.method == 'POST'){
+    UserEndpoint.pushNotifyTest(event, context, cb)
   }
   else{
     Utilities.errorHandler(cb)(new Error(`Unknown API endpoint: ${event.path.action}`))
@@ -118,7 +131,8 @@ UserEndpoint.password = function (event, context, cb){
           return DBService.updateUser(
             auth.uid,
             {password_hash: hashed_password},
-            true
+            true,
+            ["password_hash"]
           )
         })
     })
@@ -187,3 +201,55 @@ UserEndpoint.plan = function (event, context, cb) {
     .done();
 }
 
+UserEndpoint.pushNotifySubscribe = function (event, context, cb) {
+  //This method will download the
+  JWTokenService.verify(event.token)
+    .then(function(auth) {
+      return DBService.updateUser(
+        auth.uid,
+        {push_notifications: event.body},
+        true,
+        ["push_notifications"]
+      )
+        .then(function(user_data) {
+          //return the new token
+          debug('Updated user_data: %o', user_data);
+          return {};
+        });
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
+
+UserEndpoint.pushNotifyTest = function (event, context, cb) {
+  //This method will download the
+  JWTokenService.verify(event.token)
+    .then(function(auth) {
+      return DBService.findUserById(auth.uid)
+        .then(function(user){
+
+          const payload = JSON.stringify({
+            title: 'Welcome',
+            body: 'Thank you for enabling push notifications',
+            icon: '/assets/favicon/favicon_144.png'
+          });
+
+          return webPush.sendNotification(
+            user.push_notifications,
+            payload,
+            {
+              TTL: 3600 // 1sec * 60 * 60 = 1h
+            })
+        })
+        .then(function(){
+          return {}
+        })
+
+
+
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
