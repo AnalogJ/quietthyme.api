@@ -19,7 +19,7 @@ var userSchema = {
       type: ['string', 'null'],
       default: null,
     },
-    push_notifications: { type: 'object', default: null },
+    push_notifications: { type: 'object', default: {} },
     created_at: { type: 'string', format: 'date-time' },
     updated_at: { type: 'string', format: 'date-time' },
   },
