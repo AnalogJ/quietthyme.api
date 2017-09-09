@@ -52,14 +52,7 @@ AuthEndpoint.register = function(event, context, cb) {
       return  MailchimpService.subscribeUser(user.email, user.first_name, user.last_name, user.uid)
         .then(function(){
           return {
-            token: JWTokenService.issue({
-              uid: user.uid,
-              plan: user.plan,
-              catalog_token: user.catalog_token,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              email: user.email,
-            }),
+            token: JWTokenService.issueFromUser(user),
           };
         })
     })
@@ -88,14 +81,7 @@ AuthEndpoint.login = function(event, context, cb) {
     })
     .then(function(user) {
       return {
-        token: JWTokenService.issue({
-          uid: user.uid,
-          plan: user.plan,
-          catalog_token: user.catalog_token,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-        }),
+        token: JWTokenService.issueFromUser(user),
       };
     })
     .then(Utilities.successHandler(cb))

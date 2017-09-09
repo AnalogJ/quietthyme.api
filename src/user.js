@@ -55,14 +55,7 @@ UserEndpoint.update = function(event, context, cb) {
         //return the new token
         debug('Updated token: %o', user_data);
         return {
-          token: JWTokenService.issue({
-            uid: user_data.uid,
-            plan: user_data.plan,
-            catalog_token: user_data.catalog_token,
-            first_name: user_data.first_name,
-            last_name: user_data.last_name,
-            email: user_data.email,
-          }),
+          token: JWTokenService.issueFromUser(user_data),
         };
       });
     })
@@ -86,14 +79,7 @@ UserEndpoint.catalogRegen = function(event, context, cb) {
         //return the new token
         debug('Updated token: %o', user_data);
         return {
-          token: JWTokenService.issue({
-            uid: user_data.uid,
-            plan: user_data.plan,
-            catalog_token: user_data.catalog_token,
-            first_name: user_data.first_name,
-            last_name: user_data.last_name,
-            email: user_data.email,
-          }),
+          token: JWTokenService.issueFromUser(user_data),
         };
       });
     })

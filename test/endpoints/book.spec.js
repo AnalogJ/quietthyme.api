@@ -19,14 +19,7 @@ describe('Book Endpoints', function() {
       };
       DBService.createUser(user)
         .then(function(user_data) {
-          return JWTTokenService.issue({
-            uid: user_data.uid,
-            plan: user_data.plan,
-            catalog_token: user_data.catalog_token,
-            first_name: user_data.first_name,
-            last_name: user_data.last_name,
-            email: user_data.email,
-          });
+          return JWTTokenService.issueFromUser(user_data);
         })
         .then(function(_token) {
           token = _token;
@@ -99,14 +92,7 @@ describe('Book Endpoints', function() {
       DBService.createUser(user)
         .then(function(user_data) {
           user_id = user_data.uid;
-          return JWTTokenService.issue({
-            uid: user_data.uid,
-            plan: user_data.plan,
-            catalog_token: user_data.catalog_token,
-            first_name: user_data.first_name,
-            last_name: user_data.last_name,
-            email: user_data.email,
-          });
+          return JWTTokenService.issueFromUser(user_data);
         })
         .then(function(_token) {
           token = _token;
@@ -259,14 +245,7 @@ describe('Book Endpoints', function() {
       DBService.createUser(user)
         .then(function(user_data) {
           user_id = user_data.uid;
-          return JWTTokenService.issue({
-            uid: user_data.uid,
-            plan: user_data.plan,
-            catalog_token: user_data.catalog_token,
-            first_name: user_data.first_name,
-            last_name: user_data.last_name,
-            email: user_data.email,
-          });
+          return JWTTokenService.issueFromUser(user_data);
         })
         .then(function(_token) {
           token = _token;
