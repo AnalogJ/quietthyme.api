@@ -28,6 +28,7 @@
     "jsonwebtoken": "^7.1.9",
     "kloudless": "^1.0.3",
     "lodash": "^4.17.4",
+    "mailchimp-api-v3": "^1.7.0",
     "nconf": "^0.8.4",
     "node-uuid": "^1.4.7",
     "node.extend": "^1.1.6",

@@ -8,12 +8,14 @@ describe('AuthService', function() {
   describe('#createEmailUser()', function() {
     it('should correctly create user', function(done) {
       AuthService.createEmailUser(
-        'testAuthCreate',
+        'testAuthFirstNameCreate',
+        'testAuthLastNameCreate',
         'testAuthCreate@example.com',
         'testAuthPassword'
       )
         .then(function(user) {
-          user.name.should.eql('testAuthCreate');
+          user.first_name.should.eql('testAuthFirstNameCreate');
+          user.last_name.should.eql('testAuthLastNameCreate');
           user.email.should.eql('testAuthCreate@example.com');
         })
         .then(done, done);

@@ -59,7 +59,8 @@ UserEndpoint.update = function(event, context, cb) {
             uid: user_data.uid,
             plan: user_data.plan,
             catalog_token: user_data.catalog_token,
-            name: user_data.name,
+            first_name: user_data.first_name,
+            last_name: user_data.last_name,
             email: user_data.email,
           }),
         };
@@ -89,7 +90,8 @@ UserEndpoint.catalogRegen = function(event, context, cb) {
             uid: user_data.uid,
             plan: user_data.plan,
             catalog_token: user_data.catalog_token,
-            name: user_data.name,
+            first_name: user_data.first_name,
+            last_name: user_data.last_name,
             email: user_data.email,
           }),
         };
@@ -184,7 +186,8 @@ UserEndpoint.plan = function(event, context, cb) {
                 uid: user_data.uid,
                 plan: event.body.planId.split('_')[0],
                 catalog_token: user_data.catalog_token,
-                name: user_data.name,
+                first_name: user_data.first_name,
+                last_name: user_data.last_name,
                 email: user_data.email,
               }),
             };

@@ -3,7 +3,8 @@ var userSchema = {
   additionalProperties: false,
   properties: {
     uid: { type: 'string' },
-    name: { type: 'string' },
+    first_name: { type: 'string' },
+    last_name: { type: 'string' },
     email: { type: 'string' },
     password_hash: { type: 'string' },
     plan: {

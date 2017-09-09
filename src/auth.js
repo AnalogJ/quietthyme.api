@@ -6,10 +6,12 @@ var q = require('q'),
   HttpError = require('./common/http_error'),
   DBService = require('./services/db_service'),
   AuthService = require('./services/auth_service'),
+  MailchimpService = require('./services/mailchimp_service'),
   JWTokenService = require('./services/jwt_token_service'),
   SecurityService = require('./services/security_service'),
   Utilities = require('./common/utilities'),
-  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
+  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'))
+
 
 var AuthEndpoint = module.exports;
 
@@ -37,7 +39,8 @@ AuthEndpoint.register = function(event, context, cb) {
         throw 'User already exists';
       } else {
         return AuthService.createEmailUser(
-          event.body.name,
+          event.body.first_name,
+          event.body.last_name,
           event.body.email,
           event.body.password
         );
@@ -45,15 +48,20 @@ AuthEndpoint.register = function(event, context, cb) {
     })
     .then(function(user) {
       debug('Newly created user: %o', user);
-      return {
-        token: JWTokenService.issue({
-          uid: user.uid,
-          plan: user.plan,
-          catalog_token: user.catalog_token,
-          name: user.name,
-          email: user.email,
-        }),
-      };
+
+      return  MailchimpService.subscribeUser(user.email, user.first_name, user.last_name, user.uid)
+        .then(function(){
+          return {
+            token: JWTokenService.issue({
+              uid: user.uid,
+              plan: user.plan,
+              catalog_token: user.catalog_token,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              email: user.email,
+            }),
+          };
+        })
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
@@ -84,7 +92,8 @@ AuthEndpoint.login = function(event, context, cb) {
           uid: user.uid,
           plan: user.plan,
           catalog_token: user.catalog_token,
-          name: user.name,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
         }),
       };

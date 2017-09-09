@@ -28,7 +28,8 @@ describe('DBService', function() {
   describe('#createUser()', function() {
     it('should correctly createUser', function(done) {
       var user = {
-        name: 'test1',
+        first_name: 'test1',
+        last_name: 'last',
         email: 'test1@example.com',
         password_hash:
           '$2a$10$deIH248Ql0zPgy1qGz8LhOdC6rVimyXwxzPPcmbqvsIv9p5wkm2L6',
@@ -41,7 +42,8 @@ describe('DBService', function() {
       DBService.createUser(user)
         .then(function(userresp) {
           should.exist(userresp.uid);
-          userresp.name.should.eql('test1');
+          userresp.first_name.should.eql('test1');
+          userresp.last_name.should.eql('last');
           userresp.email.should.eql('test1@example.com');
           userresp.catalog_token.should.eql('lousing-bobwhite-angled-augers');
           userresp.plan.should.eql('none');
@@ -201,7 +203,7 @@ describe('DBService', function() {
         user_id: '123-456-789',
         service_type: 'dropbox',
         service_id: '12345',
-        email: 'test@test.com',
+        email: 'test@example.com',
         oauth: { test: 'TEst' },
       };
       DBService.createCredential(credential)
@@ -210,7 +212,7 @@ describe('DBService', function() {
           credential_resp.user_id.should.eql('123-456-789');
           credential_resp.service_type.should.eql('dropbox');
           credential_resp.service_id.should.eql('12345');
-          credential_resp.email.should.eql('test@test.com');
+          credential_resp.email.should.eql('test@example.com');
           credential_resp.oauth.should.eql({ test: 'TEst' });
         })
         .then(done, done);
@@ -224,7 +226,7 @@ describe('DBService', function() {
         user_id: 'user-id',
         service_type: 'dropbox',
         service_id: '12345',
-        email: 'test@test.com',
+        email: 'test@example.com',
         oauth: { test: 'TEst' },
       })
         .then(function(credential_data) {
@@ -282,7 +284,7 @@ describe('DBService', function() {
         user_id: 'user-service-id',
         service_type: 'dropbox',
         service_id: 'service-id-1234',
-        email: 'test@test.com',
+        email: 'test@example.com',
         oauth: { test: 'TEst' },
       })
         .then(function(credential_data) {
@@ -316,7 +318,7 @@ describe('DBService', function() {
         user_id: 'user-cred-query-id',
         service_type: 'dropbox',
         service_id: 'service-id-1234',
-        email: 'test@test.com',
+        email: 'test@example.com',
         oauth: { test: 'TEst' },
       })
         .then(function() {
@@ -324,7 +326,7 @@ describe('DBService', function() {
             user_id: 'user-cred-query-id',
             service_type: 'dropbox',
             service_id: 'service-id-1234',
-            email: 'test@test.com',
+            email: 'test@example.com',
             oauth: { test: 'TEst' },
           });
         })
@@ -333,7 +335,7 @@ describe('DBService', function() {
             user_id: 'user-cred-query-id',
             service_type: 'dropbox',
             service_id: 'service-id-1234',
-            email: 'test@test.com',
+            email: 'test@example.com',
             oauth: { test: 'TEst' },
           });
         })
@@ -347,7 +349,7 @@ describe('DBService', function() {
           credentials[0].user_id.should.eql('user-cred-query-id');
           credentials[0].service_type.should.eql('dropbox');
           credentials[0].service_id.should.eql('service-id-1234');
-          credentials[0].email.should.eql('test@test.com');
+          credentials[0].email.should.eql('test@example.com');
         })
         .then(done, done);
     });
@@ -368,7 +370,7 @@ describe('DBService', function() {
         user_id: 'user-id',
         service_type: 'dropbox',
         service_id: '12345',
-        email: 'test@test.com',
+        email: 'test@example.com',
         oauth: { test: 'TEst' },
       })
         .then(function(credential_data) {

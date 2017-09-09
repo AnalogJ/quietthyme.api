@@ -49,7 +49,7 @@
                         "S": "2017-06-26T05:43:08Z"
                     },
                     "email": {
-                        "S": "test2@test.com"
+                        "S": "test2@example.com"
                     },
                     "name": {
                         "NULL": true
@@ -437,7 +437,7 @@
                     "S": "2017-06-26T05:43:09Z"
                 },
                 "email": {
-                    "S": "test2@test.com"
+                    "S": "test2@example.com"
                 },
                 "name": {
                     "NULL": true

@@ -7,7 +7,8 @@ describe('Auth Endpoints', function() {
   describe('#register()', function() {
     before(function(done) {
       var user = {
-        name: 'testplan',
+        first_name: 'testplan',
+        last_name: 'testplan',
         email: 'alreadyexists@example.com',
         password_hash: 'testplanhash',
         catalog_token: 'testplancatalog',
@@ -18,7 +19,8 @@ describe('Auth Endpoints', function() {
     it('should correctly register new user', function(done) {
       var event = {
         body: {
-          name: 'test user',
+          first_name: 'test user',
+          last_name: 'test user',
           email: 'authregister@example.com',
           password: '12345',
         },
@@ -35,7 +37,8 @@ describe('Auth Endpoints', function() {
     it('should return an error if user already exists', function(done) {
       var event = {
         body: {
-          name: 'test user',
+          first_name: 'test user',
+          last_name: 'test user',
           email: 'alreadyexists@example.com',
           password: '12345',
         },
@@ -55,7 +58,8 @@ describe('Auth Endpoints', function() {
       SecurityService.hash_password('myuserpassword')
         .then(function(password) {
           var user = {
-            name: 'testplan',
+            first_name: 'testplan',
+            last_name: 'testplan',
             email: 'loginmyuser@example.com',
             password_hash: password,
             catalog_token: 'testplancatalog',

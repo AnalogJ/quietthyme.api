@@ -29,7 +29,7 @@ describe.skip('MailService', function() {
     it('Should fail if no template provided', function(done) {
       var options = {
         to: {
-          email: 'test@test.com',
+          email: 'test@example.com',
         },
         subject: 'test subject',
       };
@@ -57,7 +57,7 @@ describe.skip('MailService', function() {
       var options = {
         template: 'welcome',
         to: {
-          email: 'test@test.com',
+          email: 'test@example.com',
         },
       };
 
