@@ -1,5 +1,5 @@
 # QuietThyme API
-
+[![Project](https://img.shields.io/badge/project-waffle.io-blue.svg)](http://waffle.io/AnalogJ/quietthyme.api)
 [![CircleCI](https://circleci.com/gh/AnalogJ/quietthyme.api.svg?style=shield)](https://circleci.com/gh/AnalogJ/quietthyme.api)
 [![Coverage Status](https://coveralls.io/repos/github/AnalogJ/quietthyme.api/badge.svg?branch=beta)](https://coveralls.io/github/AnalogJ/quietthyme.api?branch=beta)
 [![GitHub license](https://img.shields.io/github/license/AnalogJ/quietthyme.api.svg)](https://github.com/AnalogJ/quietthyme.api/blob/master/LICENSE)
