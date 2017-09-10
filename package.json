@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "debug": "^2.6.3",
     "goodreads.js": "^0.0.9",
+    "handlebars": "^4.0.10",
     "jsonwebtoken": "^7.1.9",
     "kloudless": "^1.0.3",
     "lodash": "^4.17.4",
