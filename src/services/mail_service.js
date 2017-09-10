@@ -1,5 +1,5 @@
 'use strict';
-const nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer');
 var q = require('q');
 var mg = require('nodemailer-mailgun-transport');
 var nconf = require('../common/nconf');
