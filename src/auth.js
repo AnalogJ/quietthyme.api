@@ -10,8 +10,7 @@ var q = require('q'),
   JWTokenService = require('./services/jwt_token_service'),
   SecurityService = require('./services/security_service'),
   Utilities = require('./common/utilities'),
-  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'))
-
+  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
 
 var AuthEndpoint = module.exports;
 
@@ -49,12 +48,16 @@ AuthEndpoint.register = function(event, context, cb) {
     .then(function(user) {
       debug('Newly created user: %o', user);
 
-      return  MailchimpService.subscribeUser(user.email, user.first_name, user.last_name, user.uid)
-        .then(function(){
-          return {
-            token: JWTokenService.issueFromUser(user),
-          };
-        })
+      return MailchimpService.subscribeUser(
+        user.email,
+        user.first_name,
+        user.last_name,
+        user.uid
+      ).then(function() {
+        return {
+          token: JWTokenService.issueFromUser(user),
+        };
+      });
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))

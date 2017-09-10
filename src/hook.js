@@ -17,7 +17,10 @@ var HookEndpoint = module.exports;
 
 HookEndpoint.router = function(event, context, cb) {
   debug('HookEndpoint router event: %o', event);
-  if (event.pathParameters.action == 'kloudless' && event.httpMethod == 'POST') {
+  if (
+    event.pathParameters.action == 'kloudless' &&
+    event.httpMethod == 'POST'
+  ) {
     HookEndpoint.kloudless(event, context, cb);
   } else if (event.pathParameters.action == 'mailchimp') {
     HookEndpoint.mailchimp(event, context, cb);
@@ -228,36 +231,38 @@ HookEndpoint.kloudless = function(event, context, cb) {
     .done();
 };
 
-
 HookEndpoint.mailchimp = function(event, context, cb) {
   //check if this is a valid callback.
   debug('Mailchimp hook data: %o', event);
 
-  var promise = q({}) //this is the mailchimp validator.
-  if(event.httpMethod == 'POST'){
+  var promise = q({}); //this is the mailchimp validator.
+  if (event.httpMethod == 'POST') {
     promise = promise
-      .then(function(){
+      .then(function() {
         //a new user subcribed to the mailchimp mailing list, lets send them the welcome email.
         var parsed = require('querystring').parse(event.body);
-        return MailService.welcomeEmail(parsed['data[email]'], parsed['data[merges][FNAME]'])
+        return MailService.welcomeEmail(
+          parsed['data[email]'],
+          parsed['data[merges][FNAME]']
+        );
       })
-      .then(function(info){
-        console.info('Sent welcome email to:' + parsed['data[email]'])
-        debug('Mailgun response: %o', info)
+      .then(function(info) {
+        console.info('Sent welcome email to:' + parsed['data[email]']);
+        debug('Mailgun response: %o', info);
       })
-      .catch(function(err){
+      .catch(function(err) {
         console.error(
           "An error occurred while attempting to send welcome email to new Mailchimp subscriber. Can't continue so we'll skip email"
         );
         console.error('The failed email was:', parsed['data[email]']);
         console.error('The error message was:', err);
-      })
+      });
   }
   promise
     .then(function() {
       return {
         statusCode: 200,
-        body: ''
+        body: '',
       };
     })
     .then(Utilities.successHandler(cb))

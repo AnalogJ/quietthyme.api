@@ -65,7 +65,8 @@ UserEndpoint.update = function(event, context, cb) {
 };
 
 UserEndpoint.catalogRegen = function(event, context, cb) {
-  q.all([
+  q
+    .all([
       JWTokenService.verify(event.token),
       SecurityService.generate_catalog_token(),
     ])

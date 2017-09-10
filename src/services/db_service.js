@@ -189,7 +189,12 @@ dbService.updateUser = function(
 ) {
   //valid auth token,
   //next lets filter the updated user object so it only contains properties that we allow users to update via the API.
-  whitelist = whitelist || ['first_name', 'last_name', 'library_uuid', 'catalog_token'];
+  whitelist = whitelist || [
+    'first_name',
+    'last_name',
+    'library_uuid',
+    'catalog_token',
+  ];
 
   var update_data = filter(update_data, whitelist);
 

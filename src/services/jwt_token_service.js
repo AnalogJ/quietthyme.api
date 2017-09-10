@@ -15,17 +15,20 @@ var jwt = require('jsonwebtoken'),
   nconf = require('../common/nconf'),
   tokenSecret = nconf.get('ENCRYPTION_JWT_PASSPHRASE');
 
-var jwtTokenService = module.exports
+var jwtTokenService = module.exports;
 
 jwtTokenService.issueFromUser = function(user_data, type) {
-  return jwtTokenService.issue({
-    uid: user_data.uid,
-    plan: user_data.plan,
-    catalog_token: user_data.catalog_token,
-    first_name: user_data.first_name,
-    last_name: user_data.last_name,
-    email: user_data.email,
-  }, type)
+  return jwtTokenService.issue(
+    {
+      uid: user_data.uid,
+      plan: user_data.plan,
+      catalog_token: user_data.catalog_token,
+      first_name: user_data.first_name,
+      last_name: user_data.last_name,
+      email: user_data.email,
+    },
+    type
+  );
 };
 
 // Generates a token from supplied payload

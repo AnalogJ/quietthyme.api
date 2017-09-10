@@ -2,7 +2,9 @@
 var nconf = require('./nconf');
 module.exports = {
   deploy_sha: nconf.get('DEPLOY_SHA'),
-  web_domain: `${(nconf.get('STAGE') == 'master' ? 'www' : 'beta')}.quietthyme.com`,
+  web_domain: `${nconf.get('STAGE') == 'master'
+    ? 'www'
+    : 'beta'}.quietthyme.com`,
   tables: {
     users: 'quietthyme-api-' + nconf.get('STAGE') + '-users',
     credentials: 'quietthyme-api-' + nconf.get('STAGE') + '-credentials',
