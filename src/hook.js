@@ -16,13 +16,13 @@ var HookEndpoint = module.exports;
 
 HookEndpoint.router = function(event, context, cb) {
   debug('HookEndpoint router event: %o', event);
-  if (event.path.action == 'kloudless' && event.method == 'POST') {
+  if (event.pathParameters.action == 'kloudless' && event.httpMethod == 'POST') {
     HookEndpoint.kloudless(event, context, cb);
-  } else if (event.path.action == 'mailchimp') {
+  } else if (event.pathParameters.action == 'mailchimp') {
     HookEndpoint.mailchimp(event, context, cb);
   } else {
     Utilities.errorHandler(cb)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
 };
@@ -233,7 +233,7 @@ HookEndpoint.mailchimp = function(event, context, cb) {
   debug('Mailchimp hook data: %o', event);
 
   var promise = q({}) //this is the mailchimp validator.
-  if(event.method == 'POST'){
+  if(event.httpMethod == 'POST'){
 
   }
   promise
@@ -247,3 +247,5 @@ HookEndpoint.mailchimp = function(event, context, cb) {
     .fail(Utilities.errorHandler(cb))
     .done();
 };
+
+//TODO: stripe callback should be handled here.
