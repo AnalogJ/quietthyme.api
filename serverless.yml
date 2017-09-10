@@ -45,6 +45,7 @@ provider:
     PUSH_NOTIFY_PRIVATE_KEY: ${env:${opt:stage, self:provider.stage}_PUSH_NOTIFY_PRIVATE_KEY, env:PUSH_NOTIFY_PRIVATE_KEY}
     MAILCHIMP_API_KEY: ${env:${opt:stage, self:provider.stage}_MAILCHIMP_API_KEY, env:MAILCHIMP_API_KEY}
     MAILCHIMP_LIST_ID: ${env:${opt:stage, self:provider.stage}_MAILCHIMP_LIST_ID, env:MAILCHIMP_LIST_ID}
+    MAILGUN_API_KEY: ${env:${opt:stage, self:provider.stage}_MAILGUN_API_KEY, env:MAILGUN_API_KEY}
 
     DEBUG: ${self:custom.variables.${opt:stage, self:provider.stage}.debug}
     NODE_ENV: production
@@ -194,7 +195,6 @@ package:
 
 functions:
 # UNAUTHENTICATED METHODS
-# TODO: we should re-enable this endpoint once serverless figures out how to get around 200 CF limit.
   version:
     handler: src/version.handler
     events:
@@ -205,11 +205,13 @@ functions:
           integration: lambda
 
 # hooks are for notifications about events like books being moved, and maybe payments.
-  hookkloudlessevent:
-    handler: src/hook.kloudless
+  # hook methods (kloudless/mailchimp/stripe)
+  hook:
+    handler: src/hook.router
     events:
-    - http: POST hook/kloudless
-
+      - http:
+          path: 'hook/{action+}'
+          method: ANY
 
 # OAUTH connect & callback endpoints
 

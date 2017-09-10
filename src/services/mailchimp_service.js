@@ -4,7 +4,7 @@ var q = require('q');
 var nconf = require('../common/nconf');
 var Mailchimp = require('mailchimp-api-v3')
 var crypto = require('crypto');
-var mailchimpService = exports;
+var mailchimpService = module.exports;
 
 mailchimpService.subscribeUser = function(
   email,

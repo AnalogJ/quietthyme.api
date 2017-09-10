@@ -12,7 +12,22 @@ var nconf = require('./common/nconf');
 var aws = require('aws-sdk');
 var lambda = new aws.Lambda();
 
-module.exports.kloudless = function(event, context, cb) {
+var HookEndpoint = module.exports;
+
+HookEndpoint.router = function(event, context, cb) {
+  debug('HookEndpoint router event: %o', event);
+  if (event.path.action == 'kloudless' && event.method == 'POST') {
+    HookEndpoint.kloudless(event, context, cb);
+  } else if (event.path.action == 'mailchimp') {
+    HookEndpoint.mailchimp(event, context, cb);
+  } else {
+    Utilities.errorHandler(cb)(
+      new Error(`Unknown API endpoint: ${event.path.action}`)
+    );
+  }
+};
+
+HookEndpoint.kloudless = function(event, context, cb) {
   //check if this is a valid callback.
   debug('Kloudless hook data: %o', event);
   var kloudless_signature_header = event.headers['X-Kloudless-Signature'];
@@ -205,6 +220,27 @@ module.exports.kloudless = function(event, context, cb) {
       return {
         statusCode: 200,
         body: nconf.get('KLOUDLESS_API_ID'),
+      };
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+};
+
+
+HookEndpoint.mailchimp = function(event, context, cb) {
+  //check if this is a valid callback.
+  debug('Mailchimp hook data: %o', event);
+
+  var promise = q({}) //this is the mailchimp validator.
+  if(event.method == 'POST'){
+
+  }
+  promise
+    .then(function() {
+      return {
+        statusCode: 200,
+        body: ''
       };
     })
     .then(Utilities.successHandler(cb))
