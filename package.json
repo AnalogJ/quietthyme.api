@@ -13,8 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/AnalogJ/quietthyme.api.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jason Kulatunga <jason@thesparktree.com>",
+  "license": "All Rights Reserved",
+  "private": true,
   "bugs": {
     "url": "https://github.com/AnalogJ/quietthyme.api/issues"
   },
