@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var q = require('q');
 var DBService = require('./services/db_service');
 var KloudlessService = require('./services/kloudless_service');
+var MailService = require('./services/mail_service');
 var Utilities = require('./common/utilities');
 var Constants = require('./common/constants');
 var path = require('path');
@@ -234,7 +235,23 @@ HookEndpoint.mailchimp = function(event, context, cb) {
 
   var promise = q({}) //this is the mailchimp validator.
   if(event.httpMethod == 'POST'){
-
+    promise = promise
+      .then(function(){
+        //a new user subcribed to the mailchimp mailing list, lets send them the welcome email.
+        var parsed = require('querystring').parse(event.body);
+        return MailService.welcomeEmail(parsed['data[email]'], parsed['data[merges][FNAME]'])
+      })
+      .then(function(info){
+        console.info('Sent welcome email to:' + parsed['data[email]'])
+        debug('Mailgun response: %o', info)
+      })
+      .catch(function(err){
+        console.error(
+          "An error occurred while attempting to send welcome email to new Mailchimp subscriber. Can't continue so we'll skip email"
+        );
+        console.error('The failed email was:', parsed['data[email]']);
+        console.error('The error message was:', err);
+      })
   }
   promise
     .then(function() {

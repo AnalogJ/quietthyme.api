@@ -38,7 +38,8 @@ api.quietthyme.com/v1/catalog/123456
 	- Register custom app credentials for all storage apps.
 - Storage Services:
 	- Register webhooks for Dropbox, Box, GDrive that push events to kloudless.
-
+- Email
+	- Add mailchimp webhook to point to quietthyme.com
 
 # Local Development
 
