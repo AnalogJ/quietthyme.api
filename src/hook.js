@@ -244,19 +244,20 @@ HookEndpoint.mailchimp = function(event, context, cb) {
         return MailService.welcomeEmail(
           parsed['data[email]'],
           parsed['data[merges][FNAME]']
-        );
+        )
+        .then(function(info) {
+          console.info('Sent welcome email to:' + parsed['data[email]']);
+          debug('Mailgun response: %o', info);
+        })
+        .catch(function(err) {
+          console.error(
+            "An error occurred while attempting to send welcome email to new Mailchimp subscriber. Can't continue so we'll skip email"
+          );
+          console.error('The failed email was:', parsed['data[email]']);
+          console.error('The error message was:', err);
+        });
       })
-      .then(function(info) {
-        console.info('Sent welcome email to:' + parsed['data[email]']);
-        debug('Mailgun response: %o', info);
-      })
-      .catch(function(err) {
-        console.error(
-          "An error occurred while attempting to send welcome email to new Mailchimp subscriber. Can't continue so we'll skip email"
-        );
-        console.error('The failed email was:', parsed['data[email]']);
-        console.error('The error message was:', err);
-      });
+
   }
   promise
     .then(function() {
