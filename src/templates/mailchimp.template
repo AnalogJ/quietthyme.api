@@ -1,0 +1,973 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html style="font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-size: 10px; -webkit-tap-highlight-color: transparent; position: relative;">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        a:active {
+            outline: 0;
+        }
+
+        a:hover {
+            outline: 0;
+        }
+
+        img {
+            border: 0;
+        }
+
+        *:before {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        *:after {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #333333;
+            background-color: #fff;
+        }
+
+        a:hover {
+            color: #23527c;
+            text-decoration: underline;
+        }
+
+        a:focus {
+            color: #23527c;
+            text-decoration: underline;
+        }
+
+        a:focus {
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        .sr-only-focusable:active {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+        }
+
+        .sr-only-focusable:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+        }
+
+        a.text-primary:hover {
+            color: #286090;
+        }
+
+        a.text-primary:focus {
+            color: #286090;
+        }
+
+        a.text-success:hover {
+            color: #2b542c;
+        }
+
+        a.text-success:focus {
+            color: #2b542c;
+        }
+
+        a.text-info:hover {
+            color: #245269;
+        }
+
+        a.text-info:focus {
+            color: #245269;
+        }
+
+        a.text-warning:hover {
+            color: #66512c;
+        }
+
+        a.text-warning:focus {
+            color: #66512c;
+        }
+
+        a.text-danger:hover {
+            color: #843534;
+        }
+
+        a.text-danger:focus {
+            color: #843534;
+        }
+
+        a.bg-primary:hover {
+            background-color: #286090;
+        }
+
+        a.bg-primary:focus {
+            background-color: #286090;
+        }
+
+        a.bg-success:hover {
+            background-color: #c1e2b3;
+        }
+
+        a.bg-success:focus {
+            background-color: #c1e2b3;
+        }
+
+        a.bg-info:hover {
+            background-color: #afd9ee;
+        }
+
+        a.bg-info:focus {
+            background-color: #afd9ee;
+        }
+
+        a.bg-warning:hover {
+            background-color: #f7ecb5;
+        }
+
+        a.bg-warning:focus {
+            background-color: #f7ecb5;
+        }
+
+        a.bg-danger:hover {
+            background-color: #e4b9b9;
+        }
+
+        a.bg-danger:focus {
+            background-color: #e4b9b9;
+        }
+
+        .dl-horizontal dd:before {
+            content: " ";
+            display: table;
+        }
+
+        .dl-horizontal dd:after {
+            content: " ";
+            display: table;
+        }
+
+        .dl-horizontal dd:after {
+            clear: both;
+        }
+
+        blockquote footer:before {
+            content: '\2014 \00A0';
+        }
+
+        blockquote small:before {
+            content: '\2014 \00A0';
+        }
+
+        blockquote .small:before {
+            content: '\2014 \00A0';
+        }
+
+        .blockquote-reverse footer:before {
+            content: '';
+        }
+
+        .blockquote-reverse small:before {
+            content: '';
+        }
+
+        .blockquote-reverse .small:before {
+            content: '';
+        }
+
+        blockquote.pull-right footer:before {
+            content: '';
+        }
+
+        blockquote.pull-right small:before {
+            content: '';
+        }
+
+        blockquote.pull-right .small:before {
+            content: '';
+        }
+
+        .blockquote-reverse footer:after {
+            content: '\00A0 \2014';
+        }
+
+        .blockquote-reverse small:after {
+            content: '\00A0 \2014';
+        }
+
+        .blockquote-reverse .small:after {
+            content: '\00A0 \2014';
+        }
+
+        blockquote.pull-right footer:after {
+            content: '\00A0 \2014';
+        }
+
+        blockquote.pull-right small:after {
+            content: '\00A0 \2014';
+        }
+
+        blockquote.pull-right .small:after {
+            content: '\00A0 \2014';
+        }
+
+        .dropdown-toggle:focus {
+            outline: 0;
+        }
+
+        .dropdown-menu > li > a:hover {
+            text-decoration: none;
+            color: #262626;
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-menu > li > a:focus {
+            text-decoration: none;
+            color: #262626;
+            background-color: #f5f5f5;
+        }
+
+        .dropdown-menu > .active > a:hover {
+            color: #fff;
+            text-decoration: none;
+            outline: 0;
+            background-color: #337ab7;
+        }
+
+        .dropdown-menu > .active > a:focus {
+            color: #fff;
+            text-decoration: none;
+            outline: 0;
+            background-color: #337ab7;
+        }
+
+        .dropdown-menu > .disabled > a:hover {
+            color: #777777;
+        }
+
+        .dropdown-menu > .disabled > a:focus {
+            color: #777777;
+        }
+
+        .dropdown-menu > .disabled > a:hover {
+            text-decoration: none;
+            background-color: transparent;
+            background-image: none;
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+            cursor: not-allowed;
+        }
+
+        .dropdown-menu > .disabled > a:focus {
+            text-decoration: none;
+            background-color: transparent;
+            background-image: none;
+            filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+            cursor: not-allowed;
+        }
+
+        .input-group .form-control:focus {
+            z-index: 3;
+        }
+
+        .input-group-btn > .btn:hover {
+            z-index: 2;
+        }
+
+        .input-group-btn > .btn:focus {
+            z-index: 2;
+        }
+
+        .input-group-btn > .btn:active {
+            z-index: 2;
+        }
+
+        a.label:hover {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a.label:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .label-default[href]:hover {
+            background-color: #5e5e5e;
+        }
+
+        .label-default[href]:focus {
+            background-color: #5e5e5e;
+        }
+
+        .label-primary[href]:hover {
+            background-color: #286090;
+        }
+
+        .label-primary[href]:focus {
+            background-color: #286090;
+        }
+
+        .label-success[href]:hover {
+            background-color: #449d44;
+        }
+
+        .label-success[href]:focus {
+            background-color: #449d44;
+        }
+
+        .label-info[href]:hover {
+            background-color: #31b0d5;
+        }
+
+        .label-info[href]:focus {
+            background-color: #31b0d5;
+        }
+
+        .label-warning[href]:hover {
+            background-color: #ec971f;
+        }
+
+        .label-warning[href]:focus {
+            background-color: #ec971f;
+        }
+
+        .label-danger[href]:hover {
+            background-color: #c9302c;
+        }
+
+        .label-danger[href]:focus {
+            background-color: #c9302c;
+        }
+
+        .clearfix:before {
+            content: " ";
+            display: table;
+        }
+
+        .clearfix:after {
+            content: " ";
+            display: table;
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        @-ms-viewport {
+            width: device-width;
+        }
+
+        body {
+            background: #FCFDFF;
+            color: #140b2f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 400;
+            line-height: 28px;
+        }
+
+        a:hover {
+            color: #5E35B1;
+            text-decoration: none;
+        }
+
+        a:focus {
+            color: #5E35B1;
+            text-decoration: none;
+        }
+
+        a:active {
+            color: #5E35B1;
+            text-decoration: none;
+        }
+
+        a.delete:hover {
+            color: #E45734;
+        }
+
+        .btn:active {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            outline: none;
+        }
+
+        .btn:focus {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            outline: none;
+        }
+
+        .btn.btn-subtle:hover {
+            border: 1px solid #E7E6EA;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn.btn-subtle:active {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            outline: none;
+        }
+
+        .btn.btn-subtle:focus {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            outline: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #5E35B1;
+            color: #FFF;
+        }
+
+        .btn-primary:active {
+            background: #238b53;
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            color: #FFF;
+        }
+
+        .btn-primary:focus {
+            background: #238b53;
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #238b53;
+            color: #FFF;
+        }
+
+        .btn-green:hover {
+            background: #00a091;
+        }
+
+        .btn-green:active {
+            background: #009688;
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #009688;
+            color: #FFF;
+        }
+
+        .btn-green:focus {
+            background: #009688;
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #009688;
+            color: #FFF;
+        }
+
+        .btn-secondary:hover {
+            background-color: #FAFAFB;
+            color: #238b53;
+        }
+
+        .btn-secondary:focus {
+            color: #238b53;
+        }
+
+        .btn-cancel:active {
+            color: #5E35B1;
+        }
+
+        .btn-cancel:hover {
+            color: #5E35B1;
+        }
+
+        .btn-cancel:focus {
+            color: #5E35B1;
+        }
+
+        .btn-delete:hover {
+            background: #e76a4b;
+            color: #FFF;
+        }
+
+        .btn-delete:active {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #E45734;
+            color: #FFF;
+        }
+
+        .btn-delete:focus {
+            box-shadow: 0 0 0 2px #FFF, 0 0 0 4px #E45734;
+            color: #FFF;
+        }
+
+        @keyframes bounce {
+
+        }
+
+        .devise-form .help-links a:hover {
+            color: #238b53;
+        }
+
+        @keyframes shake {
+
+        }
+
+        .revealable_password .password-input:hover span {
+            border: 1px solid #C4C2CB;
+            border-left: 0;
+        }
+
+        .revealable_password .password-input:hover input:not(:focus) {
+            border: 1px solid #C4C2CB;
+            border-right: 0;
+        }
+
+        .revealable_password .password-input input:focus {
+            border-right: 0;
+        }
+
+        .form-control:hover {
+            border: 1px solid #C4C2CB;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control:focus {
+            border: 1px solid #238b53;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.1);
+            outline: 0;
+        }
+
+        .form-control[disabled='disabled']:hover {
+            border: 1px solid #E7E6EA;
+        }
+
+        input[type='checkbox']::after {
+            background-color: #FFF;
+            background-image: url(https://dovetailapp.com/assets/sprites/sprite-checkmark-7bc5d78ebd70dc73afdc7f31c8053de9f6fc62f4b24da23cb7f597da057e388c.svg);
+            background-position: 0 0;
+            border: 1px solid #E7E6EA;
+            border-radius: 3px;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.1);
+            color: #E7E6EA;
+            content: '';
+            display: inline-block;
+            font-size: 20px;
+            font-weight: 600;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            width: 30px;
+        }
+
+        input[type='checkbox']:hover::after {
+            background-color: #FAFAFB;
+        }
+
+        input[type='checkbox']:checked::after {
+            background-color: #FFF;
+            background-position: 30px 0;
+            border: 1px solid #238b53;
+        }
+
+        .has-error .help-block::first-letter {
+            text-transform: capitalize;
+        }
+
+        .has-error .form-control:focus {
+            border: 1px solid #E45734;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .row:hover {
+            background-color: #FAFAFB;
+        }
+
+        header a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            outline: none;
+        }
+
+        header a:active {
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            outline: none;
+        }
+
+        header a:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            outline: none;
+        }
+
+        header .active:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        header .active:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-mobile a:hover {
+            background-color: #FAFAFB;
+            color: #5E35B1;
+        }
+
+        .nav-mobile a::first-letter {
+            text-transform: capitalize;
+        }
+
+        body {
+            background-color: #FFF !important;
+        }
+
+        @media (min-width: 768px) {
+            .lead {
+                font-size: 21px;
+            }
+
+            .dl-horizontal dt {
+                float: left;
+                width: 160px;
+                clear: left;
+                text-align: right;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .dl-horizontal dd {
+                margin-left: 180px;
+            }
+
+            .navbar-right .dropdown-menu {
+                right: 0;
+                left: auto;
+            }
+
+            .navbar-right .dropdown-menu-left {
+                left: 0;
+                right: auto;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .visible-xs {
+                display: block !important;
+            }
+
+            table.visible-xs {
+                display: table !important;
+            }
+
+            tr.visible-xs {
+                display: table-row !important;
+            }
+
+            th.visible-xs {
+                display: table-cell !important;
+            }
+
+            td.visible-xs {
+                display: table-cell !important;
+            }
+
+            .visible-xs-block {
+                display: block !important;
+            }
+
+            .visible-xs-inline {
+                display: inline !important;
+            }
+
+            .visible-xs-inline-block {
+                display: inline-block !important;
+            }
+
+            .hidden-xs {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .visible-sm {
+                display: block !important;
+            }
+
+            table.visible-sm {
+                display: table !important;
+            }
+
+            tr.visible-sm {
+                display: table-row !important;
+            }
+
+            th.visible-sm {
+                display: table-cell !important;
+            }
+
+            td.visible-sm {
+                display: table-cell !important;
+            }
+
+            .visible-sm-block {
+                display: block !important;
+            }
+
+            .visible-sm-inline {
+                display: inline !important;
+            }
+
+            .visible-sm-inline-block {
+                display: inline-block !important;
+            }
+
+            .hidden-sm {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .visible-md {
+                display: block !important;
+            }
+
+            table.visible-md {
+                display: table !important;
+            }
+
+            tr.visible-md {
+                display: table-row !important;
+            }
+
+            th.visible-md {
+                display: table-cell !important;
+            }
+
+            td.visible-md {
+                display: table-cell !important;
+            }
+
+            .visible-md-block {
+                display: block !important;
+            }
+
+            .visible-md-inline {
+                display: inline !important;
+            }
+
+            .visible-md-inline-block {
+                display: inline-block !important;
+            }
+
+            .hidden-md {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .visible-lg {
+                display: block !important;
+            }
+
+            table.visible-lg {
+                display: table !important;
+            }
+
+            tr.visible-lg {
+                display: table-row !important;
+            }
+
+            th.visible-lg {
+                display: table-cell !important;
+            }
+
+            td.visible-lg {
+                display: table-cell !important;
+            }
+
+            .visible-lg-block {
+                display: block !important;
+            }
+
+            .visible-lg-inline {
+                display: inline !important;
+            }
+
+            .visible-lg-inline-block {
+                display: inline-block !important;
+            }
+
+            .hidden-lg {
+                display: none !important;
+            }
+        }
+
+        @media screen and (max-width: 540px) {
+            form .nested_study_participants:not(:first-of-type) label {
+                display: inline-block;
+            }
+
+            form .nested_study_participants {
+                border-top: 1px solid #E7E6EA;
+                padding: 10px 0 50px;
+            }
+
+            form .nested_study_questions .form-group:first-child {
+                flex: 1 1 auto;
+            }
+
+            form .nested_study_questions .form-group:last-child {
+                flex: 1 1 auto;
+            }
+
+            .horizontal-form {
+                flex-direction: column;
+            }
+
+            .horizontal-form .form-control {
+                margin-bottom: 10px;
+            }
+
+            .vertical-form .form-group .control-label {
+                margin-top: 30px;
+            }
+
+            .flex-group {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .flex-group.half {
+                max-width: 100%;
+            }
+
+            .flex-group.quarter {
+                max-width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 680px) {
+            .nav-link {
+                display: none;
+            }
+
+            .navbar-menu-in .nav-mobile {
+                transform: translate3d(340px, 0, 0);
+            }
+
+            header .icon-menu {
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .site .right .btn-primary {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 28px; color: #140b2f; -webkit-font-smoothing: antialiased; font-weight: 400; margin: 0;"
+      bgcolor="#FFF">
+<div class="dt-container narrow email"
+     style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; max-width: 560px; margin: 20px auto; padding: 0 20px 100px;">
+    <a href="https://beta.quietthyme.com"
+       style="background-color: transparent; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; color: #238b53; text-decoration: none;">
+        <img src="https://beta.quietthyme.com/assets/images/logo/logo-large.png"
+             alt="Logo@2x" height="60"
+             style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; vertical-align: middle; display: block; border: 0;">
+    </a>
+
+    <div mc:edit="body">
+        <h3 style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: inherit; font-weight: 600; line-height: 25px; color: inherit; font-size: 16px; margin: 40px 0 0; padding: 0;">
+            Hi *|FNAME|*,</h3>
+
+        <p style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+            Welcome to the QuietThyme Beta, and thanks for signing up! You’ve joined a couple dozen testers who are helping me build a simple & modern ebook manager.</p>
+        <p style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+            Before we get started, you might want to read the QuietThyme announcement blog post, it'll give you an idea of what I'm trying to build, with your help.
+        </p>
+        <p style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+            <a class="btn btn-primary" href="https://blog.thesparktree.com/state-of-the-ebook"
+               style="background-color: #238b53; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; color: #FFF; text-decoration: none; border-radius: 3px; display: inline-block; font-size: 15px; font-weight: 600; height: 40px; line-height: 36px; outline: none; text-align: center; box-shadow: 0 5px 10px -5px rgba(0,0,0,0.1); padding: 0 20px; border: 1px solid transparent;">
+                Announcement Blog Post</a>
+        </p>
+
+        <hr style="box-sizing: content-box; height: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; border-top-color: #E7E6EA; border-top-style: solid; margin: 30px 0; border-width: 1px 0 0;">
+
+    </div>
+
+    <div mc:repeatable="content" mc:variant="txt">
+        <h3 mc:edit="txttitle" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: inherit; font-weight: 600; line-height: 25px; color: inherit; font-size: 16px; margin: 40px 0 0; padding: 0;">Title</h3>
+        
+        <p mc:edit="txtpara" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">this is the paragraph content</p>
+    </div>
+     
+    <div mc:repeatable="content" mc:variant="img">
+        <img mc:edit="imgcnt" class="full-width-image"
+         src="https://beta.quietthyme.com/assets/uservoice/QuietThyme-Blackhole-Upload.gif"
+         alt="Image_2x"
+         style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; vertical-align: middle; display: block; border-radius: 3px; max-width: 100%; margin: 20px auto 0; border: 0;">
+    </div>
+
+    <div mc:repeatable="content" mc:variant="btn">
+        <p mc:edit="btncnt" style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+            <a class="btn btn-primary" href="https://blog.thesparktree.com/state-of-the-ebook"
+               style="background-color: #238b53; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; color: #FFF; text-decoration: none; border-radius: 3px; display: inline-block; font-size: 15px; font-weight: 600; height: 40px; line-height: 36px; outline: none; text-align: center; box-shadow: 0 5px 10px -5px rgba(0,0,0,0.1); padding: 0 20px; border: 1px solid transparent;">Button Text</a>
+        </p>
+    </div>  
+
+    <h3 style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-family: inherit; font-weight: 600; line-height: 25px; color: inherit; font-size: 16px; margin: 40px 0 0; padding: 0;">
+        Get in touch</h3>
+
+    <p style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+        If you have any questions or feedback, you can use the green question mark icon on the bottom right of the website to submit a ticket, or you can just reply to this email :)
+    </p>
+    <p style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin: 20px 0 30px;">
+        -Jason <br/>
+        Founder of QuietThyme
+    </p>
+
+    <div mc:edit="footer" class="email-footer"
+         style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border-top-width: 1px; border-top-color: #E7E6EA; border-top-style: solid; padding-bottom: 80px; margin: 40px 0 0;">
+        <p class="small-text"
+           style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; color: #726D82; font-size: 12px; font-weight: 500; line-height: 20px; padding-bottom: 15px; margin: 20px 0 30px;">
+            Questions or feedback? Just reply</p>
+
+        <p class="small-text"
+           style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; color: #726D82; font-size: 12px; font-weight: 500; line-height: 20px; padding-bottom: 15px; margin: 20px 0 30px;">*|LIST:DESCRIPTION|* <br />
+
+        <br />
+
+        <a href="*|UNSUB|*">Unsubscribe</a> *|EMAIL|* from this list.<br />
+
+        <br />
+
+        Our mailing address is:<br />
+        *|LIST:ADDRESS|*<br />
+
+        <br />
+
+        Copyright (C) *|CURRENT_YEAR|* *|LIST:COMPANY|* All rights reserved.<br />
+
+        <br />
+
+        <a href="*|FORWARD|*">Forward</a> this email to a friend<br />
+
+        <a href="*|UPDATE_PROFILE|*">Update your profile</a><br />
+
+        <br />
+
+        *|IF:REWARDS|* *|HTML:REWARDS|* *|END:IF|*</p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
