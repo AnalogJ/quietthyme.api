@@ -7,6 +7,8 @@ var handlebars = require('handlebars');
 var Constants = require('../common/constants');
 var path = require('path');
 var _ = require('lodash');
+var fs = require('fs');
+
 // This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
 var auth = {
   auth: {
@@ -29,6 +31,10 @@ mailService.welcomeEmail = function(recipientEmail, firstName) {
 };
 
 mailService.sendEmail = function(template, recipientEmail, subject, context) {
+  if(!recipientEmail){
+    return q.reject(new Error('recipient email is empty'))
+  }
+
   var contextObject = _.merge(
     {
       web_domain: Constants.web_domain,
@@ -37,6 +43,9 @@ mailService.sendEmail = function(template, recipientEmail, subject, context) {
   );
 
   var templateDir = path.join(__dirname, `../templates/${template}.html.hbs`);
+  if(!fs.existsSync(templateDir)){
+    return q.reject(new Error('template does not exist'))
+  }
 
   var deferred = q.defer();
   nodemailerMailgun.sendMail(
