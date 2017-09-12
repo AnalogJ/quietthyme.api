@@ -55,6 +55,7 @@ module.exports = {
     * */
   errorHandler: function(cb, context) {
     var _cb = cb;
+    var _context = context;
     return function(err) {
       if (typeof err === 'string') {
         //this is a string error message, wrap it in an error obj
@@ -94,10 +95,10 @@ module.exports = {
 
       //added cleanup method for database, so that we dont timeout in Lambda
       debug('Returning Failure data: %o', err);
-      RollbarService.configure(context.awsRequestId, {
-        context: `${context.logGroupName}|${context.logStreamName}`
+      RollbarService.configure(_context.awsRequestId, {
+        context: `${_context.logGroupName}|${_context.logStreamName}`
       })
-      RollbarService.get(context.awsRequestId).error(err.message, err, {awsRequestId: context.awsRequestId});
+      RollbarService.get(_context.awsRequestId).error(err.message || 'unknown error occurred.', err || {}, {awsRequestId: _context.awsRequestId});
 
       return _cb(JSON.stringify(err, whitelisted_props), null);
     };
