@@ -122,7 +122,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -176,7 +176,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -294,7 +294,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
   //# /catalog/{{token}}/search?q={{search_term}} -- search
@@ -335,7 +335,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -392,7 +392,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -449,7 +449,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -506,7 +506,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -528,7 +528,7 @@ module.exports = {
         );
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -589,7 +589,7 @@ module.exports = {
         return CatalogService.toXML(opds_catalog);
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -620,7 +620,7 @@ module.exports = {
         return CatalogService.toXML(opds_entry, 'FULL_ENTRY');
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -650,7 +650,7 @@ module.exports = {
           });
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 };

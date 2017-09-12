@@ -38,7 +38,7 @@ UserEndpoint.router = function(event, context, cb) {
   } else if (event.path.action == 'pushnotify/test' && event.method == 'POST') {
     UserEndpoint.pushNotifyTest(event, context, cb);
   } else {
-    Utilities.errorHandler(cb)(
+    Utilities.errorHandler(cb, context)(
       new Error(`Unknown API endpoint: ${event.path.action}`)
     );
   }
@@ -60,7 +60,7 @@ UserEndpoint.update = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -85,7 +85,7 @@ UserEndpoint.catalogRegen = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -121,7 +121,7 @@ UserEndpoint.password = function(event, context, cb) {
         });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -182,7 +182,7 @@ UserEndpoint.plan = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -202,7 +202,7 @@ UserEndpoint.pushNotifySubscribe = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -227,6 +227,6 @@ UserEndpoint.pushNotifyTest = function(event, context, cb) {
         });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };

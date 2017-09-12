@@ -128,7 +128,7 @@ module.exports = {
         }
       )
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 
@@ -339,7 +339,7 @@ module.exports = {
         return {};
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb))
+      .fail(Utilities.errorHandler(cb, context))
       .done();
   },
 };

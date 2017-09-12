@@ -46,7 +46,7 @@ provider:
     MAILCHIMP_API_KEY: ${env:${opt:stage, self:provider.stage}_MAILCHIMP_API_KEY, env:MAILCHIMP_API_KEY}
     MAILCHIMP_LIST_ID: ${env:${opt:stage, self:provider.stage}_MAILCHIMP_LIST_ID, env:MAILCHIMP_LIST_ID}
     MAILGUN_API_KEY: ${env:${opt:stage, self:provider.stage}_MAILGUN_API_KEY, env:MAILGUN_API_KEY}
-
+    ROLLBAR_PUSH_API_KEY: ${env:${opt:stage, self:provider.stage}_ROLLBAR_PUSH_API_KEY, env:ROLLBAR_PUSH_API_KEY}
     DEBUG: ${self:custom.variables.${opt:stage, self:provider.stage}.debug}
     NODE_ENV: production
 

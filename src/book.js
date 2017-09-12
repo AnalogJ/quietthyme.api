@@ -20,7 +20,7 @@ BookEndpoint.router = function(event, context, cb) {
   } else if (event.method == 'DELETE' && event.path.id) {
     BookEndpoint.destroy(event, context, cb);
   } else {
-    Utilities.errorHandler(cb)(
+    Utilities.errorHandler(cb, context)(
       new Error(`Unknown API endpoint: ${event.path.action}`)
     );
   }
@@ -62,7 +62,7 @@ BookEndpoint.create = function(event, context, cb) {
       return { id: book_result.id };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 BookEndpoint.find = function(event, context, cb) {
@@ -95,7 +95,7 @@ BookEndpoint.find = function(event, context, cb) {
       return book_query;
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };
 
@@ -112,6 +112,6 @@ BookEndpoint.destroy = function(event, context, cb) {
       return DBService.deleteBookById(event.path.id, auth.uid);
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb))
+    .fail(Utilities.errorHandler(cb, context))
     .done();
 };

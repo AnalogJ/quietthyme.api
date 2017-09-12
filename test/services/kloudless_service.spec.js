@@ -2,6 +2,33 @@ var should = require('should');
 var KloudlessService = require('../../src/services/kloudless_service');
 //this is just simple integration testing
 describe('KloudlessService', function() {
+  describe('#folderGet() @nock', function() {
+    it('Should generate a folder on dropbox', function(done) {
+      KloudlessService.folderGet(
+        '231987328',
+        'root'
+      )
+        .then(function(folder_metadata) {
+          folder_metadata.should.eql({
+            api: 'storage',
+            id: 'root',
+            raw_id: '/',
+            created: null,
+            modified: null,
+            name: 'Dropbox',
+            type: 'folder',
+            size: null,
+            path: '/',
+            ancestors: [],
+            account: 231987328,
+            can_create_folders: true,
+            can_upload_files: true
+          });
+        })
+        .then(done, done);
+    });
+  });
+
   describe('#folderCreate() @nock', function() {
     it('Should generate a folder on dropbox', function(done) {
       KloudlessService.folderCreate(

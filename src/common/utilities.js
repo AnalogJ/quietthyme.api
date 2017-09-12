@@ -1,6 +1,8 @@
 'use strict';
 const debug = require('debug')('quietthyme:utilities');
 const nconf = require('./nconf');
+
+var RollbarService = require('../services/rollbar_service');
 var _ = require('lodash');
 module.exports = {
   ISODateString: function(d) {
@@ -51,7 +53,7 @@ module.exports = {
     * Promise.fail(Helpers.errorHandler(cb))
     *
     * */
-  errorHandler: function(cb) {
+  errorHandler: function(cb, context) {
     var _cb = cb;
     return function(err) {
       if (typeof err === 'string') {
@@ -92,6 +94,11 @@ module.exports = {
 
       //added cleanup method for database, so that we dont timeout in Lambda
       debug('Returning Failure data: %o', err);
+      RollbarService.configure(context.awsRequestId, {
+        context: `${context.logGroupName}|${context.logStreamName}`
+      })
+      RollbarService.get(context.awsRequestId).error(err.message, err, {awsRequestId: context.awsRequestId});
+
       return _cb(JSON.stringify(err, whitelisted_props), null);
     };
   },
