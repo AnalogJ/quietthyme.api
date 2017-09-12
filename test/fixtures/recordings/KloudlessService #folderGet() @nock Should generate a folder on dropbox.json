@@ -1,0 +1,49 @@
+[
+    {
+        "scope": "https://api.kloudless.com:443",
+        "method": "GET",
+        "path": "/v1//accounts/231987328/storage/folders/root",
+        "body": {
+            "account_id": "231987328",
+            "folder_id": "root"
+        },
+        "status": 200,
+        "response": {
+            "api": "storage",
+            "id": "root",
+            "raw_id": "/",
+            "created": null,
+            "modified": null,
+            "name": "Dropbox",
+            "type": "folder",
+            "size": null,
+            "path": "/",
+            "ancestors": [],
+            "account": 231987328,
+            "can_create_folders": true,
+            "can_upload_files": true
+        },
+        "rawHeaders": [
+            "Allow",
+            "GET, PATCH, DELETE, HEAD, OPTIONS",
+            "Content-Language",
+            "en",
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Mon, 11 Sep 2017 05:34:24 GMT",
+            "Server",
+            "nginx/1.11.5",
+            "Vary",
+            "Accept-Language",
+            "X-Frame-Options",
+            "SAMEORIGIN",
+            "X-Kloudless-Request-ID",
+            "1c52fa17-38ae-4d28-b9df-5f1262d85832",
+            "Content-Length",
+            "214",
+            "Connection",
+            "Close"
+        ]
+    }
+]
