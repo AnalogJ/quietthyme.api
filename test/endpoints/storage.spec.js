@@ -32,8 +32,8 @@ describe('Storage Endpoints', function() {
     ) {
       var event = {
         token: token,
-        path: {},
-        query: { source: 'calibre' },
+        pathParameters: {},
+        queryStringParameters: { source: 'calibre' },
         body: {
           account: {
             service: 'dropbox',
@@ -68,8 +68,8 @@ describe('Storage Endpoints', function() {
     ) {
       var event = {
         token: token,
-        path: {},
-        query: {},
+        pathParameters: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -140,8 +140,8 @@ describe('Storage Endpoints', function() {
     ) {
       var event = {
         token: token,
-        path: {},
-        query: { source: 'calibre' },
+        pathParameters: {},
+        queryStringParameters: { source: 'calibre' },
         body: {
           storage_id: credential_id,
           book_id: book_id,
@@ -217,8 +217,8 @@ describe('Storage Endpoints', function() {
     ) {
       var event = {
         token: token,
-        path: {},
-        query: { source: 'calibre' },
+        pathParameters: {},
+        queryStringParameters: { source: 'calibre' },
         body: {
           book_id: book_id,
           filename: 'testcover',

@@ -7,11 +7,12 @@ var JWTokenService = require('./services/jwt_token_service'),
   PipelineMetadataService = require('./services/pipeline_metadata_service'),
   PipelineService = require('./services/pipeline_service'),
   q = require('q'),
-  toMarkdown = require('to-markdown');
+  toMarkdown = require('to-markdown'),
+  GlobalHandler = require('./common/global_handler');
 
 var BookEndpoint = module.exports;
 
-BookEndpoint.router = function(event, context, cb) {
+BookEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
   if (event.httpMethod == 'POST') {
     BookEndpoint.create(event, context, cb);
@@ -24,7 +25,7 @@ BookEndpoint.router = function(event, context, cb) {
       new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
-};
+})
 
 BookEndpoint.create = function(event, context, cb) {
   JWTokenService.verify(event.token)

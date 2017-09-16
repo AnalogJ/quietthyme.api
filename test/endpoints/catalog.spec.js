@@ -48,8 +48,8 @@ describe('Catalog Endpoints', function() {
   describe('#index()', function() {
     it('should correctly retrieve catalog index', function(done) {
       var event = {
-        path: { catalogToken: token },
-        query: {},
+        pathParameters: { catalogToken: token },
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -66,8 +66,8 @@ describe('Catalog Endpoints', function() {
   describe('#books()', function() {
     it('should correctly generate books catalog', function(done) {
       var event = {
-        path: { catalogToken: token },
-        query: {},
+        pathParameters: { catalogToken: token },
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -82,8 +82,8 @@ describe('Catalog Endpoints', function() {
   describe('#recent()', function() {
     it('should correctly generate recent catalog', function(done) {
       var event = {
-        path: { catalogToken: token },
-        query: {},
+        pathParameters: { catalogToken: token },
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -101,13 +101,13 @@ describe('Catalog Endpoints', function() {
       done
     ) {
       var event = {
-        path: {
+        pathParameters: {
           catalogToken: token,
           seriesId: Base64Service.urlEncode(
             'Granite Practical Concrete Keyboard'
           ),
         },
-        query: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -125,11 +125,11 @@ describe('Catalog Endpoints', function() {
       done
     ) {
       var event = {
-        path: {
+        pathParameters: {
           catalogToken: token,
           authorId: Base64Service.urlEncode('Miss Eladio Osinski'),
         },
-        query: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -147,11 +147,11 @@ describe('Catalog Endpoints', function() {
       done
     ) {
       var event = {
-        path: {
+        pathParameters: {
           catalogToken: token,
           tagName: Base64Service.urlEncode('Turkey GB'),
         },
-        query: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -173,11 +173,11 @@ describe('Catalog Endpoints', function() {
       done
     ) {
       var event = {
-        path: {
+        pathParameters: {
           catalogToken: token,
           bookId: '',
         },
-        query: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};

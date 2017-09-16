@@ -10,7 +10,8 @@ var q = require('q'),
   Utilities = require('./common/utilities'),
   nconf = require('./common/nconf'),
   stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY')),
-  webPush = require('web-push');
+  webPush = require('web-push'),
+  GlobalHandler = require('./common/global_handler');
 
 webPush.setVapidDetails(
   'mailto:hello@quietthyme.com',
@@ -20,7 +21,7 @@ webPush.setVapidDetails(
 
 var UserEndpoint = module.exports;
 
-UserEndpoint.router = function(event, context, cb) {
+UserEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
   if (event.pathParameters.action == 'plan' && event.httpMethod == 'POST') {
     UserEndpoint.plan(event, context, cb);
@@ -42,7 +43,7 @@ UserEndpoint.router = function(event, context, cb) {
       new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
-};
+})
 
 UserEndpoint.update = function(event, context, cb) {
   //This method will update the allowed fields on the User object, and store them in the database.

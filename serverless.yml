@@ -76,63 +76,6 @@ provider:
 #      - subnet-297de85f
 
 custom:
-
-  # overridden from https://github.com/serverless/serverless/blob/03cc50b246c656183110669126a632735ea46b15/lib/plugins/aws/deploy/compile/events/apiGateway/lib/method/integration.js#L106-L140
-
-  standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
-  errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
-
-  standardRequests:
-    template:
-      application/json: ${self:custom.standardRequestTemplate}
-
-  standardResponses:
-    headers:
-      Content-Type: "'application/json'"
-    template: ${self:custom.standardResponseTemplate}
-    statusCodes:
-      200:
-        pattern: ''
-        template:
-          application/json: ${self:custom.standardResponseTemplate}
-      400:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[400\].*'
-      401:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[401\].*'
-      404:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[404\].*'
-      500:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[500\].*'
-
-  redirectResponse:
-    headers:
-      Location: "integration.response.body.headers.Location"
-      Content-Type: "'application/json'"
-    statusCodes:
-      302:
-        pattern: ''
-        template:
-          application/json: "{}"
-
-  catalogResponse:
-    headers:
-      Content-Type: "'application/xml'"
-      Cache-Control: "'max-age=120'"
-    template: $input.path('$')
-    statusCodes:
-      200:
-        pattern: ''
-        template:
-          application/xml: $input.path('$')
-
   variables:
     master:
       cleanup_enabled: true
@@ -161,17 +104,13 @@ functions:
 # UNAUTHENTICATED METHODS
   version:
     handler: src/version.handler
+    description: returns the version and git information for this deployment
     events:
-      - http:
-          path: version
-          method: get
-          response: ${self:custom.standardResponses}
-          integration: lambda
+      - http: GET version
 
-# hooks are for notifications about events like books being moved, and maybe payments.
-  # hook methods (kloudless/mailchimp/stripe)
   hook:
     handler: src/hook.router
+    description: hooks are for notifications from kloudless, mailchimp and stripe
     events:
       - http:
           path: 'hook/{action+}'
@@ -206,15 +145,13 @@ functions:
 #          cors: true
 
 
-# auth methods (login/register/status)
   auth:
     handler: src/auth.router
+    description: auth methods (login/register/status)
     events:
       - http:
           path: 'auth/{action+}'
           method: ANY
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
   # user methods (plan/update)
@@ -224,9 +161,6 @@ functions:
       - http:
           path: 'user/{action+}'
           method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
   # book methods (create/find/delete)
@@ -236,16 +170,10 @@ functions:
       - http:
           path: 'book'
           method: ANY
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
       - http:
           path: 'book/{id}'
           method: DELETE
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
   storagelink:

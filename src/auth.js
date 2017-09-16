@@ -10,11 +10,12 @@ var q = require('q'),
   JWTokenService = require('./services/jwt_token_service'),
   SecurityService = require('./services/security_service'),
   Utilities = require('./common/utilities'),
-  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
+  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY')),
+  GlobalHandler = require('./common/global_handler');
 
 var AuthEndpoint = module.exports;
 
-AuthEndpoint.router = function(event, context, cb) {
+AuthEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('AuthEndpoint router event: %o', event);
   if (event.pathParameters.action == 'login' && event.httpMethod == 'POST') {
     AuthEndpoint.login(event, context, cb);
@@ -27,7 +28,7 @@ AuthEndpoint.router = function(event, context, cb) {
       new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
-};
+})
 
 AuthEndpoint.register = function(event, context, cb) {
   //this function should check if an existing user with registered email already exists.
