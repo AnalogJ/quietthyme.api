@@ -176,7 +176,7 @@ functions:
           method: DELETE
           cors: true
 
-  storage:
+  storaged:
     handler: src/storage.router
     timeout: 300 #TODO, this should be returned back to default.
     memorySize: 128
