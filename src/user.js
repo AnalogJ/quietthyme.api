@@ -22,24 +22,24 @@ var UserEndpoint = module.exports;
 
 UserEndpoint.router = function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
-  if (event.path.action == 'plan' && event.method == 'POST') {
+  if (event.pathParameters.action == 'plan' && event.httpMethod == 'POST') {
     UserEndpoint.plan(event, context, cb);
-  } else if (event.path.action == 'update' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'update' && event.httpMethod == 'POST') {
     UserEndpoint.update(event, context, cb);
-  } else if (event.path.action == 'catalog' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'catalog' && event.httpMethod == 'POST') {
     UserEndpoint.catalogRegen(event, context, cb);
-  } else if (event.path.action == 'password' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'password' && event.httpMethod == 'POST') {
     UserEndpoint.password(event, context, cb);
   } else if (
-    event.path.action == 'pushnotify/subscribe' &&
-    event.method == 'POST'
+    event.pathParameters.action == 'pushnotify/subscribe' &&
+    event.httpMethod == 'POST'
   ) {
     UserEndpoint.pushNotifySubscribe(event, context, cb);
-  } else if (event.path.action == 'pushnotify/test' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'pushnotify/test' && event.httpMethod == 'POST') {
     UserEndpoint.pushNotifyTest(event, context, cb);
   } else {
     Utilities.errorHandler(cb, context)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
 };

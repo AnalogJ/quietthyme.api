@@ -16,15 +16,15 @@ var AuthEndpoint = module.exports;
 
 AuthEndpoint.router = function(event, context, cb) {
   debug('AuthEndpoint router event: %o', event);
-  if (event.path.action == 'login' && event.method == 'POST') {
+  if (event.pathParameters.action == 'login' && event.httpMethod == 'POST') {
     AuthEndpoint.login(event, context, cb);
-  } else if (event.path.action == 'register' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'register' && event.httpMethod == 'POST') {
     AuthEndpoint.register(event, context, cb);
-  } else if (event.path.action == 'status' && event.method == 'GET') {
+  } else if (event.pathParameters.action == 'status' && event.httpMethod == 'GET') {
     AuthEndpoint.status(event, context, cb);
   } else {
     Utilities.errorHandler(cb, context)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
 };

@@ -25,7 +25,7 @@ RollbarService.get = function(requestId){
       payload: {
         environment: nconf.get('STAGE'),
         server: {
-          branch: nconf.get('STAGE')
+          branch: nconf.get('STAGE'),
         }
       }
     });

@@ -125,15 +125,15 @@ module.exports = {
               credential_storage_info.credential.calibre_location_code,
           };
 
-          if (event.query.source == 'calibre') {
-            storage['last_library_uuid'] = event.query.library_uuid;
+          if (event.queryStringParameters.source == 'calibre') {
+            storage['last_library_uuid'] = event.queryStringParameters.library_uuid;
             storage['calibre_version'] = '2.6.0';
           }
           return storage;
         });
       })
       .then(function(credential_quotas) {
-        if (event.query.source != 'calibre') {
+        if (event.queryStringParameters.source != 'calibre') {
           debug('User storage quotas %o', credential_quotas);
           return credential_quotas;
         }
@@ -149,7 +149,7 @@ module.exports = {
               storage_type: 'quietthyme',
               storage_id: 'quietthyme',
               location_code: 'main',
-              last_library_uuid: event.query.library_uuid,
+              last_library_uuid: event.queryStringParameters.library_uuid,
               free_space: 0,
               total_space: 1000000,
               calibre_version: '2.6.0',
@@ -201,7 +201,7 @@ module.exports = {
     JWTokenService.verify(event.token)
       .then(function(auth) {
         //if this is a book to be uploaded via webUI it must be new, so we can skip alot of steps.
-        if (event.query.source == 'web') {
+        if (event.queryStringParameters.source == 'web') {
           //we still need to check the credential sent is tied to the current user.
           return DBService.findCredentialById(
             event.body.storage_id,
@@ -328,7 +328,7 @@ module.exports = {
 
     JWTokenService.verify(event.token)
       .then(function(auth) {
-        return DBService.findBookById(event.path.id, auth.uid)
+        return DBService.findBookById(event.pathParameters.id, auth.uid)
           .then(function(book) {
             return StorageService.get_download_link(book, auth.uid);
           })

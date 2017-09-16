@@ -13,15 +13,15 @@ var BookEndpoint = module.exports;
 
 BookEndpoint.router = function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
-  if (event.method == 'POST') {
+  if (event.httpMethod == 'POST') {
     BookEndpoint.create(event, context, cb);
-  } else if (event.method == 'GET') {
+  } else if (event.httpMethod == 'GET') {
     BookEndpoint.find(event, context, cb);
-  } else if (event.method == 'DELETE' && event.path.id) {
+  } else if (event.httpMethod == 'DELETE' && event.pathParameters.id) {
     BookEndpoint.destroy(event, context, cb);
   } else {
     Utilities.errorHandler(cb, context)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
 };
@@ -29,14 +29,14 @@ BookEndpoint.router = function(event, context, cb) {
 BookEndpoint.create = function(event, context, cb) {
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      debug('Create book params: %o', event.path);
-      debug('Create book query: %o', event.query);
+      debug('Create book params: %o', event.pathParameters);
+      debug('Create book query: %o', event.queryStringParameters);
       debug('Create book body: %s', event.body);
 
-      if (!event.query.source) {
+      if (!event.queryStringParameters.source) {
         console.error(
           'No source present, dont know where this book is from',
-          event.query.source
+          event.queryStringParameters.source
         );
         throw new HttpError(
           'No source present, dont know where this book is from. Should always be calibre',
@@ -48,7 +48,7 @@ BookEndpoint.create = function(event, context, cb) {
       var metadata_pipeline = [
         PipelineMetadataService.generate_api_data_set(
           event.body,
-          event.query.source || 'api'
+          event.queryStringParameters.source || 'api'
         ),
       ];
       var image_pipeline = [];
@@ -68,26 +68,26 @@ BookEndpoint.create = function(event, context, cb) {
 BookEndpoint.find = function(event, context, cb) {
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      if (!event.query.storage_id) {
+      if (!event.queryStringParameters.storage_id) {
         console.warn(
           'No storage_id present, returning books from all storage providers.',
-          event.query.storage_id
+          event.queryStringParameters.storage_id
         );
       }
 
       var book_query = null;
 
-      if (event.query.id) {
-        book_query = DBService.findBookById(event.query.id, auth.uid);
+      if (event.queryStringParameters.id) {
+        book_query = DBService.findBookById(event.queryStringParameters.id, auth.uid);
       } else {
         var condition = {};
-        if (event.query.storage_id) {
-          condition['credential_id'] = event.query.storage_id;
+        if (event.queryStringParameters.storage_id) {
+          condition['credential_id'] = event.queryStringParameters.storage_id;
         }
         book_query = DBService.findBooks(
           auth.uid,
           condition,
-          event.query.page,
+          event.queryStringParameters.page,
           50,
           'title'
         );
@@ -103,13 +103,13 @@ BookEndpoint.destroy = function(event, context, cb) {
   //TODO: we should destroy book storage as well.
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      if (!event.path.id) {
-        console.error('No book specified', event.path.id);
+      if (!event.pathParameters.id) {
+        console.error('No book specified', event.pathParameters.id);
         throw new HttpError('No book specified', 500);
       }
       var book_data = event.body;
       book_data.user_id = auth.uid;
-      return DBService.deleteBookById(event.path.id, auth.uid);
+      return DBService.deleteBookById(event.pathParameters.id, auth.uid);
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb, context))
