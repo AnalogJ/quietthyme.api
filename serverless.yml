@@ -176,188 +176,35 @@ functions:
           method: DELETE
           cors: true
 
-  storagelink:
-    handler: src/storage.link
+  storage:
+    handler: src/storage.router
     timeout: 300 #TODO, this should be returned back to default.
-    events:
-      - http:
-          path: storage/link
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagestatus:
-    handler: src/storage.status
-    timeout: 120
     memorySize: 128
     events:
       - http:
-          path: storage/status
-          method: GET
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagepreparebook:
-    handler: src/storage.prepare_book
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/prepare/book
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagepreparecover:
-    handler: src/storage.prepare_cover
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/prepare/cover
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagedownload:
-    handler: src/storage.download
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/{id}
-          method: GET
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
+          path: 'storage/{action+}'
+          method: ANY
           cors: true
 
 # the following methods are unauthetnicated, but require a catalogToken.
-  catalogindex:
-    handler: src/catalog.index
+  catalog:
+    handler: src/catalog.router
     events:
       - http:
-          path: catalog/{catalogToken}
-          method: get
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.catalogResponse}
-          integration: lambda
+          path: 'catalog/{catalogToken}'
+          method: GET
+      - http:
+          path: 'catalog/{catalogToken}/{action}'
+          method: GET
+      - http:
+          path: 'catalog/{catalogToken}/{action}/{actionId}'
+          method: GET
 
-  catalogserieslist:
-    handler: src/catalog.series
-    events:
-    - http:
-        path: catalog/{catalogToken}/series
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
 
 #  catalogauthors:
 #    handler: src/catalog.authors
 #    events:
 #    - http: GET catalog/{catalogToken}/authors/{page}
-
-  catalogbooklist:
-    handler: src/catalog.books
-    events:
-    - http:
-        path: catalog/{catalogToken}/books
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-
-  catalogrecent:
-    handler: src/catalog.recent
-    events:
-    - http:
-        path: catalog/{catalogToken}/recent
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogseriesid:
-    handler: src/catalog.seriesid
-    events:
-    - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogauthorid:
-    handler: src/catalog.authorid
-    events:
-    - http:
-        path: catalog/{catalogToken}/by_author/{authorId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-
-  catalogtagname:
-    handler: src/catalog.tagname
-    events:
-    - http:
-        path: catalog/{catalogToken}/tagged_with/{tagName}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogsearchdef:
-    handler: src/catalog.searchdefinition
-    events:
-    - http:
-        path: catalog/{catalogToken}/search_definition
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogsearchmethod:
-    handler: src/catalog.search
-    events:
-    - http:
-        path: catalog/{catalogToken}/search
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogbookentry:
-    handler: src/catalog.book
-    events:
-    - http:
-        path: catalog/{catalogToken}/book/{bookId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogdownload:
-    handler: src/catalog.download
-    events:
-    - http:
-        path: catalog/{catalogToken}/download/{bookId}
-        method: GET
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.redirectResponse}
-        integration: lambda
-        cors: true
 
   # this function is processed async and triggered by Lambda Invoke calls.
   queueprocessunknownbook:
