@@ -76,99 +76,6 @@ provider:
 #      - subnet-297de85f
 
 custom:
-
-  # overridden from https://github.com/serverless/serverless/blob/03cc50b246c656183110669126a632735ea46b15/lib/plugins/aws/deploy/compile/events/apiGateway/lib/method/integration.js#L106-L140
-  standardRequestTemplate: >-
-    #define( $loop )
-      {
-      #foreach($key in $map.keySet())
-          #set( $k = $util.escapeJavaScript($key) )
-          #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll("\\\\'", "'") )
-          "$k":
-            "$v"
-            #if( $foreach.hasNext ) , #end
-      #end
-      }
-    #end
-    {
-      "body": $input.json("$"),
-      "method": "$context.httpMethod",
-      "principalId": "$context.authorizer.principalId",
-      "stage": "$context.stage",
-      #set( $map = $input.params().header )
-      "headers": $loop,
-      #set( $map = $input.params().querystring )
-      "query": $loop,
-      #set( $map = $input.params().path )
-      "path": $loop,
-      #set( $map = $context.identity )
-      "identity": $loop,
-      #set( $map = $stageVariables )
-      "stageVariables": $loop,
-
-      "httpMethod": "$context.httpMethod",
-
-      #set( $tokenVal = $input.params().header.get('Authorization').split(' ') )
-      #if( $tokenVal.size() == 2 )
-        "token": "$tokenVal[1]"
-      #else
-      "token": ""
-      #end
-    }
-  standardResponseTemplate: "{\"success\":true, \"data\": $input.json('$') }"
-  errorResponseTemplate: "#set($inputRoot = $input.path('$.errorMessage')){\"success\":false, \"error\": $inputRoot }"
-
-  standardRequests:
-    template:
-      application/json: ${self:custom.standardRequestTemplate}
-
-  standardResponses:
-    headers:
-      Content-Type: "'application/json'"
-    template: ${self:custom.standardResponseTemplate}
-    statusCodes:
-      200:
-        pattern: ''
-        template:
-          application/json: ${self:custom.standardResponseTemplate}
-      400:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[400\].*'
-      401:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[401\].*'
-      404:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[404\].*'
-      500:
-        template:
-          application/json: ${self:custom.errorResponseTemplate}
-        pattern: '.*\[500\].*'
-
-  redirectResponse:
-    headers:
-      Location: "integration.response.body.headers.Location"
-      Content-Type: "'application/json'"
-    statusCodes:
-      302:
-        pattern: ''
-        template:
-          application/json: "{}"
-
-  catalogResponse:
-    headers:
-      Content-Type: "'application/xml'"
-      Cache-Control: "'max-age=120'"
-    template: $input.path('$')
-    statusCodes:
-      200:
-        pattern: ''
-        template:
-          application/xml: $input.path('$')
-
   variables:
     master:
       cleanup_enabled: true
@@ -197,17 +104,13 @@ functions:
 # UNAUTHENTICATED METHODS
   version:
     handler: src/version.handler
+    description: returns the version and git information for this deployment
     events:
-      - http:
-          path: version
-          method: get
-          response: ${self:custom.standardResponses}
-          integration: lambda
+      - http: GET version
 
-# hooks are for notifications about events like books being moved, and maybe payments.
-  # hook methods (kloudless/mailchimp/stripe)
   hook:
     handler: src/hook.router
+    description: hooks are for notifications from kloudless, mailchimp and stripe
     events:
       - http:
           path: 'hook/{action+}'
@@ -242,15 +145,13 @@ functions:
 #          cors: true
 
 
-# auth methods (login/register/status)
   auth:
     handler: src/auth.router
+    description: auth methods (login/register/status)
     events:
       - http:
           path: 'auth/{action+}'
           method: ANY
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
   # user methods (plan/update)
@@ -260,9 +161,6 @@ functions:
       - http:
           path: 'user/{action+}'
           method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
   # book methods (create/find/delete)
@@ -272,200 +170,41 @@ functions:
       - http:
           path: 'book'
           method: ANY
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
       - http:
           path: 'book/{id}'
           method: DELETE
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
           cors: true
 
-  storagelink:
-    handler: src/storage.link
+  storage:
+    handler: src/storage.router
     timeout: 300 #TODO, this should be returned back to default.
-    events:
-      - http:
-          path: storage/link
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagestatus:
-    handler: src/storage.status
-    timeout: 120
     memorySize: 128
     events:
       - http:
-          path: storage/status
-          method: GET
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagepreparebook:
-    handler: src/storage.prepare_book
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/prepare/book
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagepreparecover:
-    handler: src/storage.prepare_cover
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/prepare/cover
-          method: POST
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
-          cors: true
-
-  storagedownload:
-    handler: src/storage.download
-    timeout: 120
-    memorySize: 128
-    events:
-      - http:
-          path: storage/{id}
-          method: GET
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.standardResponses}
-          integration: lambda
+          path: 'storage/{action+}'
+          method: ANY
           cors: true
 
 # the following methods are unauthetnicated, but require a catalogToken.
-  catalogindex:
-    handler: src/catalog.index
+  catalog:
+    handler: src/catalog.router
     events:
       - http:
-          path: catalog/{catalogToken}
-          method: get
-          request: ${self:custom.standardRequests}
-          response: ${self:custom.catalogResponse}
-          integration: lambda
+          path: 'catalog/{catalogToken}'
+          method: GET
+      - http:
+          path: 'catalog/{catalogToken}/{action}'
+          method: GET
+      - http:
+          path: 'catalog/{catalogToken}/{action}/{actionId}'
+          method: GET
 
-  catalogserieslist:
-    handler: src/catalog.series
-    events:
-    - http:
-        path: catalog/{catalogToken}/series
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
 
 #  catalogauthors:
 #    handler: src/catalog.authors
 #    events:
 #    - http: GET catalog/{catalogToken}/authors/{page}
-
-  catalogbooklist:
-    handler: src/catalog.books
-    events:
-    - http:
-        path: catalog/{catalogToken}/books
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-
-  catalogrecent:
-    handler: src/catalog.recent
-    events:
-    - http:
-        path: catalog/{catalogToken}/recent
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogseriesid:
-    handler: src/catalog.seriesid
-    events:
-    - http:
-        path: catalog/{catalogToken}/in_series/{seriesId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogauthorid:
-    handler: src/catalog.authorid
-    events:
-    - http:
-        path: catalog/{catalogToken}/by_author/{authorId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-
-  catalogtagname:
-    handler: src/catalog.tagname
-    events:
-    - http:
-        path: catalog/{catalogToken}/tagged_with/{tagName}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogsearchdef:
-    handler: src/catalog.searchdefinition
-    events:
-    - http:
-        path: catalog/{catalogToken}/search_definition
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogsearchmethod:
-    handler: src/catalog.search
-    events:
-    - http:
-        path: catalog/{catalogToken}/search
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogbookentry:
-    handler: src/catalog.book
-    events:
-    - http:
-        path: catalog/{catalogToken}/book/{bookId}
-        method: get
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.catalogResponse}
-        integration: lambda
-
-  catalogdownload:
-    handler: src/catalog.download
-    events:
-    - http:
-        path: catalog/{catalogToken}/download/{bookId}
-        method: GET
-        request: ${self:custom.standardRequests}
-        response: ${self:custom.redirectResponse}
-        integration: lambda
-        cors: true
 
   # this function is processed async and triggered by Lambda Invoke calls.
   queueprocessunknownbook:

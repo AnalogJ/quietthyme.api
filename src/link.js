@@ -43,7 +43,7 @@
 //         context.callbackWaitsForEmptyEventLoop = false; //this is because service.exit doesn't actually complete.
 //         var timer = blocked(fn, options);
 //
-//         let serviceName = event.path.serviceType;
+//         let serviceName = event.pathParameters.serviceType;
 //         let redirectReceiver = (url, state, callback) => {
 //             cb(null, {
 //                 url: url
@@ -75,23 +75,23 @@
 // //                 url: url
 // //             })
 // //         };
-// //         var service = makeService(event.path.serviceType, redirectReceiver, "state"); // You can change the last parameter if you need to identify incoming redirects
+// //         var service = makeService(event.pathParameters.serviceType, redirectReceiver, "state"); // You can change the last parameter if you need to identify incoming redirects
 // //         service.getUserLogin();
 // //     },
 // //     callback: function(event, context, cb){
-// //         var serviceName = event.path.serviceType;
+// //         var serviceName = event.pathParameters.serviceType;
 // //         var redirectReceiver = function(url, state, callback) {
-// //             var query_str = Object.keys(event.query).map(function(key) {
-// //                 return key + '=' + event.query[key];
+// //             var query_str = Object.keys(event.queryStringParameters).map(function(key) {
+// //                 return key + '=' + event.queryStringParameters[key];
 // //             }).join('&');
 // //
-// //             var callback_full_url = callback_url + event.path.serviceType + '?' + query_str;
+// //             var callback_full_url = callback_url + event.pathParameters.serviceType + '?' + query_str;
 // //             console.log(">>> FULL CALLBACK_URL");
 // //             console.log(callback_full_url)
 // //             callback(undefined, callback_full_url)
 // //         };
 // //
-// //         var service = makeService(event.path.serviceType, redirectReceiver, "state");
+// //         var service = makeService(event.pathParameters.serviceType, redirectReceiver, "state");
 // //         service.getUserLogin(function(err){
 // //             if (err) {
 // //                 console.log(">>> LOGIN ERROR")
@@ -151,25 +151,25 @@
 // //     //     var state_uuid = 'state'//uuid.v4();
 // //     //     var storage_client = null;
 // //     //
-// //     //     if (event.path.serviceType == 'dropbox') {
+// //     //     if (event.pathParameters.serviceType == 'dropbox') {
 // //     //         storage_client = new cloudrail.services.Dropbox(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_DROPBOX_CLIENT_KEY, process.env.OAUTH_DROPBOX_CLIENT_SECRET, callback_url + event.path.serviceType ,state_uuid);
+// //     //             , process.env.OAUTH_DROPBOX_CLIENT_KEY, process.env.OAUTH_DROPBOX_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,state_uuid);
 // //     //     }
-// //     //     else if (event.path.serviceType == 'google') {
+// //     //     else if (event.pathParameters.serviceType == 'google') {
 // //     //         storage_client = new cloudrail.services.GoogleDrive(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_GOOGLE_CLIENT_KEY, process.env.OAUTH_GOOGLE_CLIENT_SECRET, callback_url + event.path.serviceType ,state_uuid);
+// //     //             , process.env.OAUTH_GOOGLE_CLIENT_KEY, process.env.OAUTH_GOOGLE_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,state_uuid);
 // //     //     }
-// //     //     else if (event.path.serviceType == 'box') {
+// //     //     else if (event.pathParameters.serviceType == 'box') {
 // //     //         storage_client = new cloudrail.services.Box(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_BOX_CLIENT_KEY, process.env.OAUTH_BOX_CLIENT_SECRET, callback_url + event.path.serviceType ,state_uuid);
+// //     //             , process.env.OAUTH_BOX_CLIENT_KEY, process.env.OAUTH_BOX_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,state_uuid);
 // //     //     }
-// //     //     else if (event.path.serviceType == 'skydrive') {
+// //     //     else if (event.pathParameters.serviceType == 'skydrive') {
 // //     //         storage_client = new cloudrail.services.OneDrive(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_SKYDRIVE_CLIENT_KEY, process.env.OAUTH_SKYDRIVE_CLIENT_SECRET, callback_url + event.path.serviceType ,state_uuid);
+// //     //             , process.env.OAUTH_SKYDRIVE_CLIENT_KEY, process.env.OAUTH_SKYDRIVE_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,state_uuid);
 // //     //     }
 // //     //
 // //     //     //the authenticator won't get called until a method is called on the client, so lets do that now
@@ -179,11 +179,11 @@
 // //     //     context.callbackWaitsForEmptyEventLoop = false
 // //     //
 // //     //     function authenticator(url,state,auth_cb){
-// //     //         var query_str = Object.keys(event.query).map(function(key) {
-// //     //             return key + '=' + event.query[key];
+// //     //         var query_str = Object.keys(event.queryStringParameters).map(function(key) {
+// //     //             return key + '=' + event.queryStringParameters[key];
 // //     //         }).join('&');
 // //     //
-// //     //         var callback_full_url = callback_url + event.path.serviceType + '?' + query_str;
+// //     //         var callback_full_url = callback_url + event.pathParameters.serviceType + '?' + query_str;
 // //     //         console.log(">>> GEN CALLBACK_URL");
 // //     //         console.log(callback_full_url)
 // //     //         auth_cb(undefined, callback_full_url)
@@ -191,31 +191,31 @@
 // //     //
 // //     //
 // //     //     var storage_client = null;
-// //     //     if (event.path.serviceType == 'dropbox') {
+// //     //     if (event.pathParameters.serviceType == 'dropbox') {
 // //     //         storage_client = new cloudrail.services.Dropbox(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_DROPBOX_CLIENT_KEY, process.env.OAUTH_DROPBOX_CLIENT_SECRET, callback_url + event.path.serviceType, 'state');
+// //     //             , process.env.OAUTH_DROPBOX_CLIENT_KEY, process.env.OAUTH_DROPBOX_CLIENT_SECRET, callback_url + event.pathParameters.serviceType, 'state');
 // //     //     }
-// //     //     else if (event.path.serviceType == 'google') {
+// //     //     else if (event.pathParameters.serviceType == 'google') {
 // //     //         storage_client = new cloudrail.services.GoogleDrive(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_GOOGLE_CLIENT_KEY, process.env.OAUTH_GOOGLE_CLIENT_SECRET, callback_url + event.path.serviceType ,'state');
+// //     //             , process.env.OAUTH_GOOGLE_CLIENT_KEY, process.env.OAUTH_GOOGLE_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,'state');
 // //     //     }
-// //     //     else if (event.path.serviceType == 'box') {
+// //     //     else if (event.pathParameters.serviceType == 'box') {
 // //     //         storage_client = new cloudrail.services.Box(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_BOX_CLIENT_KEY, process.env.OAUTH_BOX_CLIENT_SECRET, callback_url + event.path.serviceType ,'state');
+// //     //             , process.env.OAUTH_BOX_CLIENT_KEY, process.env.OAUTH_BOX_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,'state');
 // //     //     }
-// //     //     else if (event.path.serviceType == 'skydrive') {
+// //     //     else if (event.pathParameters.serviceType == 'skydrive') {
 // //     //         storage_client = new cloudrail.services.OneDrive(//connect url (browser must redirect here)
 // //     //             authenticator
-// //     //             , process.env.OAUTH_SKYDRIVE_CLIENT_KEY, process.env.OAUTH_SKYDRIVE_CLIENT_SECRET, callback_url + event.path.serviceType ,'state');
+// //     //             , process.env.OAUTH_SKYDRIVE_CLIENT_KEY, process.env.OAUTH_SKYDRIVE_CLIENT_SECRET, callback_url + event.pathParameters.serviceType ,'state');
 // //     //     }
 // //     //     console.log(">>> STORAGE_CLINT CREATED..");
 // //     //
 // //     //     // DBService.get()
 // //     //     //     .then(function(db_client) {
-// //     //     //         return db_client.table('login_sessions').first().where({id: event.query.state})
+// //     //     //         return db_client.table('login_sessions').first().where({id: event.queryStringParameters.state})
 // //     //     //     })
 // //     //     //     .then(function(db_row_data){
 // //     //     //         console.log("AUTH DATA:")

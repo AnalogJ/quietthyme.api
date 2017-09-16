@@ -31,8 +31,8 @@ describe('Book Endpoints', function() {
       this.timeout(5000);
       var event = {
         token: token,
-        path: {},
-        query: { source: 'calibre' },
+        pathParameters: {},
+        queryStringParameters: { source: 'calibre' },
         body: {
           amazon_id: '0061840254',
           authors: ['Ian Douglas'],
@@ -129,8 +129,8 @@ describe('Book Endpoints', function() {
     it('should correctly find specific book in db', function(done) {
       var event = {
         token: token,
-        path: {},
-        query: {
+        pathParameters: {},
+        queryStringParameters: {
           id: book_id,
         },
         body: {},
@@ -147,8 +147,8 @@ describe('Book Endpoints', function() {
     it('should correctly find all books from db', function(done) {
       var event = {
         token: token,
-        path: {},
-        query: {},
+        pathParameters: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
@@ -206,8 +206,8 @@ describe('Book Endpoints', function() {
 
             var pageinated_event = {
               token: token,
-              path: {},
-              query: { page: resp_data.LastEvaluatedKey },
+              pathParameters: {},
+              queryStringParameters: { page: resp_data.LastEvaluatedKey },
               body: {},
             };
             var paginated_context = {};
@@ -220,8 +220,8 @@ describe('Book Endpoints', function() {
 
         var event = {
           token: token,
-          path: {},
-          query: {},
+          pathParameters: {},
+          queryStringParameters: {},
           body: {},
         };
         var context = {};
@@ -270,13 +270,13 @@ describe('Book Endpoints', function() {
     it('should return an error if book id is not specified', function(done) {
       var event = {
         token: token,
-        path: {},
-        query: {},
+        pathParameters: {},
+        queryStringParameters: {},
         body: {},
       };
       var context = {};
       function callback(ctx, data) {
-        JSON.parse(ctx).message.should.exist;
+        ctx.message.should.exist;
         should.not.exist(data);
         done();
       }
@@ -286,8 +286,8 @@ describe('Book Endpoints', function() {
     it('should correctly delete a book from the db', function(done) {
       var event = {
         token: token,
-        path: { id: book_id },
-        query: {},
+        pathParameters: { id: book_id },
+        queryStringParameters: {},
         body: {},
       };
       var context = {};

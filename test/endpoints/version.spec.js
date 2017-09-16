@@ -5,7 +5,7 @@ var should = require('should');
 describe('Version Endpoint', function() {
   describe('#handler()', function() {
     it('should correctly return version info', function(done) {
-      var event = {};
+      var event = {headers:{}};
       var context = {};
       var callback = function(ctx, data) {
         should.not.exist(ctx);

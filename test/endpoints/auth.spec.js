@@ -45,7 +45,7 @@ describe('Auth Endpoints', function() {
       };
       var context = {};
       function callback(ctx, data) {
-        JSON.parse(ctx).message.should.exist;
+        ctx.message.should.exist;
         should.not.exist(data);
         done();
       }
@@ -96,7 +96,7 @@ describe('Auth Endpoints', function() {
       };
       var context = {};
       function callback(ctx, data) {
-        JSON.parse(ctx).message.should.exist;
+        ctx.message.should.exist;
         should.not.exist(data);
         done();
       }
@@ -112,7 +112,7 @@ describe('Auth Endpoints', function() {
       };
       var context = {};
       function callback(ctx, data) {
-        JSON.parse(ctx).message.should.exist;
+        ctx.message.should.exist;
         should.not.exist(data);
         done();
       }

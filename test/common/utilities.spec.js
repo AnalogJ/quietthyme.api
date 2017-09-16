@@ -22,7 +22,7 @@ describe('Helpers', function() {
   describe('#errorHandler()', function() {
     it('should correctly transform a string into an error', function(done) {
       function cb(err) {
-        JSON.parse(err).should.eql({ message: '[400] this is a test error' });
+        err.should.eql({ message: '[500] this is a test error', code:500 });
         done();
       }
       Utilities.errorHandler(cb, {})('this is a test error');
@@ -30,7 +30,7 @@ describe('Helpers', function() {
 
     it('should correctly handle error objects', function(done) {
       function cb(err) {
-        JSON.parse(err).should.eql({ message: '[400] this is a test error' });
+        err.should.eql({ message: '[500] this is a test error', code:500 });
         done();
       }
       Utilities.errorHandler(cb, {})(new Error('this is a test error'));
@@ -40,11 +40,11 @@ describe('Helpers', function() {
       done
     ) {
       function cb(err) {
-        JSON.parse(err).should.eql({ message: '[500] this is a test error' });
+        err.should.eql({ message: '[401] this is a test error', code:401 });
         done();
       }
       var error = new Error('this is a test error');
-      error.code = 500;
+      error.code = 401;
       Utilities.errorHandler(cb, {})(error);
     });
   });

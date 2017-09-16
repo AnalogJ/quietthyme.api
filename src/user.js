@@ -10,7 +10,8 @@ var q = require('q'),
   Utilities = require('./common/utilities'),
   nconf = require('./common/nconf'),
   stripe = require('stripe')(nconf.get('STRIPE_SECRET_KEY')),
-  webPush = require('web-push');
+  webPush = require('web-push'),
+  GlobalHandler = require('./common/global_handler');
 
 webPush.setVapidDetails(
   'mailto:hello@quietthyme.com',
@@ -20,29 +21,29 @@ webPush.setVapidDetails(
 
 var UserEndpoint = module.exports;
 
-UserEndpoint.router = function(event, context, cb) {
+UserEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
-  if (event.path.action == 'plan' && event.method == 'POST') {
+  if (event.pathParameters.action == 'plan' && event.httpMethod == 'POST') {
     UserEndpoint.plan(event, context, cb);
-  } else if (event.path.action == 'update' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'update' && event.httpMethod == 'POST') {
     UserEndpoint.update(event, context, cb);
-  } else if (event.path.action == 'catalog' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'catalog' && event.httpMethod == 'POST') {
     UserEndpoint.catalogRegen(event, context, cb);
-  } else if (event.path.action == 'password' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'password' && event.httpMethod == 'POST') {
     UserEndpoint.password(event, context, cb);
   } else if (
-    event.path.action == 'pushnotify/subscribe' &&
-    event.method == 'POST'
+    event.pathParameters.action == 'pushnotify/subscribe' &&
+    event.httpMethod == 'POST'
   ) {
     UserEndpoint.pushNotifySubscribe(event, context, cb);
-  } else if (event.path.action == 'pushnotify/test' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'pushnotify/test' && event.httpMethod == 'POST') {
     UserEndpoint.pushNotifyTest(event, context, cb);
   } else {
-    Utilities.errorHandler(cb, context)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+    Utilities.errorHandler(cb)(
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
-};
+})
 
 UserEndpoint.update = function(event, context, cb) {
   //This method will update the allowed fields on the User object, and store them in the database.
@@ -60,7 +61,7 @@ UserEndpoint.update = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -85,7 +86,7 @@ UserEndpoint.catalogRegen = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -121,7 +122,7 @@ UserEndpoint.password = function(event, context, cb) {
         });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -182,7 +183,7 @@ UserEndpoint.plan = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -202,7 +203,7 @@ UserEndpoint.pushNotifySubscribe = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -227,6 +228,6 @@ UserEndpoint.pushNotifyTest = function(event, context, cb) {
         });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };

@@ -10,24 +10,25 @@ var q = require('q'),
   JWTokenService = require('./services/jwt_token_service'),
   SecurityService = require('./services/security_service'),
   Utilities = require('./common/utilities'),
-  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY'));
+  kloudless = require('kloudless')(nconf.get('KLOUDLESS_API_KEY')),
+  GlobalHandler = require('./common/global_handler');
 
 var AuthEndpoint = module.exports;
 
-AuthEndpoint.router = function(event, context, cb) {
+AuthEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('AuthEndpoint router event: %o', event);
-  if (event.path.action == 'login' && event.method == 'POST') {
+  if (event.pathParameters.action == 'login' && event.httpMethod == 'POST') {
     AuthEndpoint.login(event, context, cb);
-  } else if (event.path.action == 'register' && event.method == 'POST') {
+  } else if (event.pathParameters.action == 'register' && event.httpMethod == 'POST') {
     AuthEndpoint.register(event, context, cb);
-  } else if (event.path.action == 'status' && event.method == 'GET') {
+  } else if (event.pathParameters.action == 'status' && event.httpMethod == 'GET') {
     AuthEndpoint.status(event, context, cb);
   } else {
-    Utilities.errorHandler(cb, context)(
-      new Error(`Unknown API endpoint: ${event.path.action}`)
+    Utilities.errorHandler(cb)(
+      new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
-};
+})
 
 AuthEndpoint.register = function(event, context, cb) {
   //this function should check if an existing user with registered email already exists.
@@ -60,7 +61,7 @@ AuthEndpoint.register = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 AuthEndpoint.login = function(event, context, cb) {
@@ -88,7 +89,7 @@ AuthEndpoint.login = function(event, context, cb) {
       };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 //this function should check the status of a JWT Token for validity
@@ -98,6 +99,6 @@ AuthEndpoint.status = function(event, context, cb) {
       return { valid: true };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
