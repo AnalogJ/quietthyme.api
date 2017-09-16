@@ -7,7 +7,7 @@ machine:
 dependencies:
   override:
     - npm install -g serverless
-    - npm install  serverless-prune-plugin
+    - npm install -g serverless-prune-plugin
     - npm install
     - npm ls || true
 # pull docker images needed for tests.
