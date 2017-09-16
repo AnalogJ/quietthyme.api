@@ -182,7 +182,7 @@ functions:
     memorySize: 128
     events:
       - http:
-          path: 'storage/{action+}'
+          path: 'storaged/{action+}'
           method: ANY
           cors: true
 
