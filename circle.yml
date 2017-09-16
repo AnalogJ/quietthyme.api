@@ -28,7 +28,6 @@ deployment:
     branch: [beta, master]
     commands:
       - sls prune -n 4
-      - rm -rf node_modules
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
       - aws s3api put-bucket-lifecycle-configuration  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --lifecycle-configuration file://scripts/bucket.lifecycle.json
       - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --cors-configuration file://scripts/bucket.cors.json
