@@ -25,7 +25,7 @@ HookEndpoint.router = function(event, context, cb) {
   } else if (event.pathParameters.action == 'mailchimp') {
     HookEndpoint.mailchimp(event, context, cb);
   } else {
-    Utilities.errorHandler(cb, context)(
+    Utilities.errorHandler(cb)(
       new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
@@ -227,7 +227,7 @@ HookEndpoint.kloudless = function(event, context, cb) {
       };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 
@@ -267,7 +267,7 @@ HookEndpoint.mailchimp = function(event, context, cb) {
       };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 

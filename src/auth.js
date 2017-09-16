@@ -23,7 +23,7 @@ AuthEndpoint.router = function(event, context, cb) {
   } else if (event.pathParameters.action == 'status' && event.httpMethod == 'GET') {
     AuthEndpoint.status(event, context, cb);
   } else {
-    Utilities.errorHandler(cb, context)(
+    Utilities.errorHandler(cb)(
       new Error(`Unknown API endpoint: ${event.pathParameters.action}`)
     );
   }
@@ -60,7 +60,7 @@ AuthEndpoint.register = function(event, context, cb) {
       });
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 AuthEndpoint.login = function(event, context, cb) {
@@ -88,7 +88,7 @@ AuthEndpoint.login = function(event, context, cb) {
       };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };
 //this function should check the status of a JWT Token for validity
@@ -98,6 +98,6 @@ AuthEndpoint.status = function(event, context, cb) {
       return { valid: true };
     })
     .then(Utilities.successHandler(cb))
-    .fail(Utilities.errorHandler(cb, context))
+    .fail(Utilities.errorHandler(cb))
     .done();
 };

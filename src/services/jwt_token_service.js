@@ -55,3 +55,8 @@ jwtTokenService.verify = function(token) {
   });
   return deferred.promise;
 };
+
+//should only be used by GlobalHandler for logging, insecure
+jwtTokenService.decodeSync = function(token){
+  return jwt.decode(token);
+}

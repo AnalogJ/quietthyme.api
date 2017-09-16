@@ -1,8 +1,6 @@
 'use strict';
 const debug = require('debug')('quietthyme:utilities');
 const nconf = require('./nconf');
-
-var RollbarService = require('../services/rollbar_service');
 var _ = require('lodash');
 module.exports = {
   ISODateString: function(d) {
@@ -75,7 +73,7 @@ module.exports = {
       }
       try {
         if (!err.status && !err.code) {
-          err.code = 400;
+          err.code = 500;
         }
 
         //prepend the error code infront of the message, so that it will be caught by the
@@ -84,23 +82,18 @@ module.exports = {
         err.message = `[${err.code}] ${err.message}`;
       } catch (e) {
         //you cant set the .message/.code on some Error types (like AssertionError)
-        err = new Error(`[400] ${err.message}`);
-        err.code = 400;
+        err = new Error(`[500] ${err.message}`);
+        err.code = 500;
       }
 
       var whitelisted_props = Object.getOwnPropertyNames(err);
       if (nconf.get('STAGE') != 'beta') {
-        whitelisted_props = ['message', 'status'];
+        whitelisted_props = ['message', 'status', 'code'];
       }
 
       //added cleanup method for database, so that we dont timeout in Lambda
       debug('Returning Failure data: %o', err);
-      RollbarService.configure(_context.awsRequestId, {
-        context: `${_context.logGroupName}|${_context.logStreamName}`
-      })
-      RollbarService.get(_context.awsRequestId).error(err.message || 'unknown error occurred.', err || {}, {awsRequestId: _context.awsRequestId});
-
-      return _cb(JSON.stringify(err, whitelisted_props), null);
+      return _cb(JSON.parse(JSON.stringify(err, whitelisted_props)), null);
     };
   },
 };

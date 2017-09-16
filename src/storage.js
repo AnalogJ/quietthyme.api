@@ -87,7 +87,7 @@ module.exports = {
         };
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb, context))
+      .fail(Utilities.errorHandler(cb))
       .done();
   },
 
@@ -186,7 +186,7 @@ module.exports = {
         return status_obj;
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb, context))
+      .fail(Utilities.errorHandler(cb))
       .done();
   },
 
@@ -272,7 +272,7 @@ module.exports = {
         }
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb, context))
+      .fail(Utilities.errorHandler(cb))
       .done();
   },
 
@@ -317,7 +317,7 @@ module.exports = {
         });
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb, context))
+      .fail(Utilities.errorHandler(cb))
       .done();
   },
 
@@ -341,7 +341,7 @@ module.exports = {
           });
       })
       .then(Utilities.successHandler(cb))
-      .fail(Utilities.errorHandler(cb, context))
+      .fail(Utilities.errorHandler(cb))
       .done();
   },
 };

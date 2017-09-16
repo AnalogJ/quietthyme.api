@@ -1,6 +1,6 @@
 var Rollbar = require('rollbar');
 var nconf = require('./nconf');
-
+var JwtTokenService = require('../services/jwt_token_service');
 //global configuration for every call.
 var _rollbar_instances = {}
 
@@ -15,6 +15,7 @@ var GlobalHandler = module.exports
 // Serverless Lambda Proxy
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//populate event.token and convert event.body to JSON if content-type is application/json
 GlobalHandler.processEvent = function(event){
   event.token = "";
 
@@ -22,7 +23,7 @@ GlobalHandler.processEvent = function(event){
   if(authHeader){
     var authParts = authHeader.split(' ');
 
-    if( authParts.size() == 2 ){
+    if( authParts.length == 2 ){
       event.token = authParts[1];
 
       //todo we could set the event.auth object here, so handlers dont need to do it individually. Have to figure out promises
@@ -39,28 +40,55 @@ GlobalHandler.processEvent = function(event){
 };
 
 GlobalHandler.standardResponse = function(payload){
+  if(payload == null){return null}
   return {
     statusCode: 200,
+    headers:{
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({success: true, data: payload})
   }
 }
 
 GlobalHandler.standardErrorResponse = function(err){
+  if(err == null){return null}
   return {
     statusCode: err.code || 500,
+    headers:{
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({success: false, error: err})
   }
 }
 
 GlobalHandler.catalogResponse = function(payload){
-
+  if(payload == null){return null}
+  return {
+    statusCode: 200,
+    headers:{
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'max-age=120'
+    },
+    body: payload
+  }
 }
 
-GlobalHandler.catalogErrorResponse = function(payload){
+GlobalHandler.catalogErrorResponse = function(err){
+  if(err == null){return null}
 
+  return {
+    statusCode: 500,
+    headers:{
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'max-age=120'
+    },
+    body: err
+  }
 }
 
 GlobalHandler.redirectResponse = function(redirectData){
+  if(redirectData == null){return null}
+
   return {
     statusCode: 302,
     headers: {
@@ -116,38 +144,84 @@ GlobalHandler.getRollbar = function(requestId){
 
 // https://rollbar.com/docs/notifier/rollbar.js/#person-tracking
 GlobalHandler.rollbarLambdaPayload = function(_event, _context){
-  return {
-    context: `${_context.logGroupName}|${_context.logStreamName}`,
-    person: {"id": "123", "username": "foo", "email": "foo@example.com"}
+
+  var userData = JwtTokenService.decodeSync(_event.token)
+  var payload = {
+    context: _event.requestContext.path,
+  }
+  if(userData){
+    payload['person'] = {"id": userData.uid, "username": `${userData.first_name} ${userData.last_name}`, "email": userData.email}
   }
 }
 
 // https://rollbar.com/docs/notifier/rollbar.js/#the-request-object
 GlobalHandler.rollbarLambdaRequest = function(_event, _context){
 
+  var bodyContent = _event.body;
+  var contentTypeHeader = _event.headers['Content-Type'];
+  if(contentTypeHeader == 'application/json'){
+    //process JSON payload
+    bodyContent = JSON.stringify(event.body);
+  }
+
+  return {
+    headers: _event.headers,
+    protocol: 'https',
+    url: _event.requestContext.path,
+    method: _event.httpMethod,
+    body: bodyContent,
+    route: {path: _event.path},
+  }
 }
 
 
 
 
-GlobalHandler.wrap = function(handler) {
+GlobalHandler.wrap = function(_handler, _handlerOptions) {
   var self = this;
   return function(event, context, cb) {
-    self.lambdaContext = context;
     try {
-      return handler(event, context, function(err, resp) {
-        if (err) {
-          self.error(err);
+      //attach handlerOptions to this closure
+      self.handlerOptions = _handlerOptions || {responseType: 'standard'};
+
+      //process event (populate event.token and event.body with JSON)
+      event = GlobalHandler.processEvent(event);
+
+      //configure a Rollbar handler
+      GlobalHandler.configureRollbar(context.awsRequestId, GlobalHandler.rollbarLambdaPayload(event, context));
+
+      self.rollbar = GlobalHandler.getRollbar(context.awsRequestId);
+
+      return _handler(event, context, function(err, resp) {
+        if(err) {
+          self.rollbar.error(err, GlobalHandler.rollbarLambdaRequest(event))
         }
-        self.wait(function() {
-          cb(err, resp);
+        self.rollbar.wait(function() {
+
+          if(!self.handlerOptions.responseType || self.handlerOptions.responseType == 'standard'){
+            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.standardResponse(resp))
+          }
+          else if (self.handlerOptions.responseType == 'catalog'){
+            return cb(GlobalHandler.catalogErrorResponse(err), GlobalHandler.catalogResponse(resp))
+          }
+          else if (self.handlerOptions.responseType == 'redirect'){
+            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.redirectResponse(resp))
+          }
+          else {
+            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.standardResponse(resp))
+          }
         });
       });
     } catch (err) {
-      self.error(err);
-      self.wait(function() {
+      if(self.rollbar){
+        self.rollbar.error(err, GlobalHandler.rollbarLambdaRequest(event))
+        self.rollbar.wait(function() {
+          throw err;
+        });
+      }
+      else {
         throw err;
-      });
+      }
     }
   };
 };
