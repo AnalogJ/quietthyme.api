@@ -229,7 +229,9 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
       try {
         GlobalHandler.publishGoogleAnalyticsEvent(event, context)
       }
-      catch(e){}
+      catch(e){
+        debug('An error occured while publishing google analytics event: %o', e)
+      }
 
       return self.handler(event, context, function(err, resp) {
         if(err) {
