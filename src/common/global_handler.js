@@ -1,6 +1,8 @@
 var Rollbar = require('rollbar');
 var nconf = require('./nconf');
 var JwtTokenService = require('../services/jwt_token_service');
+const debug = require('debug')('quietthyme:global_handler');
+
 //global configuration for every call.
 var _rollbar_instances = {}
 
@@ -224,6 +226,7 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
         });
       });
     } catch (err) {
+      debug('An unhandled error occured inside wrapper, %o', err)
       if(self.rollbar){
         self.rollbar.error(err.message || 'unknown error', err, GlobalHandler.rollbarLambdaRequest(event))
         self.rollbar.wait(function() {
