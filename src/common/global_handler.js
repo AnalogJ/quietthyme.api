@@ -44,7 +44,9 @@ GlobalHandler.standardResponse = function(payload){
   return {
     statusCode: 200,
     headers:{
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
     },
     body: JSON.stringify({success: true, data: payload})
   }
