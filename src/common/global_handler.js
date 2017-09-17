@@ -57,7 +57,9 @@ GlobalHandler.standardErrorResponse = function(err){
   return {
     statusCode: err.code || 500,
     headers:{
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
     },
     body: JSON.stringify({success: false, error: err})
   }
@@ -96,6 +98,8 @@ GlobalHandler.redirectResponse = function(redirectData){
     headers: {
       'Location': redirectData.headers.Location,
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
     },
     body: JSON.stringify({})
   }
