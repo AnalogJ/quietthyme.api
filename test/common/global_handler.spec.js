@@ -145,8 +145,8 @@ describe('GlobalHandler', function() {
 
     it('should wrap a handler and correctly pass error response to callback', function (done) {
       function callback(err, data) {
-        should.not.exist(data);
-        err.should.eql({
+        should.not.exist(err);
+        data.should.eql({
           statusCode: 500,
           headers: {
             'Content-Type': 'application/json',
