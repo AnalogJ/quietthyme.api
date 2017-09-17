@@ -103,7 +103,7 @@ package:
 functions:
 # UNAUTHENTICATED METHODS
   version:
-    handler: src/version.handler
+    handler: src/version.router
     description: returns the version and git information for this deployment
     events:
       - http: GET version
