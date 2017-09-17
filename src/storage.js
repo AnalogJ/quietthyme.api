@@ -30,6 +30,7 @@ StorageHandler.router = GlobalHandler.wrap(function(event, context, cb) {
     StorageHandler.prepare_cover(event, context, cb);
   }
   else if (event.pathParameters.action && event.httpMethod == 'GET') {
+    event.pathParameters.id = event.pathParameters.action;
     StorageHandler.download(event, context, cb);
   }
   else {
