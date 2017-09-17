@@ -104,7 +104,7 @@ BookEndpoint.destroy = function(event, context, cb) {
   //TODO: we should destroy book storage as well.
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      if (!!event.pathParameters || !event.pathParameters.id) {
+      if (!event.pathParameters || !event.pathParameters.id) {
         console.error('No book specified', event.pathParameters.id);
         throw new HttpError('No book specified', 500);
       }
