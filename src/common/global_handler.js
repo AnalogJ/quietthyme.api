@@ -158,7 +158,7 @@ GlobalHandler.rollbarLambdaPayload = function(_event, _context){
 GlobalHandler.rollbarLambdaRequest = function(_event, _context){
 
   var bodyContent = _event.body;
-  var contentTypeHeader = _event.headers['Content-Type'];
+  var contentTypeHeader = _event.headers['Content-Type'] || _event.headers['content-type'];
   if(contentTypeHeader == 'application/json'){
     //process JSON payload
     bodyContent = JSON.stringify(event.body);
