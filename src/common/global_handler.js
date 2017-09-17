@@ -2,6 +2,7 @@ var Rollbar = require('rollbar');
 var nconf = require('./nconf');
 var JwtTokenService = require('../services/jwt_token_service');
 const debug = require('debug')('quietthyme:global_handler');
+var ua = require('universal-analytics');
 
 //global configuration for every call.
 var _rollbar_instances = {}
@@ -111,8 +112,23 @@ GlobalHandler.redirectResponse = function(redirectData){
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Google Analytics Handling
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+GlobalHandler.publishGoogleAnalyticsEvent = function(event, context){
 
+  var userData = JwtTokenService.decodeSync(_event.token) || {};
+  var visitor;
+  if(userData.uid){
+    visitor = ua(nconf.get('GOOGLE_ANALYTICS_ACCOUNT_ID'), userData.uid);
+  }
+  else{
+    visitor = ua(nconf.get('GOOGLE_ANALYTICS_ACCOUNT_ID'));
+  }
+
+  visitor.event(`${event.httpMethod}#${event.resource}`, event.path, userData.email || null).send()
+};
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Rollbar Exception Handling
@@ -207,8 +223,13 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
 
       //configure a Rollbar handler
       GlobalHandler.configureRollbar(context.awsRequestId, GlobalHandler.rollbarLambdaPayload(event, context));
-
       self.rollbar = GlobalHandler.getRollbar(context.awsRequestId);
+
+      //configure Google Analytics
+      try {
+        GlobalHandler.eventGoogleAnalytics(event)
+      }
+      catch(e){}
 
       return self.handler(event, context, function(err, resp) {
         if(err) {

@@ -15,7 +15,7 @@ var CatalogHandler = module.exports
 
 CatalogHandler.router = function(event, context, cb) {
   debug('CatalogHandler router event: %o', event);
-  if (!event.pathParameters || !event.pathParameters.action) {
+  if (!event.pathParameters.action) {
     GlobalHandler.wrap(CatalogHandler.index, {responseType: 'catalog'})(event, context, cb);
   }
   else if (event.pathParameters.action == 'series') {

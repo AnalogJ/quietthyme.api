@@ -50,6 +50,7 @@
     "stripe": "^4.17.0",
     "tmp": "0.0.31",
     "to-markdown": "^3.0.3",
+    "universal-analytics": "^0.4.15",
     "web-push": "^3.2.2",
     "xkcd-password": "^1.2.0",
     "xml-schema": "^2.2.0"
