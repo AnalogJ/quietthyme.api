@@ -19,7 +19,7 @@ var GlobalHandler = module.exports
 GlobalHandler.processEvent = function(event){
   event.token = "";
 
-  var authHeader = event.headers['Authorization'];
+  var authHeader = event.headers['Authorization']|| event.headers['authorization'];
   if(authHeader){
     var authParts = authHeader.split(' ');
 
@@ -31,7 +31,7 @@ GlobalHandler.processEvent = function(event){
     }
   }
 
-  var contentTypeHeader = event.headers['Content-Type'];
+  var contentTypeHeader = event.headers['Content-Type'] || event.headers['content-type'];
   if(contentTypeHeader == 'application/json'){
     //process JSON payload
     event.body = JSON.parse(event.body);
@@ -161,7 +161,7 @@ GlobalHandler.rollbarLambdaRequest = function(_event, _context){
   var contentTypeHeader = _event.headers['Content-Type'] || _event.headers['content-type'];
   if(contentTypeHeader == 'application/json'){
     //process JSON payload
-    bodyContent = JSON.stringify(event.body);
+    bodyContent = JSON.stringify(_event.body);
   }
 
   return {
