@@ -227,7 +227,7 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
 
       //configure Google Analytics
       try {
-        GlobalHandler.eventGoogleAnalytics(event)
+        GlobalHandler.publishGoogleAnalyticsEvent(event, context)
       }
       catch(e){}
 
