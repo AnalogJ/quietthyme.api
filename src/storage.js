@@ -153,7 +153,7 @@ StorageHandler.status = function(event, context, cb) {
             credential_storage_info.credential.calibre_location_code,
         };
 
-        if (event.queryStringParameters.source == 'calibre') {
+        if (event.queryStringParameters && event.queryStringParameters.source == 'calibre') {
           storage['last_library_uuid'] = event.queryStringParameters.library_uuid;
           storage['calibre_version'] = '2.6.0';
         }

@@ -34,7 +34,7 @@ BookEndpoint.create = function(event, context, cb) {
       debug('Create book query: %o', event.queryStringParameters);
       debug('Create book body: %s', event.body);
 
-      if (!event.queryStringParameters.source) {
+      if (!event.queryStringParameters || !event.queryStringParameters.source) {
         console.error(
           'No source present, dont know where this book is from',
           event.queryStringParameters.source
@@ -69,7 +69,7 @@ BookEndpoint.create = function(event, context, cb) {
 BookEndpoint.find = function(event, context, cb) {
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      if (!event.queryStringParameters.storage_id) {
+      if (!event.queryStringParameters || !event.queryStringParameters.storage_id) {
         console.warn(
           'No storage_id present, returning books from all storage providers.',
           event.queryStringParameters.storage_id
@@ -104,7 +104,7 @@ BookEndpoint.destroy = function(event, context, cb) {
   //TODO: we should destroy book storage as well.
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      if (!event.pathParameters.id) {
+      if (!!event.pathParameters || !event.pathParameters.id) {
         console.error('No book specified', event.pathParameters.id);
         throw new HttpError('No book specified', 500);
       }
