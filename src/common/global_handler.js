@@ -211,24 +211,28 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
         }
         self.rollbar.wait(function() {
 
-          if(!self.handlerOptions.responseType || self.handlerOptions.responseType == 'standard'){
-            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.standardResponse(resp))
+          if(err && self.handlerOptions.responseType == 'catalog'){
+            cb(null, GlobalHandler.catalogErrorResponse(err)) //its a handled lambda error
+          }
+          else if(err){
+            return cb(null, GlobalHandler.standardErrorResponse(err)) //its a handled lambda error
           }
           else if (self.handlerOptions.responseType == 'catalog'){
-            return cb(GlobalHandler.catalogErrorResponse(err), GlobalHandler.catalogResponse(resp))
+            return cb(null, GlobalHandler.catalogResponse(resp))
           }
           else if (self.handlerOptions.responseType == 'redirect'){
-            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.redirectResponse(resp))
+            return cb(null, GlobalHandler.redirectResponse(resp))
           }
           else {
-            return cb(GlobalHandler.standardErrorResponse(err), GlobalHandler.standardResponse(resp))
+            return cb(null, GlobalHandler.standardResponse(resp))
           }
+
         });
       });
     } catch (err) {
       debug('An unhandled error occured inside wrapper, %o', err)
       if(self.rollbar){
-        self.rollbar.error(err.message || 'unknown error', err, GlobalHandler.rollbarLambdaRequest(event))
+        self.rollbar.error(err.message || 'unhandled error', err, GlobalHandler.rollbarLambdaRequest(event))
         self.rollbar.wait(function() {
           throw err;
         });
