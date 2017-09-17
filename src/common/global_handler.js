@@ -54,7 +54,7 @@ GlobalHandler.standardResponse = function(payload){
     },
     body: JSON.stringify({success: true, data: payload})
   }
-}
+};
 
 GlobalHandler.standardErrorResponse = function(err){
   if(err == null){return null}
@@ -205,7 +205,7 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
 
       return self.handler(event, context, function(err, resp) {
         if(err) {
-          self.rollbar.error(err, GlobalHandler.rollbarLambdaRequest(event))
+          self.rollbar.error(err.message || 'unknown error', err, GlobalHandler.rollbarLambdaRequest(event))
         }
         self.rollbar.wait(function() {
 
@@ -225,7 +225,7 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
       });
     } catch (err) {
       if(self.rollbar){
-        self.rollbar.error(err, GlobalHandler.rollbarLambdaRequest(event))
+        self.rollbar.error(err.message || 'unknown error', err, GlobalHandler.rollbarLambdaRequest(event))
         self.rollbar.wait(function() {
           throw err;
         });
