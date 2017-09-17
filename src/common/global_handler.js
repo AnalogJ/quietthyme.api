@@ -176,7 +176,12 @@ GlobalHandler.rollbarLambdaRequest = function(_event, _context){
     bodyContent = JSON.stringify(_event.body);
   }
 
+  if(_event.headers && _event.headers['Host']){
+    _event.headers['host'] = _event.headers['Host'];
+  }
+
   return {
+    host: _event.headers['host'],
     headers: _event.headers,
     protocol: 'https',
     url: _event.requestContext.path,
