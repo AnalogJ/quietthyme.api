@@ -118,10 +118,10 @@ GlobalHandler.redirectResponse = function(redirectData){
 
 GlobalHandler.publishGoogleAnalyticsEvent = function(event, context){
 
-  var userData = JwtTokenService.decodeSync(_event.token) || {};
+  var userData = JwtTokenService.decodeSync(event.token) || {};
   var visitor;
   if(userData.uid){
-    visitor = ua(nconf.get('GOOGLE_ANALYTICS_ACCOUNT_ID'), userData.uid);
+    visitor = ua(nconf.get('GOOGLE_ANALYTICS_ACCOUNT_ID'), userData.uid, {strictCidFormat: false});
   }
   else{
     visitor = ua(nconf.get('GOOGLE_ANALYTICS_ACCOUNT_ID'));
