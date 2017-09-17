@@ -68,7 +68,9 @@ describe('GlobalHandler', function() {
       resp.should.eql({
         statusCode: 200,
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
         },
         body: "{\"success\":true,\"data\":{}}"
       });
@@ -79,7 +81,9 @@ describe('GlobalHandler', function() {
       resp.should.eql({
         statusCode: 200,
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
         },
         body: "{\"success\":true,\"data\":\"testing\"}"
       });
@@ -92,7 +96,9 @@ describe('GlobalHandler', function() {
       resp.should.eql({
         statusCode: 400,
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
         },
         body: "{\"success\":false,\"error\":{\"message\":\"testing\",\"code\":400}}"
       });
@@ -103,7 +109,9 @@ describe('GlobalHandler', function() {
       resp.should.eql({
         statusCode: 500,
         headers:{
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
         },
         body: "{\"success\":false,\"error\":{\"message\":\"testing\"}}"
       });
@@ -118,7 +126,11 @@ describe('GlobalHandler', function() {
         should.not.exist(err);
         data.should.eql({
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+          },
           body: '{"success":true,"data":{"payload":"this is my data"}}'
         })
         done()
@@ -136,7 +148,11 @@ describe('GlobalHandler', function() {
         should.not.exist(data);
         err.should.eql({
           statusCode: 500,
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+          },
           body: '{"success":false,"error":{"payload":"this is my error data"}}'
         })
         done()
