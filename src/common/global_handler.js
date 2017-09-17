@@ -17,7 +17,11 @@ var GlobalHandler = module.exports
 
 //populate event.token and convert event.body to JSON if content-type is application/json
 GlobalHandler.processEvent = function(event){
+  //set sane defaults
   event.token = "";
+  event.pathParameters = event.pathParameters || {};
+  event.queryStringParameters = event.queryStringParameters || {};
+
 
   var authHeader = event.headers['Authorization']|| event.headers['authorization'];
   if(authHeader){
