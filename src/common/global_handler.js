@@ -164,7 +164,6 @@ GlobalHandler.getRollbar = function(requestId){
         }
       }
     });
-    _rollbar_instances[requestId].log(`Initialize rollbar for request ${requestId}`);
   }
 
   return _rollbar_instances[requestId]
