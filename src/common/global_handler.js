@@ -178,10 +178,11 @@ GlobalHandler.rollbarLambdaRequest = function(_event, _context){
 
 
 GlobalHandler.wrap = function(_handler, _handlerOptions) {
-  var self = this;
   return function(event, context, cb) {
+    var self = {};
     try {
       //attach handlerOptions to this closure
+      self.handler = _handler;
       self.handlerOptions = _handlerOptions || {responseType: 'standard'};
 
       //process event (populate event.token and event.body with JSON)
@@ -192,7 +193,7 @@ GlobalHandler.wrap = function(_handler, _handlerOptions) {
 
       self.rollbar = GlobalHandler.getRollbar(context.awsRequestId);
 
-      return _handler(event, context, function(err, resp) {
+      return self.handler(event, context, function(err, resp) {
         if(err) {
           self.rollbar.error(err, GlobalHandler.rollbarLambdaRequest(event))
         }

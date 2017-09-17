@@ -7,7 +7,8 @@
     "test": "STAGE=test mocha",
     "coverage": "rm -rf ./coverage && STAGE=test istanbul --preload-sources cover _mocha",
     "coveralls": "rm -rf ./coverage && STAGE=test istanbul --preload-sources cover _mocha && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "prettier": "prettier --single-quote --trailing-comma --write \"./**/*.js\""
+    "prettier": "prettier --single-quote --trailing-comma --write \"./**/*.js\"",
+    "offline": "serverless offline start"
   },
   "repository": {
     "type": "git",

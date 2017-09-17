@@ -6,9 +6,6 @@ var GlobalHandler = require('./common/global_handler');
 
 var VersionHandler = module.exports
 
-VersionHandler.router = GlobalHandler.wrap(VersionHandler.handler)
-
-
 VersionHandler.handler = function(event, context, callback){
   debug(event);
   debug(nconf.get('STAGE'), nconf.get('DEPLOY_SHA'));
@@ -21,3 +18,6 @@ VersionHandler.handler = function(event, context, callback){
 
   return callback(null, versionInfo);
 }
+
+VersionHandler.router = GlobalHandler.wrap(VersionHandler.handler)
+
