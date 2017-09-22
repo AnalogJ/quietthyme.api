@@ -51,6 +51,22 @@ StorageService.book_filename = function(book) {
   return filename;
 };
 
+StorageService.delete_book_storage = function(storage_type, storage_identifier, credential_id){
+  if(storage_type == 'quietthyme'){
+    var s3_parts = storage_identifier.split('/');
+    var s3_bucket = s3_parts.shift();
+    var s3_key = decodeURI(s3_parts.join('/'));
+
+    return delete_s3_file(s3_bucket, s3_key)
+  }
+  else {
+    return DBService.findCredentialById(credential_id)
+      .then(function(credential) {
+        return KloudlessService.fileDelete(credential.service_id, storage_identifier)
+      })
+  }
+};
+
 //There are 3 types of move operations:
 // - kloudless blackhole -> kloudless library
 // - s3 upload bucket -> kloudless library
@@ -369,6 +385,15 @@ function download_s3_file(bucket, key, writeStream) {
     .getObject({ Bucket: bucket, Key: key })
     .createReadStream();
   readStream.pipe(writeStream).on('finish', function() {
+    return deferred.resolve({});
+  });
+  return deferred.promise;
+}
+
+function delete_s3_file(bucket, key) {
+  var deferred = q.defer();
+  s3.deleteObject({ Bucket: bucket, Key: key }, function(err, data) {
+    if(err){ deferred.reject(err) }
     return deferred.resolve({});
   });
   return deferred.promise;

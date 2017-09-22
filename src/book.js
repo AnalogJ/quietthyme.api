@@ -2,6 +2,7 @@
 const debug = require('debug')('quietthyme:book');
 var JWTokenService = require('./services/jwt_token_service'),
   DBService = require('./services/db_service'),
+  StorageService = require('./services/storage_service'),
   HttpError = require('./common/http_error'),
   Utilities = require('./common/utilities'),
   PipelineMetadataService = require('./services/pipeline_metadata_service'),
@@ -108,9 +109,18 @@ BookEndpoint.destroy = function(event, context, cb) {
         console.error('No book specified', event.pathParameters.id);
         throw new HttpError('No book specified', 500);
       }
-      var book_data = event.body;
-      book_data.user_id = auth.uid;
-      return DBService.deleteBookById(event.pathParameters.id, auth.uid);
+
+      // determine if we should delete from book storage as well.
+      var deletePromise = q({})
+      if(event.body.full_delete){
+        deletePromise = DBService.findBookById(event.queryStringParameters.id, auth.uid)
+          .then(function(book){
+            return StorageService.delete_book_storage(book.storage_type, book.storage_identifier, book.credential_id)
+          })
+      }
+      return deletePromise.then(function(){
+        return DBService.deleteBookById(event.pathParameters.id, auth.uid)
+      });
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))

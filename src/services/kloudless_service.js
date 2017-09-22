@@ -148,6 +148,20 @@ kloudlessService.fileMove = function(
   return deferred.promise;
 };
 
+kloudlessService.fileDelete = function(account_id, identifier){
+  var payload = {
+    account_id: account_id,
+    file_id: identifier
+  };
+
+  var deferred = q.defer();
+  kloudless.files.delete(payload, function(err, res) {
+    if (err) return deferred.reject(err);
+    return deferred.resolve(res);
+  });
+  return deferred.promise;
+}
+
 kloudlessService.convertId = function(account_id, identifier, type) {
   var deferred = q.defer();
 

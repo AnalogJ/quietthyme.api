@@ -126,4 +126,37 @@ describe('StorageService', function() {
       );
     });
   });
+
+  describe('#delete_book_storage()', function() {
+    it('Should succeed if deleting quietthyme file path that doesnt exist', function(done) {
+      StorageService.delete_book_storage(
+        'quietthyme',
+        'bucketname/fixtures/doesnotexist.pdf',
+        'quietthyme'
+      )
+        .then(function(err) {
+          data.should.eql({ });
+        })
+        .then(done, done);
+    });
+
+    it('Should correctly delete quietthyme storage', function(done) {
+      StorageService.upload_file_from_path(
+        './test/fixtures/fatherg-oscard.opf',
+        'test-bucket',
+        'test-key'
+      )
+        .then(function(){
+          return StorageService.delete_book_storage(
+            'quietthyme',
+            'test-bucket/test-key',
+            'quietthyme'
+          )
+        })
+        .then(function(data) {
+          data.should.eql({ });
+        })
+        .then(done, done);
+    });
+  });
 });
