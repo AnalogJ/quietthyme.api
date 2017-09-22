@@ -112,8 +112,8 @@ BookEndpoint.destroy = function(event, context, cb) {
 
       // determine if we should delete from book storage as well.
       var deletePromise = q({})
-      if(event.body.full_delete){
-        deletePromise = DBService.findBookById(event.queryStringParameters.id, auth.uid)
+      if(event.queryStringParameters.deleteStorage){
+        deletePromise = DBService.findBookById(event.pathParameters.id, auth.uid)
           .then(function(book){
             return StorageService.delete_book_storage(book.storage_type, book.storage_identifier, book.credential_id)
           })
