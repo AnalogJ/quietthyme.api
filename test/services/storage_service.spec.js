@@ -134,7 +134,7 @@ describe('StorageService', function() {
         'bucketname/fixtures/doesnotexist.pdf',
         'quietthyme'
       )
-        .then(function(err) {
+        .then(function(data) {
           data.should.eql({ });
         })
         .then(done, done);
