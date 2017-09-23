@@ -35,6 +35,10 @@ module.exports = {
     });
   },
 
+  compactArray: function(array){
+    return _.compact(array);
+  },
+
   successHandler: function(cb) {
     var _cb = cb;
     return function(resp_data) {

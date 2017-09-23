@@ -133,6 +133,10 @@ BookEndpoint.edit = function(event, context, cb) {
             if(event.body[prop] != book[prop]){
               //properties are not the same, we need to update the book
               updateData[prop] = event.body[prop];
+
+              if(prop == 'authors'){
+                updateData[prop] = Utilities.compactArray(updateData[prop])
+              }
               sources[prop] = event.queryStringParameters.source
             }
           }
