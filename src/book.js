@@ -143,7 +143,7 @@ BookEndpoint.edit = function(event, context, cb) {
           }
           else{
             //nothign to update, exit.
-            return {}
+            return book
           }
         })
     })
