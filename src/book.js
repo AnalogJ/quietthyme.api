@@ -124,6 +124,7 @@ BookEndpoint.edit = function(event, context, cb) {
 
       //find the existing book.
       //update teh fields that were passed in.
+      //TODO editing a book should also edit hte book storage name (title, author, series info)
       return DBService.findBookById(event.pathParameters.id, auth.uid)
         .then(function(book){
 
