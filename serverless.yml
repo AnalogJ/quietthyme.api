@@ -175,7 +175,10 @@ functions:
           path: 'book/{id}'
           method: DELETE
           cors: true
-
+      - http:
+          path: 'book/{id}'
+          method: POST
+          cors: true
   storage:
     handler: src/storage.router
     timeout: 300 #TODO, this should be returned back to default.

@@ -230,6 +230,98 @@ describe('Book Endpoints', function() {
     });
   });
 
+
+  describe('#edit()', function() {
+    var token;
+    var user_id;
+    var book_id;
+    before(function (done) {
+      var user = {
+        name: 'testplan',
+        plan: 'none',
+        email: 'book-edit@example.com',
+        password_hash: 'testplanhash',
+        catalog_token: 'testplancatalog',
+      };
+      DBService.createUser(user)
+        .then(function (user_data) {
+          user_id = user_data.uid;
+          return JWTTokenService.issueFromUser(user_data);
+        })
+        .then(function (_token) {
+          token = _token;
+
+          //create a 4 books for this user.
+          var book = {
+            user_id: user_id,
+            credential_id: 'edit-book-credential-id',
+            storage_size: 123456,
+            storage_identifier: 'storage-id/test/1',
+            storage_filename: 'book',
+            storage_format: 'epub',
+            title: 'this is my book title',
+          };
+          return DBService.createBook(book)
+            .then(function () {
+              book.storage_identifier = 'storage-id/test/2';
+              return DBService.createBook(book);
+            })
+            .then(function () {
+              book.storage_identifier = 'storage-id/test/3';
+              return DBService.createBook(book);
+            })
+            .then(function (book_data) {
+              book_id = book_data.id;
+              book.storage_identifier = 'storage-id/test/4';
+              return DBService.createBook(book);
+            })
+            .then(function () {
+            });
+        })
+        .then(done, done);
+    });
+
+    it('should throw an error if the source is not specified', function(done) {
+      var event = {
+        token: token,
+        pathParameters: {
+          id: book_id,
+        },
+        queryStringParameters: {
+        },
+        body: {},
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.exist(ctx);
+        done();
+      }
+      bookHandler.edit(event, context, callback);
+    });
+
+    it('should update book and sources  ', function(done) {
+      var event = {
+        token: token,
+        pathParameters: {
+          id: book_id,
+        },
+        queryStringParameters: {
+          source: "manual"
+        },
+        body: {
+          "title": "new book title",
+        },
+      };
+      var context = {};
+      function callback(ctx, data) {
+        should.not.exist(ctx);
+        // data.should.eql({});
+        done();
+      }
+      bookHandler.edit(event, context, callback);
+    });
+  });
+
   describe('#destroy()', function() {
     var token;
     var user_id;

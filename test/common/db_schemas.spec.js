@@ -35,4 +35,22 @@ describe('DBSchemas', function() {
       });
     });
   });
+
+
+  describe('updateBook', function() {
+    it('should remove any invalid keys from data', function() {
+      var book = DBSchemas.updateBook({
+        invalid_key: true,
+      }).should.eql({});
+
+      should.not.exist(book.invalid_key);
+    });
+
+
+    it('should correctly handle valid keys', function() {
+      var book = DBSchemas.updateBook({
+        title: 'this is my title',
+      }).should.eql({title: 'this is my title'});
+    });
+  });
 });

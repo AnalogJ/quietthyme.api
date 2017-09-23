@@ -15,7 +15,9 @@ var BookEndpoint = module.exports;
 
 BookEndpoint.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('UserEndpoint router event: %o', event);
-  if (event.httpMethod == 'POST') {
+  if (event.httpMethod == 'POST' && event.pathParameters.id) {
+    BookEndpoint.edit(event, context, cb);
+  } else if (event.httpMethod == 'POST') {
     BookEndpoint.create(event, context, cb);
   } else if (event.httpMethod == 'GET') {
     BookEndpoint.find(event, context, cb);
@@ -41,7 +43,7 @@ BookEndpoint.create = function(event, context, cb) {
           event.queryStringParameters.source
         );
         throw new HttpError(
-          'No source present, dont know where this book is from. Should always be calibre',
+          'No source present, dont know where this book is from. Should be calibre or web',
           500
         );
       }
@@ -95,6 +97,55 @@ BookEndpoint.find = function(event, context, cb) {
         );
       }
       return book_query;
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+};
+
+BookEndpoint.edit = function(event, context, cb) {
+  JWTokenService.verify(event.token)
+    .then(function(auth) {
+      debug('Edit book params: %o', event.pathParameters);
+      debug('Edit book query: %o', event.queryStringParameters);
+      debug('Edit book body: %s', event.body);
+
+      if (!event.queryStringParameters || !event.queryStringParameters.source) {
+        console.error(
+          'No source present, dont know where this book is from',
+          event.queryStringParameters.source
+        );
+        throw new HttpError(
+          'No source present, dont know where this book is from',
+          500
+        );
+      }
+
+
+      //find the existing book.
+      //update teh fields that were passed in.
+      return DBService.findBookById(event.pathParameters.id, auth.uid)
+        .then(function(book){
+
+          var updateData = {};
+          var sources = book.sources;
+          for(var prop in event.body){
+            if(event.body[prop] != book[prop]){
+              //properties are not the same, we need to update the book
+              updateData[prop] = event.body[prop];
+              sources[prop] = event.queryStringParameters.source
+            }
+          }
+
+          if(updateData){
+            updateData.sources = sources;
+            return DBService.updateBook(book.id, auth.uid, updateData, true)
+          }
+          else{
+            //nothign to update, exit.
+            return {}
+          }
+        })
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
