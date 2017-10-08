@@ -143,12 +143,13 @@ StorageHandler.detach = function(event, context, cb) {
 
           var promiseChain = q({})
 
-          if(event.body.deleteBooks){
+          if(event.body.deleteStorage){
             promiseChain = q.allSettled([
               KloudlessService.folderDelete(credential.service_id, credential.blackhole_folder.id ),
               KloudlessService.folderDelete(credential.service_id, credential.library_folder.id )
             ])
-              .spread(function(){
+              .spread(function(promises){
+                console.log("deleted folders containing books:", promises)
                 return {}
               })
           }
