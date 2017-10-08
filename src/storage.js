@@ -9,8 +9,8 @@ var Utilities = require('./common/utilities');
 var q = require('q');
 var Constants = require('./common/constants');
 var nconf = require('./common/nconf');
-var AWS = require('aws-sdk');
-var s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+var aws = require('aws-sdk');
+var s3 = new aws.S3({ apiVersion: '2006-03-01' });
 var lambda = new aws.Lambda();
 var GlobalHandler = require('./common/global_handler');
 
