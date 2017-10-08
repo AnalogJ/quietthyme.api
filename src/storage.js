@@ -11,6 +11,7 @@ var Constants = require('./common/constants');
 var nconf = require('./common/nconf');
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+var lambda = new aws.Lambda();
 var GlobalHandler = require('./common/global_handler');
 
 var StorageHandler = module.exports
@@ -19,6 +20,9 @@ StorageHandler.router = GlobalHandler.wrap(function(event, context, cb) {
   debug('StorageHandler router event: %o', event);
   if (event.pathParameters.action == 'link' && event.httpMethod == 'POST') {
     StorageHandler.link(event, context, cb);
+  }
+  else if (event.pathParameters.action == 'detach' && event.httpMethod == 'POST') {
+    StorageHandler.detach(event, context, cb);
   }
   else if (event.pathParameters.action == 'status' && event.httpMethod == 'GET') {
     StorageHandler.status(event, context, cb);
@@ -119,6 +123,86 @@ StorageHandler.link = function(event, context, cb) {
     .fail(Utilities.errorHandler(cb))
     .done();
 }
+
+//this function will store credentials created by kloudless on the front-end.
+StorageHandler.detach = function(event, context, cb) {
+  // // TODO: VALIDATE the token before saving. https://developers.kloudless.com/docs/v1/authentication
+
+  JWTokenService.verify(event.token)
+    .then(function(auth) {
+
+      // retrieve the storage credential
+      // if deleteBooks is true, delete the library folder and the blackhole folder in Storage Provider
+      // delete the kloudless account
+      // delete the storage credential
+      // queue the credential books deletion
+
+
+      return DBService.findCredentialById(event.body.credential_id, auth.uid)
+        .then(function(credential){
+
+          var promiseChain = q({})
+
+          if(event.body.deleteBooks){
+            promiseChain = q.allSettled([
+              KloudlessService.folderDelete(credential.service_id, credential.blackhole_folder.id ),
+              KloudlessService.folderDelete(credential.service_id, credential.library_folder.id )
+            ])
+              .spread(function(){
+                return {}
+              })
+          }
+          return promiseChain
+            .then(function(){
+              //delete the kloudless account
+              return KloudlessService.accountDelete(credential.service_id)
+            })
+            .then(function(){
+              //delete the credential
+              return DBService.deleteCredentialById(event.body.credential_id, auth.uid)
+            })
+            .then(function(){
+              //queue up book deletion
+              var deferred = q.defer();
+              console.info(
+                'Queuing up delete operation of credential books',
+                event.body.credential_id,
+                auth.uid
+              );
+              lambda.invoke(
+                {
+                  FunctionName:
+                  'quietthyme-api-' +
+                  nconf.get('STAGE') +
+                  '-queueprocessdeletecredentialbooks',
+                  Payload: JSON.stringify(
+                    {
+                      credential_id: event.body.credential_id,
+                      uid: auth.uid
+                    },
+                    null,
+                    2
+                  ),
+                  InvocationType: 'Event',
+                },
+                function(err, data) {
+                  if (err) return deferred.reject(err);
+                  return deferred.resolve(data.Payload);
+                }
+              );
+              return deferred.promise;
+            })
+        })
+        .then(function(){
+          return {}
+        })
+
+    })
+    .then(Utilities.successHandler(cb))
+    .fail(Utilities.errorHandler(cb))
+    .done();
+}
+
 
 StorageHandler.status = function(event, context, cb) {
   //res.setHeader('Cache-Control', 'public, max-age=31557600');

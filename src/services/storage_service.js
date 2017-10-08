@@ -67,6 +67,15 @@ StorageService.delete_book_storage = function(storage_type, storage_identifier, 
   }
 };
 
+StorageService.delete_book_coverart = function(cover_identifier){
+  var s3_parts = cover_identifier.split('/');
+  var s3_bucket = s3_parts.shift();
+  var s3_key = decodeURI(s3_parts.join('/'));
+
+  return delete_s3_file(s3_bucket, s3_key)
+};
+
+
 //There are 3 types of move operations:
 // - kloudless blackhole -> kloudless library
 // - s3 upload bucket -> kloudless library

@@ -7,6 +7,21 @@ var request = require('request');
 
 var kloudlessService = exports;
 
+kloudlessService.accountDelete = function(account_id) {
+  var deferred = q.defer();
+  kloudless.accounts.delete(
+    {
+      account_id: account_id
+    },
+    function(err, res) {
+      if (err) return deferred.reject(err);
+      return deferred.resolve(res);
+    }
+  );
+  return deferred.promise;
+};
+
+
 kloudlessService.folderCreate = function(
   account_id,
   name,
@@ -65,6 +80,19 @@ kloudlessService.folderGet = function(account_id, folder_identifier) {
 
   return deferred.promise;
 };
+
+kloudlessService.folderDelete = function(account_id, folder_identifier){
+  var deferred = q.defer();
+  kloudless.folders.delete(
+    { account_id: account_id, folder_id: folder_identifier },
+    function(err, res) {
+      if (err) return deferred.reject(err);
+      return deferred.resolve(res);
+    }
+  );
+
+  return deferred.promise;
+}
 
 kloudlessService.fileUpload = function(
   bearer_token,

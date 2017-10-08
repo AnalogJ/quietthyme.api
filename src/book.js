@@ -158,7 +158,6 @@ BookEndpoint.edit = function(event, context, cb) {
 };
 
 BookEndpoint.destroy = function(event, context, cb) {
-  //TODO: we should destroy book storage as well.
   JWTokenService.verify(event.token)
     .then(function(auth) {
       if (!event.pathParameters || !event.pathParameters.id) {
@@ -172,7 +171,18 @@ BookEndpoint.destroy = function(event, context, cb) {
         deletePromise = DBService.findBookById(event.pathParameters.id, auth.uid)
           .then(function(book){
             return StorageService.delete_book_storage(book.storage_type, book.storage_identifier, book.credential_id)
+              .then(function(){
+                //delete the book cover art.
+                if(book.cover){
+                  return StorageService.delete_book_coverart(book.cover);
+                }
+                else{
+                  return {}
+                }
+              })
           })
+
+        //TODO: delete the book cover art.
       }
       return deletePromise.then(function(){
         return DBService.deleteBookById(event.pathParameters.id, auth.uid)

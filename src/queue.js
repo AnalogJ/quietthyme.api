@@ -342,4 +342,104 @@ module.exports = {
       .fail(Utilities.errorHandler(cb))
       .done();
   },
+
+  //should be called with a single credential ID and user id
+  // will then query for all books matching that pair, and queue up new lambdas to do the acutal deletion:
+  // `process_delete_book`
+  process_delete_credential_books: function(event, context, cb) {
+    console.log("Queue up all books stored in detached credential for deletion:",
+      event.credential_id,
+      event.uid
+    )
+
+
+    function autoPaginateBooks(user_id, query_data, page, found_items) {
+      return DBService.findBooks(user_id, query_data, page).then(function(
+        book_data
+      ) {
+        found_items = found_items.concat(book_data.Items);
+        if (book_data.LastEvaluatedKey) {
+          return autoPaginateBooks(
+            user_id,
+            query_data,
+            book_data.LastEvaluatedKey,
+            found_items
+          );
+        } else {
+          return q(found_items);
+        }
+      });
+    }
+
+    return autoPaginateBooks(event.uid, { credential_id: event.credential_id }, null, [])
+      .then(function(_found_items) {
+        console.log(`found ${_found_items.length} books to delete, queuing them up now`)
+
+
+        // we should trigger new lambda invocations for each book we need to delete
+        // http://stackoverflow.com/a/31745774
+        var promises = _found_items.map(function(book) {
+          var deferred = q.defer();
+          console.info(
+            'Added book to Queue:',
+            event.credential_id,
+            event.uid,
+            book.id
+          );
+          lambda.invoke(
+            {
+              FunctionName:
+              'quietthyme-api-' +
+              nconf.get('STAGE') +
+              '-queueprocessdeletebook',
+              Payload: JSON.stringify(
+                {
+                  credential_id: event.credential_id,
+                  uid: event.uid,
+                  book_id: book.id
+                },
+                null,
+                2
+              ),
+              InvocationType: 'Event',
+            },
+            function(err, data) {
+              if (err) return deferred.reject(err);
+              return deferred.resolve(data.Payload);
+            }
+          );
+          return deferred.promise;
+        });
+
+        return q.allSettled(promises);
+      })
+      .then(function(promises) {
+        console.dir(promises);
+        return {}
+      })
+      .then(Utilities.successHandler(cb))
+      .fail(Utilities.errorHandler(cb))
+      .done();
+
+  },
+
+  process_delete_book: function(event, context, cb){
+    console.log("Queue up book for deletion:",
+      event.credential_id,
+      event.uid,
+      event.book_id
+    )
+    return DBService.findBookById(event.credential_id, event.uid)
+      .then(function(book){
+        if(book.cover){
+          return StorageService.delete_book_coverart(book.cover);
+        }
+        else{
+          return {}
+        }
+      })
+      .then(Utilities.successHandler(cb))
+      .fail(Utilities.errorHandler(cb))
+      .done();
+  }
 };

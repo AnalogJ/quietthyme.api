@@ -68,6 +68,14 @@ provider:
       Action:
         - "lambda:InvokeFunction"
       Resource: "arn:aws:lambda:*:*:*:${self:service}-${opt:stage, self:provider.stage}-queueprocessunknownbook" # triggers the process_unknown_processor
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda:*:*:*:${self:service}-${opt:stage, self:provider.stage}-queueprocessdeletecredentialbooks" # triggers the process_delete_credential_books
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda:*:*:*:${self:service}-${opt:stage, self:provider.stage}-queueprocessdeletebook" # triggers the process_delete_book
 #  vpc:
 #    securityGroupIds:
 #      - sg-bbb818c3
@@ -224,6 +232,18 @@ functions:
       - s3:
           bucket: ${self:service}-${opt:stage, self:provider.stage}-upload
           event: s3:ObjectCreated:*
+
+  # this process runs async whenever a user decides to delete a credential from his/her library.
+  # it will loop though all the books that match that credential, and then queue them up for deletion.
+  queueprocessdeletecredentialbooks:
+    memorySize: 256
+    handler: src/queue.process_delete_credential_books
+
+  # when provided a specific book id, credential id and user id, this function will
+  # delete the specified book from db, and the associated s3 cover art.
+  queueprocessdeletebook:
+    memorySize: 256
+    handler: src/queue.process_delete_credential_books
 
 # you can add CloudFormation resource templates here
 #resources:

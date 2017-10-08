@@ -437,6 +437,36 @@ dbService.atomicCredentialCursorEvents = function(serviceId, maxRetries) {
     });
 };
 
+dbService.deleteCredentialById = function(
+  credential_id,
+  user_id
+) {
+  //handle "quietthyme" credentials (always 0)
+  if (credential_id == 'quietthyme') {
+    return q(quietThymeStorageCredential);
+  }
+
+  var params = {
+    TableName: Constants.tables.credentials,
+    Key:{
+      id: credential_id
+    },
+    Expected:{
+      user_id: {
+        Value: user_id
+      }
+    }
+  };
+
+  var db_deferred = q.defer();
+  docClient.delete(params, function(err, data) {
+    if (err) return db_deferred.reject(err);
+    return db_deferred.resolve(data);
+  });
+  return db_deferred.promise;
+};
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Book Table Methods
