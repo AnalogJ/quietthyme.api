@@ -228,7 +228,7 @@ functions:
 #    - http: GET catalog/{catalogToken}/authors/{page}
 
   # this function is processed async and triggered by Lambda Invoke calls.
-  queueprocessunknownbookreb:
+  queueprocessunknownbook:
     memorySize: 256
     handler: src/queue.process_unknown_book
 
