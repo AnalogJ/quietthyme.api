@@ -187,6 +187,7 @@ StorageHandler.detach = function(event, context, cb) {
                   InvocationType: 'Event',
                 },
                 function(err, data) {
+                  console.log("QUEUE result:", JSON.stringify(data))
                   if (err) return deferred.reject(err);
                   return deferred.resolve(data.Payload);
                 }
