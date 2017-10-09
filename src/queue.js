@@ -393,6 +393,8 @@ module.exports = {
 
         // we should trigger new lambda invocations for each book we need to delete
         // http://stackoverflow.com/a/31745774
+        // TODO: maybe instead of deleting each book individually, we send them to be deleted in batches of 20-25 via
+        // TODO: BatchWriteItem
         var promises = book_data.Items.map(queueBookForDeletion);
 
         return q.allSettled(promises)
