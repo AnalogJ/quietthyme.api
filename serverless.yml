@@ -254,7 +254,7 @@ functions:
   # delete the specified book from db, and the associated s3 cover art.
   queueprocessdeletebook:
     memorySize: 256
-    handler: src/queue.process_delete_credential_books
+    handler: src/queue.process_delete_book
 
 # you can add CloudFormation resource templates here
 #resources:
