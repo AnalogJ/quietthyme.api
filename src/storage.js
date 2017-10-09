@@ -148,7 +148,7 @@ StorageHandler.detach = function(event, context, cb) {
               KloudlessService.folderDelete(credential.service_id, credential.blackhole_folder.id ),
               KloudlessService.folderDelete(credential.service_id, credential.library_folder.id )
             ])
-              .spread(function(promises){
+              .then(function(promises){
                 console.log("deleted folders containing books:", promises)
                 return {}
               })
@@ -195,7 +195,7 @@ StorageHandler.detach = function(event, context, cb) {
             })
         })
         .then(function(){
-          return {}
+          return event.body.credential_id
         })
 
     })
