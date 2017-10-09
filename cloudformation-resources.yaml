@@ -175,4 +175,83 @@ QuietThymeBooksTable:
       Projection:
         ProjectionType: "ALL"
 
+# DynamoDB Autoscaling Configuration:
+# https://forums.aws.amazon.com/thread.jspa?messageID=798577
+# https://gist.github.com/TrentBartlem/292be37d496361d551fff6659d87fb0e
+DynamoDBAutoscalingRole:
+  Type: AWS::IAM::Role
+  Properties:
+    AssumeRolePolicyDocument:
+      Version: "2012-10-17"
+      Statement:
+        -
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "application-autoscaling.amazonaws.com"
+          Action:
+            - "sts:AssumeRole"
+    Policies:
+      - PolicyName: lambdaIAMRolePolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:UpdateTable
+              Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:*/${self:service}-${opt:stage, self:provider.stage}-*"
+            - Effect: Allow
+              Action:
+                - cloudwatch:SetAlarmState
+                - cloudwatch:GetMetricStatistics
+                - cloudwatch:DescribeAlarms
+                - cloudwatch:PutMetricAlarm
+                - cloudwatch:DeleteAlarms
+              Resource: "*"
 
+QuietThymeBooksReadScalingTarget:
+  Type: AWS::ApplicationAutoScaling::ScalableTarget
+  Properties:
+    MinCapacity: 1
+    MaxCapacity: 10
+    ResourceId: "${self:service}-${opt:stage, self:provider.stage}-books"
+    RoleARN: !GetAtt dynamodbAutoscalingRole.Arn
+    ScalableDimension: dynamodb:table:ReadCapacityUnits
+    ServiceNamespace: dynamodb
+
+QuietThymeBooksReadScalingPolicy:
+  Type: AWS::ApplicationAutoScaling::ScalingPolicy
+  Properties:
+    PolicyName: QuietThymeBooksReadScalingPolicy
+    PolicyType: TargetTrackingScaling
+    ScalingTargetId: !Ref QuietThymeBooksReadScalingTarget
+    TargetTrackingScalingPolicyConfiguration:
+      PredefinedMetricSpecification:
+        PredefinedMetricType: DynamoDBReadCapacityUtilization
+      ScaleInCooldown: 60
+      ScaleOutCooldown: 60
+      TargetValue: 75
+
+QuietThymeBooksWriteScalingTarget:
+  Type: AWS::ApplicationAutoScaling::ScalableTarget
+  Properties:
+    MinCapacity: 1
+    MaxCapacity: 10
+    ResourceId: "${self:service}-${opt:stage, self:provider.stage}-books"
+    RoleARN: !GetAtt dynamodbAutoscalingRole.Arn
+    ScalableDimension: dynamodb:table:WriteCapacityUnits
+    ServiceNamespace: dynamodb
+
+QuietThymeBooksWriteScalingPolicy:
+  Type: AWS::ApplicationAutoScaling::ScalingPolicy
+  Properties:
+    PolicyName: QuietThymeBooksWriteScalingPolicy
+    PolicyType: TargetTrackingScaling
+    ScalingTargetId: !Ref QuietThymeBooksWriteScalingTarget
+    TargetTrackingScalingPolicyConfiguration:
+      PredefinedMetricSpecification:
+        PredefinedMetricType: DynamoDBWriteCapacityUtilization
+      ScaleInCooldown: 60
+      ScaleOutCooldown: 60
+      TargetValue: 75
