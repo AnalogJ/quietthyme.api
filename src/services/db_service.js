@@ -667,6 +667,7 @@ dbService.deleteBookById = function(book_id, user_id) {
       id: book_id,
       user_id: user_id,
     },
+    ReturnValues: 'ALL_NEW'
     // KeyConditionExpression: "id = :id AND user_id = :user_id",
     // ExpressionAttributeValues: {
     //     ":id": book_id,
@@ -676,7 +677,7 @@ dbService.deleteBookById = function(book_id, user_id) {
   var db_deferred = q.defer();
   docClient.delete(params, function(err, data) {
     if (err) return db_deferred.reject(err);
-    return db_deferred.resolve(data);
+    return db_deferred.resolve(data ? data.Attributes : {});
   });
   return db_deferred.promise;
 };

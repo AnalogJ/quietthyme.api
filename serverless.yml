@@ -237,6 +237,7 @@ functions:
   # it will loop though all the books that match that credential, and then queue them up for deletion.
   queueprocessdeletecredentialbooks:
     memorySize: 256
+    timeout: 300
     handler: src/queue.process_delete_credential_books
 
   # when provided a specific book id, credential id and user id, this function will

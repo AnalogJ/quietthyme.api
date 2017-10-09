@@ -352,71 +352,68 @@ module.exports = {
       event.uid
     )
 
+    function queueBookForDeletion(book){
+      var deferred = q.defer();
+      console.info(
+        'Added book to Queue:',
+        event.credential_id,
+        event.uid,
+        book.id
+      );
+      lambda.invoke(
+        {
+          FunctionName:
+          'quietthyme-api-' +
+          nconf.get('STAGE') +
+          '-queueprocessdeletebook',
+          Payload: JSON.stringify(
+            {
+              credential_id: event.credential_id,
+              uid: event.uid,
+              book_id: book.id
+            },
+            null,
+            2
+          ),
+          InvocationType: 'Event',
+        },
+        function(err, data) {
+          if (err) return deferred.reject(err);
+          return deferred.resolve(data.Payload);
+        }
+      );
+      return deferred.promise;
+    }
 
-    function autoPaginateBooks(user_id, query_data, page, found_items) {
+
+    function autoPaginateBooks(user_id, query_data, page) {
       return DBService.findBooks(user_id, query_data, page).then(function(
         book_data
       ) {
-        found_items = found_items.concat(book_data.Items);
-        if (book_data.LastEvaluatedKey) {
-          return autoPaginateBooks(
-            user_id,
-            query_data,
-            book_data.LastEvaluatedKey,
-            found_items
-          );
-        } else {
-          return q(found_items);
-        }
-      });
-    }
-
-    return autoPaginateBooks(event.uid, { credential_id: event.credential_id }, null, [])
-      .then(function(_found_items) {
-        console.log(`found ${_found_items.length} books to delete, queuing them up now`)
-
 
         // we should trigger new lambda invocations for each book we need to delete
         // http://stackoverflow.com/a/31745774
-        var promises = _found_items.map(function(book) {
-          var deferred = q.defer();
-          console.info(
-            'Added book to Queue:',
-            event.credential_id,
-            event.uid,
-            book.id
-          );
-          lambda.invoke(
-            {
-              FunctionName:
-              'quietthyme-api-' +
-              nconf.get('STAGE') +
-              '-queueprocessdeletebook',
-              Payload: JSON.stringify(
-                {
-                  credential_id: event.credential_id,
-                  uid: event.uid,
-                  book_id: book.id
-                },
-                null,
-                2
-              ),
-              InvocationType: 'Event',
-            },
-            function(err, data) {
-              if (err) return deferred.reject(err);
-              return deferred.resolve(data.Payload);
-            }
-          );
-          return deferred.promise;
-        });
+        var promises = book_data.Items.map(queueBookForDeletion);
 
-        return q.allSettled(promises);
-      })
-      .then(function(promises) {
-        console.dir(promises);
-        return {}
-      })
+        return q.allSettled(promises)
+          .delay(2000) //delay 2 seconds before doing any additional work. 
+          .then(function(promisesResults){
+            console.log("queued promises:", promisesResults)
+
+            if (book_data.LastEvaluatedKey) {
+              return autoPaginateBooks(
+                user_id,
+                query_data,
+                book_data.LastEvaluatedKey
+              );
+            } else {
+              return q({});
+            }
+          })
+      });
+    }
+
+    return autoPaginateBooks(event.uid, { credential_id: event.credential_id }, null)
       .then(Utilities.successHandler(cb))
       .fail(Utilities.errorHandler(cb))
       .done();
@@ -424,13 +421,14 @@ module.exports = {
   },
 
   process_delete_book: function(event, context, cb){
-    console.log("Queue up book for deletion:",
+    console.log("Processing book for deletion",
       event.credential_id,
       event.uid,
       event.book_id
     )
-    return DBService.findBookById(event.credential_id, event.uid)
+    return DBService.deleteBookById(event.credential_id, event.uid)
       .then(function(book){
+        console.log("DELETED BOOK DATA", book)
         if(book.cover){
           return StorageService.delete_book_coverart(book.cover);
         }
