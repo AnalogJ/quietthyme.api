@@ -44,6 +44,7 @@
     "q-combinators": "^1.0.0",
     "request": "^2.79.0",
     "rollbar": "^2.2.7",
+    "serverless-dynamodb-autoscaling": "^0.6.2",
     "serverless-mocha-plugin": "^1.3.3",
     "serverless-plugin-optimize": "^1.0.0-rc.15",
     "serverless-prune-plugin": "^1.0.4",
