@@ -84,7 +84,7 @@ kloudlessService.folderGet = function(account_id, folder_identifier) {
 kloudlessService.folderDelete = function(account_id, folder_identifier){
   var deferred = q.defer();
   kloudless.folders.delete(
-    { account_id: account_id, folder_id: folder_identifier },
+    { account_id: account_id, folder_id: folder_identifier, queryParams:{ recursive: true } },
     function(err, res) {
       if (err) return deferred.reject(err);
       return deferred.resolve(res);
