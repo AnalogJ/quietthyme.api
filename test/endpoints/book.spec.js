@@ -385,7 +385,7 @@ describe('Book Endpoints', function() {
       var context = {};
       function callback(ctx, data) {
         should.not.exist(ctx);
-        data.should.eql({});
+        data.id.should.eql(book_id);
         done();
       }
       bookHandler.destroy(event, context, callback);

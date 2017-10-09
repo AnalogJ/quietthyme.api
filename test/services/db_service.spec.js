@@ -962,7 +962,7 @@ describe('DBService', function() {
     it('should correctly delete book', function(done) {
       DBService.deleteBookById(book_id, 'book-delete-user-id')
         .then(function(book_data) {
-          book_data.should.eql({});
+          book_data.id.should.eql(book_id);
         })
         .then(done, done);
     });

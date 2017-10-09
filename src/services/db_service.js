@@ -667,7 +667,7 @@ dbService.deleteBookById = function(book_id, user_id) {
       id: book_id,
       user_id: user_id,
     },
-    ReturnValues: 'ALL_NEW'
+    ReturnValues: 'ALL_OLD'
     // KeyConditionExpression: "id = :id AND user_id = :user_id",
     // ExpressionAttributeValues: {
     //     ":id": book_id,

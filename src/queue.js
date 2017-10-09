@@ -396,7 +396,7 @@ module.exports = {
         var promises = book_data.Items.map(queueBookForDeletion);
 
         return q.allSettled(promises)
-          .delay(2000) //delay 2 seconds before doing any additional work. 
+          .delay(2000) //delay 2 seconds before doing any additional work.
           .then(function(promisesResults){
             console.log("queued promises:", promisesResults)
 
