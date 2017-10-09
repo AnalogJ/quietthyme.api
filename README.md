@@ -49,3 +49,4 @@ api.quietthyme.com/v1/catalog/123456
 # Debugging
 
 - Access the DynamoDB shell at http://localhost:6001/shell
+
