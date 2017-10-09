@@ -252,7 +252,7 @@ functions:
 
   # when provided a specific book id, credential id and user id, this function will
   # delete the specified book from db, and the associated s3 cover art.
-  queueprocessdeletebookrename:
+  queueprocessdeletebook:
     memorySize: 256
     handler: src/queue.process_delete_book
 
