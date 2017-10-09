@@ -431,7 +431,7 @@ module.exports = {
     return DBService.deleteBookById(event.credential_id, event.uid)
       .then(function(book){
         console.log("DELETED BOOK DATA", book)
-        if(book.cover){
+        if(book && book.cover){
           return StorageService.delete_book_coverart(book.cover);
         }
         else{
