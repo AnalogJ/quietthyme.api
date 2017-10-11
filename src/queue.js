@@ -428,7 +428,7 @@ module.exports = {
       event.uid,
       event.book_id
     )
-    return DBService.deleteBookById(event.credential_id, event.uid)
+    return DBService.deleteBookById(event.book_id, event.uid)
       .then(function(book){
         console.log("DELETED BOOK DATA", book)
         if(book && book.cover){
