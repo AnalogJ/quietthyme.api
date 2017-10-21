@@ -62,7 +62,7 @@ describe('Storage Endpoints', function() {
     });
   });
 
-  describe('#status() @nock', function() {
+  describe.skip('#status() @nock', function() {
     it('should correctly retrieve storage services status from user', function(
       done
     ) {
