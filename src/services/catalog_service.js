@@ -271,7 +271,7 @@ function bookToBaseEntry(id, token, book) {
         href: 'https://s3.amazonaws.com/' + book.cover,
       },
       {
-        type: Constants.file_extensions[storage_extension].mimetype,
+        type: Constants.file_extensions[storage_extension] ? Constants.file_extensions[storage_extension].mimetype : 'application/octet-stream',
         href: token_endpoint(token) + '/download/' + book.id,
         rel: 'http://opds-spec.org/acquisition',
       },
