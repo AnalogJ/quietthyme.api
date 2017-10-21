@@ -235,31 +235,31 @@ StorageService.get_user_storage = function(token) {
     ) {
       debug('Found credentials for user: %s', auth.uid);
       var credential_info_promises = credentials.map(function(cred) {
-        var deferred = q.defer();
-
-        console.info('Requesting Quota', cred.service_type, cred.service_id);
-        kloudless.accounts.get(
-          {
-            account_id: cred.service_id,
-            queryParams: {
-              retrieve_full: true,
-            },
-          },
-          function(err, service_info) {
-            if (err) return deferred.reject(err);
-
-            console.info('Credential info:', service_info);
-            deferred.resolve({ credential: cred, service_info: service_info });
-          }
-        );
-
-        return deferred.promise;
+        return KloudlessService.accountGet(cred.service_id)
+          .then(function(service_info){
+            return { credential: cred, service_info: service_info }
+          })
       });
 
       return q.all(credential_info_promises);
     });
   });
 };
+
+// Transforms Credential
+StorageService.transform_credential_account_info = function(credential, account_info){
+
+  return {
+    device_name: credential.service_type,
+    prefix: credential.service_type + '://',
+    storage_type: credential.service_type,
+    storage_id: credential.id,
+    free_space: account_info.quota.total - account_info.quota.used,
+    total_space: account_info.quota.total,
+    location_code: credential.calibre_location_code,
+  };
+}
+
 
 //generate link to a cloud storage/s3 bucket file. Useful when downloading books.
 StorageService.get_download_link = function(book, user_id) {

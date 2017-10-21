@@ -111,13 +111,15 @@ StorageHandler.link = function(event, context, cb) {
                 path_id: blackhole_folder.path_id,
               },
             });
-          });
+          }, true);
       });
     })
-    .then(function(user) {
-      return {
-        service_type: event.body.account.service,
-      };
+    .then(function(credential) {
+      console.info('Requesting Quota', credential.service_type, credential.service_id);
+      return KloudlessService.accountGet(credential.service_id)
+        .then(function(account_info){
+          return StorageService.transform_credential_account_info(credential, account_info)
+        })
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
@@ -227,18 +229,7 @@ StorageHandler.status = function(event, context, cb) {
   StorageService.get_user_storage(event.token)
     .then(function(credentials) {
       return credentials.map(function(credential_storage_info) {
-        var storage = {
-          device_name: credential_storage_info.credential.service_type,
-          prefix: credential_storage_info.credential.service_type + '://',
-          storage_type: credential_storage_info.credential.service_type,
-          storage_id: credential_storage_info.credential.id,
-          free_space:
-            credential_storage_info.service_info.quota.total -
-            credential_storage_info.service_info.quota.used, //quota_info.total_bytes - quota_info.used_bytes,
-          total_space: credential_storage_info.service_info.quota.total,
-          location_code:
-            credential_storage_info.credential.calibre_location_code,
-        };
+        var storage = StorageService.transform_credential_account_info(credential_storage_info.credential, credential_storage_info.service_info)
 
         if (event.queryStringParameters && event.queryStringParameters.source == 'calibre') {
           storage['last_library_uuid'] = event.queryStringParameters.library_uuid;

@@ -7,6 +7,26 @@ var request = require('request');
 
 var kloudlessService = exports;
 
+
+kloudlessService.accountGet = function(service_id){
+  var deferred = q.defer();
+  kloudless.accounts.get(
+    {
+      account_id: service_id,
+      queryParams: {
+        retrieve_full: true,
+      },
+    },
+    function(err, service_info) {
+      if (err) return deferred.reject(err);
+
+      console.info('Account info:', service_info);
+      deferred.resolve(service_info);
+    }
+  );
+  return deferred.promise;
+}
+
 kloudlessService.accountDelete = function(account_id) {
   var deferred = q.defer();
   kloudless.accounts.delete(
