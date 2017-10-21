@@ -110,8 +110,8 @@ StorageHandler.link = function(event, context, cb) {
                 raw_id: blackhole_folder.raw_id,
                 path_id: blackhole_folder.path_id,
               },
-            });
-          }, true);
+            }, true);
+          });
       });
     })
     .then(function(credential) {
