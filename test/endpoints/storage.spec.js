@@ -26,7 +26,7 @@ describe('Storage Endpoints', function() {
       .then(done, done);
   });
 
-  describe('#link() @nock', function() {
+  describe.skip('#link() @nock', function() {
     it('should correctly initialize a new storage account & credential', function(
       done
     ) {
