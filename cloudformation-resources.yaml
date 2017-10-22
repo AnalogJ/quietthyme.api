@@ -148,6 +148,10 @@ QuietThymeBooksTable:
       AttributeType: S
     - AttributeName: title
       AttributeType: S
+    - AttributeName: primary_author
+      AttributeType: S
+    - AttributeName: series_name
+      AttributeType: S
     KeySchema:
     - AttributeName: user_id
       KeyType: HASH
