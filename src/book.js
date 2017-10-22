@@ -144,6 +144,11 @@ BookEndpoint.edit = function(event, context, cb) {
 
           if(updateData){
             updateData.sources = sources;
+
+            if(updateData.authors){
+              updateData.primary_author = updateData.authors[0]
+            }
+
             return DBService.updateBook(book.id, auth.uid, updateData, true)
           }
           else{

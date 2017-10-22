@@ -85,6 +85,9 @@ PipelineMetadataService.flatten_data_sets = function(
     parsed_book.filename_ids = _.uniq(parsed_book.filename_ids);
   }
 
+  //add a primary_author entry
+  parsed_book.primary_author = parsed_book.authors[0];
+
   return [current_sources, parsed_book, image_pipeline];
 };
 

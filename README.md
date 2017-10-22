@@ -50,3 +50,12 @@ api.quietthyme.com/v1/catalog/123456
 
 - Access the DynamoDB shell at http://localhost:6001/shell
 
+# Migrations
+
+Dry Run:
+
+	./node_modules/dynamodb-migrator/bin/migrate.js scan us-east-1/quietthyme-api-beta-books ./migrations/2017-10-22-add-primary-authors-key-to-books-table.js
+
+Live Migration
+
+	./node_modules/dynamodb-migrator/bin/migrate.js scan us-east-1/quietthyme-api-beta-books ./migrations/2017-10-22-add-primary-authors-key-to-books-table.js --live

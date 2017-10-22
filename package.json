@@ -59,6 +59,7 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
     "coveralls": "^2.12.0",
+    "dynamodb-migrator": "^1.0.0",
     "istanbul": "^0.4.5",
     "js-yaml": "^3.8.4",
     "mocha": "^3.2.0",

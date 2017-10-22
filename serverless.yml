@@ -117,6 +117,8 @@ package:
     - .git
     - .idea
     - no
+    - scripts
+    - migrations
 
 functions:
 # UNAUTHENTICATED METHODS

@@ -175,6 +175,15 @@ QuietThymeBooksTable:
       Projection:
         ProjectionType: "ALL"
 
+    - IndexName: "primary_authorSort"
+      KeySchema:
+      - AttributeName: "user_id"
+        KeyType: "HASH"
+      - AttributeName: "primary_author"
+        KeyType: "RANGE"
+      Projection:
+        ProjectionType: "ALL"
+
 ## DynamoDB Autoscaling Configuration:
 ## https://forums.aws.amazon.com/thread.jspa?messageID=798577
 ## https://gist.github.com/TrentBartlem/292be37d496361d551fff6659d87fb0e
