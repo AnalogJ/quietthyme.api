@@ -40,7 +40,20 @@ describe('Catalog Endpoints', function() {
 
         return q.allSettled(promises);
       })
-      .then(function() {})
+      .then(function(promises) {
+        var failed = []
+        for(let promise of promises){
+          if(promise.state != 'fulfilled'){
+            failed << promise;
+          }
+        }
+
+        if(failed.length >0){
+          console.error("Could not insert the following books")
+          console.error(failed)
+          throw "Could not populate books. look above for exact errors"
+        }
+      })
       // .delay(1000)
       .then(done, done);
   });
@@ -103,9 +116,7 @@ describe('Catalog Endpoints', function() {
       var event = {
         pathParameters: {
           catalogToken: token,
-          seriesId: Base64Service.urlEncode(
-            'Granite Practical Concrete Keyboard'
-          ),
+          seriesId: Base64Service.urlEncode("Bedfordshire tan"),
         },
         queryStringParameters: {},
         body: {},
@@ -127,7 +138,7 @@ describe('Catalog Endpoints', function() {
       var event = {
         pathParameters: {
           catalogToken: token,
-          authorId: Base64Service.urlEncode('Miss Eladio Osinski'),
+          authorId: Base64Service.urlEncode('Hollie Hackett'),
         },
         queryStringParameters: {},
         body: {},
@@ -149,7 +160,7 @@ describe('Catalog Endpoints', function() {
       var event = {
         pathParameters: {
           catalogToken: token,
-          tagName: Base64Service.urlEncode('Turkey GB'),
+          tagName: Base64Service.urlEncode('attitude AGP'),
         },
         queryStringParameters: {},
         body: {},

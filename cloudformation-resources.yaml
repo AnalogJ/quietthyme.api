@@ -150,8 +150,8 @@ QuietThymeBooksTable:
       AttributeType: S
     - AttributeName: primary_author
       AttributeType: S
-    - AttributeName: series_name
-      AttributeType: S
+#    - AttributeName: series_name
+#      AttributeType: S
     KeySchema:
     - AttributeName: user_id
       KeyType: HASH
@@ -188,14 +188,14 @@ QuietThymeBooksTable:
       Projection:
         ProjectionType: "ALL"
 
-    - IndexName: "series_nameSort"
-      KeySchema:
-      - AttributeName: "user_id"
-        KeyType: "HASH"
-      - AttributeName: "series_name"
-        KeyType: "RANGE"
-      Projection:
-        ProjectionType: "ALL"
+#    - IndexName: "series_nameSort"
+#      KeySchema:
+#      - AttributeName: "user_id"
+#        KeyType: "HASH"
+#      - AttributeName: "series_name"
+#        KeyType: "RANGE"
+#      Projection:
+#        ProjectionType: "ALL"
 
 ## DynamoDB Autoscaling Configuration:
 ## https://forums.aws.amazon.com/thread.jspa?messageID=798577

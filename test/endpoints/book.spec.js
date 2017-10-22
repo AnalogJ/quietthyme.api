@@ -36,6 +36,7 @@ describe('Book Endpoints', function() {
         body: {
           amazon_id: '0061840254',
           authors: ['Ian Douglas'],
+          primary_author: 'Ian Douglas',
           average_rating: 8,
           barnesnoble_id: 'w/earth-strike-ian-douglas/1018819002',
           calibre_id: '2ac79e4a-b0f3-4307-8f92-f58ea050d38d',
@@ -106,6 +107,7 @@ describe('Book Endpoints', function() {
             storage_filename: 'book',
             storage_format: 'epub',
             title: 'this is my book title',
+            primary_author: 'test author',
           };
           return DBService.createBook(book)
             .then(function() {
@@ -180,7 +182,20 @@ describe('Book Endpoints', function() {
 
         q
           .allSettled(promises)
-          .then(function() {}) // .delay(1000)
+          .then(function(promises) {
+            var failed = []
+            for(let promise of promises){
+              if(promise.state != 'fulfilled'){
+                failed << promise;
+              }
+            }
+
+            if(failed.length >0){
+              console.error("Could not insert the following books")
+              console.error(failed)
+              throw "Could not populate books. look above for exact errors"
+            }
+          }) // .delay(1000)
           .then(done, done);
       });
 

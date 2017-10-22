@@ -1,7 +1,9 @@
 var faker = require('faker');
 var fs = require('fs');
 var all_books = [];
-for (var i = 0; i < 1000; i++) {
+var number_of_books = 1000
+
+for (var i = 0; i < number_of_books; i++) {
   var ext = faker.system.commonFileExt();
   var filename = faker.system.commonFileName(ext);
   var tags = [];
@@ -36,13 +38,14 @@ for (var i = 0; i < 1000; i++) {
     published_date: faker.date.past(),
     tags: tags,
     authors: authors,
+    primary_author: authors[0],
     last_modified: faker.date.recent(),
 
     series_name: series_name,
     series_number: series_name ? faker.random.number(10) : 0,
 
-    isbn: faker.random.number({ min: 1000000000000, max: 9999999999999 }),
-    isbn10: faker.random.number({ min: 1000000000, max: 9999999999 }),
+    isbn: faker.random.number({ min: 1000000000000, max: 9999999999999 }).toString(),
+    isbn10: faker.random.number({ min: 1000000000, max: 9999999999 }).toString(),
 
     // amazon_id: '0061840254',
     // authors: [ 'Ian Douglas' ],
@@ -78,9 +81,9 @@ for (var i = 0; i < 1000; i++) {
 }
 
 fs.writeFile(
-  __dirname + '/1000_books.json',
+  __dirname + `/${number_of_books}_books.json`,
   JSON.stringify(all_books, null, 4),
   function() {
-    console.log('1000 books generated successfully!');
+    console.log(`${number_of_books} books generated successfully!`);
   }
 );

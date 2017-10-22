@@ -424,7 +424,7 @@ CatalogHandler.seriesid = function(event, context, cb) {
     })
     .spread(function(user, books) {
       if (!books.Items.length) {
-        return q.reject(new Error('No Books found'));
+        return q.reject(new Error('No Books found' + JSON.stringify(books)));
       }
 
       //user was found.

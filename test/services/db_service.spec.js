@@ -440,6 +440,7 @@ describe('DBService', function() {
 
         amazon_id: '0061840254',
         authors: ['Ian Douglas'],
+        primary_author: 'Ian Douglas',
         average_rating: 8,
         barnesnoble_id: 'w/earth-strike-ian-douglas/1018819002',
         calibre_id: '2ac79e4a-b0f3-4307-8f92-f58ea050d38d',
@@ -491,6 +492,7 @@ describe('DBService', function() {
         title: 'The Peripheral',
         published_date: '2014-11-28T00:00:00Z',
         authors: ['William Gibson'],
+        primary_author: 'William Gibson',
         isbn: '9780399158445',
         isbn10: '0399158448',
         num_pages: 485,
@@ -723,6 +725,7 @@ describe('DBService', function() {
         storage_filename: 'book1',
         storage_format: 'epub',
         authors: ['test author', 'hello world'],
+        primary_author: 'test author',
         title: 'title4',
       };
       DBService.createBook(book1)
@@ -834,7 +837,20 @@ describe('DBService', function() {
 
         q
           .allSettled(promises)
-          .then(function(promises) {})
+          .then(function(promises) {
+            var failed = []
+            for(let promise of promises){
+              if(promise.state != 'fulfilled'){
+                failed << promise;
+              }
+            }
+
+            if(failed.length >0){
+              console.error("Could not insert the following books")
+              console.error(failed)
+              throw "Could not populate books. look above for exact errors"
+            }
+          })
           .delay(1000)
           .then(done, done);
       });
@@ -858,10 +874,10 @@ describe('DBService', function() {
           });
         }
 
-        paginateBooks('find-books-100', { publisher: 'integrate' })
+        paginateBooks('find-books-100', { publisher: 'Pre-emptive Lempira Intelligent' })
           .then(function(_found_items) {
             _found_items.length.should.eql(1);
-            _found_items[0].title.should.eql('compress withdrawal generating');
+            _found_items[0].title.should.eql('Savings Account Security Orchestrator');
           })
           .then(done, done);
       });
@@ -888,11 +904,12 @@ describe('DBService', function() {
         }
 
         paginateBooks('find-books-100', {
-          authors: { contains: 'Miss Gino Lang' },
+          authors: { contains: 'Kevin Brakus' },
         })
           .then(function(_found_items) {
+
             _found_items.length.should.eql(1);
-            _found_items[0].title.should.eql('Baby overriding transmitting');
+            _found_items[0].title.should.eql('SAS Gloves superstructure');
           })
           .then(done, done);
       });
