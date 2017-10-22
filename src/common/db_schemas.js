@@ -83,6 +83,7 @@ var bookSchema = {
       type: 'array',
       items: { type: 'string' },
     },
+    primary_author: { type: 'string' },
     last_modified: { type: ['string', 'null'], format: 'date-time' },
     user_categories: { type: 'object', default: {} },
     user_metadata: { type: 'object', default: {} },
