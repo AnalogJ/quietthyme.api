@@ -138,7 +138,7 @@ QuietThymeBooksTable:
   Type: AWS::DynamoDB::Table
   DeletionPolicy: Retain
   Properties:
-    TableName: "${self:service}-${opt:stage, self:provider.stage}-books2"
+    TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
