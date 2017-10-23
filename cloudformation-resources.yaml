@@ -134,11 +134,11 @@ QuietThymeCredsTable:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-QuietThymeBooksTable:
+QuietThymeBooksTable2:
   Type: AWS::DynamoDB::Table
   DeletionPolicy: Retain
   Properties:
-    TableName: "${self:service}-${opt:stage, self:provider.stage}-books"
+    TableName: "${self:service}-${opt:stage, self:provider.stage}-books2"
     AttributeDefinitions:
     - AttributeName: user_id
       AttributeType: S
