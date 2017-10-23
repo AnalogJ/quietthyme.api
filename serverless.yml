@@ -92,7 +92,7 @@ custom:
       cleanup_enabled: false
       debug: quietthyme:*
   capacities:
-    - table: QuietThymeBooksTable2  # DynamoDB Resource
+    - table: QuietThymeBooksTable  # DynamoDB Resource
       read:
         minimum: 2        # Minimum read capacity
         maximum: 100     # Maximum read capacity

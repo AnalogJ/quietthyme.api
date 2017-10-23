@@ -134,7 +134,7 @@ QuietThymeCredsTable:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
-QuietThymeBooksTable2:
+QuietThymeBooksTable:
   Type: AWS::DynamoDB::Table
   DeletionPolicy: Retain
   Properties:
