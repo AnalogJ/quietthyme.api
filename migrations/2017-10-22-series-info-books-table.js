@@ -7,21 +7,22 @@ module.exports = function(record, dyno, callback) {
   // If you are running a dry-run, `dyno` will be null
   if (!dyno) return callback();
 
-
+  if(record.series_number == null){return callback()}
 
   dyno.updateItem({
     Key: { id: record.id, user_id: record.user_id },
     UpdateExpression: 'set #snum = :snum',
     ExpressionAttributeNames: {'#snum' : 'series_number'},
     ExpressionAttributeValues: {
-      ':snum' : record.series_number != null ? record.series_number.toString() : '',
+      ':snum' : record.series_number.toString()
     }
   }, function(err) {
     if (err) {
       console.error('%s failed to update', record.id);
+      console.error(err)
 
       // Sending an error to the callback function will stop the migration
-      return callback(new Error('A record failed to delete'));
+      return callback(new Error('A record failed to update'));
     }
 
     updated++;
