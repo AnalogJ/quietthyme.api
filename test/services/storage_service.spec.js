@@ -16,7 +16,7 @@ describe('StorageService', function() {
         title: 'book title',
         authors: ['book author1'],
         series_name: 'book series name',
-        series_number: 5,
+        series_number: '5',
       }).should.eql('book author1 - book series name - 5 - book title');
     });
 
@@ -25,7 +25,7 @@ describe('StorageService', function() {
         title: "book titlewith'quote",
         authors: ['book author1'],
         series_name: 'book series name',
-        series_number: 5,
+        series_number: '5',
       }).should.eql(
         'book author1 - book series name - 5 - book titlewithquote'
       );

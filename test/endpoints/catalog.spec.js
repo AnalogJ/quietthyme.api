@@ -138,7 +138,7 @@ describe('Catalog Endpoints', function() {
       var event = {
         pathParameters: {
           catalogToken: token,
-          authorId: Base64Service.urlEncode('Hollie Hackett'),
+          authorId: Base64Service.urlEncode('Alvina Romaguera'),
         },
         queryStringParameters: {},
         body: {},
@@ -160,7 +160,7 @@ describe('Catalog Endpoints', function() {
       var event = {
         pathParameters: {
           catalogToken: token,
-          tagName: Base64Service.urlEncode('attitude AGP'),
+          tagName: Base64Service.urlEncode('analyzer Computers'),
         },
         queryStringParameters: {},
         body: {},

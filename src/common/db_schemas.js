@@ -88,7 +88,7 @@ var bookSchema = {
     user_categories: { type: 'object', default: {} },
     user_metadata: { type: 'object', default: {} },
     series_name: { type: ['string', 'null'], default: null },
-    series_number: { type: ['number', 'null'], default: null },
+    series_number: { type: ['string', 'null'], default: null },
 
     // isbn & isbn13 identifiers
     isbn: { type: ['string', 'null'], default: null },

@@ -103,8 +103,8 @@ ParseExternalService.parse_opf_data = function(opf_metadata) {
   if (meta_series_name) {
     parsed_book.series_name = meta_series_name;
   }
-  if (meta_series_number && meta_series_number) {
-    parsed_book.series_number = meta_series_number | 0;
+  if (meta_series_name && meta_series_number) {
+    parsed_book.series_number = meta_series_number;
   }
   parsed_book.short_summary = opf_metadata.description || '';
   if (opf_metadata.date) {
@@ -295,7 +295,7 @@ ParseExternalService.parse_goodreads_book_details = function(response) {
   ) {
     var series_work = goodreads_book.series_works[0].series_work[0];
     parsed_book.series_name = series_work.series[0].title[0].trim();
-    parsed_book.series_number = series_work.user_position[0] | 0;
+    parsed_book.series_number = series_work.user_position[0];
   }
   //    else if (goodreads_book.series_works && goodreads_book.series_works[0]) {
   //        //TODO:var series_work = goodreads_book.series_works[0].series_work[0];
@@ -529,7 +529,7 @@ ParseExternalService.parse_api_metadata = function(api_metadata) {
   parsed_book.average_rating = parseFloat(parsed_book.average_rating | 0);
 
   if (parsed_book.series_number) {
-    parsed_book.series_number = parsed_book.series_number | 0;
+    parsed_book.series_number = parsed_book.series_number;
   }
 
   var pubdate = new Date(parsed_book.published_date); //TODO: this doesnt seem to work.

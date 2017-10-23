@@ -450,7 +450,7 @@ describe('DBService', function() {
         published_date: '2017-03-04T20:17:51Z',
         publisher: 'HarperCollins',
         series_name: 'Star Carrier',
-        series_number: 1,
+        series_number: '1',
         short_summary:
           "<blockquote><p>The first book in the epic saga of humankind's war of transcendence</p><p>There is a milestone in the evolution of every sentient race, a Tech Singularity Event, when the species achieves transcendence through its technological advances. Now the creatures known as humans are near this momentous turning point.</p><p>But an armed threat is approaching from deepest space, determined to prevent humankind from crossing over that boundary—by total annihilation if necessary.</p></blockquote><p>To the Sh'daar, the driving technologies of transcendent change are anathema and must be obliterated from the universe—along with those who would employ them. As their great warships destroy everything in their path en route to the Sol system, the human Confederation government falls into dangerous disarray. There is but one hope, and it rests with a rogue Navy Admiral, commander of the kilometer-long star carrier America, as he leads his courageous fighters deep into enemy space towards humankind's greatest conflict—and quite possibly its last.</p>",
         tags: [
@@ -622,7 +622,7 @@ describe('DBService', function() {
         storage_identifier: 'storage-id/test/1234',
         storage_filename: 'book',
         storage_format: 'epub',
-        title: 'this is my book title',
+        title: 'this is my book title'
       };
       DBService.createBook(book)
         .then(function(book_data) {
@@ -659,7 +659,7 @@ describe('DBService', function() {
         storage_identifier: 'storage-id/test/1234',
         storage_filename: 'book',
         storage_format: 'epub',
-        title: 'this is my book title',
+        title: 'this is my book title'
       };
       DBService.createBook(book)
         .then(function() {
@@ -874,10 +874,10 @@ describe('DBService', function() {
           });
         }
 
-        paginateBooks('find-books-100', { publisher: 'Pre-emptive Lempira Intelligent' })
+        paginateBooks('find-books-100', { publisher: 'scalable Berkshire' })
           .then(function(_found_items) {
             _found_items.length.should.eql(1);
-            _found_items[0].title.should.eql('Savings Account Security Orchestrator');
+            _found_items[0].title.should.eql('A program navigate Designer');
           })
           .then(done, done);
       });
@@ -904,12 +904,12 @@ describe('DBService', function() {
         }
 
         paginateBooks('find-books-100', {
-          authors: { contains: 'Kevin Brakus' },
+          authors: { contains: 'Alvina Romaguera' },
         })
           .then(function(_found_items) {
 
             _found_items.length.should.eql(1);
-            _found_items[0].title.should.eql('SAS Gloves superstructure');
+            _found_items[0].title.should.eql('A program navigate Designer');
           })
           .then(done, done);
       });

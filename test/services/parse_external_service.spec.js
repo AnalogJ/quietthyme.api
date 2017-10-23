@@ -827,7 +827,7 @@ describe('ParseExternalService', function() {
       parsed_book.ratings_count.should.eql(1222);
 
       parsed_book.series_name.should.eql('Imager Portfolio');
-      parsed_book.series_number.should.eql(4);
+      parsed_book.series_number.should.eql('4');
       parsed_book.short_summary.should.eql(
         'Hundreds of years before the time of Imager, the continent of Lydar is fragmented.  Years of war have consolidated five nations into three — Bovaria, Telaryn, and Antiago. Quaeryt is a scholar and a friend of Bhayar, the young ruler of Telaryn. Worried about his future and the escalating intrigues in Solis, the capital city, Quaeryt persuades Bhayar to send him to Tilbor, conquered ten years earlier by Bhayar’s father, in order to see if the number and extent of occupying troops can be reduced so that they can be re-deployed to the border with warlike Bovaria.<br><br>Quaeryt has managed to conceal the fact that he is an imager, since the life expectancies of imagers in Lydar is short. Just before Quaeryt departs, Bhayar’s youngest sister passes a letter to the scholar-imager, a letter that could well embroil Quaeryt in the welter of court politics he had hoped to leave behind. On top of that, on his voyage and journey to Tilbor he must face pirates, storms, poisonings, attempted murder, as well as discovering the fact that he is not quite who he thought he was. To make it all worse, the order of scholars to which he belongs is jeopardized in more ways than one.'
       );

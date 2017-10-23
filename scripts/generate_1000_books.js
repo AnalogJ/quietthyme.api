@@ -42,7 +42,7 @@ for (var i = 0; i < number_of_books; i++) {
     last_modified: faker.date.recent(),
 
     series_name: series_name,
-    series_number: series_name ? faker.random.number(10) : 0,
+    series_number: (series_name ? faker.random.number(10) : 0).toString(),
 
     isbn: faker.random.number({ min: 1000000000000, max: 9999999999999 }).toString(),
     isbn10: faker.random.number({ min: 1000000000, max: 9999999999 }).toString(),
