@@ -93,7 +93,7 @@ BookEndpoint.find = function(event, context, cb) {
           condition,
           event.queryStringParameters.page,
           50,
-          'title'
+          event.queryStringParameters.sort || 'title'
         );
       }
       return book_query;
