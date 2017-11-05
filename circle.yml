@@ -31,5 +31,5 @@ deployment:
       - serverless deploy --stage $CIRCLE_BRANCH --region us-east-1
       - aws s3api put-bucket-lifecycle-configuration  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --lifecycle-configuration file://scripts/bucket.lifecycle.json
       - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-upload --cors-configuration file://scripts/bucket.cors.json
-      - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-content --cors-configuration file://scripts/bucket.readonly.cors.json
+      - aws s3api put-bucket-cors  --bucket quietthyme-api-${CIRCLE_BRANCH}-content --cors-configuration file://scripts/bucket.cors.json
       - curl https://api.rollbar.com/api/1/deploy/ -F access_token=$ROLLBAR_PUSH_API_KEY -F environment=$CIRCLE_BRANCH -F revision=$CIRCLE_SHA1 -F local_username=circleci

@@ -71,8 +71,7 @@ module.exports = {
       );
     }
 
-    q
-      .spread(
+    q.spread(
         [
           DBService.findBookById(book_id, user_id),
           DBService.findCredentialById(cred_id, user_id),

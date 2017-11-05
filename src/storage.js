@@ -412,7 +412,7 @@ StorageHandler.prepare_cover = function(event, context, cb) {
         policy.fields.key = key;
         return policy;
       }
-      else{
+      else {
         //this is a book cover uploaded by calibre, lets update the current book immediately.
         return DBService.findBookById(
           event.body.book_id,
