@@ -388,10 +388,11 @@ StorageHandler.prepare_cover = function(event, context, cb) {
   // TODO: this function should handle quietthyme storage creds
   JWTokenService.verify(event.token)
     .then(function(auth) {
-      return DBService.findBookById(
-        event.body.book_id,
-        auth.uid
-      ).then(function(book) {
+
+      //if this is a book to be uploaded via webUI so we have to wait to be sure that the cover is uploaded & saved before doing anything.
+      if (event.queryStringParameters.source == 'web') {
+        //we still need to check the credential sent is tied to the current user.
+
         var key = StorageService.create_content_identifier(
           'cover',
           auth.uid,
@@ -399,28 +400,54 @@ StorageHandler.prepare_cover = function(event, context, cb) {
           event.body.format
         );
 
-        var book_data = {
-          cover: Constants.buckets.content + '/' + encodeURI(key),
+        var params = {
+          Bucket: Constants.buckets.content,
+          Expires: 60 * 60, //1 hour in seconds
+          Conditions: [['starts-with', '$key', encodeURI(key)]],
         };
 
-        return DBService.updateBook(
-          book.id,
-          auth.uid,
-          book_data,
-          true
-        ).then(function() {
-          var params = {
-            Bucket: Constants.buckets.content,
-            Key: key,
-            Expires: 60,
+        //TODO: we shoudl figure out if we can use a post policy for both Calibre and WebUI.
+        // eg. Policy can be left active for 10 minutes at a time without any lambda requests, if we put reasonable size limits in place.
+        var policy = s3.createPresignedPost(params);
+        policy.fields.key = key;
+        return policy;
+      }
+      else{
+        //this is a book cover uploaded by calibre, lets update the current book immediately.
+        return DBService.findBookById(
+          event.body.book_id,
+          auth.uid
+        ).then(function(book) {
+          var key = StorageService.create_content_identifier(
+            'cover',
+            auth.uid,
+            event.body.filename,
+            event.body.format
+          );
+
+          var book_data = {
+            cover: Constants.buckets.content + '/' + encodeURI(key),
           };
-          var payload = {
-            book_data: book_data,
-            upload_url: s3.getSignedUrl('putObject', params),
-          };
-          return payload;
+
+          return DBService.updateBook(
+            book.id,
+            auth.uid,
+            book_data,
+            true
+          ).then(function() {
+            var params = {
+              Bucket: Constants.buckets.content,
+              Key: key,
+              Expires: 60,
+            };
+            var payload = {
+              book_data: book_data,
+              upload_url: s3.getSignedUrl('putObject', params),
+            };
+            return payload;
+          });
         });
-      });
+      }
     })
     .then(Utilities.successHandler(cb))
     .fail(Utilities.errorHandler(cb))
