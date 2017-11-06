@@ -253,6 +253,10 @@ module.exports = {
                   event.filename,
                   path.extname(event.filename)
                 ),
+                storage_original_filename: path.basename(
+                  event.filename,
+                  path.extname(event.filename)
+                ),
                 storage_format: path.extname(event.filename),
                 storage_size: fs.statSync(book_path).size,
               };

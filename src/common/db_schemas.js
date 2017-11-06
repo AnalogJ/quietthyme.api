@@ -59,6 +59,7 @@ var bookSchema = {
     storage_size: { type: 'number' },
     storage_identifier: { type: 'string' },
     storage_filename: { type: 'string' },
+    storage_original_filename: { type: 'string' },
     storage_format: { type: 'string' },
     storage_type: { type: 'string' },
 
