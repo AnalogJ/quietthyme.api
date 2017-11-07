@@ -150,6 +150,24 @@ BookEndpoint.edit = function(event, context, cb) {
             }
 
             return DBService.updateBook(book.id, auth.uid, updateData, true)
+              .then(function(updatedBook){
+                var promise = q({})
+                if(updatedBook.cover && book.cover){
+                  //coverart has changed, lets delete the old book cover art.
+                  promise = StorageService.delete_book_coverart(book.cover)
+                }
+
+                return promise
+                  .then(function(){
+                    return updatedBook
+                  })
+                  .fail(function(){
+                    //ignore failure deleting old cover art. 
+                    console.log("!!! Error, could not delete book cover: " + book.cover)
+                    return updatedBook
+                  })
+
+              })
           }
           else{
             //nothign to update, exit.
