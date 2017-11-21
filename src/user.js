@@ -217,6 +217,9 @@ UserEndpoint.pushNotifyTest = function(event, context, cb) {
             title: 'Welcome',
             body: 'Thank you for enabling push notifications',
             icon: '/assets/favicon/favicon_144.png',
+            data:{
+              test: true
+            }
           });
 
           return webPush.sendNotification(user.push_notifications, payload, {

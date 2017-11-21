@@ -162,7 +162,7 @@ BookEndpoint.edit = function(event, context, cb) {
                     return updatedBook
                   })
                   .fail(function(){
-                    //ignore failure deleting old cover art. 
+                    //ignore failure deleting old cover art.
                     console.log("!!! Error, could not delete book cover: " + book.cover)
                     return updatedBook
                   })
